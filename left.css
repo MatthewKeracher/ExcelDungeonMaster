@@ -1,22 +1,24 @@
 .left-section {
-    flex-basis: 33%;
-    height: 90vh;
-    margin-right: 10px;
-    font-size: 18px;
+flex-basis: 33%;
+height: 90vh;
+margin-right: 10px;
+font-size: 18px;
 }
 
 #textDiv, textarea {
-    height: 85vh;
-    width: 100%;
-    border: none;
-    padding: 0;
-    background-color: black;
-    color: lime;
-    font-size: 18px;
-    resize: none;
-    overflow: auto;
+height: 85vh;
+width: 100%;
+border: none;
+padding: 0;
+background-color: black;
+color: lime;
+font-size: 18px;
+resize: none;
+overflow: auto;
+white-space: pre-wrap
 }
 
 textarea:focus {
-    outline: none;
+outline: none;
 }
+

@@ -10,6 +10,12 @@ body {
     color: lime;
 }
 
+#idBox{
+    position: fixed;
+    top:5px;
+    right:5px;
+    }
+
 nav.toolbar {
     background-color: black;
     color: lime;

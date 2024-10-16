@@ -1,0 +1,66 @@
+nav.toolbar {
+    background-color: black; /* Toolbar background color */
+    color: lime; /* Toolbar text color */
+    padding: 5px; /* Padding for the toolbar */
+    border-bottom: 1px solid lime; /* Bottom border */
+    font-size: 16px; /* Font size */
+}
+
+nav.toolbar ul {
+    list-style: none; /* Remove default list styling */
+    display: flex; /* Use flexbox for layout of main menu */
+    padding-left: 10px; /* Left padding */
+    margin: 0; /* Remove margin */
+}
+
+nav.toolbar ul li {
+    position: relative; /* Position relative for dropdowns */
+    margin-right: 20px; /* Right margin for spacing */
+}
+
+nav.toolbar ul li > a {
+    color: lime; /* Link color for main items */
+    text-decoration: none; /* Remove underline */
+    padding: 5px 10px; /* Padding for main links */
+    display: block; /* Make links block-level for better clicking area */
+}
+
+/* Hover effect for main links */
+nav.toolbar ul li > a:hover {
+    background-color: #575757; /* Background color on hover */
+}
+
+/* Dropdown Styles */
+nav.toolbar ul li > .dropdown {
+    display: none; /* Hide dropdowns by default */
+    position: absolute; /* Position absolute for dropdowns */
+    background-color: #333; /* Dropdown background color */
+    min-width: 160px; /* Minimum width of dropdown */
+    z-index: 1; /* Ensure dropdown is on top */
+    margin-top: 5px; /* Space between the main item and dropdown */
+    border-radius: 4px; /* Optional: rounded corners */
+    flex-direction: column; /* Stack dropdown items vertically */
+}
+
+/* Styles specifically for dropdown items */
+nav.toolbar ul li > .dropdown > li {
+    width: 100%; /* Full width for dropdown items */
+    display: block; /* Ensure dropdown items are block-level */
+}
+
+nav.toolbar ul li > .dropdown > li > a {
+    padding: 10px 15px; /* Padding for dropdown links */
+    color: lime; /* Dropdown link color */
+    text-decoration: none; /* Remove underline for dropdown links */
+    display: block; /* Make dropdown links block-level */
+}
+
+/* Hover effect for dropdown links */
+nav.toolbar ul li > .dropdown > li > a:hover {
+    background-color: #575757; /* Background color on hover for dropdown links */
+}
+
+/* Show dropdown on hover of the parent li */
+nav.toolbar ul li:hover .dropdown {
+    display: block; /* Show dropdown */
+}

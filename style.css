@@ -10,42 +10,6 @@ body {
     color: lime;
 }
 
-#idBox{
-    position: fixed;
-    top:5px;
-    right:5px;
-    }
-
-nav.toolbar {
-    background-color: black;
-    color: lime;
-    padding: 5px;
-    border-bottom: 1px solid lime;
-    font-size: 16px;
-}
-
-nav.toolbar ul {
-    list-style: none;
-    display: flex;
-    padding-left: 10px;
-}
-
-nav.toolbar ul li {
-    margin-right: 20px;
-}
-
-nav.toolbar ul li a {
-    color: lime;
-    text-decoration: none;
-    padding: 5px 10px;
-    display: block;
-}
-
-nav.toolbar ul li a:hover {
-    background-color: black;
-    color: hotpink;
-}
-
 .container {
     display: flex;
     margin: 20px;
@@ -61,7 +25,12 @@ nav.toolbar ul li a:hover {
 }
 
 
-
+#idBox{
+    position: fixed;
+    top:5px;
+    right:5px;
+    z-index: 10;
+    }
 
 
 footer {

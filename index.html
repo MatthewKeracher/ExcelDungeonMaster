@@ -5,37 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Application Template</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="right.css">
+    <link rel="stylesheet" href="left.css">
 </head>
 <body>
 
-    <!-- Navigation bar -->
-    <nav>
+    <!-- Application Toolbar -->
+    <nav class="toolbar">
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#file">File</a></li>
+            <li><a href="#edit">Edit</a></li>
+            <li><a href="#view">View</a></li>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#help">Help</a></li>
         </ul>
     </nav>
 
     <!-- Main content container -->
     <div class="container">
-        <!-- Left section -->
-        <div class="left-section">
-            <h2>Left Section</h2>
-            <p>This is the left section of the page. You can add any content here, such as a sidebar or additional navigation.</p>
+        <!-- Left section (Div that turns into a TextBox) -->
+        <div class="left-section" id="editableDiv">
+            <div id="textDiv">Click here while holding Shift to edit...</div>
         </div>
 
-        <!-- Right section -->
         <div class="right-section">
-            <h2>Right Section</h2>
-            <p>This is the right section of the page, typically the main content area. You can add forms, tables, or anything your app needs here.</p>
+                <div id="hexGridContainer"></div>
+                <canvas id="drawingCanvas"></canvas> 
         </div>
-    </div>
 
     <!-- Optional Footer -->
     <footer>
-        <p>&copy; 2024 Web Application. All rights reserved.</p>
+        <p>&copy; 2024 Matthew Keracher. Give me money.</p>
     </footer>
 
     <!-- Link to external JavaScript file -->

@@ -1,6 +1,7 @@
 let data = [];
 let coords = '0.0';
 let region = 'Global'
+let currentObj = [];
 
 let isEditing = false;
 let isPainting = false;

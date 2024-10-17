@@ -125,7 +125,7 @@ colorGrid()
 function handleExit(){
 parse(coords)
 
-//idBox.textContent = coords;
+idBox.textContent = coords;
 
 const regionName = document.getElementById('regionName');
 const regionObj = getObj(idBox.textContent);

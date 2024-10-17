@@ -61,6 +61,7 @@ writeBox.value = ''
 placeName.value = ''
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
+currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;

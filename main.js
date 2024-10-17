@@ -1,5 +1,6 @@
 let data = [];
 let coords = '0.0';
+let region = 'Global'
 
 let isEditing = false;
 let isPainting = false;
@@ -23,6 +24,13 @@ if(resultString !== ''){
 coords = resultString
 }
     
+}
+
+function getObj(coords){
+
+const obj = data.find(entry => entry.id === coords)
+return obj
+
 }
 
 

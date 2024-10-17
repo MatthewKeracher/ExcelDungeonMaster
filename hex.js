@@ -58,10 +58,12 @@ hexagon.querySelector('.right').style.borderLeftColor = currentColor;
 //loadData
 textDiv.innerHTML = ''
 writeBox.value = ''
+placeName.value = ''
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 
 if(loadEntry){
+placeName.value = loadEntry.name;
 textDiv.innerHTML = loadEntry.desc.trim();
 writeBox.value = loadEntry.desc.trim();
 }

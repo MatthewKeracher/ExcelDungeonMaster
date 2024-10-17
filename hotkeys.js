@@ -3,9 +3,12 @@ function addHotkeys() {
 
 document.addEventListener('keydown', (event) => {
 const key = event.key.toLowerCase(); // Convert the pressed key to lowercase
+const placeName = document.getElementById('placeName')
+
 
 if (
-!writeBox.contains(document.activeElement)
+!writeBox.contains(document.activeElement) &&
+!placeName.contains(document.activeElement) 
 ) {
 
 switch (key) {
@@ -18,6 +21,12 @@ handleLoad();
 break;
 case 's':
 handleExport();
+break;
+case 'e':
+handleEnter();
+break;
+case 'q':
+handleExit();
 break;
 
 //For Painting

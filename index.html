@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="nav.css">
 </head>
 <body>
+
+    <div class="topContainer">
     
     <nav class="toolbar">
         <ul>
@@ -20,15 +22,21 @@
             <li><a href="#" id="enterButton" onclick="handleEnter()">Go In</a></li>
             <li><a href="#" id="exitButton" onclick="handleExit()">Go Out</a></li>
         </ul>
-    
-        <div id="idBox"></div>
+
     </nav>
+
+   
+        <div id="regionName"></div>
+        <div id="idBox"></div>
+  
+
+</div>
     
     <div class="container">
         <div class="left-section" id="editableDiv">
 
+            <input id="placeName"></input>
             <div id="textDiv"></div>
-
             <textarea id="writeBox"></textarea>
 
             <div id="paletteDiv">

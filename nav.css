@@ -1,8 +1,17 @@
+
+.topContainer {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Distribute space between items */
+    background-color: black; /* Background color for the container */
+    border-bottom: 1px solid lime; /* Bottom border */
+}
+
+
 nav.toolbar {
     background-color: black; /* Toolbar background color */
     color: lime; /* Toolbar text color */
     padding: 5px; /* Padding for the toolbar */
-    border-bottom: 1px solid lime; /* Bottom border */
     font-size: 16px; /* Font size */
 }
 

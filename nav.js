@@ -112,6 +112,10 @@ input.click();
 
 function handleEnter(){
 
+const regionName = document.getElementById('regionName');
+const regionObj = getObj(idBox.textContent);
+regionName.textContent = regionObj.name;
+
 returnCoords = coords;
 coords = idBox.textContent;
 colorGrid()
@@ -119,11 +123,18 @@ colorGrid()
 }
 
 function handleExit(){
+parse(coords)
 
-    parse(coords)
-    colorGrid()
-    
-    }
+//idBox.textContent = coords;
+
+const regionName = document.getElementById('regionName');
+const regionObj = getObj(idBox.textContent);
+regionName.textContent = regionObj.name;
+
+
+colorGrid()
+
+}
 
 
 

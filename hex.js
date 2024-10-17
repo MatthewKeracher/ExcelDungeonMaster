@@ -94,8 +94,8 @@ currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;
-textDiv.innerHTML = loadEntry.desc.trim();
 writeBox.value = loadEntry.desc.trim();
+textDiv.innerHTML = handlePrompts();
 }
 
 // isEditing = true;

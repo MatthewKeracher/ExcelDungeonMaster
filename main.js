@@ -1,4 +1,8 @@
+let data = [];
+
 let isEditing = false;
+let isPainting = false;
+
 const textDiv = document.getElementById('textDiv'); // Assume this is your editable div
 const writeBox = document.getElementById('writeBox'); // Assume this is your editable div
 
@@ -34,6 +38,9 @@ function toggleEditMode() {
                 
             }, 0);
         }
+
+        saveHex();
+
     }
 }
 
@@ -43,5 +50,14 @@ document.addEventListener('keydown', function (e) {
         toggleEditMode();  
     }
 });
+
+let currentColor = 'rgb(17, 132, 17)'; // Default color
+
+function setColor(color) {
+    currentColor = color;
+    console.log('Selected color:', currentColor);
+
+}
+
 
 

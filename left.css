@@ -1,12 +1,17 @@
 .left-section {
 flex-basis: 33%;
-height: 90vh;
+flex-direction: column;
+justify-content: space-between; /* Ensures space between content and the palette */
+height: 100%;
+padding: 10px;
+box-sizing: border-box;
 margin-right: 10px;
 font-size: 18px;
 }
 
 #textDiv, #writeBox {
-height: 85vh;
+flex-grow: 1;
+height: 95%;
 width: 100%;
 border: none;
 padding: 0;
@@ -24,5 +29,31 @@ outline: none;
 
 #writeBox{
 display:none;
+width: 100%;
+margin-bottom: 10px; /* Adds some spacing above the palette */
 }
+
+
+#paletteDiv {
+display: none;
+justify-content: center; /* Centers the palette horizontally */
+margin-top: 10px;
+padding-top: 10px;
+border-top: 1px solid lime; /* Optional: adds a top border to separate the palette */
+}
+
+.color-swatch {
+width: 30px;
+height: 30px;
+margin: 0 5px;
+border: 1px solid #ccc;
+cursor: pointer;
+transition: transform 0.2s;
+}
+
+.color-swatch:hover {
+transform: scale(1.1);
+border-color: #000;
+}
+
 

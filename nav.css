@@ -64,3 +64,8 @@ nav.toolbar ul li > .dropdown > li > a:hover {
 nav.toolbar ul li:hover .dropdown {
     display: block; /* Show dropdown */
 }
+
+.highlight {
+    background-color: rgb(39, 52, 39);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

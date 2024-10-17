@@ -1,4 +1,5 @@
 let data = [];
+let coords = '0.0';
 
 let isEditing = false;
 let isPainting = false;
@@ -7,7 +8,30 @@ const textDiv = document.getElementById('textDiv'); // Assume this is your edita
 const writeBox = document.getElementById('writeBox'); // Assume this is your editable div
 
 
+function parse(str){
+
+// Split the string into an array of numbers
+const numbersArray = str.split('.');
+
+// Remove the last two elements
+const trimmedArray = numbersArray.slice(0, -2);
+
+// Join the remaining numbers back into a string
+const resultString = trimmedArray.join('.');
+
+if(resultString !== ''){
+coords = resultString
+}
+    
+}
+
+
 function toggleEditMode() {
+
+    isPainting = true
+    handlePaint();
+
+
     if (!isEditing) {
        //Enter
         textDiv.style.display = "none";

@@ -46,7 +46,7 @@ saveHex();
 //Set new id.
 let row = hexagon.getAttribute('row');
 let col = hexagon.getAttribute('col')
-idBox.textContent = row + '.' + col
+idBox.textContent = coords + '.' + row + '.' + col
 
 //Paint Hex Current Colour
 if(isPainting){
@@ -66,8 +66,8 @@ textDiv.innerHTML = loadEntry.desc.trim();
 writeBox.value = loadEntry.desc.trim();
 }
 
-isEditing = true;
-toggleEditMode();
+// isEditing = true;
+// toggleEditMode();
 saveHex();
 saveData();
 

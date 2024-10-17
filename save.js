@@ -42,7 +42,7 @@ hexagons.forEach(hex => {
 
 const col = hex.getAttribute('col');
 const row = hex.getAttribute('row');
-const id =  row + '.' + col;
+const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id)
 

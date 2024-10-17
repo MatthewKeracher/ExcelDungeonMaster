@@ -5,7 +5,7 @@ margin-right: 10px;
 font-size: 18px;
 }
 
-#textDiv, textarea {
+#textDiv, #writeBox {
 height: 85vh;
 width: 100%;
 border: none;
@@ -20,5 +20,9 @@ white-space: pre-wrap
 
 textarea:focus {
 outline: none;
+}
+
+#writeBox{
+display:none;
 }
 

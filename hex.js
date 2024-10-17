@@ -1,15 +1,13 @@
 // Get the drawing canvas and its context
+const data = []
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
 let painting = false;
-
-const data = []
+let previousHexagon = null; 
 
 // Ensure canvas dimensions match the container
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
-
-const hexGridContainer = document.getElementById('hexGridContainer');
 
 // Function to create hexagons
 function createHexagons(rows, cols) {
@@ -26,6 +24,7 @@ const hexRow = document.createElement('div');
 hexRow.classList.add('hex-row');
 
 for (let col = 0; col < cols; col++) {
+
 // Create a hexagon div
 const hexagon = document.createElement('div');
 hexagon.classList.add('hex');
@@ -65,22 +64,27 @@ hexGridContainer.appendChild(hexRow);
 
 function changeHex(hexagon){
 
-//Save current Data
+//1. Before Change Save Data
 const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
+const writeBox = document.getElementById('writeBox');
+
+if (previousHexagon) {
+previousHexagon.querySelector('.left').style.borderRightColor = 'rgba(215, 234, 215, 0.573)';
+previousHexagon.querySelector('.middle').style.backgroundColor = 'rgba(215, 234, 215, 0.573)';
+previousHexagon.querySelector('.right').style.borderLeftColor = 'rgba(215, 234, 215, 0.573)';
+}
 
 let exists = data.find(entry => entry.id === idBox.textContent)
 
 if(exists){
-exists.desc = textDiv.textContent
+exists.desc = textDiv.innerHTML;
 console.log(data)
-}else if(idBox.textContent !== '' && textDiv.textContent !== ''){
+}else if(idBox.textContent !== '' && writeBox.value !== ''){
 
 const saveEntry = {
-
 id: idBox.textContent,
-desc: textDiv.textContent,
-
+desc: writeBox.value,
 }
 
 data.push(saveEntry)
@@ -91,13 +95,25 @@ let row = hexagon.getAttribute('row');
 let col = hexagon.getAttribute('col')
 idBox.textContent = row + '.' + col
 
+hexagon.querySelector('.left').style.borderRightColor = 'lime';
+hexagon.querySelector('.middle').style.backgroundColor = 'lime';
+hexagon.querySelector('.right').style.borderLeftColor = 'lime';
+
+previousHexagon = hexagon;
+
 //loadData
 textDiv.innerHTML = ''
+writeBox.value = ''
+
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 
 if(loadEntry){
-textDiv.textContent = loadEntry.desc.trim();
+textDiv.innerHTML = loadEntry.desc.trim();
+writeBox.value = loadEntry.desc.trim();
 }
+
+isEditing = true;
+toggleEditMode();
 
 
 }

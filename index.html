@@ -23,7 +23,13 @@
             </li>
             <li><a href="#edit">Edit</a></li>
             <li><a href="#view">View</a></li>
-            <li><a href="#tools">Tools</a></li>
+            <li><a href="#tools">Tools</a>
+                <ul class="dropdown">
+                    <li><a href="#paint">Paint</a></li>
+                    <li><a href="#write">Write</a></li>
+                    <li><a href="#save">Save</a></li>
+                </ul>
+            </li>
             <li><a href="#help">Help</a></li>
         </ul>
 
@@ -32,7 +38,8 @@
     
     <div class="container">
         <div class="left-section" id="editableDiv">
-            <div id="textDiv">Welcome to Excel_DM!</div>
+            <div id="textDiv"></div>
+            <textarea id="writeBox"></textarea>
         </div>
 
         <div class="right-section">

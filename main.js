@@ -1,42 +1,46 @@
 let isEditing = false;
 const textDiv = document.getElementById('textDiv'); // Assume this is your editable div
+const writeBox = document.getElementById('writeBox'); // Assume this is your editable div
 
-// Function to toggle between edit and view mode
+
 function toggleEditMode() {
     if (!isEditing) {
-        // Enter edit mode
+       //Enter
+        textDiv.style.display = "none";
+        writeBox.style.display = "block";
+        writeBox.focus();
+        
         const textContent = textDiv.innerHTML;
-        textDiv.innerHTML = `<textarea id="textInput">${textContent}</textarea>`;
-        const textarea = document.getElementById('textInput');
-        textarea.focus();
-        textarea.setSelectionRange(textContent.length, textContent.length);
+        
+        writeBox.setSelectionRange(textContent.length, textContent.length);
         isEditing = true;
 
-        // Add blur event listener to the textarea
-        textarea.addEventListener('blur', function () {
-            // Use setTimeout to delay the replacement of the textarea with the div content
+        writeBox.addEventListener('blur', function () {
             setTimeout(() => {
-                textDiv.innerHTML = textarea.value.trim() || "";
+                textDiv.innerHTML = writeBox.value.trim() || "";
                 isEditing = false;
-            }, 0); // Delay the execution to ensure the blur event finishes
+            }, 0); 
         });
+
     } else {
-        // Exit edit mode
-        const textarea = document.getElementById('textInput');
-        if (textarea) {
+        //Exit
+        textDiv.style.display = "block";
+        writeBox.style.display = "none";
+        isEditing = false;
+
+        if (writeBox.style.display === 'none') {
             setTimeout(() => {
-                textDiv.innerHTML = textarea.value.trim() || "";
-                isEditing = false;
+                textDiv.innerHTML = writeBox.value.trim() || "";
+                
             }, 0);
         }
     }
 }
 
-// Keydown event listener to trigger toggle on Shift+Enter
 document.addEventListener('keydown', function (e) {
     if (e.shiftKey && e.key === 'Enter') {
         e.preventDefault();
-        toggleEditMode();  // Call the reusable function
+        toggleEditMode();  
     }
 });
 

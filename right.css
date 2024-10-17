@@ -75,7 +75,7 @@
     margin-top: 28px;
 }
 
-.hex:hover .middle {
+/* .hex:hover .middle {
     background-color: orangered;
 }
 
@@ -85,7 +85,7 @@
 
 .hex:hover .right {
     border-left-color: orangered;
-}
+} */
 
 .hex:hover {
     cursor: pointer;

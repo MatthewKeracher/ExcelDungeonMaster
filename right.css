@@ -90,3 +90,31 @@
 .hex:hover {
     cursor: pointer;
 }
+
+.hex-label {
+    display: none;
+    position: absolute;
+    font-family: "SoutaneBlack";
+    white-space: nowrap;
+    color: whitesmoke;
+    padding: 0px;
+    border-radius: 3px;
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    left: 50%; 
+    top: 50%;  
+    transform: translate(-50%, -50%); 
+}
+
+.hover-label {
+    display: none;
+    position: absolute;
+    background-color: black;
+    border: 1px solid lime;
+    padding: 1px;
+    border-radius: 3px;
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}

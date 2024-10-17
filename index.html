@@ -15,18 +15,18 @@
     
     <nav class="toolbar">
         <ul>
-            <li><a href="#" id="newButton" onclick="handleNew()">New</a></li>
-            <li><a href="#" id="paintButton" onclick="handlePaint()">Paint</a></li>
-            <li><a href="#" id="loadButton" onclick="handleLoad()">Load</a></li>
-            <li><a href="#" id="exportButton" onclick="handleExport()">Export</a></li>
-            <li><a href="#" id="enterButton" onclick="handleEnter()">Go In</a></li>
-            <li><a href="#" id="exitButton" onclick="handleExit()">Go Out</a></li>
+            <li><a href="#" id="newButton"    title="Erase All Data" onclick="handleNew()">New</a></li>
+            <li><a href="#" id="paintButton"  title="Hotkey: P" onclick="handlePaint()">Paint</a></li>
+            <li><a href="#" id="loadButton"   title="Hotkey: L" onclick="handleLoad()">Load</a></li>
+            <li><a href="#" id="exportButton" title="Hotkey: S"onclick="handleExport()">Export</a></li>
+            <li><a href="#" id="enterButton"  title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
+            <li><a href="#" id="exitButton"   title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
         </ul>
 
     </nav>
 
    
-        <div id="regionName"></div>
+        <div id="regionName">Excel_DM</div>
         <div id="idBox"></div>
   
 
@@ -53,12 +53,16 @@
         </div>
 
         <div class="right-section">
+                <div id="logoContainer">
+                <img id="logo" src="img/logo.gif"/>
+                <p id="gimme">Consider donating some money to keep this project going.</p>
+                </div>
                 <div id="hexGridContainer"></div>
         </div>
 
     <!-- Optional Footer -->
     <footer>
-        <p>&copy; 2024 Matthew Keracher. Give me money.</p>
+        <p>&copy; 2024 Matthew Keracher. Spare a Coin.</p>
     </footer>
 
     <!-- Link to external JavaScript file -->

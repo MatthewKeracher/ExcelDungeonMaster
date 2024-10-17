@@ -1,6 +1,6 @@
 let data = [];
 let coords = '0.0';
-let region = 'Global'
+let region = 'Excel_DM'
 let currentObj = [];
 
 let isEditing = false;
@@ -9,6 +9,10 @@ let isPainting = false;
 const textDiv = document.getElementById('textDiv'); // Assume this is your editable div
 const writeBox = document.getElementById('writeBox'); // Assume this is your editable div
 
+//Create Label
+const hoverLabel = document.createElement('div');
+hoverLabel.className = 'hover-label';
+document.body.appendChild(hoverLabel);
 
 function parse(str){
 
@@ -91,6 +95,42 @@ function setColor(color) {
     console.log('Selected color:', currentColor);
 
 }
+
+let inactivityTimer;
+
+// Function to show the inactivity image
+function showInactivityImage() {
+    const container = document.getElementById('logoContainer');
+    container.style.display = 'block';
+}
+
+// Function to hide the inactivity image
+function hideInactivityImage() {
+    const inactivityImage = document.getElementById('logoContainer');
+    inactivityImage.style.display = 'none';
+}
+
+// Reset the inactivity timer
+function resetInactivityTimer() {
+    // Clear any existing timer
+    clearTimeout(inactivityTimer);
+
+    // Hide the inactivity image if it's currently displayed
+    hideInactivityImage();
+
+    // Start a new timer for 10 seconds (10000 milliseconds)
+    inactivityTimer = setTimeout(() => {
+        showInactivityImage();
+    }, 10000); // 10 seconds of inactivity
+}
+
+// Listen for user activity (mouse movement, key presses, etc.)
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('keydown', resetInactivityTimer);
+
+// Start the initial inactivity timer when the page loads
+resetInactivityTimer();
+
 
 
 

@@ -12,6 +12,12 @@ for (let col = 0; col < cols; col++) {
 const hexagon = document.createElement('div');
 hexagon.classList.add('hex');
 
+
+//Show Label
+hexagon.addEventListener('mouseover', showHoverLabel);
+hexagon.addEventListener('mousemove', showHoverLabel);
+hexagon.addEventListener('mouseout', hideHoverLabel);
+
 // Create left, middle, and right parts of the hexagon
 const leftPart = document.createElement('div');
 leftPart.classList.add('left');
@@ -24,6 +30,11 @@ hexagon.appendChild(middlePart);
 const rightPart = document.createElement('div');
 rightPart.classList.add('right');
 hexagon.appendChild(rightPart);
+
+//Create Label for Hexagon
+const hexLabel = document.createElement('div');
+hexLabel.classList.add('hex-label');
+hexagon.appendChild(hexLabel);
 
 if (col % 2 === 1) {
 hexagon.classList.add('colEven');
@@ -39,9 +50,27 @@ hexGridContainer.appendChild(hexRow);
 }
 }
 
+function showHoverLabel(e) {
+    const placeName = e.currentTarget.getAttribute('name');
+    hoverLabel.textContent = placeName;
+    hoverLabel.style.display = 'block';
+    hoverLabel.style.left = `${e.pageX + 20}px`;
+    hoverLabel.style.top = `${e.pageY}px`;
+    hoverLabel.style.opacity = '1';
+}
+
+function hideHoverLabel() {
+    hoverLabel.style.display = 'none';
+    hoverLabel.style.opacity = '0';
+}
+
+
+
+
 function changeHex(hexagon){
 
 saveHex();
+updateHexNames();
 
 //Set new id.
 let row = hexagon.getAttribute('row');

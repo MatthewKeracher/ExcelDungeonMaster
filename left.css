@@ -9,6 +9,19 @@ margin-right: 10px;
 font-size: 18px;
 }
 
+.left-section hr {
+    color: lime; /* This changes the color of the <hr> element */
+    border: none; /* Remove the default border */
+    height: 2px; /* Set the height of the line */
+    background-color: lime; /* Use background-color to make the <hr> visible */
+    margin-bottom: 0;
+}
+
+@font-face {
+    font-family: "SoutaneBlack";
+    src: url("fonts/SoutaneBlack.ttf") format('truetype');
+}
+
 #placeName{
 width: 100%;
 border: none;
@@ -16,7 +29,7 @@ margin-bottom: 15px;
 padding: 0;
 background-color: rgb(39, 52, 39);
 color: lime;
-font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+font-family: 'SoutaneBlack';
 font-size: 22px;
 letter-spacing: 2px;
 vertical-align: middle;
@@ -27,13 +40,14 @@ overflow: auto;
 
 #textDiv, #writeBox {
 flex-grow: 1;
-height: 95%;
+height: 90%;
 width: 100%;
 border: none;
 padding: 0;
 background-color: black;
 color: lime;
 font-size: 18px;
+line-height: 1.5;
 resize: none;
 overflow: auto;
 white-space: pre-wrap

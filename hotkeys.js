@@ -11,6 +11,12 @@ if (
 !placeName.contains(document.activeElement) 
 ) {
 
+
+if (key === 'shift') {
+isShiftHeld = true;
+toggleHexLabelsVisibility(true);
+}
+
 switch (key) {
 //For Nav
 case 'p':
@@ -47,6 +53,31 @@ isPainting? currentColor = 'rgba(215, 234, 215, 0.573)' : '';
 break;
 
 }
+
+// Add event listener for keyup
+document.addEventListener('keyup', (event) => {
+    const key = event.key.toLowerCase();
+
+    // Check for the Shift key
+    if (key === 'shift') {
+        isShiftHeld = false;
+        toggleHexLabelsVisibility(false);
+    }
+});
+
+// Function to toggle hex labels visibility
+function toggleHexLabelsVisibility(isVisible) {
+    const hexLabels = document.querySelectorAll('.hex-label');
+    hexLabels.forEach(label => {
+
+        let hasName = label.textContent
+        label.style.display = isVisible && hasName? 'block' : 'none'; // Change to 'inline-block' if needed
+    });
+}
+
+
+
+
 }
 
 });  

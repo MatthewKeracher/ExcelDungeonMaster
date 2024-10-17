@@ -24,7 +24,7 @@ paletteDiv.style.display = "none";
 function handleNew() {
 
 data = [];
-colorGrid()
+updateGrid()
 
 idBox.textContent = '';
 textDiv.innerHTML = '';
@@ -93,7 +93,7 @@ data = loadedData;
 console.log("Data successfully loaded:", data);
 
 
-colorGrid();
+updateGrid();
 
 } catch (error) {
 console.error("Error parsing JSON file:", error);
@@ -118,7 +118,7 @@ regionName.textContent = regionObj.name;
 
 returnCoords = coords;
 coords = idBox.textContent;
-colorGrid()
+updateGrid()
 
 }
 
@@ -127,12 +127,18 @@ parse(coords)
 
 idBox.textContent = coords;
 
+const currentID = idBox.textContent;
+
 const regionName = document.getElementById('regionName');
 const regionObj = getObj(idBox.textContent);
+
+if(currentID === '0.0'){
+regionName.textContent = "Excel_DM"; 
+}else{
 regionName.textContent = regionObj.name;
+}
 
-
-colorGrid()
+updateGrid()
 
 }
 

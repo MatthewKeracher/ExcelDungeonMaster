@@ -50,7 +50,7 @@ textDiv.innerHTML = handlePrompts() || "";
 }, 0);
 }
 
-saveHex();
+saveEntry();
 
 }
 }
@@ -102,7 +102,7 @@ highestScore = score;
 foundMonster = monster;
 }
 });
-t
+
 if (foundMonster) {
 let result = `<br><b>${numAppearing} ${foundMonster.name}: </b>`;
 result += `AC: ${foundMonster.ac}; HD: ${foundMonster.hit}; #At: ${foundMonster.attack}; Dam: ${foundMonster.dam}; `;

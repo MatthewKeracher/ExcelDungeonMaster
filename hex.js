@@ -1,5 +1,6 @@
 function createHexagons(rows, cols) {
-const hexGridContainer = document.getElementById('hexGridContainer');
+const gridContainer = document.getElementById('gridContainer');
+gridContainer.innerHTML = '';  // Clear previous map
 
 for (let row = 0; row < rows; row++) {
 // Create a row for hexagons
@@ -14,9 +15,9 @@ hexagon.classList.add('hex');
 
 
 //Show Label
-hexagon.addEventListener('mouseover', showHoverLabel);
-hexagon.addEventListener('mousemove', showHoverLabel);
-hexagon.addEventListener('mouseout', hideHoverLabel);
+// hexagon.addEventListener('mouseover', showHoverLabel);
+// hexagon.addEventListener('mousemove', showHoverLabel);
+// hexagon.addEventListener('mouseout', hideHoverLabel);
 
 // Create left, middle, and right parts of the hexagon
 const leftPart = document.createElement('div');
@@ -32,9 +33,9 @@ rightPart.classList.add('right');
 hexagon.appendChild(rightPart);
 
 //Create Label for Hexagon
-const hexLabel = document.createElement('div');
-hexLabel.classList.add('hex-label');
-hexagon.appendChild(hexLabel);
+const label = document.createElement('div');
+label.classList.add('hexLabel');
+hexagon.appendChild(label);
 
 if (col % 2 === 1) {
 hexagon.classList.add('colEven');
@@ -42,34 +43,27 @@ hexagon.classList.add('colEven');
 hexagon.setAttribute('col', col)
 hexagon.setAttribute('row', row)
 hexagon.addEventListener("click", function() {
-    changeHex(hexagon);
+changeHex(hexagon);
 });
 hexRow.appendChild(hexagon);
 }
-hexGridContainer.appendChild(hexRow);
+gridContainer.appendChild(hexRow);
 }
 }
 
-function showHoverLabel(e) {
-    const placeName = e.currentTarget.getAttribute('name');
-    hoverLabel.textContent = placeName;
-    hoverLabel.style.display = 'block';
-    hoverLabel.style.left = `${e.pageX + 20}px`;
-    hoverLabel.style.top = `${e.pageY}px`;
-    hoverLabel.style.opacity = '1';
+function updateGrid(){
+
+if(!isHexMap){
+updateSquareGrid()
+}else{
+updateHexGrid()
 }
 
-function hideHoverLabel() {
-    hoverLabel.style.display = 'none';
-    hoverLabel.style.opacity = '0';
 }
-
-
-
 
 function changeHex(hexagon){
 
-saveHex();
+saveEntry();
 updateHexNames();
 
 //Set new id.
@@ -100,11 +94,71 @@ textDiv.innerHTML = handlePrompts();
 
 // isEditing = true;
 // toggleEditMode();
-saveHex();
+saveEntry();
 saveData();
 
 }
 
 
-createHexagons(20,24);
+function updateHexGrid(){
 
+const hexagons = document.querySelectorAll(".hex");
+
+hexagons.forEach(hex => {
+
+const col = hex.getAttribute('col');
+const row = hex.getAttribute('row');
+const id =  coords + '.' + row + '.' + col;
+
+const saveEntry = data.find(entry => entry.id === id)
+
+updateHexColors(hex, saveEntry);
+
+
+
+})
+
+updateHexNames();
+
+}
+
+function updateHexNames(){
+
+const hexagons = document.querySelectorAll(".hex");
+
+hexagons.forEach(hex => {
+
+const col = hex.getAttribute('col');
+const row = hex.getAttribute('row');
+const id =  coords + '.' + row + '.' + col;
+
+const saveEntry = data.find(entry => entry.id === id)
+const hexLabel = hex.querySelector('.hexLabel');
+hexLabel.textContent = "";
+
+if(saveEntry){
+hex.setAttribute('name', saveEntry.name)
+hexLabel.textContent = saveEntry.name
+
+}
+
+})
+
+}
+
+function updateHexColors(hex, saveEntry){
+
+if(saveEntry){
+hex.querySelector('.left').style.borderRightColor = saveEntry.color;
+hex.querySelector('.middle').style.backgroundColor = saveEntry.color;
+hex.querySelector('.right').style.borderLeftColor = saveEntry.color;
+}else{
+hex.querySelector('.left').style.borderRightColor =  defaultColor;
+hex.querySelector('.middle').style.backgroundColor =  defaultColor;
+hex.querySelector('.right').style.borderLeftColor =  defaultColor;
+}
+
+}
+
+
+createHexagons(rowsGlobal,colsGlobal);

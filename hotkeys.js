@@ -12,10 +12,10 @@ if (
 ) {
 
 
-if (key === 'shift') {
-isShiftHeld = true;
-toggleHexLabelsVisibility(true);
-}
+// if (key === 'shift') {
+// isShiftHeld = true;
+// toggleHexLabelsVisibility(true);
+// }
 
 switch (key) {
 //For Nav
@@ -33,6 +33,9 @@ handleEnter();
 break;
 case 'q':
 handleExit();
+break;
+case 'g':
+handleGrid(rowsGlobal, colsGlobal);
 break;
 
 //For Painting
@@ -54,20 +57,20 @@ break;
 
 }
 
-// Add event listener for keyup
-document.addEventListener('keyup', (event) => {
-    const key = event.key.toLowerCase();
+// // Add event listener for keyup
+// document.addEventListener('keyup', (event) => {
+//     const key = event.key.toLowerCase();
 
-    // Check for the Shift key
-    if (key === 'shift') {
-        isShiftHeld = false;
-        toggleHexLabelsVisibility(false);
-    }
-});
+//     // Check for the Shift key
+//     if (key === 'shift') {
+//         isShiftHeld = false;
+//         toggleHexLabelsVisibility(false);
+//     }
+// });
 
 // Function to toggle hex labels visibility
 function toggleHexLabelsVisibility(isVisible) {
-    const hexLabels = document.querySelectorAll('.hex-label');
+    const hexLabels = document.querySelectorAll('.hexLabel');
     hexLabels.forEach(label => {
 
         let hasName = label.textContent

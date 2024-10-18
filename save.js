@@ -11,7 +11,7 @@ data = JSON.parse(savedData);  // Convert back from JSON string to array
 }
 }
 
-function saveHex(){
+function saveEntry(){
 
 const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
@@ -36,68 +36,10 @@ data.push(saveEntry)
 }
 }
 
-function updateHexColors(hex, saveEntry){
-
-if(saveEntry){
-hex.querySelector('.left').style.borderRightColor = saveEntry.color;
-hex.querySelector('.middle').style.backgroundColor = saveEntry.color;
-hex.querySelector('.right').style.borderLeftColor = saveEntry.color;
-}else{
-hex.querySelector('.left').style.borderRightColor =  "rgba(215, 234, 215, 0.573)";
-hex.querySelector('.middle').style.backgroundColor =  "rgba(215, 234, 215, 0.573)";
-hex.querySelector('.right').style.borderLeftColor =  "rgba(215, 234, 215, 0.573)";
-}
-
-}
-
-function updateHexNames(){
-
-const hexagons = document.querySelectorAll(".hex");
-
-hexagons.forEach(hex => {
-
-const col = hex.getAttribute('col');
-const row = hex.getAttribute('row');
-const id =  coords + '.' + row + '.' + col;
-
-const saveEntry = data.find(entry => entry.id === id)
-const hexLabel = hex.querySelector('.hex-label');
-hexLabel.textContent = "";
-
-if(saveEntry){
-hex.setAttribute('name', saveEntry.name)
-hexLabel.textContent = saveEntry.name
-
-}
-
-})
-
-}
-
-function updateGrid(){
-
-const hexagons = document.querySelectorAll(".hex");
-
-hexagons.forEach(hex => {
-
-const col = hex.getAttribute('col');
-const row = hex.getAttribute('row');
-const id =  coords + '.' + row + '.' + col;
-
-const saveEntry = data.find(entry => entry.id === id)
-
-updateHexColors(hex, saveEntry);
-
-
-
-})
-
-updateHexNames();
-
-}
 
 loadData();
 updateGrid();
+
 
 
 

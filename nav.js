@@ -21,10 +21,22 @@ paletteDiv.style.display = "none";
 
 }
 
+function handleGrid(rows, cols){
+
+loadGrid(rows, cols)
+
+if (isHexMap) {
+regionObj.grid = 'hex'
+} else {
+regionObj.grid = 'square'
+}
+
+}
+
 function handleNew() {
 
 data = [];
-updateGrid()
+updateGrid();
 
 idBox.textContent = '';
 textDiv.innerHTML = '';
@@ -61,7 +73,6 @@ document.body.removeChild(a);
 // Release the object URL
 URL.revokeObjectURL(url);
 }
-
 
 function handleLoad() {
 // Create a hidden input element to trigger the file explorer
@@ -112,33 +123,59 @@ input.click();
 
 function handleEnter(){
 
+//Set selected cell as regionObj
+regionObj = getObj(idBox.textContent);
 const regionName = document.getElementById('regionName');
-const regionObj = getObj(idBox.textContent);
 regionName.textContent = regionObj.name;
+
+if(regionObj.grid && regionObj.grid === 'hex'){
+
+isHexMap = false
+loadGrid(rowsGlobal,colsGlobal);
+
+}else if (regionObj.grid && regionObj.grid === 'square'){
+
+isHexMap = true
+loadGrid(rowsGlobal,colsGlobal);
+
+}
 
 returnCoords = coords;
 coords = idBox.textContent;
-updateGrid()
+idBox.textContent = idBox.textContent 
+updateGrid();
+
+//goToCell(idBox.textContent + '.0.0')
 
 }
 
 function handleExit(){
-parse(coords)
 
+//Set co-ordinates to parent cell.
+parse(coords)
 idBox.textContent = coords;
 
-const currentID = idBox.textContent;
+//Get Obj for parent cell.
+const returnObj = getObj(coords)
 
+//Set parent cell name as region name. 
 const regionName = document.getElementById('regionName');
-const regionObj = getObj(idBox.textContent);
+regionName.textContent = returnObj.name? returnObj.name : "Excel_DM"
 
-if(currentID === '0.0'){
-regionName.textContent = "Excel_DM"; 
-}else{
-regionName.textContent = regionObj.name;
+//loadGrid and goTo parent cell. 
+if (returnObj.grid && returnObj.grid === 'square'){
+
+isHexMap = true
+loadGrid(rowsGlobal,colsGlobal);
+goToEntry(coords);
+    
+} else {
+
+isHexMap = false
+loadGrid(rowsGlobal,colsGlobal);
+goToEntry(coords);
+
 }
-
-updateGrid()
 
 }
 

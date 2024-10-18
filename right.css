@@ -15,20 +15,26 @@
     position: relative;
 }
 
-#drawingCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1800px;
-    height: 1800px;
-}
-
-#hexGridContainer {
+#gridContainer {
     display: flex;
     flex-wrap: wrap;
     position: relative;
     width: 100%;
     height: 100%;
+}
+
+/* Grid Layout */
+.grid-row {
+    display: flex;
+}
+
+.grid-cell {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 1.7px solid black;
+    background: rgba(255, 255, 255, 0.573);
+    transition: border-color 0.3s ease;
 }
 
 .hex {
@@ -75,24 +81,19 @@
     margin-top: 28px;
 }
 
-.hex:hover .middle {
+.hex:hover .middle,
+.hex:hover .left,
+.hex:hover .right,
+.grid-cell:hover {
     filter: brightness(1.3); /* Increase brightness by 30% */
-}
-
-.hex:hover .left {
-    filter: brightness(1.3);
-}
-
-.hex:hover .right {
-    filter: brightness(1.3);
 }
 
 .hex:hover {
     cursor: pointer;
 }
 
-.hex-label {
-    display: none;
+.hexLabel {
+    display: block;
     position: absolute;
     font-family: "SoutaneBlack";
     white-space: nowrap;
@@ -107,7 +108,24 @@
     transform: translate(-50%, -50%); 
 }
 
-.hover-label {
+.squareLabel {
+    display: block;
+    position: absolute;
+    font-family: "SoutaneBlack";
+    white-space: nowrap;
+    color: whitesmoke;
+    padding: 0px;
+    border-radius: 3px;
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    left: 50%; 
+    top: 50%;  
+    transform: translate(-50%, -50%); 
+}
+
+
+/* .hover-label {
     display: none;
     position: absolute;
     background-color: black;
@@ -117,4 +135,4 @@
     z-index: 100;
     pointer-events: none;
     transition: opacity 0.2s ease;
-}
+} */

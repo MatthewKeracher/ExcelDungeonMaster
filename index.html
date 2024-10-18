@@ -21,6 +21,7 @@
             <li><a href="#" id="exportButton" title="Hotkey: S"onclick="handleExport()">Export</a></li>
             <li><a href="#" id="enterButton"  title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
             <li><a href="#" id="exitButton"   title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
+            <li><a href="#" id="gridButton"   title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
         </ul>
 
     </nav>
@@ -57,7 +58,7 @@
                 <img id="logo" src="img/logo.gif"/>
                 <p id="gimme">Consider donating some money to keep this project going.</p>
                 </div>
-                <div id="hexGridContainer"></div>
+                <div id="gridContainer"></div>
         </div>
 
     <!-- Optional Footer -->
@@ -67,7 +68,9 @@
 
     <!-- Link to external JavaScript file -->
     <script src="main.js"></script>
+    <script src="labels.js"></script>
     <script src="hex.js"></script>
+    <script src="grid.js"></script>
     <script src="nav.js"></script>
     <script src="save.js"></script>
     <script src="hotkeys.js"></script>

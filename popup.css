@@ -11,11 +11,11 @@
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: black;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 300px; /* Could be more or less, depending on screen size */
+    padding: 10px;
+    border: 1px solid lime;
+    width: 200px; /* Could be more or less, depending on screen size */
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -29,13 +29,9 @@
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: lime;
     text-decoration: none;
     cursor: pointer;
-}
-
-h2 {
-    margin-top: 0;
 }
 
 label {
@@ -44,22 +40,31 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 150px;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid lime;
+    background-color: rgb(39, 52, 39);
+    color: lime;
     border-radius: 3px;
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: rgb(39, 52, 39);
+    color: lime;
     padding: 10px 15px;
-    border: none;
-    border-radius: 3px;
+    font-size: large;
+    font-family: 'SoutaneBlack';
+    width: 150px;
+    border: 1px solid lime;
+    border-radius: 1px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    border: none;
+    background-color: lime;
+    color: black;
 }

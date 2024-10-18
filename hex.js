@@ -1,63 +1,79 @@
+function setHexagonSize(baseSize) {
+    const hexMarginRight = -0.4 * baseSize;  // Example proportion
+    const hexMarginBottom = -0.83 * baseSize;
+    const hexSide = 0.5 * baseSize;
+    const hexHeight = 0.87 * baseSize;
+    const hexTotalHeight = 2 * hexHeight;
+    const hexMarginTop = hexHeight * 1.08;
+
+    // Apply the calculated values to the root element (or any specific container)
+    document.documentElement.style.setProperty('--hex-margin-right', `${hexMarginRight}px`);
+    document.documentElement.style.setProperty('--hex-margin-bottom', `${hexMarginBottom}px`);
+    document.documentElement.style.setProperty('--hex-side', `${hexSide}px`);
+    document.documentElement.style.setProperty('--hex-height', `${hexHeight}px`);
+    document.documentElement.style.setProperty('--hex-total-height', `${hexTotalHeight}px`);
+    document.documentElement.style.setProperty('--hex-margin-top', `${hexMarginTop}px`);
+}
+
+
 function createHexagons(rows, cols) {
-const gridContainer = document.getElementById('gridContainer');
-gridContainer.innerHTML = '';  // Clear previous map
+    const gridContainer = document.getElementById('gridContainer');
+    gridContainer.innerHTML = '';  // Clear previous map
 
-for (let row = 0; row < rows; row++) {
-// Create a row for hexagons
-const hexRow = document.createElement('div');
-hexRow.classList.add('hex-row');
+    setHexagonSize(30); // Ensure this function sets hexagon sizes properly.
 
-for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < rows; row++) {
+        // Create a row for hexagons
+        const hexRow = document.createElement('div');
+        hexRow.classList.add('hex-row');
 
-// Create a hexagon div
-const hexagon = document.createElement('div');
-hexagon.classList.add('hex');
+        for (let col = 0; col < cols; col++) {
+            // Create a hexagon div
+            const hexagon = document.createElement('div');
+            hexagon.classList.add('hex');
 
+            // Create left, middle, and right parts of the hexagon
+            const leftPart = document.createElement('div');
+            leftPart.classList.add('left');
+            hexagon.appendChild(leftPart);
 
-//Show Label
-// hexagon.addEventListener('mouseover', showHoverLabel);
-// hexagon.addEventListener('mousemove', showHoverLabel);
-// hexagon.addEventListener('mouseout', hideHoverLabel);
+            const middlePart = document.createElement('div');
+            middlePart.classList.add('middle');
+            hexagon.appendChild(middlePart);
 
-// Create left, middle, and right parts of the hexagon
-const leftPart = document.createElement('div');
-leftPart.classList.add('left');
-hexagon.appendChild(leftPart);
+            const rightPart = document.createElement('div');
+            rightPart.classList.add('right');
+            hexagon.appendChild(rightPart);
 
-const middlePart = document.createElement('div');
-middlePart.classList.add('middle');
-hexagon.appendChild(middlePart);
+            // Create Label for Hexagon
+            const label = document.createElement('div');
+            label.classList.add('cellLabel');
+            label.innerText = ``; 
+            hexagon.appendChild(label);
 
-const rightPart = document.createElement('div');
-rightPart.classList.add('right');
-hexagon.appendChild(rightPart);
+            if (col % 2 === 1) {
+                hexagon.classList.add('colEven');
+            }
 
-//Create Label for Hexagon
-const label = document.createElement('div');
-label.classList.add('cellLabel');
-hexagon.appendChild(label);
+            hexagon.setAttribute('col', col);
+            hexagon.setAttribute('row', row);
 
-if (col % 2 === 1) {
-hexagon.classList.add('colEven');
+            hexagon.addEventListener("click", function() {
+                changeHex(hexagon);
+            });
+
+            hexagon.addEventListener('mousemove', function() {
+                if (isPainting && isShiftPressed) {
+                    paintCell(hexagon, "hex");
+                }
+            });
+
+            hexRow.appendChild(hexagon);
+        }
+        gridContainer.appendChild(hexRow);
+    }
 }
-hexagon.setAttribute('col', col)
-hexagon.setAttribute('row', row)
 
-hexagon.addEventListener("click", function() {
-changeHex(hexagon);
-});
-
-hexagon.addEventListener('mousemove', function() {
-if (isPainting && isShiftPressed) {
-paintCell(hexagon, "hex");
-}
-});
-
-hexRow.appendChild(hexagon);
-}
-gridContainer.appendChild(hexRow);
-}
-}
 
 function updateGrid(){
 
@@ -164,5 +180,4 @@ hex.querySelector('.right').style.borderLeftColor =  defaultColor;
 
 }
 
-
-createHexagons(rowsGlobal,colsGlobal);
+createHexagons(hexRows,hexCols);

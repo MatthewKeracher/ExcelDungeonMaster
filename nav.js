@@ -1,3 +1,4 @@
+
 function handlePaint() {
 
 const paintButton = document.getElementById('paintButton');
@@ -20,9 +21,9 @@ paletteDiv.style.display = "none";
 
 }
 
-function handleGrid(rows, cols){
+function handleGrid(){
 
-loadGrid(rows, cols)
+loadGrid()
 
 if (isHexMap) {
 regionObj.grid = 'hex'
@@ -130,12 +131,12 @@ regionName.textContent = regionObj.name;
 if(regionObj.grid && regionObj.grid === 'hex'){
 
 isHexMap = false
-loadGrid(rowsGlobal,colsGlobal);
+loadGrid();
 
 }else if (regionObj.grid && regionObj.grid === 'square'){
 
 isHexMap = true
-loadGrid(rowsGlobal,colsGlobal);
+loadGrid();
 
 }
 
@@ -165,18 +166,61 @@ regionName.textContent = returnObj && returnObj.name !== ''? returnObj.name : "E
 if (returnObj.grid && returnObj.grid === 'square'){
 
 isHexMap = true
-loadGrid(rowsGlobal,colsGlobal);
+loadGrid();
 goToEntry(coords);
     
 } else {
 
 isHexMap = false
-loadGrid(rowsGlobal,colsGlobal);
+loadGrid();
 goToEntry(coords);
 
 }
 
 }
+
+
+function setHexGrid() {
+    showModal('hex');
+}
+
+function setSquareGrid() {
+    showModal('square');
+}
+
+function showModal(type) {
+    const modal = document.getElementById('customPrompt');
+    modal.style.display = 'block';
+    modal.setAttribute('data-grid-type', type);
+}
+
+function closeModal() {
+    const modal = document.getElementById('customPrompt');
+    modal.style.display = 'none';
+}
+
+function confirmGridSize() {
+    const modal = document.getElementById('customPrompt');
+    const rows = document.getElementById('rows').value;
+    const cols = document.getElementById('cols').value;
+    
+    if (rows && cols) {
+        if (modal.getAttribute('data-grid-type') === 'hex') {
+            hexCols = parseInt(cols)
+            hexRows = parseInt(rows)
+            createHexagons(hexRows, hexCols);
+        } else {
+            squareCols = parseInt(cols)
+            squareRows = parseInt(rows)
+            createGrid(squareRows, squareCols);
+        }
+        closeModal();
+    } else {
+        alert('Please enter valid numbers for rows and columns.');
+    }
+}
+
+
 
 
 

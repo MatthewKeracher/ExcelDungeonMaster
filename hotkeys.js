@@ -42,7 +42,7 @@ case 'q':
 handleExit();
 break;
 case 'g':
-handleGrid(rowsGlobal, colsGlobal);
+handleGrid();
 break;
 
 //For Painting

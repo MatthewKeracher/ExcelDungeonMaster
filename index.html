@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="right.css">
     <link rel="stylesheet" href="left.css">
     <link rel="stylesheet" href="nav.css">
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
 
@@ -22,6 +23,8 @@
             <li><a href="#" id="enterButton"  title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
             <li><a href="#" id="exitButton"   title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
             <li><a href="#" id="gridButton"   title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
+            <li><a href="#" id="hexSizeButton"   title="Set the size of Hex Grid." onclick="setHexGrid()">Hex Grid Size</a></li>
+            <li><a href="#" id="squareSizeButton"  title="Set the size of Square Grid." onclick="setSquareGrid()">Square Grid Size</a></li>
         </ul>
 
     </nav>
@@ -32,6 +35,19 @@
   
 
 </div>
+
+<div id="customPrompt" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Enter Grid Size</h2>
+        <label for="rows">Rows:</label>
+        <input type="number" id="rows" placeholder="Enter number of rows" required>
+        <label for="cols">Columns:</label>
+        <input type="number" id="cols" placeholder="Enter number of columns" required>
+        <button id="confirmButton" onclick="confirmGridSize()">Confirm</button>
+    </div>
+</div>
+
     
     <div class="container">
         <div class="left-section" id="editableDiv">
@@ -41,14 +57,20 @@
             <textarea id="writeBox"></textarea>
 
             <div id="paletteDiv">
-                <div class="color-swatch" style="background-color: rgb(165, 52, 191);" onclick="setColor('rgb(165, 52, 191)')"></div>
-                <div class="color-swatch" style="background-color: rgb(17, 132, 17);" onclick="setColor('rgb(17, 132, 17)')"></div>
-                <div class="color-swatch" style="background-color: rgb(47, 47, 181);" onclick="setColor('rgb(47, 47, 181)')"></div>
-                <div class="color-swatch" style="background-color: rgb(132, 132, 55);" onclick="setColor('rgb(132, 132, 55)')"></div>
-                <div class="color-swatch" style="background-color: rgb(85, 25, 25);" onclick="setColor('rgb(85, 25, 25)')"></div>
-                <div class="color-swatch" style="background-color: rgba(215, 234, 215, 0.573);" onclick="setColor('rgba(215, 234, 215, 0.573)')"></div>
+                <!-- Muted color swatches -->
+                <div class="color-swatch" style="background-color: #b56576;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Red -->
+                <div class="color-swatch" style="background-color: #d08c60;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Orange -->
+                <div class="color-swatch" style="background-color: #c4a35a;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Gold -->
+                <div class="color-swatch" style="background-color: #8fb48f;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Green -->
+                <div class="color-swatch" style="background-color: #7891b7;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Blue -->
+                <div class="color-swatch" style="background-color: #a3b7c8;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Light Blue -->
+                <div class="color-swatch" style="background-color: #807aa5;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Indigo -->
+                <div class="color-swatch" style="background-color: #9a8aa8;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Violet -->
+                <div class="color-swatch" style="background-color: #2e4a62;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Dark Blue -->
+                <div class="color-swatch" style="background-color: #7e7353;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Earthy Brown -->
+                <div class="color-swatch" style="background-color: #5e3b3b;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Burgundy -->
+                <div class="color-swatch" style="background-color: #d1cdc5;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Pale Grey -->
             </div>
-
             
 
         </div>

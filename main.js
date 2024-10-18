@@ -1,18 +1,21 @@
 //Global Variables
 let data = [];
-let rowsGlobal = 20;
-let colsGlobal = 24;
 let coords = '0.0';
 let region = 'Excel_DM'
 let regionObj = [];
 let currentObj = [];
+
+let hexRows = 20;
+let hexCols = 40;
+let squareRows = 48
+let squareCols = 37
 
 
 let isHexMap = true;
 let isEditing = false;
 let isPainting = false;
 
-let defaultColor = "black"; //for Empty Grid Cells
+let defaultColor = "rgb(27, 26, 26)"; //for Empty Grid Cells
 
 const placeName = document.getElementById('placeName')
 const textDiv = document.getElementById('textDiv'); 
@@ -47,13 +50,13 @@ coords = resultString
 
 }
 
-function loadGrid(rows, cols){
+function loadGrid(){
 
 if (isHexMap) {
-createGrid(rows, cols);
+createGrid(squareRows, squareCols);
 isHexMap = false;
 } else {
-createHexagons(rows, cols);
+createHexagons(hexRows, hexCols);
 isHexMap = true;
 }
 

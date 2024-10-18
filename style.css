@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Courier New', Courier, monospace;
-    background-color: rgb(42, 51, 56);
+    background-color: rgb(39, 52, 39);
     color: lime;
 }
 
@@ -47,7 +47,7 @@ body {
 
 footer {
     background-color: transparent;
-    color: gray;
+    color: rgba(0, 255, 0, 0.525);
     text-align: center;
     padding: 10px 0;
     position: fixed;

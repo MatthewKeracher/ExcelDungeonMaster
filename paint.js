@@ -22,28 +22,24 @@ function paintCell(cell, type) {
     lastCellPainted = searchId;
 
     if(cellObj){
-    console.log("found", cellObj);
     cellObj.color = currentColor;
     }else{
     const saveEntry = {
     id: searchId,
-    name: placeName.value,
-    desc: writeBox.value,
+    name: "",
+    desc: "",
     color: isPainting? currentColor : '',
     }
 
     data.push(saveEntry)
-    console.log("made", saveEntry);
     }
 
     saveData();
     
 }
 
-
 let isShiftPressed = false;
 
-// Listen for the Shift key being pressed or released
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Shift') {
         isShiftPressed = true;
@@ -58,4 +54,38 @@ document.addEventListener('keyup', function(event) {
 
 
 
+// Function to set the selected color when clicked
+function setColor(swatchElement) {
+    if (!event.shiftKey) {
+        currentColor = swatchElement.style.backgroundColor;
+        console.log('Selected color:', currentColor);  // For debugging purposes
+    }
+}
 
+// Function to open color picker and change color on Shift-click
+function editColor(event, swatchElement) {
+    event.preventDefault(); // Prevent default right-click behavior
+    
+        // Create a hidden color input element
+        const colorInput = document.createElement('input');
+        colorInput.type = 'color';
+        colorInput.value = rgbToHex(swatchElement.style.backgroundColor); // Set initial value to current swatch color
+
+        // Trigger color input click and change the swatch color
+        colorInput.click();
+        colorInput.addEventListener('input', function() {
+            swatchElement.style.backgroundColor = colorInput.value; // Update swatch color
+        });
+
+        setColor(swatchElement)
+    
+}
+
+// Helper function to convert RGB to HEX
+function rgbToHex(rgb) {
+    const rgbArray = rgb.match(/\d+/g);
+    return "#" + rgbArray.map(x => {
+        const hex = parseInt(x).toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }).join('');
+}

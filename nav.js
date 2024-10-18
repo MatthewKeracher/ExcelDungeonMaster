@@ -18,7 +18,6 @@ paletteDiv.style.display = "none";
 
 }
 
-
 }
 
 function handleGrid(rows, cols){
@@ -160,7 +159,7 @@ const returnObj = getObj(coords)
 
 //Set parent cell name as region name. 
 const regionName = document.getElementById('regionName');
-regionName.textContent = returnObj.name? returnObj.name : "Excel_DM"
+regionName.textContent = returnObj && returnObj.name !== ''? returnObj.name : "Excel_DM"
 
 //loadGrid and goTo parent cell. 
 if (returnObj.grid && returnObj.grid === 'square'){

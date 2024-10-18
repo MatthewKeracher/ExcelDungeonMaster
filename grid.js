@@ -14,7 +14,7 @@ gridCell.classList.add('grid-cell');
 
 //Create Label for Square
 const label = document.createElement('div');
-label.classList.add('squareLabel');
+label.classList.add('cellLabel');
 gridCell.appendChild(label);
 
 // Add any additional behavior for grid cells
@@ -22,6 +22,11 @@ gridCell.setAttribute('col', col);
 gridCell.setAttribute('row', row);
 gridCell.addEventListener("click", function () {
 changeCell(gridCell);
+});
+gridCell.addEventListener('mousemove', function() {
+    if (isPainting && isShiftPressed) {
+        paintCell(gridCell, "square");
+    }
 });
 
 gridRow.appendChild(gridCell);
@@ -41,9 +46,7 @@ let col = gridCell.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
 //Paint Hex Current Colour
-if(isPainting){
-gridCell.style.backgroundColor = currentColor;
-}
+paintCell(gridCell, 'square')
 
 //loadData
 textDiv.innerHTML = ''
@@ -97,7 +100,7 @@ const row = cell.getAttribute('row');
 const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id)
-const label = cell.querySelector('.squareLabel');
+const label = cell.querySelector('.cellLabel');
 label.textContent = "";
 
 if(saveEntry){
@@ -115,7 +118,7 @@ function updateCellColors(cell, saveEntry){
 if(saveEntry){
 cell.style.backgroundColor = saveEntry.color;
 }else{
-cell.style.backgroundColor =  "rgba(215, 234, 215, 0.573)";
+cell.style.backgroundColor =  defaultColor;
 
 }
 

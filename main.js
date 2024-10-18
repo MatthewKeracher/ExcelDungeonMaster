@@ -12,11 +12,14 @@ let isHexMap = true;
 let isEditing = false;
 let isPainting = false;
 
-let defaultColor = "rgba(215, 234, 215, 0.573)"; //for Empty Grid Cells
+let defaultColor = "black"; //for Empty Grid Cells
 
 const placeName = document.getElementById('placeName')
-const textDiv = document.getElementById('textDiv'); // Assume this is your editable div
-const writeBox = document.getElementById('writeBox'); // Assume this is your editable div
+const textDiv = document.getElementById('textDiv'); 
+const writeBox = document.getElementById('writeBox'); 
+const idBox = document.getElementById('idBox');
+
+idBox.textContent = '0.0'
 
 function emptyStoryteller(){
 

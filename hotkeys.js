@@ -12,10 +12,17 @@ if (
 ) {
 
 
-// if (key === 'shift') {
-// isShiftHeld = true;
-// toggleHexLabelsVisibility(true);
-// }
+if (key === 'shift') {
+isShiftHeld = true;
+//toggleHexLabelsVisibility(true);
+
+if(isPainting){
+
+toggleAutoPaint(true)
+
+}
+
+}
 
 switch (key) {
 //For Nav
@@ -57,29 +64,40 @@ break;
 
 }
 
-// // Add event listener for keyup
-// document.addEventListener('keyup', (event) => {
-//     const key = event.key.toLowerCase();
+// Add event listener for keyup
+document.addEventListener('keyup', (event) => {
+const key = event.key.toLowerCase();
 
-//     // Check for the Shift key
-//     if (key === 'shift') {
-//         isShiftHeld = false;
-//         toggleHexLabelsVisibility(false);
-//     }
-// });
+// Check for the Shift key
+if (key === 'shift') {
+isShiftHeld = false;
+//toggleHexLabelsVisibility(false);
+if(isPainting){
 
-// Function to toggle hex labels visibility
-function toggleHexLabelsVisibility(isVisible) {
-    const hexLabels = document.querySelectorAll('.hexLabel');
-    hexLabels.forEach(label => {
+toggleAutoPaint(false)
 
-        let hasName = label.textContent
-        label.style.display = isVisible && hasName? 'block' : 'none'; // Change to 'inline-block' if needed
-    });
+}
+}
+});
+
+function toggleAutoPaint(isVisible) {
+const hexLabels = document.querySelectorAll('.hexLabel');
+hexLabels.forEach(label => {
+
+let hasName = label.textContent
+label.style.display = isVisible && hasName? 'block' : 'none'; // Change to 'inline-block' if needed
+});
 }
 
 
+function toggleHexLabelsVisibility(isVisible) {
+const hexLabels = document.querySelectorAll('.hexLabel');
+hexLabels.forEach(label => {
 
+let hasName = label.textContent
+label.style.display = isVisible && hasName? 'block' : 'none'; // Change to 'inline-block' if needed
+});
+}
 
 }
 

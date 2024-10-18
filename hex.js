@@ -34,7 +34,7 @@ hexagon.appendChild(rightPart);
 
 //Create Label for Hexagon
 const label = document.createElement('div');
-label.classList.add('hexLabel');
+label.classList.add('cellLabel');
 hexagon.appendChild(label);
 
 if (col % 2 === 1) {
@@ -42,9 +42,17 @@ hexagon.classList.add('colEven');
 }
 hexagon.setAttribute('col', col)
 hexagon.setAttribute('row', row)
+
 hexagon.addEventListener("click", function() {
 changeHex(hexagon);
 });
+
+hexagon.addEventListener('mousemove', function() {
+if (isPainting && isShiftPressed) {
+paintCell(hexagon, "hex");
+}
+});
+
 hexRow.appendChild(hexagon);
 }
 gridContainer.appendChild(hexRow);
@@ -72,11 +80,7 @@ let col = hexagon.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
 //Paint Hex Current Colour
-if(isPainting){
-hexagon.querySelector('.left').style.borderRightColor = currentColor;
-hexagon.querySelector('.middle').style.backgroundColor = currentColor;
-hexagon.querySelector('.right').style.borderLeftColor = currentColor;
-}
+paintCell(hexagon, "hex")
 
 //loadData
 textDiv.innerHTML = ''
@@ -133,7 +137,7 @@ const row = hex.getAttribute('row');
 const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id)
-const hexLabel = hex.querySelector('.hexLabel');
+const hexLabel = hex.querySelector('.cellLabel');
 hexLabel.textContent = "";
 
 if(saveEntry){

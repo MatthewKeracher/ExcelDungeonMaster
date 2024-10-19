@@ -14,23 +14,50 @@
 
     <div class="topContainer">
     
-    <nav class="toolbar">
-        <ul>
-            <li><a href="#" id="newButton"    title="Erase All Data" onclick="handleNew()">New</a></li>
-            <li><a href="#" id="paintButton"  title="Hotkey: P" onclick="handlePaint()">Paint</a></li>
-            <li><a href="#" id="loadButton"   title="Hotkey: L" onclick="handleLoad()">Load</a></li>
-            <li><a href="#" id="exportButton" title="Hotkey: S"onclick="handleExport()">Export</a></li>
-            <li><a href="#" id="enterButton"  title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
-            <li><a href="#" id="exitButton"   title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
-            <li><a href="#" id="gridButton"   title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
-            <li><a href="#" id="hexSizeButton"   title="Set the size of Hex Grid." onclick="setHexGrid()">Hex Grid Size</a></li>
-            <li><a href="#" id="squareSizeButton"  title="Set the size of Square Grid." onclick="setSquareGrid()">Square Grid Size</a></li>
-            <li><a href="#" id="imageButton"  title="Impose Image Behind Grid." onclick="getImage()">Image</a></li>
-            <li><a href="#" id="increaseImageSizeButton"  onclick="increaseImageSize()">Increase Size</a></li>
-            <li><a href="#" id="decreaseImageSizeButton"  onclick="decreaseImageSize()">Decrease Size</a></li>
-        </ul>
-
-    </nav>
+        <nav class="toolbar">
+            <ul>
+                <!-- File Dropdown -->
+                <li>
+                    <a href="#">File</a>
+                    <ul class="dropdown">
+                        <li><a href="#" id="newButton" title="Erase All Data" onclick="handleNew()">New</a></li>
+                        <li><a href="#" id="loadButton" title="Hotkey: L" onclick="handleLoad()">Load</a></li>
+                        <li><a href="#" id="exportButton" title="Hotkey: S" onclick="handleExport()">Export</a></li>
+                    </ul>
+                </li>
+        
+                <!-- Edit Dropdown -->
+                <li>
+                    <a href="#">Edit</a>
+                    <ul class="dropdown">
+                        <li><a href="#" id="paintButton" title="Hotkey: P" onclick="handlePaint()">Paint</a></li>
+                        <li><a href="#" id="enterButton" title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
+                        <li><a href="#" id="exitButton" title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
+                    </ul>
+                </li>
+        
+                <!-- Grid Settings Dropdown -->
+                <li>
+                    <a href="#">Grid Settings</a>
+                    <ul class="dropdown">
+                        <li><a href="#" id="gridButton" title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
+                        <li><a href="#" id="hexSizeButton" title="Set the size of Hex Grid." onclick="setHexGrid()">Hex Grid Size</a></li>
+                        <li><a href="#" id="squareSizeButton" title="Set the size of Square Grid." onclick="setSquareGrid()">Square Grid Size</a></li>
+                    </ul>
+                </li>
+        
+                <!-- Image Settings Dropdown -->
+                <li>
+                    <a href="#">Image Settings</a>
+                    <ul class="dropdown">
+                        <li><a href="#" id="imageButton" title="Impose Image Behind Grid." onclick="getImage()">Image</a></li>
+                        <li><a href="#" id="increaseImageSizeButton" onclick="increaseImageSize()">Increase Size</a></li>
+                        <li><a href="#" id="decreaseImageSizeButton" onclick="decreaseImageSize()">Decrease Size</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        
 
    
         <div id="regionName">Excel_DM</div>
@@ -38,6 +65,8 @@
   
 
 </div>
+
+<img id="startLogo" src="img/logo.gif"/>
 
 <div id="customPrompt" class="modal">
     <div class="modal-content">
@@ -57,29 +86,33 @@
             <textarea id="writeBox"></textarea>
 
             <div id="paletteDiv">
-                <!-- Muted color swatches -->
-                <div class="color-swatch" style="background-color: #b56576;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Red -->
-                <div class="color-swatch" style="background-color: #d08c60;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Orange -->
-                <div class="color-swatch" style="background-color: #c4a35a;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Gold -->
-                <div class="color-swatch" style="background-color: #8fb48f;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Green -->
-                <div class="color-swatch" style="background-color: #7891b7;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Blue -->
-                <div class="color-swatch" style="background-color: #a3b7c8;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Light Blue -->
-                <div class="color-swatch" style="background-color: #807aa5;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Indigo -->
-                <div class="color-swatch" style="background-color: #9a8aa8;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Violet -->
-                <div class="color-swatch" style="background-color: #2e4a62;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Dark Blue -->
-                <div class="color-swatch" style="background-color: #7e7353;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Earthy Brown -->
-                <div class="color-swatch" style="background-color: #5e3b3b;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Burgundy -->
-                <div class="color-swatch" style="background-color: #d1cdc5;" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Muted Pale Grey -->
+                <!-- Muted color swatches using RGB values -->
+                <div class="color-swatch" style="background-color: rgb(151, 26, 26);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Red -->
+                <div class="color-swatch" style="background-color: rgb(255, 218, 90);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Yellow -->
+                <div class="color-swatch" style="background-color: rgb(120, 94, 47);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Brown -->
+                <div class="color-swatch" style="background-color: rgb(68, 158, 53);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Green -->
+                <div class="color-swatch" style="background-color: rgb(86, 163, 205);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Cyan -->
+                <div class="color-swatch" style="background-color: rgb(13, 103, 196);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Blue -->
+                <div class="color-swatch" style="background-color: rgb(255, 110, 187);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Magenta -->
+                <div class="color-swatch" style="background-color: rgb(88, 83, 86);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Dark Gray -->
+                <div class="color-swatch" style="background-color: rgb(185, 192, 162);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Light Gray -->
+                <div class="color-swatch" style="background-color: rgb(255, 34, 34);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Light Red -->
+                <div class="color-swatch" style="background-color: rgb(255, 167, 246);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Light Magenta -->
+                <div class="color-swatch" style="background-color: rgb(0, 0, 0);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- Black -->
+                <div class="color-swatch" style="background-color: rgb(255, 255, 255);" onclick="setColor(this)" oncontextmenu="editColor(event, this)"></div> <!-- White -->
             </div>
+            
             
 
         </div>
 
         <div class="right-section">
-                <div id="logoContainer">
+
+            <div id="logoContainer">
                 <img id="logo" src="img/logo.gif"/>
                 <p id="gimme">Consider donating some money to keep this project going.</p>
-                </div>
+            </div>
+
                 <div id="gridImageContainer">
                     <canvas id="imageCanvas"></canvas>
                     <div id="gridContainer"></div> <!-- This is where your grid will be rendered -->

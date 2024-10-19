@@ -1,77 +1,88 @@
-
+/* Container */
 .topContainer {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Distribute space between items */
-    background-color: black; /* Background color for the container */
-    border-bottom: 1px solid lime; /* Bottom border */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: black;
+    border-bottom: 1px solid lime;
 }
 
-
+/* Toolbar styles */
 nav.toolbar {
-    background-color: black; /* Toolbar background color */
-    color: lime; /* Toolbar text color */
-    padding: 5px; /* Padding for the toolbar */
-    font-size: 16px; /* Font size */
+    background-color: black;
+    color: lime;
+    padding: 5px;
+    font-size: 16px;
 }
 
 nav.toolbar ul {
-    list-style: none; /* Remove default list styling */
-    display: flex; /* Use flexbox for layout of main menu */
-    padding-left: 10px; /* Left padding */
-    margin: 0; /* Remove margin */
+    list-style: none;
+    display: flex;
+    padding-left: 10px;
+    margin: 0;
 }
 
 nav.toolbar ul li {
-    position: relative; /* Position relative for dropdowns */
-    margin-right: 20px; /* Right margin for spacing */
+    position: relative;
+    margin-right: 20px;
 }
 
 nav.toolbar ul li > a {
-    color: lime; /* Link color for main items */
-    text-decoration: none; /* Remove underline */
-    padding: 5px 10px; /* Padding for main links */
-    display: block; /* Make links block-level for better clicking area */
+    color: lime;
+    text-decoration: none;
+    padding: 5px 10px;
+    display: block;
 }
 
 /* Hover effect for main links */
 nav.toolbar ul li > a:hover {
-    background-color: #575757; /* Background color on hover */
+    background-color: #575757;
 }
 
-/* Dropdown Styles */
+/* Dropdown styles */
 nav.toolbar ul li > .dropdown {
-    display: none; /* Hide dropdowns by default */
-    position: absolute; /* Position absolute for dropdowns */
-    background-color: #333; /* Dropdown background color */
-    min-width: 160px; /* Minimum width of dropdown */
-    z-index: 1; /* Ensure dropdown is on top */
-    margin-top: 5px; /* Space between the main item and dropdown */
-    border-radius: 4px; /* Optional: rounded corners */
-    flex-direction: column; /* Stack dropdown items vertically */
+    visibility: hidden; /* Hide the dropdown by default */
+    opacity: 0; /* Start with 0 opacity */
+    position: absolute;
+    background-color: #333;
+    min-width: 160px;
+    z-index: 1;
+    margin-top: 5px;
+    border-radius: 4px;
+    transition: visibility 0.2s, opacity 0.2s; /* Smooth transition */
+    display: flex;
+    flex-direction: column;
 }
 
-/* Styles specifically for dropdown items */
+/* Dropdown items */
 nav.toolbar ul li > .dropdown > li {
-    width: 100%; /* Full width for dropdown items */
-    display: block; /* Ensure dropdown items are block-level */
+    width: 100%;
+    display: block;
 }
 
 nav.toolbar ul li > .dropdown > li > a {
-    padding: 10px 15px; /* Padding for dropdown links */
-    color: lime; /* Dropdown link color */
-    text-decoration: none; /* Remove underline for dropdown links */
-    display: block; /* Make dropdown links block-level */
+    padding: 10px 15px;
+    color: lime;
+    text-decoration: none;
+    display: block;
 }
 
 /* Hover effect for dropdown links */
 nav.toolbar ul li > .dropdown > li > a:hover {
-    background-color: #575757; /* Background color on hover for dropdown links */
+    background-color: #575757;
 }
 
 /* Show dropdown on hover of the parent li */
 nav.toolbar ul li:hover .dropdown {
-    display: block; /* Show dropdown */
+    visibility: visible; /* Show the dropdown */
+    opacity: 1; /* Fade it in */
+}
+
+/* Ensure the dropdown stays open while hovering over it */
+nav.toolbar ul li:hover > .dropdown,
+nav.toolbar ul li > .dropdown:hover {
+    visibility: visible;
+    opacity: 1;
 }
 
 .highlight {

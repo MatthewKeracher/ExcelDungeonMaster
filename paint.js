@@ -1,4 +1,9 @@
 let lastCellPainted = "";
+let currentColor = 'rgb(17, 132, 17)'; // Default color
+
+function setColor(color) {
+currentColor = color;
+}
 
 function paintCell(cell, type) {
 
@@ -64,7 +69,6 @@ document.addEventListener('keyup', function(event) {
 function setColor(swatchElement) {
     if (!event.shiftKey) {
         currentColor = swatchElement.style.backgroundColor;
-        console.log('Selected color:', currentColor);  // For debugging purposes
     }
 }
 

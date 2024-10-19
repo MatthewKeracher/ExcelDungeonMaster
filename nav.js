@@ -35,7 +35,14 @@ regionObj.grid = 'square'
 
 function handleNew() {
 
-data = [];
+    data = [{
+        id: "0.0",
+        name: "Excel_DM",
+        desc: "Welcome to Excel_DM",
+        rows: 20,
+        cols: 40,
+        }];
+
 updateGrid();
 
 idBox.textContent = '';
@@ -123,20 +130,29 @@ input.click();
 
 function handleEnter(){
 
+const logo = document.getElementById("startLogo");
+logo.style.display = "none"
+
+
+captureGridSize();
+
 //Set selected cell as regionObj
+console.log(data)
 regionObj = getObj(idBox.textContent);
 const regionName = document.getElementById('regionName');
-regionName.textContent = regionObj.name;
+regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
 
-if(regionObj.grid && regionObj.grid === 'hex'){
-
-isHexMap = false
-loadGrid();
-
-}else if (regionObj.grid && regionObj.grid === 'square'){
+if(regionObj?.grid === 'square'){
 
 isHexMap = true
 loadGrid();
+goToEntry(regionObj.id);
+
+}else{
+
+isHexMap = false
+loadGrid();
+goToEntry(regionObj.id);
 
 }
 
@@ -156,15 +172,15 @@ parse(coords)
 idBox.textContent = coords;
 
 //Get Obj for parent cell.
-const returnObj = getObj(coords)
+const returnObj = getObj(coords);
+regionObj = returnObj;
 
 //Set parent cell name as region name. 
 const regionName = document.getElementById('regionName');
 regionName.textContent = returnObj && returnObj.name !== ''? returnObj.name : "Excel_DM"
 
-//loadGrid and goTo parent cell. 
-if (returnObj.grid && returnObj.grid === 'square'){
 
+if(returnObj?.grid === 'square'){
 isHexMap = true
 loadGrid();
 goToEntry(coords);
@@ -222,6 +238,10 @@ function confirmGridSize() {
     } else {
         alert('Please enter valid numbers for rows and columns.');
     }
+
+
+    captureGridSize()
+
 }
 
 let scaleFactor = 1; // Scale factor to track current size of the image

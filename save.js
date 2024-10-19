@@ -29,7 +29,7 @@ const saveEntry = {
 id: idBox.textContent,
 name: placeName.value,
 desc: writeBox.value,
-color: isPainting? currentColor : '',
+// color: isPainting? currentColor : '',
 }
 
 data.push(saveEntry)
@@ -37,7 +37,7 @@ data.push(saveEntry)
 }
 
 
-loadData();
+//loadData();
 updateGrid();
 
 

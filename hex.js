@@ -95,9 +95,6 @@ let row = hexagon.getAttribute('row');
 let col = hexagon.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
-//Paint Hex Current Colour
-paintCell(hexagon, "hex")
-
 //loadData
 textDiv.innerHTML = ''
 writeBox.value = ''
@@ -173,11 +170,11 @@ hex.querySelector('.left').style.borderRightColor = saveEntry.color;
 hex.querySelector('.middle').style.backgroundColor = saveEntry.color;
 hex.querySelector('.right').style.borderLeftColor = saveEntry.color;
 }else{
-hex.querySelector('.left').style.borderRightColor =  defaultColor;
-hex.querySelector('.middle').style.backgroundColor =  defaultColor;
-hex.querySelector('.right').style.borderLeftColor =  defaultColor;
+hex.querySelector('.left').style.borderRightColor =  defaultHexColor;
+hex.querySelector('.middle').style.backgroundColor =  defaultHexColor;
+hex.querySelector('.right').style.borderLeftColor =  defaultHexColor;
 }
 
 }
 
-createHexagons(hexRows,hexCols);
+// createHexagons(hexRows,hexCols);

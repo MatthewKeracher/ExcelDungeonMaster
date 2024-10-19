@@ -47,9 +47,6 @@ let row = gridCell.getAttribute('row');
 let col = gridCell.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
-//Paint Hex Current Colour
-paintCell(gridCell, 'square')
-
 //loadData
 textDiv.innerHTML = ''
 writeBox.value = ''

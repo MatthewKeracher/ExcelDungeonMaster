@@ -25,16 +25,28 @@ body {
     color: whitesmoke;
 }
 
+#logo{
+    width: 1000px;
+}
+
 #logoContainer {
     display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 30%;
+    left: 10%;
     z-index: 1000;
     text-align: center;
     border: 1px solid lime;
     background-color: black;
+}
+
+#startLogo {
+    position: fixed;
+    display: block;
+    width: 1000px;  
+    top: 40%;
+    left: 40%;
+    z-index: 1000;
 }
 
 #gimme {

@@ -209,10 +209,14 @@ function confirmGridSize() {
             hexCols = parseInt(cols)
             hexRows = parseInt(rows)
             createHexagons(hexRows, hexCols);
+            isHexMap = true;
+            updateGrid()
         } else {
             squareCols = parseInt(cols)
             squareRows = parseInt(rows)
             createGrid(squareRows, squareCols);
+            isHexMap = false;
+            updateGrid()
         }
         closeModal();
     } else {
@@ -220,7 +224,66 @@ function confirmGridSize() {
     }
 }
 
+let scaleFactor = 1; // Scale factor to track current size of the image
+let img = new Image(); // Global image variable
+let originalWidth, originalHeight; // Store original dimensions
 
+function getImage() {
+    const url = prompt("Enter image URL:");
+    img.crossOrigin = "Anonymous"; // Enable CORS
+    img.src = url;
 
+    img.onload = function() {
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
 
+        // Set original dimensions
+        originalWidth = img.naturalWidth;
+        originalHeight = img.naturalHeight;
+
+        // Set canvas size to natural size
+        canvas.width = originalWidth;
+        canvas.height = originalHeight;
+
+        // Draw the image on the canvas
+        ctx.drawImage(img, 0, 0);
+
+        // Set the transparency for the grid container
+        const gridContainer = document.getElementById('gridContainer');
+        gridContainer.classList.add('transparent');
+    };
+
+    img.onerror = function() {
+        alert("Failed to load image. Please check the URL or CORS settings.");
+    };
+}
+
+function increaseImageSize() {
+    scaleFactor *= 1.05; // Increase size by 5%
+    updateCanvasSize();
+}
+
+function decreaseImageSize() {
+    scaleFactor *= 0.95; // Decrease size by 5%
+    updateCanvasSize();
+}
+
+function updateCanvasSize() {
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Calculate new dimensions
+    const newWidth = originalWidth * scaleFactor;
+    const newHeight = originalHeight * scaleFactor;
+
+    // Set canvas dimensions
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    // Draw the scaled image on the canvas
+    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+}
 

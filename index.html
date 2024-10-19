@@ -25,6 +25,9 @@
             <li><a href="#" id="gridButton"   title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
             <li><a href="#" id="hexSizeButton"   title="Set the size of Hex Grid." onclick="setHexGrid()">Hex Grid Size</a></li>
             <li><a href="#" id="squareSizeButton"  title="Set the size of Square Grid." onclick="setSquareGrid()">Square Grid Size</a></li>
+            <li><a href="#" id="imageButton"  title="Impose Image Behind Grid." onclick="getImage()">Image</a></li>
+            <li><a href="#" id="increaseImageSizeButton"  onclick="increaseImageSize()">Increase Size</a></li>
+            <li><a href="#" id="decreaseImageSizeButton"  onclick="decreaseImageSize()">Decrease Size</a></li>
         </ul>
 
     </nav>
@@ -77,7 +80,10 @@
                 <img id="logo" src="img/logo.gif"/>
                 <p id="gimme">Consider donating some money to keep this project going.</p>
                 </div>
-                <div id="gridContainer"></div>
+                <div id="gridImageContainer">
+                    <canvas id="imageCanvas"></canvas>
+                    <div id="gridContainer"></div> <!-- This is where your grid will be rendered -->
+                </div>
         </div>
 
     <!-- Optional Footer -->

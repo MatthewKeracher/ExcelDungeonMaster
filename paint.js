@@ -2,15 +2,15 @@ let lastCellPainted = "";
 
 function paintCell(cell, type) {
 
-    if(isPainting && type === "hex"){
-        cell.querySelector('.left').style.borderRightColor = currentColor;
-        cell.querySelector('.middle').style.backgroundColor = currentColor;
-        cell.querySelector('.right').style.borderLeftColor = currentColor;
-    }
+    // if(isPainting && type === "hex"){
+    //     cell.querySelector('.left').style.borderRightColor = currentColor;
+    //     cell.querySelector('.middle').style.backgroundColor = currentColor;
+    //     cell.querySelector('.right').style.borderLeftColor = currentColor;
+    // }
 
-    if(isPainting && type === "square"){
-        cell.style.backgroundColor = currentColor;   
-    }
+    // if(isPainting && type === "square"){
+    //     cell.style.backgroundColor = currentColor;   
+    // }
 
     const row = cell.getAttribute('row');
     const col = cell.getAttribute('col');
@@ -35,6 +35,12 @@ function paintCell(cell, type) {
     }
 
     saveData();
+    
+    if(!isHexMap){
+        updateSquareGrid()
+        }else{
+        updateHexGrid()
+        }
     
 }
 

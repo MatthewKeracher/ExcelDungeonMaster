@@ -120,6 +120,10 @@
     transform: translate(-50%, -50%);
 }
 
+.hex:not(.colEven) .cellLabel {
+    margin-top: calc(var(--hex-margin-bottom, 28px) / 2); /* Adjust based on the vertical offset of odd columns */
+}
+
 .transparent {
     opacity: 0.5; /* Adjust this value as needed */
     

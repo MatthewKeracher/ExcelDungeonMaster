@@ -7,19 +7,46 @@ currentColor = color;
 
 function fillCells(cell){
 
-    const hexagons = document.querySelectorAll(".hex");
-    const oldColor = cell.querySelector('.middle').style.backgroundColor;
-
-    hexagons.forEach(hex => {
+    //get Cell Information
+    const col = cell.getAttribute('col');
+    const row = cell.getAttribute('row');
+    const id =  coords + '.' + row + '.' + col;
     
-    const col = hex.getAttribute('col');
-    const row = hex.getAttribute('row');
+    const cellEntry = data.find(entry => entry.id === id)
+
+    let allCells = document.querySelectorAll(".hex");
+    let oldColor 
+
+    if (allCells.length === 0) {
+        allCells = document.querySelectorAll(".grid-cell");
+        oldColor = cell.style.backgroundColor;
+    }else{
+        oldColor = cell.querySelector('.middle').style.backgroundColor;
+    }
+
+    allCells.forEach(cell => {
+    
+    const col = cell.getAttribute('col');
+    const row = cell.getAttribute('row');
     const id =  coords + '.' + row + '.' + col;
     
     const saveEntry = data.find(entry => entry.id === id)
 
     if(saveEntry?.color === oldColor){
        saveEntry.color = currentColor
+    }
+
+    if(saveEntry === undefined && cellEntry === undefined){
+
+        const newEntry = {
+            id: id,
+            name: "",
+            desc: "",
+            color: isPainting? currentColor : '',
+            }
+        
+            data.push(newEntry)
+
     }
 
     });

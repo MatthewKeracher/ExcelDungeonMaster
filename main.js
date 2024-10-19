@@ -16,8 +16,8 @@ let currentObj = [];
 
 let hexRows = 25;
 let hexCols = 25;
-let squareRows = 48
-let squareCols = 37
+let squareRows = 60; //Not working.
+let squareCols = 60;
 
 
 let isHexMap = true;

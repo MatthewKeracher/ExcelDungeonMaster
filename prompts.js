@@ -24,7 +24,7 @@ handlePaint();
 if (!isEditing) {
 textDiv.style.display = "none";
 writeBox.style.display = "block";
-writeBox.focus();
+placeName.focus();
 
 const textContent = textDiv.innerHTML;
 
@@ -42,6 +42,7 @@ isEditing = false;
 textDiv.style.display = "block";
 writeBox.style.display = "none";
 isEditing = false;
+placeName.blur();
 
 if (writeBox.style.display === 'none') {
 setTimeout(() => {
@@ -51,6 +52,8 @@ textDiv.innerHTML = handlePrompts() || "";
 }
 
 saveEntry();
+updateCellNames();
+updateHexNames();
 
 }
 }

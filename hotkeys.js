@@ -1,6 +1,8 @@
 
 function addHotkeys() {
 
+let selectedColorElement = null;
+
 document.addEventListener('keydown', (event) => {
 const key = event.key.toLowerCase(); // Convert the pressed key to lowercase
 const placeName = document.getElementById('placeName')
@@ -47,21 +49,38 @@ break;
 
 //For Painting
 case '1':
-isPainting? currentColor = 'rgb(17, 132, 17)' : '';
-break;
+    selectedColorElement = document.getElementById('color1');
+    break;
 case '2':
-isPainting? currentColor = 'rgb(47, 47, 181)' : '';
-break;
+    selectedColorElement = document.getElementById('color2');
+    break;
 case '3':
-isPainting? currentColor = 'rgb(132, 132, 55)' : '';
-break;
+    selectedColorElement = document.getElementById('color3');
+    break;
 case '4':
-isPainting? currentColor = 'rgb(85, 25, 25)' : '';
-break;
+    selectedColorElement = document.getElementById('color4');
+    break;
 case '5':
-isPainting? currentColor = 'rgba(215, 234, 215, 0.573)' : '';
-break;
+    selectedColorElement = document.getElementById('color5');
+    break;
+case '6':
+    selectedColorElement = document.getElementById('color6');
+    break;
+case '7':
+    selectedColorElement = document.getElementById('color7');
+    break;
+case '8':
+    selectedColorElement = document.getElementById('color8');
+    break;
+case '9':
+    selectedColorElement = document.getElementById('color9');
+    break;
 
+}
+
+// If a valid palette box is found, update the current color
+if (selectedColorElement && isPainting) {
+    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
 }
 
 // Add event listener for keyup

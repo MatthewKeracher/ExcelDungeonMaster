@@ -26,7 +26,7 @@ function createGrid(rows, cols) {
             });
             gridCell.addEventListener('mousemove', function() {
                 if (isPainting && isShiftPressed) {
-                    paintCell(gridCell, "square");
+                    paintCell(gridCell);
                 }
             });
 

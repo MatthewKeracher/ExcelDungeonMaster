@@ -5,17 +5,32 @@ function setColor(color) {
 currentColor = color;
 }
 
-function paintCell(cell, type) {
+function fillCells(cell){
 
-    // if(isPainting && type === "hex"){
-    //     cell.querySelector('.left').style.borderRightColor = currentColor;
-    //     cell.querySelector('.middle').style.backgroundColor = currentColor;
-    //     cell.querySelector('.right').style.borderLeftColor = currentColor;
-    // }
+    const hexagons = document.querySelectorAll(".hex");
+    const oldColor = cell.querySelector('.middle').style.backgroundColor;
 
-    // if(isPainting && type === "square"){
-    //     cell.style.backgroundColor = currentColor;   
-    // }
+    hexagons.forEach(hex => {
+    
+    const col = hex.getAttribute('col');
+    const row = hex.getAttribute('row');
+    const id =  coords + '.' + row + '.' + col;
+    
+    const saveEntry = data.find(entry => entry.id === id)
+
+    if(saveEntry?.color === oldColor){
+       saveEntry.color = currentColor
+    }
+
+    });
+
+    isFilling = false;
+
+}
+
+function paintCell(cell) {
+
+    if(isFilling){fillCells(cell)}
 
     const row = cell.getAttribute('row');
     const col = cell.getAttribute('col');

@@ -31,6 +31,9 @@ switch (key) {
 case 'p':
 handlePaint();
 break;
+case 'f':
+handleFill();
+break;
 case 'l':
 handleLoad();
 break;

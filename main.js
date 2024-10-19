@@ -23,6 +23,7 @@ let squareCols = 37
 let isHexMap = true;
 let isEditing = false;
 let isPainting = false;
+let isFilling = false;
 
 let defaultHexColor = "rgb(27, 26, 26)"; //for Empty Grid Cells
 

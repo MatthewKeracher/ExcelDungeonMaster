@@ -64,7 +64,7 @@ function createHexagons(rows, cols) {
 
             hexagon.addEventListener('mousemove', function() {
                 if (isPainting && isShiftPressed) {
-                    paintCell(hexagon, "hex");
+                    paintCell(hexagon);
                 }
             });
 

@@ -14,11 +14,25 @@ paletteDiv.style.display = "flex";
 }else{
 
 isPainting = false
+isFilling = false
 paintButton.classList.remove('highlight');
 paletteDiv.style.display = "none";
 
 }
 
+}
+
+function handleFill(){
+
+if(isPainting){
+
+    if(!isFilling){
+    isFilling = true
+    }else{
+    isFilling = false
+    }
+
+}
 }
 
 function handleGrid(){

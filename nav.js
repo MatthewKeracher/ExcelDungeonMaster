@@ -144,6 +144,8 @@ input.click();
 
 function handleEnter(){
 
+    
+
 const logo = document.getElementById("startLogo");
 logo.style.display = "none"
 
@@ -151,7 +153,6 @@ logo.style.display = "none"
 captureGridSize();
 
 //Set selected cell as regionObj
-console.log(data)
 regionObj = getObj(idBox.textContent);
 const regionName = document.getElementById('regionName');
 regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";

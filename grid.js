@@ -58,7 +58,7 @@ currentObj = loadEntry;
 if(loadEntry){
 placeName.value = loadEntry.name;
 writeBox.value = loadEntry.desc.trim();
-textDiv.innerHTML = handlePrompts();
+textDiv.innerHTML = handleCommands();
 }
 
 // isEditing = true;

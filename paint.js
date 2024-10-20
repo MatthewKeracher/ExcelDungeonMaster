@@ -1,5 +1,5 @@
 let lastCellPainted = "";
-let currentColor = 'rgb(17, 132, 17)'; // Default color
+let currentColor = document.getElementById('color1').style.backgroundColor;
 
 function setColor(color) {
 currentColor = color;
@@ -57,6 +57,8 @@ function fillCells(cell){
 
 function paintCell(cell) {
 
+    console.log('painting...')
+
     if(isFilling){fillCells(cell)}
 
     const row = cell.getAttribute('row');
@@ -109,9 +111,8 @@ document.addEventListener('keyup', function(event) {
 
 // Function to set the selected color when clicked
 function setColor(swatchElement) {
-    if (!event.shiftKey) {
-        currentColor = swatchElement.style.backgroundColor;
-    }
+currentColor = swatchElement.style.backgroundColor;
+    
 }
 
 // Function to open color picker and change color on Shift-click
@@ -127,10 +128,41 @@ function editColor(event, swatchElement) {
         colorInput.click();
         colorInput.addEventListener('input', function() {
             swatchElement.style.backgroundColor = colorInput.value; // Update swatch color
+            
+            if (!regionObj.palette) {
+                regionObj.palette = [];
+            }
+    
+            regionObj.palette.push({id: swatchElement.id, color: colorInput.value})
+            
+            setColor(swatchElement)
+
         });
 
-        setColor(swatchElement)
-    
+        
+          
+}
+
+function loadPalette(){
+
+let palette = regionObj?.palette;
+
+console.log(regionObj)
+
+if(palette){
+
+palette.forEach(entry => {
+
+let number = entry.id;
+let color = entry.color;
+let swatchElement = document.getElementById(number)
+
+swatchElement.style.backgroundColor = color;
+setColor(swatchElement)
+
+})
+}
+
 }
 
 // Helper function to convert RGB to HEX

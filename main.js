@@ -10,7 +10,6 @@ let data = [{
 let coords = '0.0';
 let region = 'Excel_DM'
 let regionObj = data[0];
-console.log(regionObj)
 
 let currentObj = [];
 
@@ -77,8 +76,6 @@ coords = resultString
 
 function loadGrid(){
 
-console.log(regionObj)
-
 if (isHexMap) {
 
 squareRows = regionObj.rows? regionObj.rows : squareRows;
@@ -96,6 +93,7 @@ isHexMap = true;
 }
 
 updateGrid()
+loadPalette()
 
 }
 
@@ -129,7 +127,7 @@ let loadEntry = getObj(id)
 if(loadEntry){
 placeName.value = loadEntry.name;
 writeBox.value = loadEntry.desc.trim();
-textDiv.innerHTML = handlePrompts();
+textDiv.innerHTML = handleCommands();
 }
 
 }

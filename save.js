@@ -23,7 +23,7 @@ let exists = data.find(entry => entry.id === idBox.textContent)
 if(exists){
 exists.name = placeName.value;
 exists.desc = writeBox.value;
-exists.color = isPainting? currentColor : exists.color;
+// exists.color = isPainting? currentColor : exists.color;
 }else{
 const saveEntry = {
 id: idBox.textContent,

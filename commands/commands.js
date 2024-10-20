@@ -79,10 +79,13 @@ inputText = inputText.replace(/{(\d+%)?\s*(roll|monster|npc)\s*([\w\s\d]+)(?:\s+
 
     switch (commandType.toLowerCase()) {
         case 'roll':
+            console.log('roll')
             return handleRollCommand(paramArray);
         case 'monster':
+            console.log('monster')
             return handleMonsterCommand(paramArray);
         case 'npc':
+            console.log('npc')
             return handleNpcCommand(paramArray);
         default:
             return '{Command not recognised}';
@@ -122,7 +125,6 @@ return makeMonsterEntry(monsterCounts);
 
 // Function to handle NPC commands
 function handleNpcCommand(paramArray) {
-console.log(paramArray)
 const npcClass = paramArray[0].toLowerCase();
 const level = parseInt(paramArray[1]);
 const npcName = paramArray[2];

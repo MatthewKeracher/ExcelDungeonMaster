@@ -1,6 +1,99 @@
+function makeNPC(npcClass, level, npcName) {
+    console.log(npcClass);
+
+    const stats = {
+        name: npcName ? npcName : "John Smith",
+        class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
+        hit: classTables(npcClass, level, 'hitDice')
+    };
+
+    let npcHTML = ``;
+
+    // Create a two-column layout
+    npcHTML += `<div style="display: flex;">`;
+
+    // Left Column for Ability Scores
+    npcHTML += `<div style="flex: 1; margin-right: 20px;">`;
+    npcHTML +=`<b>${stats.name}</b>\n`
+
+    const scores = makeScores(stats.class);
+    if (scores) {
+        npcHTML += `<br>`;
+        scores.forEach(score => {
+            npcHTML += `<b>${score.name.toUpperCase()}:</b> ${score.score} (${score.bonus})<br>`;
+        });
+    }
+
+    //Other Information
+    npcHTML += `<br>`
+    for (const [key, value] of Object.entries(stats)) {
+        if (key !== 'name' && key !== 'class') {
+            npcHTML += `<b>${key.charAt(0).toUpperCase() + key.slice(1)}:</b> ${value} `;
+        }
+    }
+
+     //Hitpoints
+     const hitPoints = parseHitPoints(stats.hit); // Assume this function calculates HP based on HD
+     const hpValue = parseInt(hitPoints);
+     let checkboxesHTML = '';
+ 
+     npcHTML += `<br><b>HP:</b> &nbsp; ${hitPoints}\n`;
+ 
+     // Create checkboxes for HP
+     for (let j = 0; j < hpValue; j++) {
+         checkboxesHTML += `☐`;
+ 
+         // Hitbox Spacing
+         if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
+             checkboxesHTML += '\t';
+         }
+         if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
+             checkboxesHTML += '<br>';
+         }
+     }
+ 
+     npcHTML += `${checkboxesHTML}\n`;
+
+    npcHTML += `</div>`; // End of left column
+
+    // Right Column for Saving Throws
+    npcHTML += `<div style="flex: 1;">`;
+    npcHTML += `<b>Level ${level} ${stats.class}.</b><br>`
+
+    const savingThrows = getSaveThrows(npcClass, level);
+    if (savingThrows) {
+        npcHTML += `<br><b>Saving Throws:</b><br>`;
+        Object.keys(savingThrows).forEach(key => {
+            if (key !== 'level') {
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                npcHTML += `${formattedKey}: ${savingThrows[key]}<br>`;
+            }
+        });
+    }
+
+    // Skills
+    const skills = getSkills(npcClass, level);
+    if (skills) {
+        npcHTML += `<br><b>Skills:</b><br>`;
+        Object.keys(skills).forEach(key => {
+            if (key !== 'level') {
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                npcHTML += `${formattedKey}: ${skills[key]}<br>`;
+            }
+        });
+    }
+
+    npcHTML += `</div>`; // End of right column
+
+    npcHTML += `</div>`; // End of flex container
+
+    npcHTML += `<br><hr>`;
+    return npcHTML;
+}
+
 function makeScores(npcClass){
 
-const scoreNames = ["str", "dex", "int", "wis", "con", "cha", "luk", "psy"];
+const scoreNames = ["str", "dex", "int", "wis", "con", "cha", "soc", "psy", "luk"];
 let scores = [];
 
 scoreNames.forEach(scoreName => {
@@ -35,8 +128,7 @@ if (prime === scoreName) {
 // Generate scores from 13 to 18
 score = Math.floor(Math.random() * (6)) + 13; // This gives scores 13-18
 } else {
-// Generate scores from 3 to 12 for non-prime abilities
-score = Math.floor(Math.random() * (10)) + 3; // This gives scores 3-12
+score = Math.floor(Math.random() * (12)) + 7;
 }
 
 const abilityScoreTable = [
@@ -62,6 +154,158 @@ scores.push({name: scoreName, score: score, bonus: bonus})
 })
 
 return scores;
+
+}
+
+function classTables(npcClass, level, lookUp){
+
+const tables = {
+fighter : [
+{ level: 1, expPoints: 0, hitDice: '1d8' , attackBonus: 1},
+{ level: 2, expPoints: 2000, hitDice: '2d8' , attackBonus: 2},
+{ level: 3, expPoints: 4000, hitDice: '3d8' , attackBonus: 2},
+{ level: 4, expPoints: 8000, hitDice: '4d8' , attackBonus: 3},
+{ level: 5, expPoints: 16000, hitDice: '5d8' , attackBonus: 4},
+{ level: 6, expPoints: 32000, hitDice: '6d8' , attackBonus: 4},
+{ level: 7, expPoints: 64000, hitDice: '7d8' , attackBonus: 5},
+{ level: 8, expPoints: 120000, hitDice: '8d8' , attackBonus: 6},
+{ level: 9, expPoints: 240000, hitDice: '9d8' , attackBonus: 6},
+{ level: 10, expPoints: 360000, hitDice: '9d8+2' , attackBonus: 6},
+{ level: 11, expPoints: 480000, hitDice: '9d8+4' , attackBonus: 7},
+{ level: 12, expPoints: 600000, hitDice: '9d8+6' , attackBonus: 7},
+{ level: 13, expPoints: 720000, hitDice: '9d8+8' , attackBonus: 8},
+{ level: 14, expPoints: 840000, hitDice: '9d8+10' , attackBonus: 8},
+{ level: 15, expPoints: 960000, hitDice: '9d8+12' , attackBonus: 8},
+{ level: 16, expPoints: 1080000, hitDice: '9d8+14' , attackBonus: 9},
+{ level: 17, expPoints: 1200000, hitDice: '9d8+16' , attackBonus: 9},
+{ level: 18, expPoints: 1320000, hitDice: '9d8+18' , attackBonus: 10},
+{ level: 19, expPoints: 1440000, hitDice: '9d8+20' , attackBonus: 10},
+{ level: 20, expPoints: 1560000, hitDice: '9d8+22' , attackBonus: 10},
+],
+cleric : [
+{ level: 1, expPoints: 0, hitDice: '1d6', spells: [0, 0, 0, 0, 0, 0] , attackBonus: 1},
+{ level: 2, expPoints: 1500, hitDice: '2d6', spells: [1, 0, 0, 0, 0, 0] , attackBonus: 1},
+{ level: 3, expPoints: 3000, hitDice: '3d6', spells: [2, 0, 0, 0, 0, 0] , attackBonus: 2},
+{ level: 4, expPoints: 6000, hitDice: '4d6', spells: [2, 1, 0, 0, 0, 0] , attackBonus: 2},
+{ level: 5, expPoints: 12000, hitDice: '5d6', spells: [2, 2, 0, 0, 0, 0] , attackBonus: 3},
+{ level: 6, expPoints: 24000, hitDice: '6d6', spells: [2, 2, 1, 0, 0, 0] , attackBonus: 3},
+{ level: 7, expPoints: 48000, hitDice: '7d6', spells: [3, 2, 2, 0, 0, 0] , attackBonus: 4},
+{ level: 8, expPoints: 90000, hitDice: '8d6', spells: [3, 2, 2, 1, 0, 0] , attackBonus: 4},
+{ level: 9, expPoints: 180000, hitDice: '9d6', spells: [3, 3, 2, 2, 0, 0] , attackBonus: 5},
+{ level: 10, expPoints: 270000, hitDice: '9d6+1', spells: [3, 3, 2, 2, 1, 0] , attackBonus: 5},
+{ level: 11, expPoints: 360000, hitDice: '9d6+2', spells: [4, 3, 3, 2, 2, 0] , attackBonus: 5},
+{ level: 12, expPoints: 450000, hitDice: '9d6+3', spells: [4, 4, 3, 2, 2, 1] , attackBonus: 6},
+{ level: 13, expPoints: 540000, hitDice: '9d6+4', spells: [4, 4, 3, 3, 2, 2] , attackBonus: 6},
+{ level: 14, expPoints: 630000, hitDice: '9d6+5', spells: [4, 4, 4, 3, 2, 2] , attackBonus: 6},
+{ level: 15, expPoints: 720000, hitDice: '9d6+6', spells: [4, 4, 4, 3, 3, 2] , attackBonus: 7},
+{ level: 16, expPoints: 810000, hitDice: '9d6+7', spells: [5, 4, 4, 3, 3, 2] , attackBonus: 7},
+{ level: 17, expPoints: 900000, hitDice: '9d6+8', spells: [5, 5, 4, 3, 3, 2] , attackBonus: 7},
+{ level: 18, expPoints: 990000, hitDice: '9d6+9', spells: [5, 5, 4, 4, 3, 3] , attackBonus: 8},
+{ level: 19, expPoints: 1080000, hitDice: '9d6+10', spells: [6, 5, 4, 4, 3, 3] , attackBonus: 8},
+{ level: 20, expPoints: 1170000, hitDice: '9d6+11', spells: [6, 5, 5, 4, 3, 3] , attackBonus: 8},
+],
+thief : [
+{ level: 1, exp: 0, hitDice: '1d4' , attackBonus: 1, attackBonus: 1},
+{ level: 2, exp: 1250, hitDice: '2d4' , attackBonus: 1},
+{ level: 3, exp: 2500, hitDice: '3d4' , attackBonus: 2},
+{ level: 4, exp: 5000, hitDice: '4d4' , attackBonus: 2},
+{ level: 5, exp: 10000, hitDice: '5d4' , attackBonus: 3},
+{ level: 6, exp: 20000, hitDice: '6d4' , attackBonus: 3},
+{ level: 7, exp: 40000, hitDice: '7d4' , attackBonus: 4},
+{ level: 8, exp: 75000, hitDice: '8d4' , attackBonus: 4},
+{ level: 9, exp: 150000, hitDice: '9d4' , attackBonus: 5},
+{ level: 10, exp: 225000, hitDice: '9d4+2' , attackBonus: 5},
+{ level: 11, exp: 300000, hitDice: '9d4+4' , attackBonus: 5},
+{ level: 12, exp: 375000, hitDice: '9d4+6' , attackBonus: 6},
+{ level: 13, exp: 450000, hitDice: '9d4+8' , attackBonus: 6},
+{ level: 14, exp: 525000, hitDice: '9d4+10' , attackBonus: 6},
+{ level: 15, exp: 600000, hitDice: '9d4+12' , attackBonus: 7},
+{ level: 16, exp: 675000, hitDice: '9d4+14' , attackBonus: 7},
+{ level: 17, exp: 750000, hitDice: '9d4+16' , attackBonus: 7},
+{ level: 18, exp: 825000, hitDice: '9d4+18' , attackBonus: 8},
+{ level: 19, exp: 900000, hitDice: '9d4+20' , attackBonus: 8},
+{ level: 20, exp: 975000, hitDice: '9d4+22' , attackBonus: 8},
+],
+mage : [
+{ level: 1, exp: 0, hitDice: '1d4', spells: [1, 0, 0, 0, 0, 0], attackBonus: 1},
+{ level: 2, exp: 2500, hitDice: '2d4', spells: [2, 0, 0, 0, 0, 0], attackBonus: 1},
+{ level: 3, exp: 5000, hitDice: '3d4', spells: [2, 1, 0, 0, 0, 0], attackBonus: 1},
+{ level: 4, exp: 10000, hitDice: '4d4', spells: [2, 2, 0, 0, 0, 0], attackBonus: 2},
+{ level: 5, exp: 20000, hitDice: '5d4', spells: [2, 2, 1, 0, 0, 0], attackBonus: 2},
+{ level: 6, exp: 40000, hitDice: '6d4', spells: [3, 2, 2, 0, 0, 0], attackBonus: 3},
+{ level: 7, exp: 80000, hitDice: '7d4', spells: [3, 2, 2, 1, 0, 0], attackBonus: 3},
+{ level: 8, exp: 150000, hitDice: '8d4', spells: [3, 3, 2, 2, 0, 0], attackBonus: 3},
+{ level: 9, exp: 300000, hitDice: '9d4', spells: [3, 3, 2, 2, 1, 0], attackBonus: 4},
+{ level: 10, exp: 450000, hitDice: '9d4+1', spells: [4, 3, 3, 2, 2, 0], attackBonus: 4},
+{ level: 11, exp: 600000, hitDice: '9d4+2', spells: [4, 4, 3, 2, 2, 1], attackBonus: 4},
+{ level: 12, exp: 750000, hitDice: '9d4+3', spells: [4, 4, 3, 3, 2, 2], attackBonus: 4},
+{ level: 13, exp: 900000, hitDice: '9d4+4', spells: [4, 4, 4, 3, 2, 2], attackBonus: 5},
+{ level: 14, exp: 1050000, hitDice: '9d4+5', spells: [4, 4, 4, 3, 3, 2], attackBonus: 5},
+{ level: 15, exp: 1200000, hitDice: '9d4+6', spells: [5, 4, 4, 3, 3, 2], attackBonus: 5},
+{ level: 16, exp: 1350000, hitDice: '9d4+7', spells: [5, 5, 4, 3, 3, 2], attackBonus: 6},
+{ level: 17, exp: 1500000, hitDice: '9d4+8', spells: [5, 5, 4, 4, 3, 3], attackBonus: 6},
+{ level: 18, exp: 1650000, hitDice: '9d4+9', spells: [6, 5, 4, 4, 3, 3], attackBonus: 6},
+{ level: 19, exp: 1800000, hitDice: '9d4+10', spells: [6, 5, 5, 4, 3, 3], attackBonus: 7},
+{ level: 20, exp: 1950000, hitDice: '9d4+11', spells: [6, 5, 5, 4, 4, 3], attackBonus: 7},
+],
+ranger: [
+{ level: 1, expPoints: 0, hitDice: '1d8' },
+{ level: 2, expPoints: 2200, hitDice: '2d8' },
+{ level: 3, expPoints: 4400, hitDice: '3d8' },
+{ level: 4, expPoints: 8800, hitDice: '4d8' },
+{ level: 5, expPoints: 17600, hitDice: '5d8' },
+{ level: 6, expPoints: 35200, hitDice: '6d8' },
+{ level: 7, expPoints: 70400, hitDice: '7d8' },
+{ level: 8, expPoints: 132000, hitDice: '8d8' },
+{ level: 9, expPoints: 264000, hitDice: '9d8' },
+{ level: 10, expPoints: 396000, hitDice: '9d8+2' },
+{ level: 11, expPoints: 528000, hitDice: '9d8+4' },
+{ level: 12, expPoints: 660000, hitDice: '9d8+6' },
+{ level: 13, expPoints: 792000, hitDice: '9d8+8' },
+{ level: 14, expPoints: 924000, hitDice: '9d8+10' },
+{ level: 15, expPoints: 1056000, hitDice: '9d8+12' },
+{ level: 16, expPoints: 1188000, hitDice: '9d8+14' },
+{ level: 17, expPoints: 1320000, hitDice: '9d8+16' },
+{ level: 18, expPoints: 1452000, hitDice: '9d8+18' },
+{ level: 19, expPoints: 1584000, hitDice: '9d8+20' },
+{ level: 20, expPoints: 1716000, hitDice: '9d8+22' },
+],
+assassin: [
+{ level: 1, expPoints: 0, hitDice: '1d4' },
+{ level: 2, expPoints: 1375, hitDice: '2d4' },
+{ level: 3, expPoints: 2750, hitDice: '3d4' },
+{ level: 4, expPoints: 5500, hitDice: '4d4' },
+{ level: 5, expPoints: 11000, hitDice: '5d4' },
+{ level: 6, expPoints: 22000, hitDice: '6d4' },
+{ level: 7, expPoints: 44000, hitDice: '7d4' },
+{ level: 8, expPoints: 82500, hitDice: '8d4' },
+{ level: 9, expPoints: 165000, hitDice: '9d4' },
+{ level: 10, expPoints: 247500, hitDice: '9d4+2' },
+{ level: 11, expPoints: 330000, hitDice: '9d4+4' },
+{ level: 12, expPoints: 412500, hitDice: '9d4+6' },
+{ level: 13, expPoints: 495000, hitDice: '9d4+8' },
+{ level: 14, expPoints: 577500, hitDice: '9d4+10' },
+{ level: 15, expPoints: 660000, hitDice: '9d4+12' },
+{ level: 16, expPoints: 742500, hitDice: '9d4+14' },
+{ level: 17, expPoints: 825000, hitDice: '9d4+16' },
+{ level: 18, expPoints: 907500, hitDice: '9d4+18' },
+{ level: 19, expPoints: 990000, hitDice: '9d4+20' },
+{ level: 20, expPoints: 1072500, hitDice: '9d4+22' },
+]}
+
+let classKey = npcClass.toLowerCase();
+
+if(classKey === 'ranger'){classKey = 'fighter'};
+if(classKey === 'assassin'){classKey = 'thief'};
+
+const classTable = tables[classKey];
+
+if (classTable) {
+const entry = classTable.find(row => row.level === level);
+return entry[lookUp] || null; // Return the found entry or null if not found
+} else {
+return null; // Handle invalid class
+}
 
 }
 
@@ -156,56 +400,15 @@ thief: [
 { level: 18, deathRay: 6, magicWands: 8, paralysisPetrify: 8, dragonBreath: 6, spells: 8 },
 { level: 19, deathRay: 6, magicWands: 8, paralysisPetrify: 8, dragonBreath: 6, spells: 8 },
 { level: 20, deathRay: 6, magicWands: 8, paralysisPetrify: 8, dragonBreath: 6, spells: 8 },
-],
-ranger: [
-{ level: 1, expPoints: 0, hitDice: '1d8' },
-{ level: 2, expPoints: 2200, hitDice: '2d8' },
-{ level: 3, expPoints: 4400, hitDice: '3d8' },
-{ level: 4, expPoints: 8800, hitDice: '4d8' },
-{ level: 5, expPoints: 17600, hitDice: '5d8' },
-{ level: 6, expPoints: 35200, hitDice: '6d8' },
-{ level: 7, expPoints: 70400, hitDice: '7d8' },
-{ level: 8, expPoints: 132000, hitDice: '8d8' },
-{ level: 9, expPoints: 264000, hitDice: '9d8' },
-{ level: 10, expPoints: 396000, hitDice: '9d8+2' },
-{ level: 11, expPoints: 528000, hitDice: '9d8+4' },
-{ level: 12, expPoints: 660000, hitDice: '9d8+6' },
-{ level: 13, expPoints: 792000, hitDice: '9d8+8' },
-{ level: 14, expPoints: 924000, hitDice: '9d8+10' },
-{ level: 15, expPoints: 1056000, hitDice: '9d8+12' },
-{ level: 16, expPoints: 1188000, hitDice: '9d8+14' },
-{ level: 17, expPoints: 1320000, hitDice: '9d8+16' },
-{ level: 18, expPoints: 1452000, hitDice: '9d8+18' },
-{ level: 19, expPoints: 1584000, hitDice: '9d8+20' },
-{ level: 20, expPoints: 1716000, hitDice: '9d8+22' },
-],
-assassin: [
-{ level: 1, expPoints: 0, hitDice: '1d4' },
-{ level: 2, expPoints: 1375, hitDice: '2d4' },
-{ level: 3, expPoints: 2750, hitDice: '3d4' },
-{ level: 4, expPoints: 5500, hitDice: '4d4' },
-{ level: 5, expPoints: 11000, hitDice: '5d4' },
-{ level: 6, expPoints: 22000, hitDice: '6d4' },
-{ level: 7, expPoints: 44000, hitDice: '7d4' },
-{ level: 8, expPoints: 82500, hitDice: '8d4' },
-{ level: 9, expPoints: 165000, hitDice: '9d4' },
-{ level: 10, expPoints: 247500, hitDice: '9d4+2' },
-{ level: 11, expPoints: 330000, hitDice: '9d4+4' },
-{ level: 12, expPoints: 412500, hitDice: '9d4+6' },
-{ level: 13, expPoints: 495000, hitDice: '9d4+8' },
-{ level: 14, expPoints: 577500, hitDice: '9d4+10' },
-{ level: 15, expPoints: 660000, hitDice: '9d4+12' },
-{ level: 16, expPoints: 742500, hitDice: '9d4+14' },
-{ level: 17, expPoints: 825000, hitDice: '9d4+16' },
-{ level: 18, expPoints: 907500, hitDice: '9d4+18' },
-{ level: 19, expPoints: 990000, hitDice: '9d4+20' },
-{ level: 20, expPoints: 1072500, hitDice: '9d4+22' },
 ]
 
 
 }
 
-const classKey = npcClass.toLowerCase();
+let classKey = npcClass.toLowerCase();
+if(classKey === 'ranger'){classKey = 'fighter'};
+if(classKey === 'assassin'){classKey = 'thief'};
+
 const classTable = tables[classKey];
 
 if (classTable) {
@@ -215,192 +418,6 @@ return entry || null; // Return the found entry or null if not found
 return null; // Handle invalid class
 }
 
-}
-
-function classTables(npcClass, level, lookUp){
-
-const tables = {
-fighter : [
-{ level: 1, expPoints: 0, hitDice: '1d8' , attackBonus: 1},
-{ level: 2, expPoints: 2000, hitDice: '2d8' , attackBonus: 2},
-{ level: 3, expPoints: 4000, hitDice: '3d8' , attackBonus: 2},
-{ level: 4, expPoints: 8000, hitDice: '4d8' , attackBonus: 3},
-{ level: 5, expPoints: 16000, hitDice: '5d8' , attackBonus: 4},
-{ level: 6, expPoints: 32000, hitDice: '6d8' , attackBonus: 4},
-{ level: 7, expPoints: 64000, hitDice: '7d8' , attackBonus: 5},
-{ level: 8, expPoints: 120000, hitDice: '8d8' , attackBonus: 6},
-{ level: 9, expPoints: 240000, hitDice: '9d8' , attackBonus: 6},
-{ level: 10, expPoints: 360000, hitDice: '9d8+2' , attackBonus: 6},
-{ level: 11, expPoints: 480000, hitDice: '9d8+4' , attackBonus: 7},
-{ level: 12, expPoints: 600000, hitDice: '9d8+6' , attackBonus: 7},
-{ level: 13, expPoints: 720000, hitDice: '9d8+8' , attackBonus: 8},
-{ level: 14, expPoints: 840000, hitDice: '9d8+10' , attackBonus: 8},
-{ level: 15, expPoints: 960000, hitDice: '9d8+12' , attackBonus: 8},
-{ level: 16, expPoints: 1080000, hitDice: '9d8+14' , attackBonus: 9},
-{ level: 17, expPoints: 1200000, hitDice: '9d8+16' , attackBonus: 9},
-{ level: 18, expPoints: 1320000, hitDice: '9d8+18' , attackBonus: 10},
-{ level: 19, expPoints: 1440000, hitDice: '9d8+20' , attackBonus: 10},
-{ level: 20, expPoints: 1560000, hitDice: '9d8+22' , attackBonus: 10},
-],
-cleric : [
-{ level: 1, expPoints: 0, hitDice: '1d6', spells: [0, 0, 0, 0, 0, 0] , attackBonus: 1},
-{ level: 2, expPoints: 1500, hitDice: '2d6', spells: [1, 0, 0, 0, 0, 0] , attackBonus: 1},
-{ level: 3, expPoints: 3000, hitDice: '3d6', spells: [2, 0, 0, 0, 0, 0] , attackBonus: 2},
-{ level: 4, expPoints: 6000, hitDice: '4d6', spells: [2, 1, 0, 0, 0, 0] , attackBonus: 2},
-{ level: 5, expPoints: 12000, hitDice: '5d6', spells: [2, 2, 0, 0, 0, 0] , attackBonus: 3},
-{ level: 6, expPoints: 24000, hitDice: '6d6', spells: [2, 2, 1, 0, 0, 0] , attackBonus: 3},
-{ level: 7, expPoints: 48000, hitDice: '7d6', spells: [3, 2, 2, 0, 0, 0] , attackBonus: 4},
-{ level: 8, expPoints: 90000, hitDice: '8d6', spells: [3, 2, 2, 1, 0, 0] , attackBonus: 4},
-{ level: 9, expPoints: 180000, hitDice: '9d6', spells: [3, 3, 2, 2, 0, 0] , attackBonus: 5},
-{ level: 10, expPoints: 270000, hitDice: '9d6+1', spells: [3, 3, 2, 2, 1, 0] , attackBonus: 5},
-{ level: 11, expPoints: 360000, hitDice: '9d6+2', spells: [4, 3, 3, 2, 2, 0] , attackBonus: 5},
-{ level: 12, expPoints: 450000, hitDice: '9d6+3', spells: [4, 4, 3, 2, 2, 1] , attackBonus: 6},
-{ level: 13, expPoints: 540000, hitDice: '9d6+4', spells: [4, 4, 3, 3, 2, 2] , attackBonus: 6},
-{ level: 14, expPoints: 630000, hitDice: '9d6+5', spells: [4, 4, 4, 3, 2, 2] , attackBonus: 6},
-{ level: 15, expPoints: 720000, hitDice: '9d6+6', spells: [4, 4, 4, 3, 3, 2] , attackBonus: 7},
-{ level: 16, expPoints: 810000, hitDice: '9d6+7', spells: [5, 4, 4, 3, 3, 2] , attackBonus: 7},
-{ level: 17, expPoints: 900000, hitDice: '9d6+8', spells: [5, 5, 4, 3, 3, 2] , attackBonus: 7},
-{ level: 18, expPoints: 990000, hitDice: '9d6+9', spells: [5, 5, 4, 4, 3, 3] , attackBonus: 8},
-{ level: 19, expPoints: 1080000, hitDice: '9d6+10', spells: [6, 5, 4, 4, 3, 3] , attackBonus: 8},
-{ level: 20, expPoints: 1170000, hitDice: '9d6+11', spells: [6, 5, 5, 4, 3, 3] , attackBonus: 8},
-],
-thief : [
-{ level: 1, exp: 0, hitDice: '1d4' , attackBonus: 1, attackBonus: 1},
-{ level: 2, exp: 1250, hitDice: '2d4' , attackBonus: 1},
-{ level: 3, exp: 2500, hitDice: '3d4' , attackBonus: 2},
-{ level: 4, exp: 5000, hitDice: '4d4' , attackBonus: 2},
-{ level: 5, exp: 10000, hitDice: '5d4' , attackBonus: 3},
-{ level: 6, exp: 20000, hitDice: '6d4' , attackBonus: 3},
-{ level: 7, exp: 40000, hitDice: '7d4' , attackBonus: 4},
-{ level: 8, exp: 75000, hitDice: '8d4' , attackBonus: 4},
-{ level: 9, exp: 150000, hitDice: '9d4' , attackBonus: 5},
-{ level: 10, exp: 225000, hitDice: '9d4+2' , attackBonus: 5},
-{ level: 11, exp: 300000, hitDice: '9d4+4' , attackBonus: 5},
-{ level: 12, exp: 375000, hitDice: '9d4+6' , attackBonus: 6},
-{ level: 13, exp: 450000, hitDice: '9d4+8' , attackBonus: 6},
-{ level: 14, exp: 525000, hitDice: '9d4+10' , attackBonus: 6},
-{ level: 15, exp: 600000, hitDice: '9d4+12' , attackBonus: 7},
-{ level: 16, exp: 675000, hitDice: '9d4+14' , attackBonus: 7},
-{ level: 17, exp: 750000, hitDice: '9d4+16' , attackBonus: 7},
-{ level: 18, exp: 825000, hitDice: '9d4+18' , attackBonus: 8},
-{ level: 19, exp: 900000, hitDice: '9d4+20' , attackBonus: 8},
-{ level: 20, exp: 975000, hitDice: '9d4+22' , attackBonus: 8},
-],
-mage : [
-{ level: 1, exp: 0, hitDice: '1d4', spells: [1, 0, 0, 0, 0, 0], attackBonus: 1},
-{ level: 2, exp: 2500, hitDice: '2d4', spells: [2, 0, 0, 0, 0, 0], attackBonus: 1},
-{ level: 3, exp: 5000, hitDice: '3d4', spells: [2, 1, 0, 0, 0, 0], attackBonus: 1},
-{ level: 4, exp: 10000, hitDice: '4d4', spells: [2, 2, 0, 0, 0, 0], attackBonus: 2},
-{ level: 5, exp: 20000, hitDice: '5d4', spells: [2, 2, 1, 0, 0, 0], attackBonus: 2},
-{ level: 6, exp: 40000, hitDice: '6d4', spells: [3, 2, 2, 0, 0, 0], attackBonus: 3},
-{ level: 7, exp: 80000, hitDice: '7d4', spells: [3, 2, 2, 1, 0, 0], attackBonus: 3},
-{ level: 8, exp: 150000, hitDice: '8d4', spells: [3, 3, 2, 2, 0, 0], attackBonus: 3},
-{ level: 9, exp: 300000, hitDice: '9d4', spells: [3, 3, 2, 2, 1, 0], attackBonus: 4},
-{ level: 10, exp: 450000, hitDice: '9d4+1', spells: [4, 3, 3, 2, 2, 0], attackBonus: 4},
-{ level: 11, exp: 600000, hitDice: '9d4+2', spells: [4, 4, 3, 2, 2, 1], attackBonus: 4},
-{ level: 12, exp: 750000, hitDice: '9d4+3', spells: [4, 4, 3, 3, 2, 2], attackBonus: 4},
-{ level: 13, exp: 900000, hitDice: '9d4+4', spells: [4, 4, 4, 3, 2, 2], attackBonus: 5},
-{ level: 14, exp: 1050000, hitDice: '9d4+5', spells: [4, 4, 4, 3, 3, 2], attackBonus: 5},
-{ level: 15, exp: 1200000, hitDice: '9d4+6', spells: [5, 4, 4, 3, 3, 2], attackBonus: 5},
-{ level: 16, exp: 1350000, hitDice: '9d4+7', spells: [5, 5, 4, 3, 3, 2], attackBonus: 6},
-{ level: 17, exp: 1500000, hitDice: '9d4+8', spells: [5, 5, 4, 4, 3, 3], attackBonus: 6},
-{ level: 18, exp: 1650000, hitDice: '9d4+9', spells: [6, 5, 4, 4, 3, 3], attackBonus: 6},
-{ level: 19, exp: 1800000, hitDice: '9d4+10', spells: [6, 5, 5, 4, 3, 3], attackBonus: 7},
-{ level: 20, exp: 1950000, hitDice: '9d4+11', spells: [6, 5, 5, 4, 4, 3], attackBonus: 7},
-]}
-
-const classKey = npcClass.toLowerCase();
-const classTable = tables[classKey];
-
-if (classTable) {
-const entry = classTable.find(row => row.level === level);
-return entry[lookUp] || null; // Return the found entry or null if not found
-} else {
-return null; // Handle invalid class
-}
-
-}
-
-function presentSavingThrows(save) {
-    
-    Object.keys(save).forEach(key => {
-        if (key !== 'level') {
-            const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-            result += `<b>${formattedKey}:</b> ${save[key]}<br>`;
-        }
-    });
-
-    return result; 
-}
-
-
-function makeNPC(npcClass, level, npcName) {
-console.log(npcClass)
-
-
-const stats = { 
-name: npcName? npcName: "John Smith",
-class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1), 
-hit: classTables(npcClass, level, 'hitDice')
-};
-
-let npcHTML = `<b>${stats.name} Level ${level} ${stats.class}.</b> \n`
-
-const scores = makeScores(stats.class);
-
-    scores.forEach(score => {
-    npcHTML += `<b>${score.name.toUpperCase()}:</b> ${score.score}\t(${score.bonus})<br>`;
-    });
-
-const savingThrows = getSaveThrows(npcClass, level);
-
-    Object.keys(savingThrows).forEach(key => {
-        if (key !== 'level') {
-            const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-            npcHTML += `<b>${formattedKey}:</b> ${savingThrows[key]}<br>`;
-        }
-    });
-
-const skills = getSkills(npcClass, level);
-
-    Object.keys(skills).forEach(key => {
-        if (key !== 'level') {
-            const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-            npcHTML += `<b>${formattedKey}:</b> ${skills[key]}<br>`;
-        }
-    });
-
-for (const [key, value] of Object.entries(stats)) {
-if (key !== 'name' && key !== 'class') { 
-npcHTML += `<b>${key.charAt(0).toUpperCase() + key.slice(1)}:</b> ${value} `;
-}
-}
-
-npcHTML += `\n<b>HP:</b>`;
-
-// Simulate hit points based on the NPC's HD
-const hitPoints = parseHitPoints(stats.hit); // Assume this function calculates HP based on HD
-const hpValue = parseInt(hitPoints);
-let checkboxesHTML = '';
-
-// Create checkboxes for HP
-for (let j = 0; j < hpValue; j++) {
-checkboxesHTML += `☐`;
-
-// Hitbox Spacing
-if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
-checkboxesHTML += '&nbsp;&nbsp;&nbsp;';
-}
-if ((j + 1) % 20 === 0 && j + 1 < hpValue) {
-checkboxesHTML += '<br>\t&nbsp;';
-}
-}
-
-npcHTML += `\t&nbsp; ${hitPoints} \t ${checkboxesHTML}\n`;
-
-
-npcHTML += `<br><hr>`;
-return npcHTML;
 }
 
 function getSkills(npcClass, level){
@@ -449,6 +466,50 @@ cleric: [
 { level: 18, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Automatic', Mummy: 'Automatic', Spectre: 3, Vampire: 7, Ghost: 11 },
 { level: 19, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Damaged', Mummy: 'Automatic', Spectre: 2, Vampire: 5, Ghost: 9 },
 { level: 20, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Damaged', Mummy: 'Automatic', Spectre: 'Automatic', Vampire: 3, Ghost: 7 },
+],
+ranger: [
+{ level: 1, moveSilently: 25, hide: 10, tracking: 40 },
+{ level: 2, moveSilently: 30, hide: 15, tracking: 44 },
+{ level: 3, moveSilently: 35, hide: 20, tracking: 48 },
+{ level: 4, moveSilently: 40, hide: 25, tracking: 52 },
+{ level: 5, moveSilently: 45, hide: 30, tracking: 56 },
+{ level: 6, moveSilently: 50, hide: 35, tracking: 60 },
+{ level: 7, moveSilently: 55, hide: 40, tracking: 64 },
+{ level: 8, moveSilently: 60, hide: 45, tracking: 68 },
+{ level: 9, moveSilently: 65, hide: 50, tracking: 72 },
+{ level: 10, moveSilently: 68, hide: 53, tracking: 75 },
+{ level: 11, moveSilently: 71, hide: 56, tracking: 78 },
+{ level: 12, moveSilently: 74, hide: 59, tracking: 81 },
+{ level: 13, moveSilently: 77, hide: 62, tracking: 84 },
+{ level: 14, moveSilently: 80, hide: 65, tracking: 87 },
+{ level: 15, moveSilently: 83, hide: 68, tracking: 90 },
+{ level: 16, moveSilently: 85, hide: 69, tracking: 91 },
+{ level: 17, moveSilently: 87, hide: 70, tracking: 92 },
+{ level: 18, moveSilently: 89, hide: 71, tracking: 93 },
+{ level: 19, moveSilently: 91, hide: 72, tracking: 94 },
+{ level: 20, moveSilently: 93, hide: 73, tracking: 95 },
+],
+assassin: [
+{ level: 1, openLocks: 15, pickPockets: 20, moveSilently: 20, climbWalls: 70, hide: 5, listen: 25, poison: 25 },
+{ level: 2, openLocks: 19, pickPockets: 25, moveSilently: 25, climbWalls: 72, hide: 10, listen: 29, poison: 30 },
+{ level: 3, openLocks: 23, pickPockets: 30, moveSilently: 30, climbWalls: 74, hide: 15, listen: 33, poison: 35 },
+{ level: 4, openLocks: 27, pickPockets: 35, moveSilently: 35, climbWalls: 76, hide: 20, listen: 37, poison: 40 },
+{ level: 5, openLocks: 31, pickPockets: 40, moveSilently: 40, climbWalls: 78, hide: 25, listen: 41, poison: 45 },
+{ level: 6, openLocks: 35, pickPockets: 45, moveSilently: 45, climbWalls: 80, hide: 30, listen: 45, poison: 50 },
+{ level: 7, openLocks: 39, pickPockets: 50, moveSilently: 50, climbWalls: 82, hide: 35, listen: 49, poison: 55 },
+{ level: 8, openLocks: 43, pickPockets: 55, moveSilently: 55, climbWalls: 84, hide: 40, listen: 53, poison: 60 },
+{ level: 9, openLocks: 47, pickPockets: 60, moveSilently: 60, climbWalls: 86, hide: 45, listen: 57, poison: 65 },
+{ level: 10, openLocks: 50, pickPockets: 63, moveSilently: 63, climbWalls: 87, hide: 48, listen: 60, poison: 69 },
+{ level: 11, openLocks: 53, pickPockets: 66, moveSilently: 66, climbWalls: 88, hide: 51, listen: 63, poison: 73 },
+{ level: 12, openLocks: 56, pickPockets: 69, moveSilently: 69, climbWalls: 89, hide: 54, listen: 66, poison: 77 },
+{ level: 13, openLocks: 59, pickPockets: 72, moveSilently: 72, climbWalls: 90, hide: 57, listen: 69, poison: 81 },
+{ level: 14, openLocks: 62, pickPockets: 75, moveSilently: 75, climbWalls: 91, hide: 60, listen: 72, poison: 85 },
+{ level: 15, openLocks: 65, pickPockets: 78, moveSilently: 78, climbWalls: 92, hide: 63, listen: 75, poison: 89 },
+{ level: 16, openLocks: 66, pickPockets: 79, moveSilently: 80, climbWalls: 93, hide: 64, listen: 77, poison: 91 },
+{ level: 17, openLocks: 67, pickPockets: 80, moveSilently: 82, climbWalls: 94, hide: 65, listen: 79, poison: 93 },
+{ level: 18, openLocks: 68, pickPockets: 81, moveSilently: 84, climbWalls: 95, hide: 66, listen: 81, poison: 95 },
+{ level: 19, openLocks: 69, pickPockets: 82, moveSilently: 86, climbWalls: 96, hide: 67, listen: 83, poison: 97 },
+{ level: 20, openLocks: 70, pickPockets: 83, moveSilently: 88, climbWalls: 97, hide: 68, listen: 85, poison: 99 },
 ]
 }
 
@@ -464,856 +525,6 @@ return null; // Handle invalid class
 
 }
 
-
-
-// static getCharacterSkills(npc) {
-// let skillTable;
-// let level = parseInt(npc.level, 10);
-// let skills = {};
-
-// // Determine the skill table based on character class
-// switch (npc.class) {
-// case 'Ranger':
-// skillTable = NPCbuild.rangerSkillsTable;
-// skills = NPCbuild.mapSkills(skillTable, level, ['tracking', 'moveSilently', 'hide']);
-// break;
-// case 'Thief':
-// skillTable = NPCbuild.thiefSkillsTable;
-// skills = NPCbuild.mapSkills(skillTable, level, ['openLocks', 'removeTraps', 'pickPockets', 'moveSilently', 'climbWalls', 'hide', 'listen']);
-// break;
-// case 'Assassin':
-// skillTable = NPCbuild.assassinSkillsTable;
-// skills = NPCbuild.mapSkills(skillTable, level, ['openLocks', 'pickPockets', 'moveSilently', 'climbWalls', 'hide', 'listen', 'poison']);
-// break;
-// case 'Cleric':
-// skillTable = NPCbuild.clericsVsUndeadTable;
-// skills = NPCbuild.mapSkills(skillTable, level, ['Skeleton', 'Zombie', 'Ghoul', 'Wight', 'Wraith', 'Mummy', 'Spectre', 'Vampire', 'Ghost']);
-// break;
-// default:
-// // Return null or handle the case where the class is not supported
-// return null;
-// }
-
-// // Assign the skills object to the corresponding property
-// npc.Skills = skills;
-// }
-
-// static mapSkills(skillTable, level, skillNames) {
-// const levelEntry = skillTable.find(entry => entry.level === level);
-// const skills = {};
-
-// if (levelEntry) {
-// // Populate the skills object based on the provided skill names
-// skillNames.forEach(skillName => {
-// skills[skillName] = levelEntry[skillName];
-// });
-// }
-
-// return skills;
-// }
-
-// static getSavingThrows(npc) {
-// let skillTable;
-// let level = parseInt(npc.level, 10);
-// let savingThrows = {};
-
-// switch (npc.class) {
-// case 'Fighter':
-// skillTable = NPCbuild.fighterSavingThrowTable;
-
-// break;
-// case 'Ranger':
-// skillTable = NPCbuild.fighterSavingThrowTable;
-
-// break;
-// case 'Thief':
-// skillTable = NPCbuild.thiefSavingThrowTable;
-
-// break;
-// case 'Assassin':
-// skillTable = NPCbuild.thiefSavingThrowTable;
-
-// break;
-// case 'Cleric':
-// skillTable = NPCbuild.clericSavingThrowTable;
-
-// break;
-// case 'Magic User':
-// skillTable = NPCbuild.magicUserSavingThrowTable;
-
-// break;
-// default:
-// return null;
-// }
-
-// savingThrows = NPCbuild.mapSkills(skillTable, level, ['deathRay', 'magicWands', 'paralysisPetrify','dragonBreath',  'spells']);
-// npc.savingThrows = savingThrows;
-// }
-
-// static getAttackBonus(npc){
-
-// let Table;
-// let level = parseInt(npc.level, 10);
-
-// switch (npc.class) {
-// case 'Fighter':
-// Table = NPCbuild.fighterTable;
-
-// break;
-// case 'Ranger':
-// Table = NPCbuild.fighterTable;
-
-// break;
-// case 'Thief':
-// Table = NPCbuild.thiefTable;
-
-// break;
-// case 'Assassin':
-// Table = NPCbuild.thiefTable;
-
-// break;
-// case 'Cleric':
-// Table = NPCbuild.clericTable;
-
-// break;
-// case 'Magic User':
-// Table = NPCbuild.magicUserTable;
-// break;
-
-// default:
-// return null;
-// }
-
-// let tableReturn = NPCbuild.mapSkills(Table, level, ['attackBonus']);
-// let attackBonus = tableReturn.attackBonus;
-// return attackBonus;
-// }
-
-// static getSpellSlots(npcClass, npcLevel) {
-// let classTable;
-// let level = parseInt(npcLevel, 10);
-
-// if (npcClass === 'Magic User') {
-// classTable = NPCbuild.magicUserTable;
-// } else if (npcClass === 'Cleric') {
-// classTable = NPCbuild.clericTable;
-// }
-
-// if (classTable) {
-// // Find spellSlots for NPC's Level
-// const levelEntry = classTable.find(entry => entry.level === level);
-// return levelEntry.spells
-
-// }
-// }
-
-// static getHitPoints(npc) {
-// let classTable;
-// let level = parseInt(npc.level, 10);
-
-// if (npc.class === 'Magic User') {
-// classTable = NPCbuild.magicUserTable;
-// } else if (npc.class === 'Cleric') {
-// classTable = NPCbuild.clericTable;
-// } else if (npc.class === 'Fighter') {
-// classTable = NPCbuild.fighterTable;
-// } else if (npc.class === 'Thief') {
-// classTable = NPCbuild.thiefTable;
-// } else if (npc.class === 'Ranger') {
-// classTable = NPCbuild.rangerTable;
-// } else if (npc.class === 'Assassin') {
-// classTable = NPCbuild.assassinTable;
-// } else {
-// npc.hitPoints = Math.floor(Math.random() * (5 - 1 + 1));
-// }
-
-// if(classTable){
-
-// let levelEntry = classTable.find(entry => entry.level === level);
-// let hitDice = levelEntry.hitDice;
-
-// // Calculate hit points using the rollHitDice function
-// npc.hitPoints = NPCbuild.rollHitDice(hitDice); 
-// }
-
-// }
-
-
-
-
-// static getModifier(score) {
-
-// const modifierEntry = NPCbuild.abilityScoreTable.find(entry => score >= entry.range.min && score <= entry.range.max);
-
-// return modifierEntry ? modifierEntry.bonus : 0;
-
-// }
-
-
-// //---ROLL FUNCTIONS
-
-// static rollHitDice(hitDice) {
-// const regex = /(\d+)d(\d+)([+-]\d+)?/; // Regular expression to match dice notation
-// const match = hitDice.match(regex);
-
-// if (!match) {
-// throw new Error('Invalid hit dice notation');
-// }
-
-// const numDice = parseInt(match[1], 10);
-// const diceType = parseInt(match[2], 10);
-// const modifier = match[3] ? parseInt(match[3], 10) : 0;
-
-// let total = 0;
-
-// for (let i = 0; i < numDice; i++) {
-// total += Math.floor(Math.random() * diceType) + 1;
-// }
-
-// total += modifier;
-// return total;
-// }
-
-// static rollDice(diceNotation) {
-// //diceNotation, example '1d20'.
-// const [numDice, numSides] = diceNotation.split('d').map(Number);
-// let total = 0;
-
-// for (let i = 0; i < numDice; i++) {
-// total += Math.floor(Math.random() * numSides) + 1;
-// }
-
-// return total;
-// }
-
-
-
-// //---TABLES----
-
-// //Magic User
-
-
-
-
-
-
-
-
-
-// //Ranger Skills
-// static rangerSkillsTable = [
-// { level: 1, moveSilently: 25, hide: 10, tracking: 40 },
-// { level: 2, moveSilently: 30, hide: 15, tracking: 44 },
-// { level: 3, moveSilently: 35, hide: 20, tracking: 48 },
-// { level: 4, moveSilently: 40, hide: 25, tracking: 52 },
-// { level: 5, moveSilently: 45, hide: 30, tracking: 56 },
-// { level: 6, moveSilently: 50, hide: 35, tracking: 60 },
-// { level: 7, moveSilently: 55, hide: 40, tracking: 64 },
-// { level: 8, moveSilently: 60, hide: 45, tracking: 68 },
-// { level: 9, moveSilently: 65, hide: 50, tracking: 72 },
-// { level: 10, moveSilently: 68, hide: 53, tracking: 75 },
-// { level: 11, moveSilently: 71, hide: 56, tracking: 78 },
-// { level: 12, moveSilently: 74, hide: 59, tracking: 81 },
-// { level: 13, moveSilently: 77, hide: 62, tracking: 84 },
-// { level: 14, moveSilently: 80, hide: 65, tracking: 87 },
-// { level: 15, moveSilently: 83, hide: 68, tracking: 90 },
-// { level: 16, moveSilently: 85, hide: 69, tracking: 91 },
-// { level: 17, moveSilently: 87, hide: 70, tracking: 92 },
-// { level: 18, moveSilently: 89, hide: 71, tracking: 93 },
-// { level: 19, moveSilently: 91, hide: 72, tracking: 94 },
-// { level: 20, moveSilently: 93, hide: 73, tracking: 95 },
-// // Add more levels as needed
-// ];
-
-
-// // Assassin Abilities
-// static assassinSkillsTable = [
-// { level: 1, openLocks: 15, pickPockets: 20, moveSilently: 20, climbWalls: 70, hide: 5, listen: 25, poison: 25 },
-// { level: 2, openLocks: 19, pickPockets: 25, moveSilently: 25, climbWalls: 72, hide: 10, listen: 29, poison: 30 },
-// { level: 3, openLocks: 23, pickPockets: 30, moveSilently: 30, climbWalls: 74, hide: 15, listen: 33, poison: 35 },
-// { level: 4, openLocks: 27, pickPockets: 35, moveSilently: 35, climbWalls: 76, hide: 20, listen: 37, poison: 40 },
-// { level: 5, openLocks: 31, pickPockets: 40, moveSilently: 40, climbWalls: 78, hide: 25, listen: 41, poison: 45 },
-// { level: 6, openLocks: 35, pickPockets: 45, moveSilently: 45, climbWalls: 80, hide: 30, listen: 45, poison: 50 },
-// { level: 7, openLocks: 39, pickPockets: 50, moveSilently: 50, climbWalls: 82, hide: 35, listen: 49, poison: 55 },
-// { level: 8, openLocks: 43, pickPockets: 55, moveSilently: 55, climbWalls: 84, hide: 40, listen: 53, poison: 60 },
-// { level: 9, openLocks: 47, pickPockets: 60, moveSilently: 60, climbWalls: 86, hide: 45, listen: 57, poison: 65 },
-// { level: 10, openLocks: 50, pickPockets: 63, moveSilently: 63, climbWalls: 87, hide: 48, listen: 60, poison: 69 },
-// { level: 11, openLocks: 53, pickPockets: 66, moveSilently: 66, climbWalls: 88, hide: 51, listen: 63, poison: 73 },
-// { level: 12, openLocks: 56, pickPockets: 69, moveSilently: 69, climbWalls: 89, hide: 54, listen: 66, poison: 77 },
-// { level: 13, openLocks: 59, pickPockets: 72, moveSilently: 72, climbWalls: 90, hide: 57, listen: 69, poison: 81 },
-// { level: 14, openLocks: 62, pickPockets: 75, moveSilently: 75, climbWalls: 91, hide: 60, listen: 72, poison: 85 },
-// { level: 15, openLocks: 65, pickPockets: 78, moveSilently: 78, climbWalls: 92, hide: 63, listen: 75, poison: 89 },
-// { level: 16, openLocks: 66, pickPockets: 79, moveSilently: 80, climbWalls: 93, hide: 64, listen: 77, poison: 91 },
-// { level: 17, openLocks: 67, pickPockets: 80, moveSilently: 82, climbWalls: 94, hide: 65, listen: 79, poison: 93 },
-// { level: 18, openLocks: 68, pickPockets: 81, moveSilently: 84, climbWalls: 95, hide: 66, listen: 81, poison: 95 },
-// { level: 19, openLocks: 69, pickPockets: 82, moveSilently: 86, climbWalls: 96, hide: 67, listen: 83, poison: 97 },
-// { level: 20, openLocks: 70, pickPockets: 83, moveSilently: 88, climbWalls: 97, hide: 68, listen: 85, poison: 99 },
-// // Add more levels as needed
-
-// ];
-
-// //Treasure Table
-// static treasureTable = {
-// A: {
-// Copper: { percentage: 50, dice: '5d6' },
-// Silver: { percentage: 60, dice: '5d6' },
-// Electrum: { percentage: 40, dice: '5d4' },
-// Gold: { percentage: 70, dice: '10d6' },
-// Platinum: { percentage: 50, dice: '1d10' },
-// Gems: { percentage: 50, dice: '6d6' },
-// Jewelry: { percentage: 50, dice: '6d6' },
-// magicItems: { percentage: 50, dice: '6d6' }
-// },
-// B: {
-// Copper: { percentage: 75, dice: '5d10' },
-// Silver: { percentage: 50, dice: '5d6' },
-// Electrum: { percentage: 50, dice: '5d4' },
-// Gold: { percentage: 50, dice: '3d6' },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 25, dice: '1d6' },
-// Jewelry: { percentage: 50, dice: '6d6' },
-// magicItems: { percentage: 25, dice: '1d6' }
-// },
-// C: {
-// Copper: { percentage: 60, dice: '6d6' },
-// Silver: { percentage: 60, dice: '5d4' },
-// Electrum: { percentage: 30, dice: '2d6' },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 25, dice: '1d4' },
-// Jewelry: { percentage: 50, dice: '1d4' },
-// magicItems: { percentage: 15, dice: '1d2' },
-// },
-// D: {
-// Copper: { percentage: 30, dice: '4d6' },
-// Silver: { percentage: 45, dice: '6d6' },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 90, dice: '5d8' },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 30, dice: '1d8' },
-// Jewelry: { percentage: 30, dice: '1d8' },
-// magicItems: { percentage: 20, dice: '1d2' }, //plus potion
-// },
-// E: {
-// Copper: { percentage: 30, dice: '2d8' },
-// Silver: { percentage: 60, dice: '6d10' },
-// Electrum: { percentage: 50, dice: '3d8' },
-// Gold: { percentage: 50, dice: '4d10' },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 10, dice: '1d10' },
-// Jewelry: { percentage: 10, dice: '1d10' },
-// magicItems: { percentage: 30, dice: '1d4' }, //plus scroll
-// },
-// F: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 40, dice: '3d8' },
-// Electrum: { percentage: 50, dice: '4d8' },
-// Gold: { percentage: 85, dice: '6d10' },
-// Platinum: { percentage: 70, dice: '2d8' },
-// Gems: { percentage: 20, dice: '2d12' },
-// Jewelry: { percentage: 10, dice: '1d12' },
-// magicItems: { percentage: 35, dice: '1d4' },
-// Special: { percentage: 35, dice: '1d4'}, //exceptions: ['weapons'], additional: ['+ 1 potion', '+ 1 scroll'] }
-// },
-// G: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 90, dice: '4d6x10' },
-// Platinum: { percentage: 75, dice: '5d8' },
-// Gems: { percentage: 25, dice: '3d6' },
-// Jewelry: { percentage: 25, dice: '1d10' },
-// magicItems: { percentage: 50, dice: '1d4' }, //plus scroll
-// },
-// H: {
-// Copper: { percentage: '*', dice: '8d10' },
-// Silver: { percentage: '*', dice: '6d10x10' },
-// Electrum: { percentage: '*', dice: '3d10x10' },
-// Gold: { percentage: '*', dice: '5d8x10' },
-// Platinum: { percentage: '*', dice: '9d8' },
-// Gems: { percentage: 25, dice: '3d6' },
-// Jewelry: { percentage: 25, dice: '1d10' },
-// magicItems: { percentage: 25, dice: '1d10' },
-// Special: { percentage: 50, dice: '1d4', additional: '+ 1 scroll' }
-// },
-// I: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 80, dice: '3d10' },
-// Gems: { percentage: 50, dice: '2d6' },
-// Jewelry: { percentage: 50, dice: '6d6' },
-// magicItems: { percentage: 15, dice: '1d1' },
-// },
-// J: {
-// Copper: { percentage: 45, dice: '3d8' },
-// Silver: { percentage: 45, dice: '1d8' },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// K: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 90, dice: '2d10' },
-// Electrum: { percentage: 35, dice: '1d8' },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// L: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 50, dice: '1d4' },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// M: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 90, dice: '4d10' },
-// Platinum: { percentage: 90, dice: '2d8' }, //x10
-// Gems: { percentage: 55, dice: '5d4' },
-// Jewelry: { percentage: 45, dice: '2d6' },
-// magicItems: { percentage: 0, dice: null }
-// },
-// N: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 40, dice: '2d4' }, //only potions
-// },
-// O: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 50, dice: '1d4' }, //only scrolls
-// },
-// P: {
-// Copper: { percentage: 100, dice: '3d8' },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// Q: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 100, dice: '3d6' },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// R: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 100, dice: '2d6' },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// S: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 100, dice: '2d4' },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// T: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 0, dice: null },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 0, dice: null },
-// Platinum: { percentage: 100, dice: '1d6' },
-// Gems: { percentage: 0, dice: null },
-// Jewelry: { percentage: 0, dice: null },
-// magicItems: { percentage: 0, dice: null }
-// },
-// U: {
-// Copper: { percentage: 50, dice: '1d20' },
-// Silver: { percentage: 50, dice: '1d20' },
-// Electrum: { percentage: 0, dice: null },
-// Gold: { percentage: 25, dice: '1d20' },
-// Platinum: { percentage: 0, dice: null },
-// Gems: { percentage: 5, dice: '1d4' },
-// Jewelry: { percentage: 5, dice: '1d4' },
-// magicItems: { percentage: 2, dice: '1d1' },
-// },
-// V: {
-// Copper: { percentage: 0, dice: null },
-// Silver: { percentage: 25, dice: '1d20' },
-// Electrum: { percentage: 25, dice: '1d20' },
-// Gold: { percentage: 50, dice: '1d20' },
-// Platinum: { percentage: 25, dice: '1d20' },
-// Gems: { percentage: 10, dice: '1d4' },
-// Jewelry: { percentage: 10, dice: '1d4' },
-// magicItems: { percentage: 5, dice: '1d1' },
-// }
-// };
-
-// //Gems & Jewelry Tables
-// static gemsValueTable = [
-// { type: 'Ornamental', baseValue: 10, numberFound: '1d10' },
-// { type: 'Semiprecious', baseValue: 50, numberFound: '1d8' },
-// { type: 'Fancy', baseValue: 100, numberFound: '1d6' },
-// { type: 'Precious', baseValue: 500, numberFound: '1d4' },
-// { type: 'Gem', baseValue: 1000, numberFound: '1d2' },
-// { type: 'Jewel', baseValue: 5000, numberFound: '1' },
-// ];
-
-// static gemTypeTable = [
-// { range: [1, 5], type: 'Alexandrite' },
-// { range: [6, 12], type: 'Amethyst' },
-// { range: [13, 20], type: 'Aventurine' },
-// { range: [21, 30], type: 'Chlorastrolite' },
-// { range: [31, 40], type: 'Diamond' },
-// { range: [41, 43], type: 'Emerald' },
-// { range: [44, 48], type: 'Fire Opal' },
-// { range: [49, 57], type: 'Fluorospar' },
-// { range: [58, 63], type: 'Garnet' },
-// { range: [64, 68], type: 'Heliotrope' },
-// { range: [69, 78], type: 'Malachite' },
-// { range: [79, 88], type: 'Rhodonite' },
-// { range: [89, 91], type: 'Ruby' },
-// { range: [92, 95], type: 'Sapphire' },
-// { range: [96, 100], type: 'Topaz' },
-// ];
-
-// static valueAdjustmentTable = [
-// { roll: 2, adjustment: 0.5 }, // Next Lower Value Row
-// { roll: 3, adjustment: 0.5 },
-// { roll: 4, adjustment: 0.75 },
-// { roll: 5, adjustment: 1 },   // Normal Value
-// { roll: 6, adjustment: 1 },   // Normal Value
-// { roll: 7, adjustment: 1 },   // Normal Value
-// { roll: 8, adjustment: 1 },   // Normal Value
-// { roll: 9, adjustment: 1 },   // Normal Value
-// { roll: 10, adjustment: 1.5 },
-// { roll: 11, adjustment: 2 },
-// { roll: 12, adjustment: 2 },  // Next Higher Value Row
-// ];
-
-// static jewelryTable = [
-// { range: [1, 6], type: 'Anklet' },
-// { range: [7, 12], type: 'Belt' },
-// { range: [13, 14], type: 'Bowl' },
-// { range: [15, 21], type: 'Bracelet' },
-// { range: [22, 27], type: 'Brooch' },
-// { range: [28, 32], type: 'Buckle' },
-// { range: [33, 37], type: 'Chain' },
-// { range: [38, 40], type: 'Choker' },
-// { range: [41, 42], type: 'Circlet' },
-// { range: [43, 47], type: 'Clasp' },
-// { range: [48, 51], type: 'Comb' },
-// { range: [52, 52], type: 'Crown' },
-// { range: [53, 55], type: 'Cup' },
-// { range: [56, 62], type: 'Earring' },
-// { range: [63, 65], type: 'Flagon' },
-// { range: [66, 68], type: 'Goblet' },
-// { range: [69, 73], type: 'Knife' },
-// { range: [74, 77], type: 'Letter Opener' },
-// { range: [78, 80], type: 'Locket' },
-// { range: [81, 82], type: 'Medal' },
-// { range: [83, 89], type: 'Necklace' },
-// { range: [90, 90], type: 'Plate' },
-// { range: [91, 95], type: 'Pin' },
-// { range: [96, 96], type: 'Scepter' },
-// { range: [97, 99], type: 'Statuette' },
-// { range: [100, 100], type: 'Tiara' },
-// ];
-
-// // Type of Item Table
-// static itemTypeTable = [
-// { range: [1, 25], item: 'Weapon' },
-// { range: [26, 35], item: 'Armour' },
-// { range: [36, 55], item: 'Potion' },
-// { range: [56, 85], item: 'Scroll' },
-// { range: [86, 90], item: 'Wand, Staff, or Rod' },
-// { range: [91, 97], item: 'Miscellaneous Items' },
-// { range: [98, 100], item: 'Rare Items' },
-// ];
-
-// // Magic Weapons Table
-// static magicWeaponTable = [
-// { range: [1, 2], weapon: 'Great Axe', type: 'Melee' },
-// { range: [3, 9], weapon: 'Battle Axe', type: 'Melee' },
-// { range: [10, 11], weapon: 'Hand Axe', type: 'Melee' },
-// { range: [12, 19], weapon: 'Shortbow', type: 'Ranged' },
-// { range: [20, 27], weapon: 'Shortbow Arrow', type: 'Ranged' },
-// { range: [28, 31], weapon: 'Longbow', type: 'Ranged' },
-// { range: [32, 35], weapon: 'Longbow Arrow', type: 'Ranged' },
-// { range: [36, 43], weapon: 'Light Quarrel', type: 'Ranged' },
-// { range: [44, 47], weapon: 'Heavy Quarrel', type: 'Ranged' },
-// { range: [48, 59], weapon: 'Dagger', type: 'Melee' },
-// { range: [60, 65], weapon: 'Shortsword', type: 'Melee' },
-// { range: [66, 79], weapon: 'Longsword', type: 'Melee' },
-// { range: [80, 81], weapon: 'Scimitar', type: 'Melee' },
-// { range: [82, 83], weapon: 'Two-Handed Sword', type: 'Melee' },
-// { range: [84, 86], weapon: 'Warhammer', type: 'Melee' },
-// { range: [87, 94], weapon: 'Mace', type: 'Melee' },
-// { range: [95, 95], weapon: 'Maul', type: 'Melee' },
-// { range: [96, 96], weapon: 'Pole Arm', type: 'Melee' },
-// { range: [97, 97], weapon: 'Sling Bullet', type: 'Ranged' },
-// { range: [98, 100], weapon: 'Spear', type: 'Melee' },
-// ];
-
-
-// // Special Enemy Table
-// static specialEnemyTable = [
-// 'Dragons', 'Enchanted', 'Lycanthropes', 'Regenerators', 'Spell Users', 'Undead'
-// ];
-
-// // Special Ability Table
-// static specialAbilityTable = [
-// 'Casts Light on Command', 'Charm Person', 'Drains Energy', 'Flames on Command', 
-// 'Locate Objects', 'Wishes'
-// ];
-
-// static magicArmourTable = [
-// { range: [1, 9], armour: 'Leather Armour' },
-// { range: [10, 28], armour: 'Chain Mail' },
-// { range: [29, 43], armour: 'Plate Mail' },
-// { range: [44, 100], armour: 'Shield' },
-// ];
-
-// static magicArmourAbilityTable = [
-// { range: [1, 50], armour: '+1' },
-// { range: [51, 80], armour: '+2' },
-// { range: [81, 90], armour: '+3' },
-// { range: [91, 95], armour: `Cursed: -${Math.floor(Math.random() * 3) + 1}`},
-// { range: [96, 100], armour: 'Cursed: AC 11 (Appears +1)' },
-// ];
-
-// static rangedWeaponBonusTable = [
-// { range: [1, 64],  bonus: `+${Math.floor(Math.random() * 3) + 1}`},
-// { range: [65, 94], bonus: `+${Math.floor(Math.random() * 3) + 1} vs. ${NPCbuild.specialEnemyTable[Math.floor(Math.random() * NPCbuild.specialEnemyTable.length)]}`},
-// { range: [95, 98], bonus: `+${Math.floor(Math.random() * 3) + 1} and ${NPCbuild.specialAbilityTable[Math.floor(Math.random() * NPCbuild.specialAbilityTable.length)]}`},
-// { range: [99, 100], bonus: 'Cursed, -1*' },
-// ];
-
-// // Weapon Bonus Tables
-// static meleeWeaponBonusTable = [
-// { range: [1, 40], bonus: '+1' },
-// { range: [41, 50], bonus: '+2' },
-// { range: [51, 55], bonus: '+3' },
-// { range: [56, 57], bonus: '+4' },
-// { range: [58, 58], bonus: '+5' },
-// { range: [59, 85], bonus: `+${Math.floor(Math.random() * 3) + 1} vs. ${NPCbuild.specialEnemyTable[Math.floor(Math.random() * NPCbuild.specialEnemyTable.length)]}`},
-// { range: [86, 95], bonus: `+${Math.floor(Math.random() * 3) + 1} and ${NPCbuild.specialAbilityTable[Math.floor(Math.random() * NPCbuild.specialAbilityTable.length)]}`},
-// { range: [96, 100], bonus: `Cursed: -${Math.floor(Math.random() * 3) + 1}`},
-// ];
-
-// //Potions Table
-// static potionsTable = [
-// { range: [1, 3], type: 'Clairaudience' },
-// { range: [4, 6], type: 'Clairvoyance' },
-// { range: [7, 8], type: 'Cold Resistance' },
-// { range: [9, 11], type: 'Control Animal' },
-// { range: [12, 13], type: 'Control Dragon' },
-// { range: [14, 16], type: 'Control Giant' },
-// { range: [17, 19], type: 'Control Human' },
-// { range: [20, 22], type: 'Control Plant' },
-// { range: [23, 25], type: 'Control Undead' },
-// { range: [26, 32], type: 'Delusion' },
-// { range: [33, 35], type: 'Diminution' },
-// { range: [36, 39], type: 'Fire Resistance' },
-// { range: [40, 43], type: 'Flying' },
-// { range: [44, 47], type: 'Gaseous Form' },
-// { range: [48, 51], type: 'Giant Strength' },
-// { range: [52, 55], type: 'Growth' },
-// { range: [56, 59], type: 'Healing' },
-// { range: [60, 63], type: 'Heroism' },
-// { range: [64, 68], type: 'Invisibility' },
-// { range: [69, 72], type: 'Invulnerability' },
-// { range: [73, 76], type: 'Levitation' },
-// { range: [77, 80], type: 'Longevity' },
-// { range: [81, 84], type: 'Mind Reading' },
-// { range: [85, 86], type: 'Poison' },
-// { range: [87, 89], type: 'Polymorph Self' },
-// { range: [90, 97], type: 'Speed' },
-// { range: [98, 100], type: 'Treasure Finding' },
-// ];
-
-// static scrollsTable = [
-// { range: [1, 3], type: 'Cleric Spell Scroll (1 Spell)' },
-// { range: [4, 6], type: 'Cleric Spell Scroll (2 Spells)' },
-// { range: [7, 8], type: 'Cleric Spell Scroll (3 Spells)' },
-// { range: [9, 9], type: 'Cleric Spell Scroll (4 Spells)' },
-// { range: [10, 15], type: 'Magic-User Spell Scroll (1 Spell)' },
-// { range: [16, 20], type: 'Magic-User Spell Scroll (2 Spells)' },
-// { range: [21, 25], type: 'Magic-User Spell Scroll (3 Spells)' },
-// { range: [26, 29], type: 'Magic-User Spell Scroll (4 Spells)' },
-// { range: [30, 32], type: 'Magic-User Spell Scroll (5 Spells)' },
-// { range: [33, 34], type: 'Magic-User Spell Scroll (6 Spells)' },
-// { range: [35, 35], type: 'Magic-User Spell Scroll (7 Spells)' },
-// { range: [36, 40], type: 'Cursed Scroll' },
-// { range: [41, 46], type: 'Scroll of Protection from Elementals' },
-// { range: [47, 56], type: 'Scroll of Protection from Lycanthropes' },
-// { range: [57, 61], type: 'Scroll of Protection from Magic' },
-// { range: [62, 75], type: 'Scroll of Protection from Undead' },
-// { range: [76, 85], type: 'Map to Treasure Type A' },
-// { range: [86, 89], type: 'Map to Treasure Type E' },
-// { range: [90, 92], type: 'Map to Treasure Type G' },
-// { range: [93, 100], type: 'Map to 1d4 Magic Items' },
-// ];
-
-// static wandsStavesRodsTable = [
-// { range: [1, 8], type: 'Rod of Cancellation' },
-// { range: [9, 13], type: 'Snake Staff' },
-// { range: [14, 17], type: 'Staff of Commanding' },
-// { range: [18, 28], type: 'Staff of Healing' },
-// { range: [29, 30], type: 'Staff of Power' },
-// { range: [31, 34], type: 'Staff of Striking' },
-// { range: [35, 35], type: 'Staff of Wizardry' },
-// { range: [36, 40], type: 'Wand of Cold' },
-// { range: [41, 45], type: 'Wand of Enemy Detection' },
-// { range: [46, 50], type: 'Wand of Fear' },
-// { range: [51, 55], type: 'Wand of Fireballs' },
-// { range: [56, 60], type: 'Wand of Illusion' },
-// { range: [61, 65], type: 'Wand of Lightning Bolts' },
-// { range: [66, 73], type: 'Wand of Magic Detection' },
-// { range: [74, 79], type: 'Wand of Paralysis' },
-// { range: [80, 84], type: 'Wand of Polymorph' },
-// { range: [85, 92], type: 'Wand of Secret Door Detection' },
-// { range: [93, 100], type: 'Wand of Trap Detection' },
-// ];
-
-// static miscellaneousItemsTable = [
-// { range: [1, 57], subtable: 'Effect Subtable 1' },
-// { range: [58, 100], subtable: 'Effect Subtable 2' },
-// ];
-
-// static effectSubtable1 = [
-// { range: [1, 1], effect: 'Blasting', form: 'G' },
-// { range: [2, 5], effect: 'Blending', form: 'F' },
-// { range: [6, 13], effect: 'Cold Resistance', form: 'F' },
-// { range: [14, 17], effect: 'Comprehension', form: 'E' },
-// { range: [18, 22], effect: 'Control Animal', form: 'C' },
-// { range: [23, 29], effect: 'Control Human', form: 'C' },
-// { range: [30, 35], effect: 'Control Plant', form: 'C' },
-// { range: [36, 37], effect: 'Courage', form: 'G' },
-// { range: [38, 40], effect: 'Deception', form: 'F' },
-// { range: [41, 52], effect: 'Delusion', form: 'A' },
-// { range: [53, 55], effect: 'Djinni Summoning', form: 'C' },
-// { range: [56, 67], effect: 'Doom', form: 'G' },
-// { range: [68, 80], effect: 'Fire Resistance', form: 'F' },
-// { range: [81, 85], effect: 'Invisibility', form: 'F' },
-// { range: [86, 95], effect: 'Levitation', form: 'B' },
-// { range: [96, 97], effect: 'Mind Reading', form: 'C' },
-// { range: [98, 100], effect: 'Panic', form: 'G' },
-// ];
-
-// static effectSubtable2 = [
-// { range: [1, 7], effect: 'Protection +1', form: 'F' },
-// { range: [8, 10], effect: 'Protection +2', form: 'F' },
-// { range: [11, 11], effect: 'Protection +3', form: 'F' },
-// { range: [12, 14], effect: 'Protection from Energy Drain', form: 'F' },
-// { range: [15, 20], effect: 'Protection from Scrying', form: 'F' },
-// { range: [21, 23], effect: 'Regeneration', form: 'C' },
-// { range: [24, 29], effect: 'Scrying', form: 'H' },
-// { range: [30, 32], effect: 'Scrying, Superior', form: 'H' },
-// { range: [33, 39], effect: 'Speed', form: 'B' },
-// { range: [40, 42], effect: 'Spell Storing', form: 'C' },
-// { range: [43, 50], effect: 'Spell Turning', form: 'F' },
-// { range: [51, 69], effect: 'Stealth', form: 'B' },
-// { range: [70, 72], effect: 'Telekinesis', form: 'C' },
-// { range: [73, 74], effect: 'Telepathy', form: 'C' },
-// { range: [75, 76], effect: 'Teleportation', form: 'C' },
-// { range: [77, 78], effect: 'True Seeing', form: 'D' },
-// { range: [79, 88], effect: 'Water Walking', form: 'B' },
-// { range: [89, 99], effect: 'Weakness', form: 'C' },
-// { range: [100, 100], effect: 'Wishes', form: 'C' },
-// ];
-
-// static formTable = {
-
-// A : [
-// { item: "Bell (or Chime)", chance: [1,2]},
-// { item: "Belt or Girdle", chance: [2,5]},
-// { item: "Boots", chance: [6,13]},
-// { item: "Bowl", chance: [14,15]},
-// { item: "Cloak", chance: [16,28]},
-// { item: "Crystal Ball or Orb", chance: [29,31]},
-// { item: "Drums", chance: [32,33]},
-// { item: "Helm", chance: [34,38]},
-// { item: "Horn", chance: [39,43]},
-// { item: "Lens", chance: [44,46]},
-// { item: "Mirror", chance: [47,49]},
-// { item: "Pendant", chance: [50,67]},
-// { item: "Ring", chance: [68,100]}
-// ],
-
-// B : [
-// { item: "Boots", chance: [1,25] },
-// { item: "Pendant", chance: [26,50]},
-// { item: "Ring", chance: [51,100]}
-// ],
-
-// C : [
-// { item: "Pendant", chance: [1,40]},
-// { item: "Ring", chance: [41,100]}
-// ],
-
-// D : [
-// { item: "Lens", chance: [1,17]},
-// { item: "Mirror", chance: [18,21]},
-// { item: "Pendant", chance: [22,50]},
-// { item: "Ring", chance: [51,100]}
-// ],
-
-// E : [
-// { item: "Helm", chance: [1,40] },
-// { item: "Pendant", chance: [41,80]},
-// { item: "Ring", chance: [81,100]}
-// ],
-
-// F : [
-// { item: "Belt or Girdle", chance: [1,7] },
-// { item: "Cloak", chance: [8,38] },
-// { item: "Pendant", chance: [39,50] },
-// { item: "Ring", chance: [51,100] }
-// ],
-
-// G : [
-// { item: "Bell (or Chime)", chance: [1,17]},
-// { item: "Drums", chance: [18,50]},
-// { item: "Horn", chance: [51,100]},
-// ],
-
-// H : [ 
-// { item: "Bowl", chance: [1,17]},   
-// { item: "Crystal Ball or Orb", chance:[18,67]}, 
-// { item: "Mirror", chance:[68,100]}, 
-// ]
-
-// }
 
 
 

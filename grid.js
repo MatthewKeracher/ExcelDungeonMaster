@@ -115,11 +115,17 @@ label.textContent = saveEntry.name
 function updateCellColors(cell, saveEntry){
 
 if(saveEntry){
-cell.style.backgroundColor = saveEntry.color;
-}else{
-cell.style.backgroundColor =  'black';
 
+if(cell.style.backgroundColor === defaultHexColor){
+cell.style.backgroundColor =  'transparent';   
+}else{
+cell.style.backgroundColor = saveEntry.color;
 }
 
+}else{
+
+cell.style.backgroundColor =  'transparent';
+
+}
 }
 

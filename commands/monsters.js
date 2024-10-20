@@ -1,25 +1,30 @@
-let monsters = [];
+let loadedData = {};
 
-async function loadMonsters() {
+async function loadJson(name) {
 try {
-const response = await fetch('data/monsters.json'); 
+const response = await fetch('data/'+name+'.json'); 
 if (!response.ok) {
 throw new Error('Network response was not ok');
 }
-monsters = await response.json(); 
+
+loadedData[name] = await response.json(); 
+console.log(loadedData)
 
 } catch (error) {
-console.error('Error loading monsters:', error);
+console.error('Error loading'+name+':', error);
 }
 }
 
-window.onload = loadMonsters;
+window.onload = loadJson('monsters');
+window.onload = loadJson('items');
+
 
 function searchMonster(monsterName, numAppearing) {
     let familyMonsters = [];
     let selectedMonsters = [];
     let foundMonster = null;
     let highestScore = 0;
+    let monsters = loadedData.monsters;
 
     // Step 1: Collect all monsters in the same family and search for exact matches
     monsters.forEach(monster => {
@@ -107,14 +112,22 @@ function makeMonsterEntry(monsterCounts) {
     // Construct the result using the bundled counts
     for (const monsterName in monsterCounts) {
         const { count, stats } = monsterCounts[monsterName];
-        result += `<br><b>${count} ${stats.name}: </b>`;
-        result += `AC: ${stats.ac}; HD: ${stats.hit}; #At: ${stats.attack}; Dam: ${stats.dam}; `;
-        result += `Mv: ${stats.move}; Sv: ${stats.saveAs}; ML: ${stats.morale}; Tr: ${stats.treasure}; XP: ${stats.xp} ea.\n`;
-        result += `HP:`
+        // Append the number of monsters and their name
+        result += `<br><b>${count} ${stats.name}${count>1?'s':''} </b>\n\n`;
+        
+        // Dynamically add each stat from the stats object
+        for (const [key, value] of Object.entries(stats)) {
+            if (key !== 'name' & value !== '') { // Exclude the name from detailed stats output
+                result += `<b>${key.charAt(0).toUpperCase() + key.slice(1)}:</b> ${value}; `;
+            }
+        }
+
+        result += `\n<br><b>HP:</b>`;
 
         // Create sets of hit points equal to the number of monsters of that type
         for (let i = 0; i < count; i++) {
-            const hitPoints = parseHitPoints(stats.hit);
+            let hitPoints = parseHitPoints(stats.hit);
+            hitPoints === 0? hitPoints = 1: hitPoints;
             const hpValue = parseInt(hitPoints); 
             let checkboxesHTML = ''; 
 
@@ -147,6 +160,7 @@ checkbox.textContent = '☒';
 }
 
 function parseHitPoints(hit) {
+
 // Check if the hit value is a fixed number
 if (!hit.includes('d') && !hit.includes('-')) {
 const fixedValue = parseInt(hit);

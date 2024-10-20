@@ -111,8 +111,14 @@ document.addEventListener('keyup', function(event) {
 
 // Function to set the selected color when clicked
 function setColor(swatchElement) {
+
+let setColor = swatchElement.style.backgroundColor;
+
+if(setColor === "none"){
+currentColor = "none"
+}else{
 currentColor = swatchElement.style.backgroundColor;
-    
+}
 }
 
 // Function to open color picker and change color on Shift-click

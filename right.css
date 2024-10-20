@@ -50,6 +50,14 @@
     align-items: center;
 }
 
+.grid-cell:hover{
+ border: 1.7px solid whitesmoke;
+}
+
+.grid-cell:hover .cellLabel{
+color: lime;
+}
+
 .hex-row {
     display: flex;
     flex: 0 0 auto;
@@ -95,8 +103,7 @@
 
 .hex:hover .middle,
 .hex:hover .left,
-.hex:hover .right,
-.grid-cell:hover {
+.hex:hover .right { /* This will apply brightness when any part of .hex is hovered */
     filter: brightness(1.3);
 }
 

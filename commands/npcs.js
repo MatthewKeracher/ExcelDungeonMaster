@@ -4,7 +4,6 @@ function makeNPC(npcClass, level, npcName) {
     const stats = {
         name: npcName ? npcName : "John Smith",
         class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
-        hit: classTables(npcClass, level, 'hitDice')
     };
 
     let npcHTML = ``;
@@ -24,6 +23,18 @@ function makeNPC(npcClass, level, npcName) {
         });
     }
 
+    // Skills
+    const skills = getSkills(npcClass, level);
+    if (skills) {
+        npcHTML += `<br><b>Skills:</b><br>`;
+        Object.keys(skills).forEach(key => {
+            if (key !== 'level') {
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                npcHTML += `${formattedKey}: ${skills[key]}<br>`;
+            }
+        });
+    }
+
     //Other Information
     npcHTML += `<br>`
     for (const [key, value] of Object.entries(stats)) {
@@ -32,34 +43,36 @@ function makeNPC(npcClass, level, npcName) {
         }
     }
 
-     //Hitpoints
-     const hitPoints = parseHitPoints(stats.hit); // Assume this function calculates HP based on HD
-     const hpValue = parseInt(hitPoints);
-     let checkboxesHTML = '';
- 
-     npcHTML += `<br><b>HP:</b> &nbsp; ${hitPoints}\n`;
- 
-     // Create checkboxes for HP
-     for (let j = 0; j < hpValue; j++) {
-         checkboxesHTML += `☐`;
- 
-         // Hitbox Spacing
-         if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
-             checkboxesHTML += '\t';
-         }
-         if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
-             checkboxesHTML += '<br>';
-         }
-     }
- 
-     npcHTML += `${checkboxesHTML}\n`;
-
     npcHTML += `</div>`; // End of left column
 
-    // Right Column for Saving Throws
+    // Right Column 
     npcHTML += `<div style="flex: 1;">`;
     npcHTML += `<b>Level ${level} ${stats.class}.</b><br>`
 
+    //Hitpoints
+    const hitDice = classTables(npcClass, level, 'hitDice')
+    const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
+    const hpValue = parseInt(hitPoints);
+    let checkboxesHTML = '';
+
+    npcHTML += `<br><b>HP:</b> &nbsp; ${hitPoints}\n`;
+
+    // Create checkboxes for HP
+    for (let j = 0; j < hpValue; j++) {
+        checkboxesHTML += `☐`;
+
+        // Hitbox Spacing
+        if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
+            checkboxesHTML += '\t';
+        }
+        if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
+            checkboxesHTML += '<br>';
+        }
+    }
+
+    npcHTML += `${checkboxesHTML}\n`;
+
+    //Saving Throws
     const savingThrows = getSaveThrows(npcClass, level);
     if (savingThrows) {
         npcHTML += `<br><b>Saving Throws:</b><br>`;
@@ -71,15 +84,13 @@ function makeNPC(npcClass, level, npcName) {
         });
     }
 
-    // Skills
-    const skills = getSkills(npcClass, level);
-    if (skills) {
-        npcHTML += `<br><b>Skills:</b><br>`;
-        Object.keys(skills).forEach(key => {
-            if (key !== 'level') {
-                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                npcHTML += `${formattedKey}: ${skills[key]}<br>`;
-            }
+    // Spells
+    const spells = getSpells(npcClass, level);
+    if (spells) {
+        npcHTML += `<br><b>Spells:</b><br>`;
+        spells.forEach(spell => {
+                npcHTML += `${spell.name}<br>`;
+            
         });
     }
 
@@ -524,6 +535,63 @@ return null; // Handle invalid class
 }
 
 }
+
+function getSpells(npcClass, level) {
+    // Get the spell slots available for the NPC's class and level
+    const spellSlotsArray = classTables(npcClass, level, "spells");
+
+    if(!spellSlotsArray){return}
+
+    // Convert spellSlotsArray into an array of key-value pairs
+    const spellSlots = spellSlotsArray.map((count, index) => ({
+        level: index + 1, // Spell levels are typically 1-based
+        count: count
+    }));
+
+    // Create a set to track used spells and an array to hold the selected spells
+    const usedSpells = new Set();
+    const selectedSpells = [];
+
+    // Loop through each spell level in the spellSlots array
+    spellSlots.forEach(spellLevelData => {
+        const spellLevel = spellLevelData.level; // Spell level
+        const numberOfSpellsAtLevel = spellLevelData.count; // Number of spells available at that level
+
+        // If there are no spells available for this level, continue to the next
+        if (numberOfSpellsAtLevel === 0) {
+            return;
+        }
+
+        // Filter spells based on class, current spell level, and ensure they haven't been used
+        const availableSpells = loadedData.spells.filter(spell => 
+            spell.class === npcClass && parseInt(spell.level) === spellLevel && !usedSpells.has(spell.name)
+        );
+
+        // Randomly select spells based on the number of slots available at this level
+        for (let i = 0; i < numberOfSpellsAtLevel; i++) {
+            // If there are no more available spells, break out of the loop
+            if (availableSpells.length === 0) {
+                break;
+            }
+
+            // Randomly select a spell from the available spells
+            const randomIndex = Math.floor(Math.random() * availableSpells.length);
+            const chosenSpell = availableSpells[randomIndex];
+
+            // Add the chosen spell to the selected spells array and mark it as used
+            selectedSpells.push(chosenSpell);
+            usedSpells.add(chosenSpell.name);
+
+            // Remove the chosen spell from available spells to avoid duplicates
+            availableSpells.splice(randomIndex, 1);
+        }
+    });
+
+    return selectedSpells; // Return the array of selected spells
+}
+
+
+
 
 
 

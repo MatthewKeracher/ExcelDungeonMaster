@@ -4,11 +4,16 @@
     box-sizing: border-box;
 }
 
+:root {
+    --mode-color: lime;
+}
+
+
 
 body {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Cascadia';
     background-color: rgb(39, 52, 39);
-    color: lime;
+    color: var(--mode-color);
 }
 
 .container {
@@ -19,9 +24,9 @@ body {
 
 .left-section, .right-section {
     background-color: black;
-    border: 1px solid lime;
+    border: 1px solid var(--mode-color);
     padding: 1vw;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Cascadia';
     color: whitesmoke;
 }
 
@@ -36,32 +41,30 @@ body {
     left: 10%;
     z-index: 1000;
     text-align: center;
-    border: 1px solid lime;
+    border: 1px solid var(--mode-color);
     background-color: black;
 }
 
 #startLogo {
-    position: fixed;
-    display: block;
-    width: 1000px;  
+    position: absolute;
+    width: 100%;  
     top: 40%;
-    left: 40%;
+    transform: ();
     z-index: 1000;
 }
 
 #gimme {
     font-size: 18px;
     color: rgba(245, 245, 245, 0.744); /* Adjust color and size as needed */
-    font-family: 'SoutaneBlack';
+    font-family: 'Cascadia';
     margin-bottom: 10px;
 }
 
 
 footer {
     background-color: transparent;
-    color: rgba(0, 255, 0, 0.525);
+    color: var(--mode-color);
     text-align: center;
-    padding: 10px 0;
     position: fixed;
     width: 100%;
     bottom: 0;

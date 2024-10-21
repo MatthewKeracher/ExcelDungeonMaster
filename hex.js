@@ -87,6 +87,8 @@ updateHexGrid()
 
 function changeHex(hexagon){
 
+if(currentMode !== "map"){return};
+
 saveEntry();
 updateHexNames();
 
@@ -106,11 +108,11 @@ currentObj = loadEntry;
 if(loadEntry){
 placeName.value = loadEntry.name;
 writeBox.value = loadEntry.desc.trim();
-textDiv.innerHTML = handleCommands();
+textDiv.innerHTML = loadEntry.desc.trim();
 }
 
 // isEditing = true;
-// toggleEditMode();
+//toggleEditMode();
 saveEntry();
 saveData();
 

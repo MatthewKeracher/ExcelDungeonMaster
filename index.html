@@ -60,14 +60,13 @@
         </nav>
         
 
-   
+        <div id="modeBox"></div>
         <div id="regionName">Excel_DM</div>
         <div id="idBox"></div>
+        
   
 
 </div>
-
-<img id="startLogo" src="img/logo.gif"/>
 
 <div id="customPrompt" class="modal">
     <div class="modal-content">
@@ -82,9 +81,11 @@
     <div class="container">
         <div class="left-section" id="editableDiv">
 
-            <input id="placeName"></input>
+            <input id="placeName" placeholder="name this location" readonly="true" maxlength="28"></input>
             <div id="textDiv"></div>
             <textarea id="writeBox"></textarea>
+            <textarea id="commandLine" placeholder="roll | npc | monster" maxlength="28"></textarea>
+            
 
             <div id="paletteDiv">
                 <!-- Muted color swatches using RGB values -->
@@ -106,6 +107,7 @@
 
         <div class="right-section">
 
+            <img id="startLogo" src="img/logo.gif"/>
             <div id="logoContainer">
                 <img id="logo" src="img/logo.gif"/>
                 <p id="gimme">Consider donating some money to keep this project going.</p>

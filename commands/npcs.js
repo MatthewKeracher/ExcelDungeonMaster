@@ -1,3 +1,35 @@
+function makeHitBoxes(hitPoints){
+
+    hitPoints = hitPoints === 0 ? 1 : hitPoints; // Ensure at least 1 hit point
+    const hpValue = parseInt(hitPoints);
+    let HTML = ``;
+
+    HTML += `<br><br>${hitPoints} `; // Display the total hit points
+
+    // Create a container div for checkboxes
+    HTML += `<div class="hp-checkbox-container" style="display: inline-block;">`;
+
+    // Create checkboxes for HP
+    for (let j = 0; j < hpValue; j++) {
+        // Create a div for each hit point checkbox
+        HTML += `<div class="hp-checkbox" data-hp="${j}" style="display: inline-block; cursor: pointer; margin-right: 5px;">☐</div>`;
+
+            
+            if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
+                HTML += '  ';
+            }
+            if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
+                HTML += '<br>';
+            }
+    }
+
+    HTML += `</div><br>`; // Close the checkbox container div
+
+    return HTML
+
+}
+
+
 function makeNPC(npcClass, level, npcName) {
     console.log(npcClass);
 
@@ -6,80 +38,65 @@ function makeNPC(npcClass, level, npcName) {
         class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
     };
 
-    let npcHTML = ``;
+    let HTML = '<br><hr><br>';
 
     // Create a two-column layout
-    npcHTML += `<div style="display: flex;">`;
+    HTML += `<div style="display: flex;">`;
 
     // Left Column for Ability Scores
-    npcHTML += `<div style="flex: 1; margin-right: 20px;">`;
-    npcHTML +=`<b>${stats.name}</b>\n`
+    HTML += `<div style="flex: 1; margin-right: 20px;">`;
+    HTML +=`<u>${stats.name}</u>\n`
 
     const scores = makeScores(stats.class);
     if (scores) {
-        npcHTML += `<br>`;
+        HTML += `<br>`;
         scores.forEach(score => {
-            npcHTML += `<b>${score.name.toUpperCase()}:</b> ${score.score} (${score.bonus})<br>`;
+            HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
         });
     }
 
     // Skills
     const skills = getSkills(npcClass, level);
     if (skills) {
-        npcHTML += `<br><b>Skills:</b><br>`;
+        HTML += `<br><u>Skills:</u><br>`;
         Object.keys(skills).forEach(key => {
             if (key !== 'level') {
                 const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                npcHTML += `${formattedKey}: ${skills[key]}<br>`;
+                HTML += `${formattedKey}: ${skills[key]}<br>`;
             }
         });
     }
 
     //Other Information
-    npcHTML += `<br>`
+    HTML += `<br>`
     for (const [key, value] of Object.entries(stats)) {
         if (key !== 'name' && key !== 'class') {
-            npcHTML += `<b>${key.charAt(0).toUpperCase() + key.slice(1)}:</b> ${value} `;
+            HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
         }
     }
 
-    npcHTML += `</div>`; // End of left column
+    HTML += `</div>`; // End of left column
 
     // Right Column 
-    npcHTML += `<div style="flex: 1;">`;
-    npcHTML += `<b>Level ${level} ${stats.class}.</b><br>`
+    HTML += `<div style="flex: 1; text-align: left;">`
+    HTML += `Level ${level} ${stats.class}.<br>`
 
     //Hitpoints
     const hitDice = classTables(npcClass, level, 'hitDice')
     const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
-    const hpValue = parseInt(hitPoints);
-    let checkboxesHTML = '';
 
-    npcHTML += `<br><b>HP:</b> &nbsp; ${hitPoints}\n`;
+    HTML += `<br>HP: &nbsp; ${hitPoints}\n`;
 
-    // Create checkboxes for HP
-    for (let j = 0; j < hpValue; j++) {
-        checkboxesHTML += `☐`;
-
-        // Hitbox Spacing
-        if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
-            checkboxesHTML += '\t';
-        }
-        if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
-            checkboxesHTML += '<br>';
-        }
-    }
-
-    npcHTML += `${checkboxesHTML}\n`;
+    HTML += makeHitBoxes(hitPoints)
 
     //Saving Throws
     const savingThrows = getSaveThrows(npcClass, level);
     if (savingThrows) {
-        npcHTML += `<br><b>Saving Throws:</b><br>`;
+        HTML += `<br><u>Saving Throws:</u><br>`;
         Object.keys(savingThrows).forEach(key => {
             if (key !== 'level') {
                 const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                npcHTML += `${formattedKey}: ${savingThrows[key]}<br>`;
+                HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
             }
         });
     }
@@ -87,19 +104,19 @@ function makeNPC(npcClass, level, npcName) {
     // Spells
     const spells = getSpells(npcClass, level);
     if (spells) {
-        npcHTML += `<br><b>Spells:</b><br>`;
+        HTML += `<br><u>Spells:</u><br>`;
         spells.forEach(spell => {
-                npcHTML += `${spell.name}<br>`;
+                HTML += `${spell.name}<br>`;
             
         });
     }
 
-    npcHTML += `</div>`; // End of right column
+    HTML += `</div>`; // End of right column
 
-    npcHTML += `</div>`; // End of flex container
+    HTML += `</div>`; // End of flex container
 
-    npcHTML += `<br><hr>`;
-    return npcHTML;
+    HTML += `<br><br>`;
+    return HTML;
 }
 
 function makeScores(npcClass){

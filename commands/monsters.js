@@ -108,91 +108,68 @@ return monsterCounts; // Return the counts for further processing
 }
 
 function makeMonsterEntry(monsterCounts) {
-let HTML = '';
+    let HTML = '<br><hr><br>';
 
-// Construct the result using the bundled counts
-for (const monsterName in monsterCounts) {
-const { count, stats: monster } = monsterCounts[monsterName];
+    // Construct the result using the bundled counts
+    for (const monsterName in monsterCounts) {
+        const { count, stats: monster } = monsterCounts[monsterName];
 
-// Start the monster entry
-HTML += `<div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ccc; padding: 10px;">`;
+        // Start the monster entry
+        HTML += `<div style="display: flex; justify-content: space-between; padding: 10px;">`;
 
-// Column for monster name and stats
-HTML += `<div style="flex: 1;">`;
-HTML += `<b>${count} ${monster.name}${count > 1 ? 's' : ''}</b><br>`;
-HTML += `${monster.family}<br><br>`;
-HTML += `<b>AC:</b>${monster.armourClass}<br>`;
+        // Column for monster name and stats
+        HTML += `<div style="flex: 1;">`;
+        HTML += `<u>${count} ${monster.name}${count > 1 ? 's' : ''}</u><br>`;
+        HTML += `${monster.family}<br><br>`;
+        HTML += `AC: ${monster.armourClass}<br>`;
 
-// HITPOINTS
-if(monster){
-    HTML += `<b>HP:</b> (${monster.hit})<br>`;
-    for (let i = 0; i < count; i++) {
-        let hitPoints = parseHitPoints(monster.hit);
-        hitPoints === 0 ? hitPoints = 1 : hitPoints; // Ensure at least 1 hit point
-        const hpValue = parseInt(hitPoints);
-        let checkboxesHTML = '';
-        
-        HTML += `${hitPoints}\n`;
-        
-            // Create checkboxes for HP
-            for (let j = 0; j < hpValue; j++) {
-                checkboxesHTML += `☐`;
-        
-                // Hitbox Spacing
-                if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
-                    checkboxesHTML += '\t';
-                }
-                if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
-                    checkboxesHTML += '<br>';
-                }
-            }
-        
-            HTML += `${checkboxesHTML}\n`;
+        // HITPOINTS
+        HTML += `HP: (${monster.hit})`;
+        for (let i = 0; i < count; i++) {
+            let hitPoints = parseHitPoints(monster.hit);
+           
+            HTML += makeHitBoxes(hitPoints)
+            
         }
+
+        HTML += `</div>`; // Close the left column
+
+        // RIGHT COLUMN
+        HTML += `<div style="flex: 1; text-align: left;">`; // Right-aligned for HP and checkboxes
+
+        // Dynamically add each stat from the stats object
+        const excludedKeys = ['name', 'saveAs', 'hit', 'sort', 'armourClass', 'family'];
+
+        for (const [key, value] of Object.entries(monster)) {
+            if (!excludedKeys.includes(key) && value !== '') { // Exclude the name from detailed stats output
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                HTML += `<u>${formattedKey}:</u> ${value}<br><br>`;
+            }
+        }
+
+        // Saving Throws
+        if (monster) {
+            const saveAs = parseInt(monster.saveAs);
+            const savingThrows = getSaveThrows("fighter", saveAs);
+            if (savingThrows) {
+                HTML += `<br><u>Saving Throws:</u><br>`;
+                Object.keys(savingThrows).forEach(key => {
+                    if (key !== 'level') {
+                        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                        HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
+                    }
+                });
+            }
+        }
+
+        HTML += `</div>`; // Close the right column
+        HTML += `</div>`; // Close the monster entry
+        HTML += `<br>`; // Add a horizontal rule between monsters
     }
 
-HTML += `</div>`; // Close the left column
-
-// RIGHT COLUMN
-HTML += `<div style="flex: 1; text-align: left;">`; // Right-aligned for HP and checkboxes
-
-// Dynamically add each stat from the stats object
-for (const [key, value] of Object.entries(monster)) {
-
-    const excludedKeys = ['name', 'saveAs', 'hit', 'sort','armourClass', 'family']
-    
-    if (!excludedKeys.includes(key) && value !== '') { // Exclude the name from detailed stats output
-    const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-    HTML += `<b>${formattedKey}:</b> ${value}<br>`;
-    }
-    }
-
-//Saving Throws
-if(monster){
-const saveAs = parseInt(monster.saveAs);
-const savingThrows = getSaveThrows("fighter", saveAs);
-if (savingThrows) {
-HTML += `<br><b>Saving Throws:</b><br>`;
-Object.keys(savingThrows).forEach(key => {
-if (key !== 'level') {
-const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
-}
-});
-}
+    return HTML;
 }
 
-HTML += `</div>`; // Close the HP column
-HTML += `</div>`; // Close the monster entry
-HTML += `<hr>`; // Add a horizontal rule between monsters
-
-
-
-
-}
-
-return HTML;
-}
 
 
 function toggleCheckbox(checkbox) {

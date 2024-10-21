@@ -4,13 +4,13 @@
     align-items: center;
     justify-content: space-between;
     background-color: black;
-    border-bottom: 1px solid lime;
+    border-bottom: 1px solid var(--mode-color);
 }
 
 /* Toolbar styles */
 nav.toolbar {
     background-color: black;
-    color: lime;
+    color: var(--mode-color);
     padding: 5px;
     font-size: 16px;
 }
@@ -28,7 +28,7 @@ nav.toolbar ul li {
 }
 
 nav.toolbar ul li > a {
-    color: lime;
+    color: var(--mode-color);
     text-decoration: none;
     padding: 5px 10px;
     display: block;
@@ -62,7 +62,7 @@ nav.toolbar ul li > .dropdown > li {
 
 nav.toolbar ul li > .dropdown > li > a {
     padding: 10px 15px;
-    color: lime;
+    color: var(--mode-color);
     text-decoration: none;
     display: block;
 }

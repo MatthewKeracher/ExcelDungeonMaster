@@ -5,7 +5,7 @@ const paintButton = document.getElementById('paintButton');
 const paletteDiv = document.getElementById('paletteDiv');
 
 
-if(!isPainting){
+if(!isPainting && currentMode === 'map'){
 
 isPainting = true
 paintButton.classList.add('highlight');

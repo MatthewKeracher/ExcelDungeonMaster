@@ -55,7 +55,7 @@
 }
 
 .grid-cell:hover .cellLabel{
-color: lime;
+color: var(--mode-color);
 }
 
 .hex-row {
@@ -114,7 +114,7 @@ color: lime;
 .cellLabel {
     display: block;
     position: absolute;
-    font-family: "SoutaneBlack";
+    font-family: "Cascadia";
     white-space: nowrap;
     color: whitesmoke;
     padding: 0px;

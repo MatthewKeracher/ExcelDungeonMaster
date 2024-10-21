@@ -14,7 +14,7 @@
     background-color: black;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 10px;
-    border: 1px solid lime;
+    border: 1px solid var(--mode-color);
     width: 200px; /* Could be more or less, depending on screen size */
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -29,7 +29,7 @@
 
 .close:hover,
 .close:focus {
-    color: lime;
+    color: var(--mode-color);
     text-decoration: none;
     cursor: pointer;
 }
@@ -44,27 +44,27 @@ input {
     padding: 8px;
     margin-bottom: 10px;
     font-size: large;
-    font-family: 'Courier New', Courier, monospace;
-    border: 1px solid lime;
+    font-family: 'Cascadia';
+    border: 1px solid var(--mode-color);
     background-color: rgb(39, 52, 39);
-    color: lime;
+    color: var(--mode-color);
     border-radius: 3px;
 }
 
 button {
     background-color: rgb(39, 52, 39);
-    color: lime;
+    color: var(--mode-color);
     padding: 10px 15px;
     font-size: large;
-    font-family: 'SoutaneBlack';
+    font-family: 'Cascadia';
     width: 150px;
-    border: 1px solid lime;
+    border: 1px solid var(--mode-color);
     border-radius: 1px;
     cursor: pointer;
 }
 
 button:hover {
     border: none;
-    background-color: lime;
+    background-color: var(--mode-color);
     color: black;
 }

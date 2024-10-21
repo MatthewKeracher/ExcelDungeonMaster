@@ -39,6 +39,8 @@ function createGrid(rows, cols) {
 
 function changeCell(gridCell){
 
+if(currentMode !== "map"){return};
+
 saveEntry();
 updateCellNames();
 
@@ -61,8 +63,7 @@ writeBox.value = loadEntry.desc.trim();
 textDiv.innerHTML = handleCommands();
 }
 
-// isEditing = true;
-// toggleEditMode();
+toggleEditMode();
 saveEntry();
 saveData();
 }

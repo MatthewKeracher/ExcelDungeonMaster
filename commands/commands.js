@@ -1,101 +1,195 @@
-function toggleEditMode() {
 
+
+
+function toggleModeColor() {
+    const root = document.documentElement;
+    root.style.setProperty('--mode-color', modeColor);
+}
+
+function handleCheckboxClick(event) {
+    const checkboxDiv = event.currentTarget; // Get the clicked checkbox div
+    const container = checkboxDiv.parentElement; // Get the parent container
+    const checkboxes = container.querySelectorAll('.hp-checkbox'); // Select all checkboxes within the same container
+
+    // Uncheck all checkboxes in the container first
+    checkboxes.forEach(checkbox => {
+        checkbox.textContent = '☐'; // Change to unchecked box
+        checkbox.classList.remove('checked'); // Remove checked class
+    });
+
+    // Check the clicked checkbox and all preceding ones
+    let checkboxIndex = Array.from(checkboxes).indexOf(checkboxDiv);
+    
+    for (let i = 0; i <= checkboxIndex; i++) {
+        const currentCheckbox = checkboxes[i];
+        currentCheckbox.textContent = '☒'; // Change to checked box
+        currentCheckbox.classList.add('checked'); // Optionally add a class for styling
+    }
+
+    if (checkboxIndex === checkboxes.length - 1) {
+        // Change the color of all checkboxes to gray
+        checkboxes.forEach(checkbox => {
+            checkbox.style.color = 'gray'; // Set the color of all checkboxes to gray
+        });
+    } else {
+        // Reset color for other checkboxes if not the last
+        checkboxes.forEach(checkbox => {
+            checkbox.style.color = modeColor; // Set the color of all checkboxes to gray
+        });
+    }
+}
+
+function hitPointInit() {
+    // Select all checkbox divs
+    const checkboxes = document.querySelectorAll('.hp-checkbox');
+
+    // Remove existing event listeners by cloning the node and replacing the old one
+    checkboxes.forEach(checkbox => {
+        const newCheckbox = checkbox.cloneNode(true); // Clone the checkbox
+        checkbox.parentNode.replaceChild(newCheckbox, checkbox); // Replace old checkbox with new one
+        newCheckbox.addEventListener('click', handleCheckboxClick); // Add the click listener to the new checkbox
+    });
+}
+
+
+function toggleModes() {
 isPainting = true
 handlePaint();
 
+//EDIT MODE
+if (currentMode === "edit") {
+//Change Mode
+modeBox.innerHTML = `<b>Edit Mode</b>`
 
-if (!isEditing) {
-textDiv.style.display = "none";
+//Change what displays
 writeBox.style.display = "block";
-placeName.focus();
+textDiv.style.display = "none";
+commandLine.style.display = "none";
+placeName.readOnly = false;
 
-const textContent = textDiv.innerHTML;
+//Change colour
+modeColor = "hotpink";
+toggleModeColor();
 
+//What is focused
+writeBox.focus();
+
+//Change Content
+writeBox.value += handleCommands();
+const textContent = writeBox.value;
 writeBox.setSelectionRange(textContent.length, textContent.length);
-isEditing = true;
+writeBox.scrollTop = writeBox.scrollHeight;
 
-writeBox.addEventListener('blur', function () {
-setTimeout(() => {
-textDiv.innerHTML = handleCommands() || "";
-isEditing = false;
-}, 0); 
-});
+//Change Content
+textDiv.innerHTML = ``;
+textDiv.innerHTML = writeBox.value;
+hitPointInit();
 
-} else {
-textDiv.style.display = "block";
+
+
+
+//MAP MODE
+} else if(currentMode === "map"){
+//Change Mode
+modeBox.innerHTML = `<b>Map Mode</b>`
+
+//Change what displays
 writeBox.style.display = "none";
-isEditing = false;
-placeName.blur();
+textDiv.style.display = "block";
+commandLine.style.display = "none";
+placeName.readOnly = true;
 
-if (writeBox.style.display === 'none') {
-setTimeout(() => {
-textDiv.innerHTML = handleCommands() || "";
+//Change colour
+modeColor = "lime";
+toggleModeColor();
 
-}, 0);
-}
+//What is focused
+writeBox.blur();
 
+//Change Content
+writeBox.value += handleCommands();
+const textContent = writeBox.value;
+writeBox.setSelectionRange(textContent.length, textContent.length);
+
+//Change Content
+textDiv.innerHTML = ``;
+textDiv.innerHTML = writeBox.value;
+hitPointInit();
+textDiv.scrollTop = textDiv.scrollHeight;
+
+//Save Content
 saveEntry();
 updateCellNames();
 updateHexNames();
 
-}
-}
 
-document.addEventListener('keydown', function (e) {
-if (e.shiftKey && e.key === 'Enter') {
-e.preventDefault();
-toggleEditMode();  
+//COMMAND MODE
+} else if(currentMode === "command"){
+//Change Mode
+modeBox.innerHTML = `<b>Command Mode</b>`
+
+//Change what displays
+writeBox.style.display = "none";
+textDiv.style.display = "block";
+commandLine.style.display = "block";
+placeName.readOnly = true;
+
+//Change colour
+modeColor = "orange";
+toggleModeColor();
+
+//What is focused
+commandLine.focus();
+
+//Change Content
+textDiv.innerHTML = ``;
+textDiv.innerHTML = writeBox.value;
+hitPointInit();
+
 }
-});
+}
 
 function handleCommands() {
-const writeBox = document.getElementById('writeBox');
-let inputText = writeBox.value;
+    let inputText = commandLine.value;
 
-// Resolve nested commands before replacing other commands
-inputText = resolveNestedCommands(inputText);
+    // Resolve nested commands before replacing other commands
+    inputText = resolveNestedCommands(inputText);
 
-inputText = inputText.replace(/{(\d+%)?\s*(roll|monster|npc)\s*([\w\s\d]+)(?:\s+([^{}]+))?\s*}/gi, function(match, percentage, commandType, params, paramName) {
-    // Remove any surrounding whitespace from paramName if it exists
-    if (paramName) {
-        paramName = paramName.trim(); // Clean whitespace around the name
-    }
-
-    // If a percentage is present, roll to see if the command is executed
-    if (percentage) {
-        const chance = parseInt(percentage); // Convert percentage string to a number
-        if (Math.random() * 100 > chance) {
-            return ''; // Skip this command if the percentage check fails
+    // Adjusted regex to properly capture command types and parameters
+    inputText = inputText.replace(/(roll|monster|npc)\s*([\w\s\d]+)(?:\s+([^{}]+))?\s*/gi, function(_, commandType, params, paramName) {
+        // Remove any surrounding whitespace from paramName if it exists
+        if (paramName) {
+            paramName = paramName.trim(); // Clean whitespace around the name
         }
-    }
 
-    // Split params for further processing
-    const paramArray = params.trim().split(/\s+/);
+        // Ensure params is defined; otherwise, assign an empty string
+        params = params ? params.trim() : ''; // Trim whitespace from params
+        const paramArray = params.split(/\s+/); // Split params into an array
 
-    // Include the name in the params array if it exists
-    if (paramName) {
-        paramArray.push(paramName); // Add name to the end of the params array
-    }
+        // Include the name in the params array if it exists
+        if (paramName) {
+            paramArray.push(paramName); // Add name to the end of the params array
+        }
 
-    switch (commandType.toLowerCase()) {
-        case 'roll':
-            console.log('roll')
-            return handleRollCommand(paramArray);
-        case 'monster':
-            console.log('monster')
-            return handleMonsterCommand(paramArray);
-        case 'npc':
-            console.log('npc')
-            return handleNpcCommand(paramArray);
-        default:
-            return '{Command not recognised}';
-    }
-});
+        switch (commandType.toLowerCase()) {
+            case 'roll':
+                console.log('roll');
+                return handleRollCommand(paramArray);
+            case 'monster':
+                console.log('monster');
+                return handleMonsterCommand(paramArray);
+            case 'npc':
+                console.log('npc');
+                return handleNpcCommand(paramArray);
+            default:
+                return '{Command not recognised}';
+        }
+    });
 
-
-
-return inputText; // Update the input box with the processed text
+    commandLine.value = "";
+    return inputText; // Update the input box with the processed text
 }
+
 
 
 // Function to handle roll commands
@@ -109,7 +203,8 @@ if (match) {
 const numDice = parseInt(match[1]);
 const diceSides = parseInt(match[2]);
 const rolledValue = rollDice(numDice, diceSides); // Roll dice using the provided function
-return rolledValue;
+const HTML = `<br><hr><br><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`
+return HTML;
 }
 
 return 0; // Return 0 if the format is not recognized

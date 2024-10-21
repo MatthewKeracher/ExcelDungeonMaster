@@ -2,7 +2,7 @@
 let data = [{
     id: "0.0",
     name: "Your World",
-    desc: "Insert information about <i>your</i> world here. Press shift + enter to toggle editing.",
+    desc: "Insert information about <i>your</i> world here. Press shift + enter to toggle between Map, Command, and Edit modes.",
     rows: 20,
     cols: 45,
     }];
@@ -20,7 +20,8 @@ let squareCols = 60;
 
 
 let isHexMap = true;
-let isEditing = false;
+let currentMode = "map";
+let modeColor = "whitesmoke";
 let isPainting = false;
 let isFilling = false;
 
@@ -30,10 +31,21 @@ const placeName = document.getElementById('placeName')
 const textDiv = document.getElementById('textDiv'); 
 const writeBox = document.getElementById('writeBox'); 
 const idBox = document.getElementById('idBox');
+const modeBox = document.getElementById('modeBox');
 
 //Default
 placeName.value = "Excel_DM"
-textDiv.innerHTML = `Welcome to Excel_DM`
+textDiv.innerHTML = ``
+writeBox.value = "Press the 'e' key.";
+modeBox.innerHTML = `<b>Map Mode</b>`
+
+//Opening Sequence
+for (let i = 0; i < writeBox.value.length; i++) {
+    setTimeout(() => {
+      textDiv.innerHTML += writeBox.value.charAt(i);
+    }, i * 25); 
+  }
+  
 
 idBox.textContent = '0.0'
 
@@ -127,7 +139,7 @@ let loadEntry = getObj(id)
 if(loadEntry){
 placeName.value = loadEntry.name;
 writeBox.value = loadEntry.desc.trim();
-textDiv.innerHTML = handleCommands();
+textDiv.innerHTML = loadEntry.desc.trim();
 }
 
 }
@@ -140,40 +152,40 @@ return obj
 
 }
 
-let inactivityTimer;
+// let inactivityTimer;
 
-// Function to show the inactivity image
-function showInactivityImage() {
-const container = document.getElementById('logoContainer');
-container.style.display = 'block';
-}
+// // Function to show the inactivity image
+// function showInactivityImage() {
+// const container = document.getElementById('logoContainer');
+// container.style.display = 'block';
+// }
 
-// Function to hide the inactivity image
-function hideInactivityImage() {
-const inactivityImage = document.getElementById('logoContainer');
-inactivityImage.style.display = 'none';
-}
+// // Function to hide the inactivity image
+// function hideInactivityImage() {
+// const inactivityImage = document.getElementById('logoContainer');
+// inactivityImage.style.display = 'none';
+// }
 
-// Reset the inactivity timer
-function resetInactivityTimer() {
-// Clear any existing timer
-clearTimeout(inactivityTimer);
+// // Reset the inactivity timer
+// function resetInactivityTimer() {
+// // Clear any existing timer
+// clearTimeout(inactivityTimer);
 
-// Hide the inactivity image if it's currently displayed
-hideInactivityImage();
+// // Hide the inactivity image if it's currently displayed
+// hideInactivityImage();
 
-// Start a new timer for 10 seconds (10000 milliseconds)
-inactivityTimer = setTimeout(() => {
-showInactivityImage();
-}, 30000); // 10 seconds of inactivity
-}
+// // Start a new timer for 10 seconds (10000 milliseconds)
+// inactivityTimer = setTimeout(() => {
+// showInactivityImage();
+// }, 30000); // 10 seconds of inactivity
+// }
 
-// Listen for user activity (mouse movement, key presses, etc.)
-document.addEventListener('mousemove', resetInactivityTimer);
-document.addEventListener('keydown', resetInactivityTimer);
+// // Listen for user activity (mouse movement, key presses, etc.)
+// document.addEventListener('mousemove', resetInactivityTimer);
+// document.addEventListener('keydown', resetInactivityTimer);
 
-// Start the initial inactivity timer when the page loads
-resetInactivityTimer();
+// // Start the initial inactivity timer when the page loads
+// resetInactivityTimer();
 
 
 

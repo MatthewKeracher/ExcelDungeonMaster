@@ -110,7 +110,7 @@ border-top: 1px solid var(--mode-color); /* Optional: adds a top border to separ
 
 .color-swatch {
 width: 30px;
-height: 30px;
+height: 20px;
 margin: 0 5px;
 border: 1px solid #ccc;
 cursor: pointer;

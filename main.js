@@ -2,7 +2,7 @@
 let data = [{
     id: "0.0",
     name: "Your World",
-    desc: "Insert information about <i>your</i> world here. Press shift + enter to toggle between Map, Command, and Edit modes.",
+    desc: "Insert information about <i>your</i> world here. Press ctrl/cmd + '[' or ']' to toggle between Map, Command, and Edit modes.",
     rows: 20,
     cols: 45,
     }];

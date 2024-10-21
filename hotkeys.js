@@ -42,7 +42,7 @@ function addHotkeys() {
 
             switch (key) {
                 // For Nav
-                case 'c':
+                case 'p':
                     handlePaint();
                     break;
                 case 'f':

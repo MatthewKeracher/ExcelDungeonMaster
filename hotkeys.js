@@ -10,7 +10,7 @@ function addHotkeys() {
 
         // Check if inputs are not focused
         if (
-            !writeBox.contains(document.activeElement) &&
+            !textDiv.contains(document.activeElement) &&
             !placeName.contains(document.activeElement) &&
             !commandLine.contains(document.activeElement)
         ) {

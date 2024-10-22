@@ -61,7 +61,6 @@ updateGrid();
 
 idBox.textContent = '';
 textDiv.innerHTML = '';
-writeBox.value = '';
 
 }
 

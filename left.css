@@ -1,12 +1,12 @@
 .left-section {
-flex-basis: 33%;
-flex-direction: column;
-justify-content: space-between; /* Ensures space between content and the palette */
-height: 100%;
-padding: 10px;
-box-sizing: border-box;
-margin-right: 10px;
-font-size: 18px;
+    position: relative;
+    flex-basis: 33%;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-sizing: border-box;
+    margin-right: 10px;
+    font-size: 18px;
 }
 
 .left-section hr {
@@ -56,49 +56,49 @@ font-size: 18px;
 }
 
 #commandLine{
-display: none;
-width: 100%;
-height: 22px;
-border: none;
-background-color: rgb(52, 47, 39);
-color: var(--mode-color);
-font-size: 18px;
-letter-spacing: 1px;
-vertical-align: middle;
-text-align: left;
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 30px;
+    
+    padding-top: 5px;
+    border: 1px solid var(--mode-color);
+    background-color: rgb(52, 47, 39);
+    color: var(--mode-color);
 
-resize: none;
-overflow: hidden;
-white-space: nowrap;
+    font-size: 18px;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    text-align: left;
+   
+    resize: none;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-#textDiv, #writeBox {
-flex-grow: 1;
-height: 83vh;
-width: 100%;
-border: none;
-padding: 0;
-background-color: black;
-color: var(--mode-color);
-font-family: 'Cascadia';
-font-size: 15px;
-line-height: 1.5;
-resize: none;
-overflow: auto;
-white-space: pre-wrap
+#textDiv {
+    flex-grow: 1;
+    height: 83vh;
+    width: 100%;
+    border: none;
+    padding: 0;
+    background-color: black;
+    color: var(--mode-color);
+    font-family: 'Cascadia';
+    font-size: 15px;
+    line-height: 1.5;
+    resize: none;
+    overflow: auto;
+    white-space: pre-wrap
 }
 
-textarea:focus,
+#textDiv:focus,
 #placeName:focus,
 #commandLine:focus {
 outline: none;
 }
 
-#writeBox{
-display:none;
-width: 100%;
 
-}
 
 
 #paletteDiv {

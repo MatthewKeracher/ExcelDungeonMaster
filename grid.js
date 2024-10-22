@@ -51,7 +51,6 @@ idBox.textContent = coords + '.' + row + '.' + col
 
 //loadData
 textDiv.innerHTML = ''
-writeBox.value = ''
 placeName.value = ''
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
@@ -59,8 +58,7 @@ currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;
-writeBox.value = loadEntry.desc.trim();
-textDiv.innerHTML = handleCommands();
+textDiv.innerHTML = loadEntry.desc;
 }
 
 toggleEditMode();

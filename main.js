@@ -29,22 +29,20 @@ let defaultHexColor = "rgb(27, 26, 26)"; //for Empty Grid Cells
 
 const placeName = document.getElementById('placeName')
 const textDiv = document.getElementById('textDiv'); 
-const writeBox = document.getElementById('writeBox'); 
 const idBox = document.getElementById('idBox');
 const modeBox = document.getElementById('modeBox');
 
 //Default
 placeName.value = "Excel_DM"
-textDiv.innerHTML = ``
-writeBox.value = "Press the 'e' key.";
+textDiv.innerHTML = `Press the 'e' key.`
 modeBox.innerHTML = `<b>Map Mode</b>`
 
 //Opening Sequence
-for (let i = 0; i < writeBox.value.length; i++) {
-    setTimeout(() => {
-      textDiv.innerHTML += writeBox.value.charAt(i);
-    }, i * 25); 
-  }
+// for (let i = 0; i < textDiv.innerHTML.length; i++) {
+//     setTimeout(() => {
+//       textDiv.innerHTML += writeBox.value.charAt(i);
+//     }, i * 25); 
+//   }
   
 
 idBox.textContent = '0.0'
@@ -53,7 +51,6 @@ function emptyStoryteller(){
 
 placeName.value = "";
 textDiv.innerHTML = "";
-writeBox.textContent = "";
 
 }
 
@@ -130,7 +127,6 @@ function goToEntry(id) {
 
 //loadData
 textDiv.innerHTML = ''
-writeBox.value = ''
 placeName.value = ''
 
 let loadEntry = getObj(id)
@@ -138,7 +134,6 @@ let loadEntry = getObj(id)
 
 if(loadEntry){
 placeName.value = loadEntry.name;
-writeBox.value = loadEntry.desc.trim();
 textDiv.innerHTML = loadEntry.desc.trim();
 }
 

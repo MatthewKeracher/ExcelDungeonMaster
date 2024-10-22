@@ -51,6 +51,18 @@ function hitPointInit() {
     });
 }
 
+function placeCaretAtEnd(el) {
+    el.focus(); // Focus on the div
+    const range = document.createRange();
+    const selection = window.getSelection();
+    
+    range.selectNodeContents(el); // Select all the content
+    range.collapse(false); // Collapse the range to the end
+    selection.removeAllRanges(); // Remove any existing selections
+    selection.addRange(range); // Add the new range (caret at the end)
+}
+
+
 function toggleModes() {
 isPainting = true
 handlePaint();
@@ -61,30 +73,27 @@ if (currentMode === "edit") {
 modeBox.innerHTML = `<b>Edit Mode</b>`
 
 //Change what displays
-writeBox.style.display = "block";
-textDiv.style.display = "none";
+textDiv.style.display = "block";
+textDiv.contentEditable = true;
 commandLine.style.display = "none";
 placeName.readOnly = false;
+placeName.placeholder="Click here to name this location."
 
 //Change colour
 modeColor = "hotpink";
 toggleModeColor();
 
-//What is focused
-writeBox.focus();
 
 //Change Content
-writeBox.value += handleCommands();
-const textContent = writeBox.value;
-writeBox.setSelectionRange(textContent.length, textContent.length);
-writeBox.scrollTop = writeBox.scrollHeight;
+textDiv.innerHTML += handleCommands();
+const textContent = textDiv.value;
+
+//What is focused
+placeCaretAtEnd(textDiv)
+textDiv.scrollTop = textDiv.scrollHeight;
 
 //Change Content    
-textDiv.innerHTML = ``;
-textDiv.innerHTML = writeBox.value;
 hitPointInit();
-
-
 
 
 //MAP MODE
@@ -92,9 +101,10 @@ hitPointInit();
 //Change Mode
 modeBox.innerHTML = `<b>Map Mode</b>`
 
+
 //Change what displays
-writeBox.style.display = "none";
 textDiv.style.display = "block";
+textDiv.contentEditable = false;
 commandLine.style.display = "none";
 placeName.readOnly = true;
 
@@ -103,16 +113,12 @@ modeColor = "lime";
 toggleModeColor();
 
 //What is focused
-writeBox.blur();
+textDiv.blur();
 
 //Change Content
-writeBox.value += handleCommands();
-const textContent = writeBox.value;
-writeBox.setSelectionRange(textContent.length, textContent.length);
+textDiv.innerHTML += handleCommands();
 
 //Change Content
-textDiv.innerHTML = ``;
-textDiv.innerHTML = writeBox.value;
 hitPointInit();
 textDiv.scrollTop = textDiv.scrollHeight;
 
@@ -128,8 +134,8 @@ updateHexNames();
 modeBox.innerHTML = `<b>Command Mode</b>`
 
 //Change what displays
-writeBox.style.display = "none";
 textDiv.style.display = "block";
+textDiv.contentEditable = false;
 commandLine.style.display = "block";
 placeName.readOnly = true;
 
@@ -141,8 +147,6 @@ toggleModeColor();
 commandLine.focus();
 
 //Change Content
-textDiv.innerHTML = ``;
-textDiv.innerHTML = writeBox.value;
 hitPointInit();
 
 }

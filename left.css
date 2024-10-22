@@ -21,7 +21,7 @@ font-size: 18px;
     content: ""; /* Required for pseudo-element */
     display: block; /* Ensures that it behaves like a block element */
     margin: 0; /* Remove default margin */
-    height: 2px;
+    height: 4px;
 }
 
 @font-face {
@@ -74,7 +74,7 @@ white-space: nowrap;
 
 #textDiv, #writeBox {
 flex-grow: 1;
-height: 90%;
+height: 83vh;
 width: 100%;
 border: none;
 padding: 0;
@@ -102,15 +102,17 @@ width: 100%;
 
 
 #paletteDiv {
+position: fixed;
 display: none;
 justify-content: center; /* Centers the palette horizontally */
-padding-top: 10px;
+bottom: 6vh;
+padding-top: 1vh;
 border-top: 1px solid var(--mode-color); /* Optional: adds a top border to separate the palette */
 }
 
 .color-swatch {
 width: 30px;
-height: 20px;
+height: 30px;
 margin: 0 5px;
 border: 1px solid #ccc;
 cursor: pointer;

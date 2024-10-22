@@ -124,11 +124,10 @@ function makeMonsterEntry(monsterCounts) {
         HTML += `AC: ${monster.armourClass}<br>`;
 
         // HITPOINTS
-        HTML += `HP: (${monster.hit})`;
         for (let i = 0; i < count; i++) {
             let hitPoints = parseHitPoints(monster.hit);
            
-            HTML += makeHitBoxes(hitPoints)
+            HTML += makeHitBoxes(hitPoints, monster.hit)
             
         }
 

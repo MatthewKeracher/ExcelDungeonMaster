@@ -1,14 +1,12 @@
-function makeHitBoxes(hitPoints){
+function makeHitBoxes(hitPoints, hit){
 
     hitPoints = hitPoints === 0 ? 1 : hitPoints; // Ensure at least 1 hit point
     const hpValue = parseInt(hitPoints);
-    let HTML = ``;
-
-    HTML += `<br><br>${hitPoints} `; // Display the total hit points
+    let HTML = `HP: (${hit})\n`;
 
     // Create a container div for checkboxes
     HTML += `<div class="hp-checkbox-container" style="display: inline-block;">`;
-
+    HTML += `<br>${hitPoints} `; // Display the total hit points
     // Create checkboxes for HP
     for (let j = 0; j < hpValue; j++) {
         // Create a div for each hit point checkbox
@@ -19,7 +17,7 @@ function makeHitBoxes(hitPoints){
                 HTML += '  ';
             }
             if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
-                HTML += '<br>';
+                HTML += '<br>   ';
             }
     }
 
@@ -85,9 +83,7 @@ function makeNPC(npcClass, level, npcName) {
     const hitDice = classTables(npcClass, level, 'hitDice')
     const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
 
-    HTML += `<br>HP: &nbsp; ${hitPoints}\n`;
-
-    HTML += makeHitBoxes(hitPoints)
+    HTML += makeHitBoxes(hitPoints, hitDice)
 
     //Saving Throws
     const savingThrows = getSaveThrows(npcClass, level);

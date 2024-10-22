@@ -36,12 +36,19 @@ function addHotkeys() {
                         event.preventDefault(); // Prevent default action
                         currentMode = 'command';
                         toggleModes();
-                        break;
+                        break; 
                 }
+                   
+                
             }
 
             switch (key) {
                 // For Nav
+                case 'Escape':
+                    event.preventDefault();
+                    currentMode = 'map';
+                    toggleModes();
+                    break;
                 case 'p':
                     handlePaint();
                     break;
@@ -124,35 +131,30 @@ function addHotkeys() {
         }else{
 
             // Handle Ctrl key
-            if (isCmdOrCtrl && currentMode === "edit") {
+            if (isCmdOrCtrl) {
                 switch (key) {
                     case '[':
-                        event.preventDefault();
-                        currentMode = 'map';
-                        toggleModes();
-                        break;
-                    case ']':
                         event.preventDefault(); // Prevent default action
-                        currentMode = 'command';
-                        toggleModes();
-                        break;
-                }
-            } else if (isCmdOrCtrl && currentMode === "command") {
-                switch (key) {
-                    case '[':
-                        event.preventDefault();
                         currentMode = 'edit';
                         toggleModes();
                         break;
                     case ']':
+                        console.log('click')
                         event.preventDefault(); // Prevent default action
+                        currentMode = 'command';
+                        toggleModes();
+                        break; 
+                }
+            }
+
+                switch (event.key) {
+                    case 'Escape':
+                        event.preventDefault();
                         currentMode = 'map';
                         toggleModes();
                         break;
                 }
-            }
-
-
+           
         }
     });
 }

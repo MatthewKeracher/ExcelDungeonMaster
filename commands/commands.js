@@ -51,7 +51,6 @@ function hitPointInit() {
     });
 }
 
-
 function toggleModes() {
 isPainting = true
 handlePaint();
@@ -80,7 +79,7 @@ const textContent = writeBox.value;
 writeBox.setSelectionRange(textContent.length, textContent.length);
 writeBox.scrollTop = writeBox.scrollHeight;
 
-//Change Content
+//Change Content    
 textDiv.innerHTML = ``;
 textDiv.innerHTML = writeBox.value;
 hitPointInit();

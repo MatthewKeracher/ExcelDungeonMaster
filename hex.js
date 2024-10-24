@@ -85,12 +85,71 @@ updateHexGrid()
 
 }
 
+function moveHex(dir){
+
+let str = idBox.textContent;
+let numbersArray = str.split('.');
+let rowcol = numbersArray.slice(-2);
+let row = parseInt(rowcol[0]);
+let col = parseInt(rowcol[1]);
+
+if(dir === 'up'){
+row = row - 1;
+}
+else if(dir === 'up-left'){
+    if (col % 2 === 0) {
+        //even
+        col = col - 1
+    } else {
+        //odd
+
+    }
+}
+else if(dir === 'up-right'){
+    if (col % 2 === 0) {
+        //even
+        col = col - 1
+    } else {
+        //odd
+
+    }
+}
+
+else if(dir === 'down'){
+row = row + 1;
+}
+else if(dir === 'down-left'){
+    if (col % 2 === 0) {
+        //even
+        col = col - 1
+    } else {
+        //odd
+
+    }
+}
+else if(dir === 'down-right'){
+    if (col % 2 === 0) {
+        //even
+        col = col - 1
+    } else {
+        //odd
+
+    }
+}
+
+
+const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+changeHex(div);
+}
+
 function changeHex(hexagon){
 
 if(currentMode !== "map"){return};
 
 saveEntry();
 updateHexNames();
+selectedHexStyle(hexagon)
+
 
 //Set new id.
 let row = hexagon.getAttribute('row');
@@ -160,6 +219,26 @@ hexLabel.textContent = saveEntry.name
 }
 
 })
+
+}
+
+let lastHex = ''
+
+function selectedHexStyle(hex, action){
+
+let effect = "invert(100%)"
+
+if(lastHex !== ''){
+lastHex.querySelector('.left').classList.remove("flashing");
+lastHex.querySelector('.middle').classList.remove("flashing");
+lastHex.querySelector('.right').classList.remove("flashing");
+}
+
+hex.querySelector('.left').classList.add("flashing");
+hex.querySelector('.middle').classList.add("flashing");
+hex.querySelector('.right').classList.add("flashing");
+
+lastHex = hex;
 
 }
 

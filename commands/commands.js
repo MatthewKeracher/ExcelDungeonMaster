@@ -153,124 +153,117 @@ hitPointInit();
 }
 
 function handleCommands() {
+
+    if(commandLine.value === ''){return ''}
+
     let inputText = commandLine.value;
+    commandLine.value = '';
 
     // Resolve nested commands before replacing other commands
     inputText = resolveNestedCommands(inputText);
 
-    // Adjusted regex to properly capture command types and parameters
-    inputText = inputText.replace(/(roll|monster|npc)\s*([\w\s\d]+)(?:\s+([^{}]+))?\s*/gi, function(_, commandType, params, paramName) {
-        // Remove any surrounding whitespace from paramName if it exists
-        if (paramName) {
-            paramName = paramName.trim(); // Clean whitespace around the name
-        }
+    // Check for command types: roll, monster, or npc
+    const commandRegex = /^(roll|monster|npc)\s+(.+)/i;
+    const match = inputText.match(commandRegex);
 
-        // Ensure params is defined; otherwise, assign an empty string
-        params = params ? params.trim() : ''; // Trim whitespace from params
-        const paramArray = params.split(/\s+/); // Split params into an array
+    if (match) {
+        const commandType = match[1].toLowerCase(); // roll, monster, npc
+        const params = match[2].trim(); // The remaining text after the command type
 
-        // Include the name in the params array if it exists
-        if (paramName) {
-            paramArray.push(paramName); // Add name to the end of the params array
-        }
-
-        switch (commandType.toLowerCase()) {
+        switch (commandType) {
             case 'roll':
-                console.log('roll');
-                return handleRollCommand(paramArray);
+                return handleRollCommand(params);
             case 'monster':
-                console.log('monster');
-                return handleMonsterCommand(paramArray);
+                return handleMonsterCommand(params);
             case 'npc':
-                console.log('npc');
-                return handleNpcCommand(paramArray);
+                return handleNpcCommand(params);
             default:
-                return '{Command not recognised}';
+                return '{Command not recognized}';
         }
-    });
+    } else {
+        return '{Invalid command format}';
+    }
+}
 
-    commandLine.value = "";
-    return inputText; // Update the input box with the processed text
+
+function handleRollCommand(params) {
+    // Assume params will contain something like '1d20'
+    const diceRegex = /^(\d+)d(\d+)$/i;
+    const match = params.match(diceRegex);
+
+    if (match) {
+        const numDice = parseInt(match[1]);
+        const diceSides = parseInt(match[2]);
+        const rolledValue = rollDice(numDice, diceSides);
+        return `<br><hr><br><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
+    }
+
+    return '{Invalid roll format. Use XdY format}';
 }
 
 
 
-// Function to handle roll commands
-function handleRollCommand(paramArray) {
-// Assuming paramArray will contain something like ['1d20'] or ['1', 'd20']
-const diceString = paramArray.join(' ');
+function handleMonsterCommand(params) {
+    // Example: '3 Goblins'
+    const monsterRegex = /^(\d+)\s+(.+)/i;
+    const match = params.match(monsterRegex);
 
-// Extract the number of dice and sides from the string
-const match = diceString.match(/(\d+)d(\d+)/);
-if (match) {
-const numDice = parseInt(match[1]);
-const diceSides = parseInt(match[2]);
-const rolledValue = rollDice(numDice, diceSides); // Roll dice using the provided function
-const HTML = `<br><hr><br><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`
-return HTML;
+    if (match) {
+        const numAppearing = parseInt(match[1]);
+        const monsterName = match[2].trim();
+        const monsterCounts = searchMonster(monsterName, numAppearing);
+        return makeMonsterEntry(monsterCounts);
+    }
+
+    return '{Invalid monster format. Use "X MonsterName"}';
 }
 
-return 0; // Return 0 if the format is not recognized
+
+function handleNpcCommand(params) {
+    // Example: 'fighter 5 Rickshift'
+    const npcRegex = /^(\w+)\s+(\d+)\s*(.*)/i;
+    const match = params.match(npcRegex);
+
+    if (match) {
+        const npcClass = match[1].toLowerCase();
+        const level = parseInt(match[2]);
+        const npcName = match[3] ? match[3].trim() : undefined; // Name is optional
+        return makeNPC(npcClass, level, npcName);
+    }
+
+    return '{Invalid NPC format. Use "Class Level [Name]"}';
 }
 
-// Function to handle monster commands
-function handleMonsterCommand(paramArray) {
-const numAppearing = parseInt(paramArray[0]);
-const monsterName = paramArray.slice(1).join(' '); // Join the rest as the monster name
-const monsterCounts = searchMonster(monsterName.trim(), numAppearing);
-return makeMonsterEntry(monsterCounts);
+// Function to resolve nested commands
+function resolveNestedCommands(text) {
+    const commandRegex = /{([^{}]+)}/g; // Matches outer braces
+    let match;
+
+    while ((match = commandRegex.exec(text)) !== null) {
+        const innerCommand = match[0]; // Full match with braces
+        const innerContent = match[1].trim(); // Content without braces
+
+        // Evaluate the inner command and replace it with its result
+        const evaluatedResult = evaluateInnerCommand(innerContent);
+        text = text.replace(innerCommand, evaluatedResult);
+    }
+
+    return text;
 }
 
-// Function to handle NPC commands
-function handleNpcCommand(paramArray) {
-const npcClass = paramArray[0].toLowerCase();
-const level = parseInt(paramArray[1]);
-const npcName = paramArray[2];
-return makeNPC(npcClass, level, npcName); // Call the NPC creation function
+// Dummy function to handle evaluation of inner commands
+function evaluateInnerCommand(command) {
+    // Further parsing or handling of inner commands if needed
+    return `{Evaluated: ${command}}`;
 }
 
 // Roll dice function
 function rollDice(numDice, diceSides) {
-let total = 0;
-for (let i = 0; i < numDice; i++) {
-total += Math.floor(Math.random() * diceSides) + 1;
-}
-return total;
-}
-
-function resolveNestedCommands(text) {
-const commandRegex = /{([^{}]+)}/g; // Matches outer braces
-let match;
-
-while ((match = commandRegex.exec(text)) !== null) {
-const innerCommand = match[0]; // Full match with braces
-const innerContent = match[1].trim(); // Content without braces
-
-// Evaluate the inner command and replace it with its result
-const evaluatedResult = evaluateInnerCommand(innerContent);
-text = text.replace(innerCommand, evaluatedResult);
-}
-
-return text;
-}
-
-function evaluateInnerCommand(innerContent) {
-const rollRegex = /^(roll)\s+(.+)/i; // Matches 'roll X'
-const monsterRegex = /^(monster)\s+(.+)/i; // Matches 'monster X'
-const npcRegex = /^(npc)\s+(.+)/i; // Matches 'npc X'
-
-if (rollRegex.test(innerContent)) {
-const [, commandType, params] = rollRegex.exec(innerContent);
-return handleRollCommand(params.trim().split(/\s+/));
-} else if (monsterRegex.test(innerContent)) {
-const [, commandType, params] = monsterRegex.exec(innerContent);
-return handleMonsterCommand(params.trim().split(/\s+/));
-} else if (npcRegex.test(innerContent)) {
-const [, commandType, params] = npcRegex.exec(innerContent);
-return handleNpcCommand(params.trim().split(/\s+/));
-} else {
-return `{${innerContent}}`; // Return original if no command matched
-}
+    let total = 0;
+    for (let i = 0; i < numDice; i++) {
+        total += Math.floor(Math.random() * diceSides) + 1;
+    }
+    return total;
 }
 
 

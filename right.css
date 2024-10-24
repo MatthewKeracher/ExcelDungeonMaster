@@ -32,6 +32,25 @@
     z-index: 1;              /* In front of the canvas */
 }
 
+/* Define the flashing animation */
+@keyframes flash {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(2); /* Increase brightness to create flash effect */
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+/* Apply the animation to the hex when selected */
+.flashing {
+    animation: flash 0.5s infinite; /* Flash every 0.5 seconds, looping infinitely */
+}
+
+
 .grid-row {
     display: flex;
     flex: 0 0 auto;
@@ -69,6 +88,7 @@ color: var(--mode-color);
     float: left;
     margin-right: calc(var(--hex-margin-right, -12px));
     margin-bottom: calc(var(--hex-margin-bottom, -25px));
+    
 }
 
 .hex .left {
@@ -103,7 +123,7 @@ color: var(--mode-color);
 
 .hex:hover .middle,
 .hex:hover .left,
-.hex:hover .right { /* This will apply brightness when any part of .hex is hovered */
+.hex:hover .right { 
     filter: brightness(1.3);
 }
 

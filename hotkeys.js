@@ -43,7 +43,7 @@ function addHotkeys() {
             }
 
             switch (key) {
-                // For Nav
+                // For Toolbar
                 case 'Escape':
                     event.preventDefault();
                     currentMode = 'map';
@@ -69,6 +69,26 @@ function addHotkeys() {
                     break;
                 case 'g':
                     handleGrid();
+                    break;
+
+                //For HexNav
+                case 'u':
+                    moveHex('up');
+                    break;
+                case 'h':
+                    moveHex('up-left');
+                    break;
+                case 'i':
+                    moveHex('up-right');
+                    break;
+                case 'm':
+                    moveHex('down');
+                    break;
+                case 'n':
+                    moveHex('down-left');
+                    break;
+                case 'k':
+                    moveHex('down-right');
                     break;
                 
 
@@ -100,6 +120,8 @@ function addHotkeys() {
                 case '9':
                     selectedColorElement = document.getElementById('color9');
                     break;
+
+
             }
 
             // If a valid palette box is found, update the current color

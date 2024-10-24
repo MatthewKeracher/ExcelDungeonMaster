@@ -2,7 +2,7 @@
 let data = [{
     id: "0.0",
     name: "Your World",
-    desc: "Insert information about <i>your</i> world here. Press ctrl/cmd + '[' or ']' to toggle between Map, Command, and Edit modes.",
+    desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap.",
     rows: 20,
     cols: 45,
     }];
@@ -34,15 +34,17 @@ const modeBox = document.getElementById('modeBox');
 
 //Default
 placeName.value = "Excel_DM"
-textDiv.innerHTML = `Press the 'e' key.`
+textDiv.innerHTML = ``;
 modeBox.innerHTML = `<b>Map Mode</b>`
 
+const welcomeMessage = `Press ">" to Enter Your World.`;
+
 //Opening Sequence
-// for (let i = 0; i < textDiv.innerHTML.length; i++) {
-//     setTimeout(() => {
-//       textDiv.innerHTML += writeBox.value.charAt(i);
-//     }, i * 25); 
-//   }
+for (let i = 0; i < welcomeMessage.length; i++) {
+    setTimeout(() => {
+      textDiv.innerHTML += welcomeMessage.charAt(i);
+    }, i * 25); 
+  }
   
 
 idBox.textContent = '0.0'

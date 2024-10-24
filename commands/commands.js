@@ -181,7 +181,7 @@ function handleCommands() {
                 return '{Command not recognized}';
         }
     } else {
-        return '{Invalid command format}';
+        return '\n{Invalid command format}';
     }
 }
 
@@ -198,7 +198,7 @@ function handleRollCommand(params) {
         return `<br><hr><br><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
     }
 
-    return '{Invalid roll format. Use XdY format}';
+    return '\n{Invalid roll format. Use XdY format}';
 }
 
 
@@ -215,7 +215,7 @@ function handleMonsterCommand(params) {
         return makeMonsterEntry(monsterCounts);
     }
 
-    return '{Invalid monster format. Use "X MonsterName"}';
+    return '\n{Invalid monster format. Use "X MonsterName"}';
 }
 
 
@@ -231,7 +231,7 @@ function handleNpcCommand(params) {
         return makeNPC(npcClass, level, npcName);
     }
 
-    return '{Invalid NPC format. Use "Class Level [Name]"}';
+    return '\n{Invalid NPC format. Use "Class Level [Name]"}';
 }
 
 // Function to resolve nested commands

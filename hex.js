@@ -99,19 +99,23 @@ row = row - 1;
 else if(dir === 'up-left'){
     if (col % 2 === 0) {
         //even
+        row = row - 1
         col = col - 1
     } else {
         //odd
+        col = col - 1
 
     }
 }
 else if(dir === 'up-right'){
     if (col % 2 === 0) {
         //even
-        col = col - 1
+        row = row - 1
+        col = col + 1
+
     } else {
         //odd
-
+        col = col + 1
     }
 }
 
@@ -124,15 +128,19 @@ else if(dir === 'down-left'){
         col = col - 1
     } else {
         //odd
-
+        row = row + 1
+        col = col - 1
     }
 }
 else if(dir === 'down-right'){
     if (col % 2 === 0) {
         //even
-        col = col - 1
+        col = col + 1
+       
     } else {
         //odd
+        row = row + 1
+        col = col + 1
 
     }
 }

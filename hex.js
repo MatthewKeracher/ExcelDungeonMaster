@@ -147,6 +147,7 @@ else if(dir === 'down-right'){
 
 
 const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+paintCell(div);
 changeHex(div);
 }
 

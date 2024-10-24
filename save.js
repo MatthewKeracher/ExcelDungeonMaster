@@ -17,18 +17,26 @@ const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 
+
 let exists = data.find(entry => entry.id === idBox.textContent)
 
 if(exists){
 exists.name = placeName.value;
 exists.desc = textDiv.innerHTML;
-// exists.color = isPainting? currentColor : exists.color;
+
+if(exists.desc !== "" && exists.name === ""){
+    exists.name = "*"
+    }
+
 }else{
 const saveEntry = {
 id: idBox.textContent,
 name: placeName.value,
 desc: textDiv.innerHTML,
-// color: isPainting? currentColor : '',
+}
+
+if(saveEntry.desc !== "" && saveEntry.name === ""){
+saveEntry.name = "*"
 }
 
 data.push(saveEntry)

@@ -1,6 +1,7 @@
 function addHotkeys() {
 
     let selectedColorElement = null;
+    let isShiftHeld = false;
 
     document.addEventListener('keydown', (event) => {
         const key = event.key.toLowerCase(); // Convert the pressed key to lowercase
@@ -21,26 +22,31 @@ function addHotkeys() {
                 if(isPainting){
                     toggleAutoPaint(true);
                 }
+
             }
 
             // Handle Ctrl key
             if (isCmdOrCtrl) {
                 switch (key) {
-                    case '[':
-                        event.preventDefault(); // Prevent default action
-                        currentMode = 'edit';
-                        toggleModes();
-                        break;
-                    case ']':
-                        console.log('click')
-                        event.preventDefault(); // Prevent default action
-                        currentMode = 'command';
-                        toggleModes();
-                        break; 
+                    
+                     
                 }
                    
                 
             }
+
+            if(isShiftHeld === true){
+
+                switch (key) {
+                 
+                    case '>':
+                        handleEnter();
+                        break;
+                    case '<':
+                        handleExit();
+                        break;
+                    }
+            }else{
 
             switch (key) {
                 // For Toolbar
@@ -48,6 +54,22 @@ function addHotkeys() {
                     event.preventDefault();
                     currentMode = 'map';
                     toggleModes();
+                    break;
+                case '`':
+                    event.preventDefault(); // Prevent default action
+                    currentMode = 'command';
+                    toggleModes();
+                    break;
+                case 'tab':
+                    event.preventDefault(); // Prevent default action
+                    currentMode = 'edit';
+                    toggleModes();
+                    break;
+                case 'n':
+                    event.preventDefault(); // Prevent default action
+                    currentMode = 'edit';
+                    toggleModes();
+                    placeName.focus();
                     break;
                 case 'p':
                     handlePaint();
@@ -58,39 +80,32 @@ function addHotkeys() {
                 case 'l':
                     handleLoad();
                     break;
-                case 's':
+                case 'x':
                     handleExport();
-                    break;
-                case 'e':
-                    handleEnter();
-                    break;
-                case 'q':
-                    handleExit();
                     break;
                 case 'g':
                     handleGrid();
                     break;
-
-                //For HexNav
-                case 'u':
-                    moveHex('up');
-                    break;
-                case 'h':
-                    moveHex('up-left');
-                    break;
-                case 'i':
-                    moveHex('up-right');
-                    break;
-                case 'm':
-                    moveHex('down');
-                    break;
-                case 'n':
-                    moveHex('down-left');
-                    break;
-                case 'k':
-                    moveHex('down-right');
-                    break;
                 
+                //For HexNav
+                case 'w':
+                moveHex('up');
+                break;
+                case 'q':
+                moveHex('up-left');
+                break;
+                case 'e':
+                moveHex('up-right');
+                break;
+                case 's':
+                moveHex('down');
+                break;
+                case 'a':
+                moveHex('down-left');
+                break;
+                case 'd':
+                moveHex('down-right');
+                break;
 
                 // For Painting
                 case '1':
@@ -123,6 +138,7 @@ function addHotkeys() {
 
 
             }
+        }
 
             // If a valid palette box is found, update the current color
             if (selectedColorElement && isPainting) {
@@ -152,29 +168,22 @@ function addHotkeys() {
             }
         }else{
 
-            // Handle Ctrl key
-            if (isCmdOrCtrl) {
-                switch (key) {
-                    case '[':
-                        event.preventDefault(); // Prevent default action
-                        currentMode = 'edit';
-                        toggleModes();
-                        break;
-                    case ']':
-                        console.log('click')
-                        event.preventDefault(); // Prevent default action
-                        currentMode = 'command';
-                        toggleModes();
-                        break; 
-                }
-            }
-
                 switch (event.key) {
                     case 'Escape':
                         event.preventDefault();
                         currentMode = 'map';
                         toggleModes();
                         break;
+                    case 'tab':
+                        event.preventDefault(); 
+                        currentMode = 'map';
+                        toggleModes();
+                    break;
+                    case '`':
+                        event.preventDefault(); 
+                        currentMode = 'command';
+                        toggleModes();
+                    break; 
                 }
            
         }

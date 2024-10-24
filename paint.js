@@ -57,8 +57,7 @@ function fillCells(cell){
 
 function paintCell(cell) {
 
-    console.log('painting...')
-
+    if(!isPainting){return}
     if(isFilling){fillCells(cell)}
 
     const row = cell.getAttribute('row');

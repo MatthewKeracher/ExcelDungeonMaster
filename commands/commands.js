@@ -101,7 +101,6 @@ hitPointInit();
 //Change Mode
 modeBox.innerHTML = `<b>Map Mode</b>`
 
-
 //Change what displays
 textDiv.style.display = "block";
 textDiv.contentEditable = false;
@@ -114,6 +113,7 @@ toggleModeColor();
 
 //What is focused
 textDiv.blur();
+placeName.blur();
 
 //Change Content
 textDiv.innerHTML += handleCommands();

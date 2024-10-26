@@ -111,7 +111,7 @@
 }
 
 #textDiv::-webkit-scrollbar-thumb {
-    background: var(--mode-color);
+    background: var(--mode-color-trans);
     border-radius: 2px;
 }
 

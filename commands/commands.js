@@ -3,7 +3,10 @@
 
 function toggleModeColor() {
     const root = document.documentElement;
-    root.style.setProperty('--mode-color', modeColor);
+    root.style.setProperty('--mode-color', `rgb(${modeColor})`);
+    
+    // Set the transparent color using rgba with 50% opacity
+    root.style.setProperty('--mode-color-trans', `rgba(${modeColor}, 0.5)`);
 }
 
 function handleCheckboxClick(event) {
@@ -80,7 +83,7 @@ placeName.readOnly = false;
 placeName.placeholder="Click here to name this location."
 
 //Change colour
-modeColor = "hotpink";
+modeColor = "255,105,180";
 toggleModeColor();
 
 
@@ -108,7 +111,7 @@ commandLine.style.display = "none";
 placeName.readOnly = true;
 
 //Change colour
-modeColor = "lime";
+modeColor = "0, 255, 0";
 toggleModeColor();
 
 //What is focused
@@ -140,7 +143,7 @@ commandLine.style.display = "block";
 placeName.readOnly = true;
 
 //Change colour
-modeColor = "orange";
+modeColor = "265,165,0";
 toggleModeColor();
 
 //What is focused

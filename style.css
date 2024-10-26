@@ -5,7 +5,8 @@
 }
 
 :root {
-    --mode-color: lime;
+    --mode-color: rgba(0, 255, 0, 1);
+    --mode-color-trans: rgba(0, 255, 0, 0.4);
 }
 
 

@@ -21,7 +21,7 @@
     content: ""; /* Required for pseudo-element */
     display: block; /* Ensures that it behaves like a block element */
     margin: 0; /* Remove default margin */
-    height: 4px;
+    height: 10px;
 }
 
 @font-face {
@@ -92,6 +92,31 @@
     resize: none;
     overflow: auto;
     white-space: pre-wrap
+}
+
+#textDiv::-webkit-scrollbar {
+    width: 10px;
+}
+
+#textDiv::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+#textDiv::-webkit-scrollbar-corner {
+    background: black;
+}
+
+#textDiv::-webkit-scrollbar-track {
+    background: rgb(65, 77, 65);
+}
+
+#textDiv::-webkit-scrollbar-thumb {
+    background: var(--mode-color);
+    border-radius: 2px;
+}
+
+#textDiv::-webkit-scrollbar-thumb:hover {
+    background: var(--mode-color);
 }
 
 #textDiv:focus,

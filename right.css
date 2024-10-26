@@ -16,9 +16,35 @@
 }
 
 #gridImageContainer {
-    position: relative;       /* Ensure child elements can be positioned absolutely */
-    overflow: auto;          /* Allow scrolling */
+    position: relative;      
+    overflow: auto;         
 }
+ 
+#gridImageContainer::-webkit-scrollbar {
+    width: 10px;
+}
+
+#gridImageContainer::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+#gridImageContainer::-webkit-scrollbar-corner {
+    background: black;
+}
+
+#gridImageContainer::-webkit-scrollbar-track {
+    background: rgb(65, 77, 65);
+}
+
+#gridImageContainer::-webkit-scrollbar-thumb {
+    background: var(--mode-color);
+    border-radius: 2px;
+}
+
+#gridImageContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--mode-color);
+}
+
 
 #imageCanvas {
     position: absolute;       /* Position it absolutely within the gridContainer */

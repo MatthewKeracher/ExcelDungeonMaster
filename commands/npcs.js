@@ -56,7 +56,7 @@ function makeNPC(npcClass, level, npcName) {
     // Skills
     const skills = getSkills(npcClass, level);
     if (skills) {
-        HTML += `<br><u>Skills:</u><br>`;
+        HTML += `<br><br><u>Skills:</u><br>`;
         Object.keys(skills).forEach(key => {
             if (key !== 'level') {
                 const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
@@ -100,7 +100,7 @@ function makeNPC(npcClass, level, npcName) {
     // Spells
     const spells = getSpells(npcClass, level);
     if (spells) {
-        HTML += `<br><u>Spells:</u><br>`;
+        HTML += `<br><br><u>Spells:</u><br>`;
         spells.forEach(spell => {
                 HTML += `${spell.name}<br>`;
             

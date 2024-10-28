@@ -178,7 +178,7 @@ textDiv.innerHTML = loadEntry.desc;
 }
 
 // isEditing = true;
-//toggleEditMode();
+//toggleModes();
 saveEntry();
 saveData();
 

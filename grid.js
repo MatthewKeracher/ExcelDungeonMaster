@@ -36,6 +36,48 @@ function createGrid(rows, cols) {
     }
 }
 
+let lastCell = ''
+
+function selectedCellStyle(cell){
+
+if(lastCell !== ''){
+lastCell.classList.remove("flashing");
+}
+
+cell.classList.add("flashing");
+
+lastCell = cell;
+
+}
+
+function moveCell(dir){
+
+    let str = idBox.textContent;
+    let numbersArray = str.split('.');
+    let rowcol = numbersArray.slice(-2);
+    let row = parseInt(rowcol[0]);
+    let col = parseInt(rowcol[1]);
+    
+    if(dir === 'up'){
+    row = row - 1;
+    }
+
+    else if(dir === 'down'){
+    row = row + 1;
+    }
+
+    else if(dir === 'left'){
+    col = col - 1;
+    }
+
+    else if(dir === 'right'){
+    col = col + 1;
+    }
+    
+    const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+    paintCell(div);
+    changeCell(div);
+    }
 
 function changeCell(gridCell){
 
@@ -43,6 +85,7 @@ if(currentMode !== "map"){return};
 
 saveEntry();
 updateCellNames();
+selectedCellStyle(gridCell)
 
 //Set new id.
 let row = gridCell.getAttribute('row');
@@ -61,7 +104,7 @@ placeName.value = loadEntry.name;
 textDiv.innerHTML = loadEntry.desc;
 }
 
-toggleEditMode();
+toggleModes();
 saveEntry();
 saveData();
 }
@@ -116,14 +159,14 @@ function updateCellColors(cell, saveEntry){
 if(saveEntry){
 
 if(cell.style.backgroundColor === defaultHexColor){
-cell.style.backgroundColor =  'transparent';   
+cell.style.backgroundColor =  'black';   
 }else{
 cell.style.backgroundColor = saveEntry.color;
 }
 
 }else{
 
-cell.style.backgroundColor =  'transparent';
+cell.style.backgroundColor =  'black';
 
 }
 }

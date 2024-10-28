@@ -48,6 +48,50 @@ function addHotkeys() {
                     }
             }else{
 
+            if(isHexMap === true){
+
+                switch (key) {
+                //For HexNav
+                case 'w':
+                moveHex('up');
+                break;
+                case 'q':
+                moveHex('up-left');
+                break;
+                case 'e':
+                moveHex('up-right');
+                break;
+                case 's':
+                moveHex('down');
+                break;
+                case 'a':
+                moveHex('down-left');
+                break;
+                case 'd':
+                moveHex('down-right');
+                break;
+                }
+
+            }else{
+
+            switch (key) {
+                //For HexNav
+                case 'w':
+                moveCell('up');
+                break;
+                case 's':
+                moveCell('down');
+                break;
+                case 'a':
+                moveCell('left');
+                break;
+                case 'd':
+                moveCell('right');
+                break;
+                }
+
+            }
+
             switch (key) {
                 // For Toolbar
                 case 'Escape':
@@ -87,25 +131,6 @@ function addHotkeys() {
                     handleGrid();
                     break;
                 
-                //For HexNav
-                case 'w':
-                moveHex('up');
-                break;
-                case 'q':
-                moveHex('up-left');
-                break;
-                case 'e':
-                moveHex('up-right');
-                break;
-                case 's':
-                moveHex('down');
-                break;
-                case 'a':
-                moveHex('down-left');
-                break;
-                case 'd':
-                moveHex('down-right');
-                break;
 
                 // For Painting
                 case '1':

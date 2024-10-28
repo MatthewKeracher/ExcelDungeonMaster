@@ -191,7 +191,7 @@ function addHotkeys() {
                     label.style.display = isVisible && hasName ? 'block' : 'none'; // Change to 'inline-block' if needed
                 });
             }
-        }else{
+        }else if(currentMode === 'command'){
 
                 switch (event.key) {
                     case 'Escape':
@@ -199,7 +199,7 @@ function addHotkeys() {
                         currentMode = 'map';
                         toggleModes();
                         break;
-                    case 'tab':
+                    case 'Enter':
                         event.preventDefault(); 
                         currentMode = 'map';
                         toggleModes();
@@ -211,6 +211,28 @@ function addHotkeys() {
                     break; 
                 }
            
+        }else if (currentMode === 'edit'){
+
+            switch (event.key) {
+                case 'Escape':
+                    event.preventDefault();
+                    currentMode = 'map';
+                    toggleModes();
+                    break;
+                case 'tab':
+                    event.preventDefault(); 
+                    currentMode = 'map';
+                    toggleModes();
+                break;
+                case '`':
+                    event.preventDefault(); 
+                    currentMode = 'command';
+                    toggleModes();
+                break; 
+            }
+
+
+
         }
     });
 }

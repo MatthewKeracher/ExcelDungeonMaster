@@ -60,6 +60,7 @@ function createHexagons(rows, cols) {
 
             hexagon.addEventListener("click", function() {
                 changeHex(hexagon);
+                paintCell(hexagon)
             });
 
             hexagon.addEventListener('mousemove', function() {
@@ -258,9 +259,9 @@ hex.querySelector('.left').style.borderRightColor = saveEntry.color;
 hex.querySelector('.middle').style.backgroundColor = saveEntry.color;
 hex.querySelector('.right').style.borderLeftColor = saveEntry.color;
 }else{
-hex.querySelector('.left').style.borderRightColor =  defaultHexColor;
-hex.querySelector('.middle').style.backgroundColor =  defaultHexColor;
-hex.querySelector('.right').style.borderLeftColor =  defaultHexColor;
+hex.querySelector('.left').style.borderRightColor =  defaultColour;
+hex.querySelector('.middle').style.backgroundColor =  defaultColour;
+hex.querySelector('.right').style.borderLeftColor =  defaultColour;
 }
 
 }

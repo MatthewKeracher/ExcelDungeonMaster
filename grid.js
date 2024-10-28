@@ -23,6 +23,7 @@ function createGrid(rows, cols) {
             gridCell.setAttribute('row', row);
             gridCell.addEventListener("click", function () {
                 changeCell(gridCell);
+                paintCell(gridCell)
             });
             gridCell.addEventListener('mousemove', function() {
                 if (isPainting && isShiftPressed) {
@@ -158,7 +159,7 @@ function updateCellColors(cell, saveEntry){
 
 if(saveEntry){
 
-if(cell.style.backgroundColor === defaultHexColor){
+if(cell.style.backgroundColor === defaultColour){
 cell.style.backgroundColor =  'black';   
 }else{
 cell.style.backgroundColor = saveEntry.color;

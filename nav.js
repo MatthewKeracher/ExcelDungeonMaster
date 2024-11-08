@@ -3,7 +3,7 @@ function handlePaint() {
 
 const paintButton = document.getElementById('paintButton');
 const paletteDiv = document.getElementById('paletteDiv');
-
+console.log(isPainting, currentMode)
 
 if(!isPainting && currentMode === 'map'){
 
@@ -12,7 +12,7 @@ paintButton.classList.add('highlight');
 paletteDiv.style.display = "flex";
 
 }else{
-
+console.log('flag')
 isPainting = false
 isFilling = false
 paintButton.classList.remove('highlight');

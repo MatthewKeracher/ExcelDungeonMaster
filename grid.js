@@ -106,7 +106,7 @@ placeName.value = loadEntry.name;
 textDiv.innerHTML = loadEntry.desc;
 }
 
-toggleModes();
+//toggleModes();
 saveEntry();
 saveData();
 }

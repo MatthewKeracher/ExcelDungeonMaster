@@ -160,6 +160,9 @@ function addHotkeys() {
                 case '9':
                     selectedColorElement = document.getElementById('color9');
                     break;
+                case '0':
+                    selectedColorElement = document.getElementById('eraser');
+                    break;
 
 
             }

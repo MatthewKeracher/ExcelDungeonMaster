@@ -44,7 +44,7 @@ function fillCells(cell){
             desc: "",
             color: isPainting? currentColor : '',
             }
-        
+            
             data.push(newEntry)
 
     }
@@ -78,7 +78,7 @@ function paintCell(cell) {
     desc: "",
     color: isPainting? currentColor : '',
     }
-
+  
     data.push(saveEntry)
     }
 

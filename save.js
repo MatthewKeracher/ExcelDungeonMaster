@@ -39,7 +39,9 @@ if(saveEntry.desc !== "" && saveEntry.name === ""){
 saveEntry.name = "*"
 }
 
+if(saveEntry.name !== ""){
 data.push(saveEntry)
+}
 }
 }
 

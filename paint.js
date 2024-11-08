@@ -1,4 +1,4 @@
-let lastCellPainted = "";
+let lastCellPainted = {id: '', color: ''};
 let currentColor = document.getElementById('color1').style.backgroundColor;
 
 function setColor(color) {
@@ -66,8 +66,10 @@ function paintCell(cell) {
     const cellObj = getObj(searchId);
 
     //Stop Crowding
-    if(searchId === lastCellPainted){return}
-    lastCellPainted = searchId;
+    if(searchId === lastCellPainted.id && currentColor === lastCellPainted.color){return}
+    console.log('flag')
+    lastCellPainted.id = searchId;
+    lastCellPainted.color = currentColor;
 
     if(cellObj){
     cellObj.color = currentColor;

@@ -69,6 +69,19 @@ regionObj.rows = squareRows
 }
 }
 
+function getCurrentDiv(){
+
+  let str = idBox.textContent;
+  let numbersArray = str.split('.');
+  let rowcol = numbersArray.slice(-2);
+  let row = parseInt(rowcol[0]);
+  let col = parseInt(rowcol[1]);
+
+  const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+  return div;
+
+}
+
 
 function parse(str){
 

@@ -8,6 +8,8 @@ function addHotkeys() {
         const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
         const isCmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
         const placeName = document.getElementById('placeName');
+        let currentCell = getCurrentDiv();
+        
 
         // Check if inputs are not focused
         if (
@@ -92,6 +94,75 @@ function addHotkeys() {
 
             }
 
+            if(isPainting === true){
+
+                switch (key) {
+                // For Painting
+                case '1':
+                    selectedColorElement = document.getElementById('color1');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '2':
+                    selectedColorElement = document.getElementById('color2');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '3':
+                    selectedColorElement = document.getElementById('color3');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '4':
+                    selectedColorElement = document.getElementById('color4');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '5':
+                    selectedColorElement = document.getElementById('color5');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '6':
+                    selectedColorElement = document.getElementById('color6');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '7':
+                    selectedColorElement = document.getElementById('color7');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '8':
+                    selectedColorElement = document.getElementById('color8');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '9':
+                    selectedColorElement = document.getElementById('color9');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                case '0':
+                    selectedColorElement = document.getElementById('eraser');
+                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
+                    currentCell = getCurrentDiv();
+                    paintCell(currentCell);
+                    break;
+                }
+                
+
+            }
+
             switch (key) {
                 // For Toolbar
                 case 'Escape':
@@ -132,46 +203,10 @@ function addHotkeys() {
                     break;
                 
 
-                // For Painting
-                case '1':
-                    selectedColorElement = document.getElementById('color1');
-                    break;
-                case '2':
-                    selectedColorElement = document.getElementById('color2');
-                    break;
-                case '3':
-                    selectedColorElement = document.getElementById('color3');
-                    break;
-                case '4':
-                    selectedColorElement = document.getElementById('color4');
-                    break;
-                case '5':
-                    selectedColorElement = document.getElementById('color5');
-                    break;
-                case '6':
-                    selectedColorElement = document.getElementById('color6');
-                    break;
-                case '7':
-                    selectedColorElement = document.getElementById('color7');
-                    break;
-                case '8':
-                    selectedColorElement = document.getElementById('color8');
-                    break;
-                case '9':
-                    selectedColorElement = document.getElementById('color9');
-                    break;
-                case '0':
-                    selectedColorElement = document.getElementById('eraser');
-                    break;
-
-
+                    
             }
         }
 
-            // If a valid palette box is found, update the current color
-            if (selectedColorElement && isPainting) {
-                currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-            }
 
             // Add event listener for keyup
             document.addEventListener('keyup', (event) => {

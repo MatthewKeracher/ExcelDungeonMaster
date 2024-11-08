@@ -160,7 +160,6 @@ function updateCellColors(cell, saveEntry){
 
 if(saveEntry){
 cell.style.backgroundColor = saveEntry.color;
-console.log(saveEntry)
 }else{
 cell.style.backgroundColor =  defaultColour;
 }

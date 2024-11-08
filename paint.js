@@ -57,13 +57,13 @@ function fillCells(cell){
 
 function paintCell(cell) {
 
-    if(!isPainting){return}
+    if(!isPainting){return};
     if(isFilling){fillCells(cell)}
 
     const row = cell.getAttribute('row');
     const col = cell.getAttribute('col');
     const searchId = coords + '.' + row + '.' + col;
-    const cellObj = getObj(searchId)
+    const cellObj = getObj(searchId);
 
     //Stop Crowding
     if(searchId === lastCellPainted){return}

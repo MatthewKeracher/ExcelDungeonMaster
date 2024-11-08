@@ -156,9 +156,10 @@ function changeHex(hexagon){
 
 if(currentMode !== "map"){return};
 
+selectedHexStyle(hexagon);
 saveEntry();
 updateHexNames();
-selectedHexStyle(hexagon)
+
 
 
 //Set new id.
@@ -196,11 +197,9 @@ const col = hex.getAttribute('col');
 const row = hex.getAttribute('row');
 const id =  coords + '.' + row + '.' + col;
 
-const saveEntry = data.find(entry => entry.id === id)
+const saveEntry = data.find(entry => entry.id === id);
 
 updateHexColors(hex, saveEntry);
-
-
 
 })
 
@@ -234,9 +233,7 @@ hexLabel.textContent = saveEntry.name
 
 let lastHex = ''
 
-function selectedHexStyle(hex, action){
-
-let effect = "invert(100%)"
+function selectedHexStyle(hex){
 
 if(lastHex !== ''){
 lastHex.querySelector('.left').classList.remove("flashing");

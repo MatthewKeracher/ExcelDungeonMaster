@@ -84,9 +84,10 @@ function changeCell(gridCell){
 
 if(currentMode !== "map"){return};
 
+selectedCellStyle(gridCell);
 saveEntry();
 updateCellNames();
-selectedCellStyle(gridCell)
+
 
 //Set new id.
 let row = gridCell.getAttribute('row');
@@ -158,17 +159,9 @@ label.textContent = saveEntry.name
 function updateCellColors(cell, saveEntry){
 
 if(saveEntry){
-
-if(cell.style.backgroundColor === defaultColour){
-cell.style.backgroundColor =  'black';   
-}else{
 cell.style.backgroundColor = saveEntry.color;
-}
-
 }else{
-
-cell.style.backgroundColor =  'black';
-
+cell.style.backgroundColor =  defaultColour;
 }
 }
 

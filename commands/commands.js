@@ -65,7 +65,6 @@ function placeCaretAtEnd(el) {
     selection.addRange(range); // Add the new range (caret at the end)
 }
 
-
 function toggleModes() {
 isPainting = true
 handlePaint();

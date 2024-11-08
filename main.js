@@ -25,7 +25,7 @@ let modeColor = "whitesmoke";
 let isPainting = false;
 let isFilling = false;
 
-let defaultColour = "rgb(27, 26, 26)"; //for Empty Grid Cells
+let defaultColour = "rgb(27, 26, 26, 0.5)"; //for Empty Grid Cells
 
 const placeName = document.getElementById('placeName')
 const textDiv = document.getElementById('textDiv'); 

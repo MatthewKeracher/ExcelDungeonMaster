@@ -33,11 +33,9 @@ return obj
 
 function getCurrentDiv(){
 
-let str = idBox.textContent;
-let numbersArray = str.split('.');
-let rowcol = numbersArray.slice(-2);
-let row = parseInt(rowcol[0]);
-let col = parseInt(rowcol[1]);
+let id = idBox.textContent;
+let row = returnRow(id);
+let col = returnCol(id);
 
 const div = document.querySelector(`[row="${row}"][col="${col}"]`);
 return div;
@@ -50,20 +48,27 @@ function goToEntry(id) {
 textDiv.innerHTML = ''
 placeName.value = ''
 
-let loadEntry = getObj(id)
-//currentObj = loadEntry;
+let entry = getObj(id)
 
-if(loadEntry){
-placeName.value = loadEntry.name;
-textDiv.innerHTML = loadEntry.desc.trim();
+if(entry){
+placeName.value = entry.name;
+textDiv.innerHTML = entry.desc.trim();
+idBox.textContent = entry.id;
+}
+
+if(id !== '0.0'){
+let div = getCurrentDiv();
+changeCell(div)
 }
 
 }
 
-function parse(str){
+function parseParent(str){
 
 // Split the string into an array of numbers
 const numbersArray = str.split('.');
+console.log(numbersArray)
+if(numbersArray.length === 2){return str}
 
 // Remove the last two elements
 const trimmedArray = numbersArray.slice(0, -2);
@@ -71,9 +76,8 @@ const trimmedArray = numbersArray.slice(0, -2);
 // Join the remaining numbers back into a string
 const resultString = trimmedArray.join('.');
 
-if(resultString !== ''){
-coords = resultString
-}
+return resultString
+
 
 }
 

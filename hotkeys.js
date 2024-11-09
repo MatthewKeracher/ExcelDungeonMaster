@@ -76,7 +76,7 @@ function addHotkeys() {
                         // break;
                         // }
         
-                    }else if (!isPainting){
+                    }else if (!isPainting && isHexMap === false){
         
                     switch (key) {
                         //For HexNav

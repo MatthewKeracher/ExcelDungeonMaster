@@ -20,11 +20,14 @@ let squareRows = 25; //Not working.
 let squareCols = 25;
 
 
-let isHexMap = true;
+let isHexMap = true; //load grid map by default
 let currentMode = "map";
 let modeColor = "whitesmoke";
 let isPainting = false;
 let isFilling = false;
+
+let lastCell = '';
+let lastHex = '';
 
 let defaultColour = "rgb(27, 26, 26, 0.5)"; //for Empty Grid Cells
 let eraser = document.getElementById('eraser')
@@ -55,20 +58,26 @@ idBox.textContent = '0.0'
 
 function loadGrid(){
 
-if (isHexMap) {
+if(regionObj?.grid === 'square'){
+isHexMap = false
+}else if(regionObj?.grid === 'hex'){
+isHexMap = true
+}
+
+if (!isHexMap) {
 
 squareRows = regionObj.rows? regionObj.rows : squareRows;
 squareCols = regionObj.cols? regionObj.cols : squareCols;
 
 createGrid(squareRows, squareCols);
-isHexMap = false;
+
 } else {
 
 hexRows = regionObj.rows? regionObj.rows : hexRows;
 hexCols = regionObj.cols? regionObj.cols : hexCols;
 
 createHexagons(hexRows, hexCols);
-isHexMap = true;
+
 }
 
 updateGrid()

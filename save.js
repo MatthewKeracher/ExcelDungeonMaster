@@ -40,6 +40,7 @@ const saveEntry = {
 id: idBox.textContent,
 name: placeName.value,
 desc: textDiv.innerHTML,
+grid: isHexMap? "hex" : "square",
 }
 
 if(saveEntry.name === ""){

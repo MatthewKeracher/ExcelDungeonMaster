@@ -37,13 +37,15 @@ if(isPainting){
 
 function handleGrid(){
 
-loadGrid()
-
 if (isHexMap) {
-regionObj.grid = 'hex'
-} else {
 regionObj.grid = 'square'
+isHexMap = false
+} else {
+regionObj.grid = 'hex'
+isHexMap = true
 }
+
+loadGrid()
 
 }
 
@@ -146,64 +148,35 @@ function handleEnter(){
 const logo = document.getElementById("startLogo");
 logo.style.display = "none"
 
-
 captureGridSize();
 
 //Set selected cell as regionObj
 regionObj = getObj(idBox.textContent);
 const regionName = document.getElementById('regionName');
 regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
+coords = regionObj.id;
 
-if(regionObj?.grid === 'square'){
-
-isHexMap = true
 loadGrid();
 goToEntry(regionObj.id);
-
-}else{
-
-isHexMap = false
-loadGrid();
-goToEntry(regionObj.id);
-
-}
-
-returnCoords = coords;
-coords = idBox.textContent;
-idBox.textContent = idBox.textContent + '.X.X'
 updateGrid();
-
-//goToCell(idBox.textContent + '.0.0')
 
 }
 
 function handleExit(){
 
-//Set co-ordinates to parent cell.
-parse(coords)
-idBox.textContent = coords + '.X.X';
+//Remove 2 digits from coords and go there.
+coords = parseParent(regionObj.id);
 
 //Get Obj for parent cell.
-const returnObj = getObj(coords);
-regionObj = returnObj;
+let returnObj = regionObj
+regionObj = getObj(coords);
 
 //Set parent cell name as region name. 
 const regionName = document.getElementById('regionName');
-regionName.textContent = returnObj && returnObj.name !== ''? returnObj.name : "Excel_DM"
+regionName.textContent = regionObj && regionObj.name !== ''? regionObj.name : "Excel_DM"
 
-
-if(returnObj?.grid === 'square'){
-isHexMap = true
 loadGrid();
-goToEntry(coords);
-    
-} else {
-
-isHexMap = false
-loadGrid();
-goToEntry(coords);
-
-}
+goToEntry(returnObj.id);
 
 }
 

@@ -78,10 +78,10 @@ function createHexagons(rows, cols) {
 
 function updateGrid(){
 
-if(!isHexMap){
-updateSquareGrid()
-}else{
+if(isHexMap){
 updateHexGrid()
+}else{
+updateSquareGrid()
 }
 
 }
@@ -234,8 +234,6 @@ hexLabel.textContent = saveEntry.name
 })
 
 }
-
-let lastHex = ''
 
 function selectedHexStyle(hex){
 

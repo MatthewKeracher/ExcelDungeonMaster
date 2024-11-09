@@ -39,7 +39,7 @@ function createGrid(rows, cols) {
     }
 }
 
-let lastCell = ''
+
 
 function selectedCellStyle(cell){
 
@@ -91,7 +91,6 @@ function changeCell(gridCell){
 if(currentMode !== "map"){return};
 
 selectedCellStyle(gridCell);
-// saveEntry();
 updateCellNames();
 
 

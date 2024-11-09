@@ -76,7 +76,7 @@ function addHotkeys() {
                         // break;
                         // }
         
-                    }else{
+                    }else if (!isPainting){
         
                     switch (key) {
                         //For HexNav
@@ -221,6 +221,9 @@ function addHotkeys() {
                     break;
                 case 'p':
                     handlePaint();
+                    if(isPainting){
+                    paintCell(currentCell);
+                    }
                     break;
                 case 'f':
                     handleFill();

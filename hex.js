@@ -91,8 +91,13 @@ function moveHex(dir){
 let str = idBox.textContent;
 let numbersArray = str.split('.');
 let rowcol = numbersArray.slice(-2);
-let row = parseInt(rowcol[0]);
-let col = parseInt(rowcol[1]);
+let row = rowcol[0];
+let col = rowcol[1];
+
+if(row === 'X'){row = 0}else{row = parseInt(row)};
+if(col === 'X'){col = 0}else{col = parseInt(col)};
+
+console.log(row, col)
 
 if(dir === 'up'){
 row = row - 1;
@@ -157,7 +162,7 @@ function changeHex(hexagon){
 if(currentMode !== "map"){return};
 
 selectedHexStyle(hexagon);
-saveEntry();
+// saveEntry();
 updateHexNames();
 
 
@@ -181,7 +186,7 @@ textDiv.innerHTML = loadEntry.desc;
 
 // isEditing = true;
 //toggleModes();
-saveEntry();
+// saveEntry();
 saveData();
 
 }

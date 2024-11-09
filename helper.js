@@ -18,8 +18,15 @@ textDiv.innerHTML = "";
 
 function getObj(coords){
 
-const obj = data.find(entry => entry.id === coords)
+let obj = data.find(entry => entry.id === coords)
+
+if(obj === undefined){
+makeNewEntry();
+obj = data.find(entry => entry.id === coords);
+}
+
 currentObj = obj;
+console.log(obj)
 return obj
 
 }
@@ -94,7 +101,7 @@ return col
 
 }
 
-function returnCoords(id){
+function returnChords(id){
 
 const numbersArray = id.split('.');
 const coordsArray = numbersArray.slice(0, -2);

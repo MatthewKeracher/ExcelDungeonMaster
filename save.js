@@ -25,26 +25,34 @@ exists.name = placeName.value;
 exists.desc = textDiv.innerHTML;
 
 if(exists.desc !== "" && exists.name === ""){
-    exists.name = "*"
-    }
+exists.name = "*"
+}
 
 }else{
+makeNewEntry();
+}
+
+}
+
+function makeNewEntry(){
+
+console.log('making new entry')
+
 const saveEntry = {
 id: idBox.textContent,
 name: placeName.value,
 desc: textDiv.innerHTML,
 }
 
-if(saveEntry.desc !== "" && saveEntry.name === ""){
-saveEntry.name = "*"
+if(saveEntry.name === ""){
+saveEntry.name = "Untitled Entity"
 }
 
-if(saveEntry.name !== ""){
 data.push(saveEntry)
-}
-}
-}
 
+console.log(data)
+
+}
 
 //loadData();
 updateGrid();

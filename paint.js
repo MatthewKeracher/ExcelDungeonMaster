@@ -73,7 +73,6 @@ function paintCell(cell) {
 
     //Stop Crowding
     if(searchId === lastCellPainted.id && currentColor === lastCellPainted.color){return}
-    console.log('flag')
     lastCellPainted.id = searchId;
     lastCellPainted.color = currentColor;
 
@@ -159,8 +158,6 @@ function editColor(event, swatchElement) {
 function loadPalette(){
 
 let palette = regionObj?.palette;
-
-console.log(regionObj)
 
 if(palette){
 

@@ -143,8 +143,6 @@ input.click();
 
 function handleEnter(){
 
-    
-
 const logo = document.getElementById("startLogo");
 logo.style.display = "none"
 
@@ -172,7 +170,7 @@ goToEntry(regionObj.id);
 
 returnCoords = coords;
 coords = idBox.textContent;
-idBox.textContent = idBox.textContent 
+idBox.textContent = idBox.textContent + '.X.X'
 updateGrid();
 
 //goToCell(idBox.textContent + '.0.0')

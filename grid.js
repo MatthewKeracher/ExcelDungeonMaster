@@ -57,8 +57,11 @@ function moveCell(dir){
     let str = idBox.textContent;
     let numbersArray = str.split('.');
     let rowcol = numbersArray.slice(-2);
-    let row = parseInt(rowcol[0]);
-    let col = parseInt(rowcol[1]);
+    let row = rowcol[0];
+    let col = rowcol[1];
+
+    if(row === 'X'){row = 0}else{row = parseInt(row)};
+    if(col === 'X'){col = 0}else{col = parseInt(col)};
     
     if(dir === 'up'){
     row = row - 1;
@@ -86,7 +89,7 @@ function changeCell(gridCell){
 if(currentMode !== "map"){return};
 
 selectedCellStyle(gridCell);
-saveEntry();
+// saveEntry();
 updateCellNames();
 
 
@@ -108,13 +111,13 @@ textDiv.innerHTML = loadEntry.desc;
 }
 
 //toggleModes();
-saveEntry();
+// saveEntry();
 saveData();
 }
 
 function updateSquareGrid(){
 
-const cells = document.querySelectorAll(".grid-cell");
+const cells = document.querySelectorAll('[row][col]');
 
 cells.forEach(cell => {
 
@@ -122,7 +125,7 @@ const col = cell.getAttribute('col');
 const row = cell.getAttribute('row');
 const id =  coords + '.' + row + '.' + col;
 
-const saveEntry = data.find(entry => entry.id === id)
+const saveEntry = data.find(entry => entry.id === id);
 
 updateCellColors(cell, saveEntry);
 
@@ -130,6 +133,7 @@ updateCellColors(cell, saveEntry);
 })
 
 updateCellNames();
+loadZones();
 
 }
 

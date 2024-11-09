@@ -12,6 +12,7 @@ let region = 'Excel_DM'
 let regionObj = data[0];
 
 let currentObj = [];
+let currentZone = [];
 
 let hexRows = 25;
 let hexCols = 25;
@@ -51,54 +52,6 @@ for (let i = 0; i < welcomeMessage.length; i++) {
 
 idBox.textContent = '0.0'
 
-function emptyStoryteller(){
-
-placeName.value = "";
-textDiv.innerHTML = "";
-
-}
-
-function captureGridSize(){
-
-if (isHexMap) {
-regionObj.cols = hexRows
-regionObj.rows = hexRows
-} else {
-regionObj.cols = squareCols
-regionObj.rows = squareRows
-}
-}
-
-function getCurrentDiv(){
-
-  let str = idBox.textContent;
-  let numbersArray = str.split('.');
-  let rowcol = numbersArray.slice(-2);
-  let row = parseInt(rowcol[0]);
-  let col = parseInt(rowcol[1]);
-
-  const div = document.querySelector(`[row="${row}"][col="${col}"]`);
-  return div;
-
-}
-
-
-function parse(str){
-
-// Split the string into an array of numbers
-const numbersArray = str.split('.');
-
-// Remove the last two elements
-const trimmedArray = numbersArray.slice(0, -2);
-
-// Join the remaining numbers back into a string
-const resultString = trimmedArray.join('.');
-
-if(resultString !== ''){
-coords = resultString
-}
-
-}
 
 function loadGrid(){
 
@@ -123,46 +76,6 @@ loadPalette()
 
 }
 
-function returnDiv(id){
-//Split the string by '.' to retrieve the parts
-const numbersArray = id.split('.');
-
-// Retrieve the last two elements (assuming 'id' includes row and col info)
-const trimmedArray = numbersArray.slice(-2); // Get the last two elements
-
-const row = trimmedArray[0]; // First part is the row
-const col = trimmedArray[1]; // Second part is the column
-
-// Use querySelector to find the cell based on row and col attributes
-const div = document.querySelector(`[row="${row}"][col="${col}"]`);
-
-return div
-
-}
-
-function goToEntry(id) {
-
-//loadData
-textDiv.innerHTML = ''
-placeName.value = ''
-
-let loadEntry = getObj(id)
-//currentObj = loadEntry;
-
-if(loadEntry){
-placeName.value = loadEntry.name;
-textDiv.innerHTML = loadEntry.desc.trim();
-}
-
-}
-
-function getObj(coords){
-
-const obj = data.find(entry => entry.id === coords)
-currentObj = obj;
-return obj
-
-}
 
 // let inactivityTimer;
 

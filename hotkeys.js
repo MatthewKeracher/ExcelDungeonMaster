@@ -47,7 +47,59 @@ function addHotkeys() {
                     case '<':
                         handleExit();
                         break;
+                    case 'enter':
+                        clipZone();
+                        break;
                     }
+
+                    if(isHexMap === true){
+
+                        // switch (key) {
+                        // //For HexNav
+                        // case 'w':
+                        // moveHex('up');
+                        // break;
+                        // case 'q':
+                        // moveHex('up-left');
+                        // break;
+                        // case 'e':
+                        // moveHex('up-right');
+                        // break;
+                        // case 's':
+                        // moveHex('down');
+                        // break;
+                        // case 'a':
+                        // moveHex('down-left');
+                        // break;
+                        // case 'd':
+                        // moveHex('down-right');
+                        // break;
+                        // }
+        
+                    }else{
+        
+                    switch (key) {
+                        //For HexNav
+                        case 'w':
+                        moveCell('up');
+                        addZone(currentCell)
+                        break;
+                        case 's':
+                        moveCell('down');
+                        addZone(currentCell)
+                        break;
+                        case 'a':
+                        moveCell('left');
+                        addZone(currentCell)
+                        break;
+                        case 'd':
+                        moveCell('right');
+                        addZone(currentCell)
+                        break;
+                        }
+        
+                    }
+
             }else{
 
             if(isHexMap === true){
@@ -77,7 +129,7 @@ function addHotkeys() {
             }else{
 
             switch (key) {
-                //For HexNav
+                //For SquareNav
                 case 'w':
                 moveCell('up');
                 break;
@@ -100,63 +152,44 @@ function addHotkeys() {
                 // For Painting
                 case '1':
                     selectedColorElement = document.getElementById('color1');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
+                    
                     break;
                 case '2':
                     selectedColorElement = document.getElementById('color2');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '3':
                     selectedColorElement = document.getElementById('color3');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '4':
                     selectedColorElement = document.getElementById('color4');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '5':
                     selectedColorElement = document.getElementById('color5');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '6':
                     selectedColorElement = document.getElementById('color6');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '7':
                     selectedColorElement = document.getElementById('color7');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '8':
                     selectedColorElement = document.getElementById('color8');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '9':
                     selectedColorElement = document.getElementById('color9');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 case '0':
                     selectedColorElement = document.getElementById('eraser');
-                    currentColor = window.getComputedStyle(selectedColorElement).backgroundColor;
-                    currentCell = getCurrentDiv();
-                    paintCell(currentCell);
+                    paintCurrentCell(selectedColorElement);
                     break;
                 }
                 

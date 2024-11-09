@@ -5,6 +5,12 @@ function setColor(color) {
 currentColor = color;
 }
 
+function paintCurrentCell(colInput){
+    currentColor = window.getComputedStyle(colInput).backgroundColor;
+    currentCell = getCurrentDiv();
+    paintCell(currentCell);
+}
+
 function fillCells(cell){
 
     //get Cell Information

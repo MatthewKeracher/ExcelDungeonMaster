@@ -51,6 +51,7 @@ lastCell = cell;
 
 }
 
+
 function moveCell(dir){
 
     let str = idBox.textContent;

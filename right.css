@@ -76,6 +76,10 @@
     animation: flash 0.5s infinite; /* Flash every 0.5 seconds, looping infinitely */
 }
 
+.zoning {
+    filter: brightness(2)
+}
+
 
 .grid-row {
     display: flex;

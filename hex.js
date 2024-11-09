@@ -97,7 +97,6 @@ let col = rowcol[1];
 if(row === 'X'){row = 0}else{row = parseInt(row)};
 if(col === 'X'){col = 0}else{col = parseInt(col)};
 
-console.log(row, col)
 
 if(dir === 'up'){
 row = row - 1;

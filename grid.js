@@ -2,6 +2,8 @@ function createGrid(rows, cols) {
     const gridContainer = document.getElementById('gridContainer');
     gridContainer.innerHTML = '';  // Clear previous map
 
+    
+
     for (let row = 0; row < rows; row++) {
         // Create a row for grid cells
         const gridRow = document.createElement('div');
@@ -134,6 +136,7 @@ updateCellColors(cell, saveEntry);
 
 updateCellNames();
 loadZones();
+
 
 }
 

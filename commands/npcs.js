@@ -29,7 +29,6 @@ function makeHitBoxes(hitPoints, hit){
 
 
 function makeNPC(npcClass, level, npcName) {
-    console.log(npcClass);
 
     const stats = {
         name: npcName ? npcName : "John Smith",

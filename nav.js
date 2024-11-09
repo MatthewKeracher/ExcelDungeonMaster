@@ -181,7 +181,7 @@ function handleExit(){
 
 //Set co-ordinates to parent cell.
 parse(coords)
-idBox.textContent = coords;
+idBox.textContent = coords + '.X.X';
 
 //Get Obj for parent cell.
 const returnObj = getObj(coords);

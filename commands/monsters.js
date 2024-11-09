@@ -8,7 +8,7 @@ throw new Error('Network response was not ok');
 }
 
 loadedData[name] = await response.json(); 
-console.log(loadedData)
+
 
 } catch (error) {
 console.error('Error loading'+name+':', error);

@@ -36,8 +36,6 @@ makeNewEntry();
 
 function makeNewEntry(){
 
-console.log('making new entry')
-
 const saveEntry = {
 id: idBox.textContent,
 name: placeName.value,
@@ -45,12 +43,10 @@ desc: textDiv.innerHTML,
 }
 
 if(saveEntry.name === ""){
-saveEntry.name = "Untitled Entity"
+saveEntry.name = "*"
 }
 
 data.push(saveEntry)
-
-console.log(data)
 
 }
 

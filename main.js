@@ -16,8 +16,8 @@ let currentZone = [];
 
 let hexRows = 25;
 let hexCols = 25;
-let squareRows = 60; //Not working.
-let squareCols = 60;
+let squareRows = 25; //Not working.
+let squareCols = 25;
 
 
 let isHexMap = true;

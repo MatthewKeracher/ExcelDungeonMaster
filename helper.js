@@ -26,7 +26,6 @@ obj = data.find(entry => entry.id === coords);
 }
 
 currentObj = obj;
-console.log(obj)
 return obj
 
 }

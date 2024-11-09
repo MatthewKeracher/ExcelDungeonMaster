@@ -100,13 +100,15 @@ flex: 0 0 auto;
 position: relative;
 width: 25px;
 height: 25px;
+background: rgb(29, 29, 29);
 transition: border-color 0.3s ease;
 display: flex;
 justify-content: center;
 align-items: center;
 }
 
-.grid-cell:hover{
+.grid-cell:hover,
+.zone-cell:hover{
 border: 1.7px solid whitesmoke;
 }
 

@@ -1,19 +1,46 @@
 let zones = [];
 let zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
 
+function loadZone(gridCell, zone){
+
+    placeName.value = zone.id;
+    textDiv.innerHTML = '';
+
+}
+
+function checkIfZone(div){
+
+    //All Zones with Coords Matching
+    const activeZones = zones.filter(zone => zone.coords === coords);
+    let zone = undefined;
+
+    activeZones.forEach(entry => {
+
+        const area = entry.drawArea;
+
+        const x = div.getAttribute('col');
+        const y = div.getAttribute('row');
+
+        if(x >= area.startX && x<= area.endX){
+            if(y >= area.startY && y<= area.endY){
+                zone = entry;
+            }
+        }
+
+    });
+
+    return zone;
+
+};
+
 function saveZone(){
 
-let withZones = data.filter(entry => entry.zone);
-let lastZoneId = withZones.length !== 0? Math.max(...withZones.map(entry => entry.zone)) : 0;
-let zoneId = coords + '.' + (lastZoneId + 1);
-
+let zoneId = coords + '.' + (zones.length + 1);
 let exists = zones.find(entry => entry.id === zoneId);
 
 if(exists){
 exists.coords = zoneId;
 }else{
-
-console.log(zoneLimits)
 
 const zoneEntry = {
 id: zoneId,
@@ -22,16 +49,20 @@ drawArea: zoneLimits,
 }
 
 zones.push(zoneEntry);
-zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
+clearZoneLimits();
 }
 
+}
 
+function clearZoneLimits(){
+zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
 }
 
 function loadZones(){
 
 // Remove 'zone-cell' class from all cells
 let allCells = document.querySelectorAll('.zone-cell');
+allCells.forEach(cell => cell.removeAttribute('zone'));
 allCells.forEach(cell => cell.classList.remove('zone-cell'));
 allCells.forEach(cell => cell.classList.add('grid-cell'));
 
@@ -60,6 +91,7 @@ function drawZone(zone) {
     cells.forEach(cell => {
         cell.classList.remove('grid-cell')
         cell.classList.add('zone-cell');
+        cell.setAttribute('zone', zone.id)
     });
 
 }

@@ -8,13 +8,14 @@ const paletteDiv = document.getElementById('paletteDiv');
 if(!isPainting && currentMode === 'map'){
 
 isPainting = true
+isFilling = false
+
 paintButton.classList.add('highlight');
 paletteDiv.style.display = "flex";
 
 }else{
 
 isPainting = false
-isFilling = false
 paintButton.classList.remove('highlight');
 paletteDiv.style.display = "none";
 
@@ -24,12 +25,22 @@ paletteDiv.style.display = "none";
 
 function handleFill(){
 
-if(isPainting){
+const paletteDiv = document.getElementById('paletteDiv');
+
+if(currentMode === 'map'){
 
     if(!isFilling){
+
     isFilling = true
+    isPainting = false
+    
+    paletteDiv.style.display = "flex";
+
     }else{
+
     isFilling = false
+    paletteDiv.style.display = "none";
+
     }
 
 }

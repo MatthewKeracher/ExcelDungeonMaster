@@ -61,6 +61,7 @@ function createHexagons(rows, cols) {
             hexagon.addEventListener("click", function() {
                 changeHex(hexagon);
                 paintCell(hexagon)
+                fillCells(hexagon)
             });
 
             hexagon.addEventListener('mousemove', function() {
@@ -161,10 +162,7 @@ function changeHex(hexagon){
 if(currentMode !== "map"){return};
 
 selectedHexStyle(hexagon);
-// saveEntry();
 updateHexNames();
-
-
 
 //Set new id.
 let row = hexagon.getAttribute('row');
@@ -183,9 +181,7 @@ placeName.value = loadEntry.name;
 textDiv.innerHTML = loadEntry.desc;
 }
 
-// isEditing = true;
-//toggleModes();
-// saveEntry();
+
 saveData();
 
 }

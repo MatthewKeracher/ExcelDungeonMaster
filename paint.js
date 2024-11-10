@@ -5,29 +5,40 @@ function setColor(color) {
 currentColor = color;
 }
 
+function setCurrentColor(colInput){
+currentColor = window.getComputedStyle(colInput).backgroundColor;
+}
+
 function paintCurrentCell(colInput){
-    currentColor = window.getComputedStyle(colInput).backgroundColor;
+    if(!isPainting){return}
     currentCell = getCurrentDiv();
     paintCell(currentCell);
 }
 
 function fillCells(cell){
 
+    if(!isFilling){return}
+
     //get Cell Information
     const col = cell.getAttribute('col');
     const row = cell.getAttribute('row');
     const id =  coords + '.' + row + '.' + col;
+    const cellEntry = data.find(entry => entry.id === id);
     
-    const cellEntry = data.find(entry => entry.id === id)
 
-    let allCells = document.querySelectorAll(".hex");
+    let allCells = document.querySelectorAll(".hex"); 
     let oldColor 
 
     if (allCells.length === 0) {
-        allCells = document.querySelectorAll(".grid-cell");
+        const zone = cell.getAttribute('zone');
         oldColor = cell.style.backgroundColor;
+       if(zone){
+        allCells = document.querySelectorAll(`[zone="${zone}"]`);
+       }else{
+        allCells = document.querySelectorAll(".grid-cell");
+       }
     }else{
-        oldColor = cell.querySelector('.middle').style.backgroundColor;
+       oldColor = cell.querySelector('.middle').style.backgroundColor;
     }
 
     allCells.forEach(cell => {
@@ -38,7 +49,7 @@ function fillCells(cell){
     
     const saveEntry = data.find(entry => entry.id === id)
 
-    if(saveEntry?.color === oldColor){
+    if(saveEntry?.color === oldColor){ //&& isConnected
        saveEntry.color = currentColor
     }
 
@@ -48,23 +59,30 @@ function fillCells(cell){
             id: id,
             name: "",
             desc: "",
-            color: isPainting? currentColor : '',
+            color: currentColor,
             }
             
             data.push(newEntry)
-
+            
     }
 
     });
 
-    isFilling = false;
+    saveData();
+    
+    if(isHexMap){
+    updateHexGrid()
+    }else{
+    updateSquareGrid()   
+    }
+
+    handleFill()
 
 }
 
 function paintCell(cell) {
 
     if(!isPainting){return};
-    if(isFilling){fillCells(cell)}
 
     const row = cell.getAttribute('row');
     const col = cell.getAttribute('col');

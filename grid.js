@@ -26,6 +26,7 @@ function createGrid(rows, cols) {
             gridCell.addEventListener("click", function () {
                 changeCell(gridCell);
                 paintCell(gridCell)
+                fillCells(gridCell)
             });
             gridCell.addEventListener('mousemove', function() {
                 if (isPainting && isShiftPressed) {
@@ -93,7 +94,6 @@ if(currentMode !== "map"){return};
 selectedCellStyle(gridCell);
 updateCellNames();
 
-
 //Set new id.
 let row = gridCell.getAttribute('row');
 let col = gridCell.getAttribute('col')
@@ -103,6 +103,14 @@ idBox.textContent = coords + '.' + row + '.' + col
 textDiv.innerHTML = ''
 placeName.value = ''
 
+const zone = checkIfZone(gridCell);
+
+if(zone !== undefined){
+
+loadZone(gridCell, zone)
+
+}else{
+
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
@@ -111,9 +119,8 @@ placeName.value = loadEntry.name;
 textDiv.innerHTML = loadEntry.desc;
 }
 
-//toggleModes();
-// saveEntry();
 saveData();
+}
 }
 
 function updateSquareGrid(){

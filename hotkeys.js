@@ -132,64 +132,78 @@ function addHotkeys() {
                 //For SquareNav
                 case 'w':
                 moveCell('up');
+                clearZoneLimits();
                 break;
                 case 's':
                 moveCell('down');
+                clearZoneLimits();
                 break;
                 case 'a':
                 moveCell('left');
+                clearZoneLimits();
                 break;
                 case 'd':
                 moveCell('right');
+                clearZoneLimits();
                 break;
                 }
 
             }
 
-            if(isPainting === true){
+            if(isPainting === true || isFilling === true){
 
                 switch (key) {
                 // For Painting
                 case '1':
                     selectedColorElement = document.getElementById('color1');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     
                     break;
                 case '2':
                     selectedColorElement = document.getElementById('color2');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '3':
                     selectedColorElement = document.getElementById('color3');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '4':
                     selectedColorElement = document.getElementById('color4');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '5':
                     selectedColorElement = document.getElementById('color5');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '6':
                     selectedColorElement = document.getElementById('color6');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '7':
                     selectedColorElement = document.getElementById('color7');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '8':
                     selectedColorElement = document.getElementById('color8');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '9':
                     selectedColorElement = document.getElementById('color9');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 case '0':
                     selectedColorElement = document.getElementById('eraser');
-                    paintCurrentCell(selectedColorElement);
+                    setCurrentColor(selectedColorElement);
+                    paintCurrentCell();
                     break;
                 }
                 

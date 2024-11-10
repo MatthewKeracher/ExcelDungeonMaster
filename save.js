@@ -44,7 +44,7 @@ grid: isHexMap? "hex" : "square",
 }
 
 if(saveEntry.name === ""){
-saveEntry.name = "*"
+saveEntry.name = ""
 }
 
 data.push(saveEntry)

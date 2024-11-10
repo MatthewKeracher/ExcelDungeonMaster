@@ -110,10 +110,10 @@ function paintCell(cell) {
     saveData();
     
     if(!isHexMap){
-        updateSquareGrid()
-        }else{
-        updateHexGrid()
-        }
+    updateSquareGrid()
+    }else{
+    updateHexGrid()
+    }
     
 }
 

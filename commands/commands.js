@@ -125,8 +125,10 @@ hitPointInit();
 textDiv.scrollTop = textDiv.scrollHeight;
 
 //Save Content
-saveEntry();
+let div = getCurrentDiv()
+saveEntry(div);
 updateCellNames();
+updateZoneNames();
 updateHexNames();
 
 

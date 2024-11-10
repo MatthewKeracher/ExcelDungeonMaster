@@ -11,12 +11,21 @@ data = JSON.parse(savedData);  // Convert back from JSON string to array
 }
 }
 
-function saveEntry(){
+function saveEntry(div){
 
 const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 
+if(inZone){
+
+let zoneId = div.getAttribute('zone');
+let zone = zones.find(entry => entry.id === zoneId)
+
+zone.name = placeName.value;
+zone.desc = textDiv.innerHTML;
+
+}else{
 
 let exists = data.find(entry => entry.id === idBox.textContent)
 
@@ -30,6 +39,8 @@ exists.name = "*"
 
 }else{
 makeNewEntry();
+}
+
 }
 
 }

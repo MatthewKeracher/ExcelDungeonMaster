@@ -1,7 +1,6 @@
 function createGrid(rows, cols) {
     const gridContainer = document.getElementById('gridContainer');
     gridContainer.innerHTML = '';  // Clear previous map
-
     
 
     for (let row = 0; row < rows; row++) {
@@ -93,6 +92,7 @@ if(currentMode !== "map"){return};
 
 selectedCellStyle(gridCell);
 updateCellNames();
+updateZoneNames();
 
 //Set new id.
 let row = gridCell.getAttribute('row');
@@ -103,13 +103,6 @@ idBox.textContent = coords + '.' + row + '.' + col
 textDiv.innerHTML = ''
 placeName.value = ''
 
-const zone = checkIfZone(gridCell);
-
-if(zone !== undefined){
-
-loadZone(gridCell, zone)
-
-}else{
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
@@ -119,9 +112,18 @@ placeName.value = loadEntry.name;
 textDiv.innerHTML = loadEntry.desc;
 }
 
+const zone = checkIfZone(gridCell);
+
+if(zone !== undefined && textDiv.innerHTML === '' && placeName.value === ''){
+inZone = true;
+loadZone(gridCell, zone)
+}else{
+inZone = false;
+}
+
 saveData();
 }
-}
+
 
 function updateSquareGrid(){
 
@@ -142,6 +144,7 @@ updateCellColors(cell, saveEntry);
 
 updateCellNames();
 loadZones();
+updateZoneNames();
 
 
 }

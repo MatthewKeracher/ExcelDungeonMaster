@@ -30,6 +30,13 @@ return obj
 
 }
 
+function getDiv(row, col){
+
+const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+return div;
+    
+}
+
 
 function getCurrentDiv(){
 

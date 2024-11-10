@@ -2,6 +2,16 @@ function addHotkeys() {
 
     let selectedColorElement = null;
     let isShiftHeld = false;
+    let isPPressed = false;
+
+
+    document.addEventListener('keyup', (event) => {
+        if (event.key.toLowerCase() === 'p') {
+            isPPressed = false;
+            handlePaint();
+
+        }
+    });
 
     document.addEventListener('keydown', (event) => {
         const key = event.key.toLowerCase(); // Convert the pressed key to lowercase
@@ -234,13 +244,20 @@ function addHotkeys() {
                     placeName.focus();
                     break;
                 case 'p':
+                    if(!isPPressed) {
+                    isPPressed = true;
                     handlePaint();
                     if(isPainting){
                     paintCell(currentCell);
-                    }
+                    }}
                     break;
                 case 'f':
                     handleFill();
+                    break;
+                case 'enter':
+                    if(isFilling){
+                    fillCells(currentCell)
+                    }
                     break;
                 case 'l':
                     handleLoad();

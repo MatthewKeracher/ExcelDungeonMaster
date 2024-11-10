@@ -1,12 +1,35 @@
 let zones = [];
 let zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
+let inZone = false
 
 function loadZone(gridCell, zone){
 
-    placeName.value = zone.id;
-    textDiv.innerHTML = '';
+
+    placeName.value = zone.name;
+    textDiv.innerHTML = zone.desc;
 
 }
+
+function updateZoneNames(){
+
+    const activeZones = zones.filter(zone => zone.coords === coords);
+    activeZones.forEach(zone => {
+
+    let area = zone.drawArea
+    let midY = Math.floor((area.endY + area.startY) /2);
+    let midX = Math.floor((area.endX + area.startX) /2);
+   
+    const id =  coords + '.' + midY + '.' + midX;
+    const cell = getDiv(midY, midX);
+    const label = cell.querySelector('.cellLabel');
+
+    label.textContent = zone.name
+
+    });
+    
+    
+    
+    }
 
 function checkIfZone(div){
 
@@ -44,6 +67,8 @@ exists.coords = zoneId;
 
 const zoneEntry = {
 id: zoneId,
+name: '',
+desc: '',
 coords: coords,
 drawArea: zoneLimits,
 }
@@ -56,6 +81,9 @@ clearZoneLimits();
 
 function clearZoneLimits(){
 zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
+
+let zoningCells = document.querySelectorAll('.zoning');
+zoningCells.forEach(cell => cell.classList.remove('zoning'));
 }
 
 function loadZones(){
@@ -72,6 +100,8 @@ const toDraw = zones.filter(zone => zone.coords === coords);
 toDraw.forEach(zone => {
 drawZone(zone)
 })
+
+updateZoneNames()
 
 }
 
@@ -105,6 +135,7 @@ allCells.forEach(cell => cell.classList.remove('zoning'));
 
 saveZone();
 loadZones();
+inZone = true;
 
 
 } 

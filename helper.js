@@ -120,3 +120,32 @@ const coords = coordsArray.join('.')
 return coords
 
 }
+
+function showPrompt(message) {
+    return new Promise((resolve) => {
+        const promptBox = document.getElementById('promptBox');
+        const promptMsg = document.getElementById('promptMsg');
+
+        promptBox.style.display = 'block';
+        promptMsg.textContent = message;
+        promptBox.focus();
+
+        removeHotKeys();
+
+        function promptKeyHandler(event) {
+            if (event.key.toLowerCase() === 'y') {
+                cleanup(true);
+            } else if (event.key.toLowerCase() === 'n') {
+                cleanup(false);
+            }
+        }
+
+        document.addEventListener('keydown', promptKeyHandler);
+
+        function cleanup(result) {
+            promptBox.style.display = 'none';
+            addHotkeys();
+            resolve(result);
+        }
+    });
+}

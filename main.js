@@ -38,6 +38,9 @@ const textDiv = document.getElementById('textDiv');
 const idBox = document.getElementById('idBox');
 const modeBox = document.getElementById('modeBox');
 
+const promptBox = document.getElementById('promptBox');
+const promptMsg = document.getElementById('promptMsg');
+
 //Default
 placeName.value = "Excel_DM"
 textDiv.innerHTML = ``;

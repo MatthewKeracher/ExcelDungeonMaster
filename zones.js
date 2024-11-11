@@ -56,6 +56,7 @@ function checkIfZone(div){
 
 };
 
+
 function saveZone(){
 
 let zoneId = coords + '.' + (zones.length + 1);
@@ -138,13 +139,26 @@ loadZones();
 inZone = true;
 
 
-} 
+}
+
+function deleteZone(zone) {
+    showPrompt('Do you want to delete the Zone?').then(shouldDelete => {
+        if (shouldDelete) {
+            const index = zones.findIndex(entry => entry.id === zone.id);
+            zones.splice(index, 1);
+            loadZones();
+        }
+    });
+}
 
 function addZone(currentCell){
 
 let cell = zoneLimits.startX === Infinity? currentCell: getCurrentDiv();
 let row = parseInt(cell.getAttribute('row')); //y
 let col = parseInt(cell.getAttribute('col')); //x
+
+let alreadyZone = checkIfZone(currentCell)
+if(alreadyZone !== undefined){deleteZone(alreadyZone)}
 
 //Calibrate Zone Limits (Big Square)
 zoneLimits.startX = Math.min(zoneLimits.startX, col);

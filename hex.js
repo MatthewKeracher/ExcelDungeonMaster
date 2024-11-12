@@ -1,18 +1,22 @@
-function setHexagonSize(baseSize) {
-    const hexMarginRight = -0.4 * baseSize;  // Example proportion
-    const hexMarginBottom = -0.83 * baseSize;
-    const hexSide = 0.5 * baseSize;
-    const hexHeight = 0.87 * baseSize;
-    const hexTotalHeight = 2 * hexHeight;
-    const hexMarginTop = hexHeight * 1.08;
+function setHexagonSize() {
+     
 
-    // Apply the calculated values to the root element (or any specific container)
-    document.documentElement.style.setProperty('--hex-margin-right', `${hexMarginRight}px`);
-    document.documentElement.style.setProperty('--hex-margin-bottom', `${hexMarginBottom}px`);
-    document.documentElement.style.setProperty('--hex-side', `${hexSide}px`);
-    document.documentElement.style.setProperty('--hex-height', `${hexHeight}px`);
-    document.documentElement.style.setProperty('--hex-total-height', `${hexTotalHeight}px`);
-    document.documentElement.style.setProperty('--hex-margin-top', `${hexMarginTop}px`);
+    const hexProps = {
+        'margin-right': -6,
+        'margin-bottom': -12,
+        'side': 7.5,
+        'height': 13,
+        'width': 15,
+        'total-height':  26,
+        'margin-top':  14
+    };
+
+    Object.entries(hexProps).forEach(([prop, value]) => {
+        document.documentElement.style.setProperty(
+            `--hex-${prop}`, 
+            `${value}px`
+        );
+    });
 }
 
 
@@ -20,7 +24,7 @@ function createHexagons(rows, cols) {
     const gridContainer = document.getElementById('gridContainer');
     gridContainer.innerHTML = '';  // Clear previous map
 
-    setHexagonSize(30); // Ensure this function sets hexagon sizes properly.
+    setHexagonSize();
 
     for (let row = 0; row < rows; row++) {
         // Create a row for hexagons

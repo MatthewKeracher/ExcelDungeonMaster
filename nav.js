@@ -62,13 +62,7 @@ loadGrid()
 
 function handleNew() {
 
-    data = [{
-        id: "0.0",
-        name: "Excel_DM",
-        desc: "Welcome to Excel_DM",
-        rows: 20,
-        cols: 40,
-        }];
+    data = defaultData;
 
     zones = []; 
 

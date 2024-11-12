@@ -24,7 +24,9 @@ function fillCells(cell) {
 
     const setCellColor = (div, color) => {
         if (isHexMap) {
+            div.querySelector('.left').style.borderLeftColor = color;
             div.querySelector('.middle').style.backgroundColor = color;
+            div.querySelector('.right').style.borderRightColor = color;
         } else {
             div.style.backgroundColor = color;
         }
@@ -37,7 +39,7 @@ function fillCells(cell) {
     const startRow = parseInt(cell.getAttribute('row'));
 
     const queue = [[startCol, startRow]];
-    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1]] 
+    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1], [1,1], [-1,-1]] 
       
     while (queue.length > 0) {
         const [currentCol, currentRow] = queue.pop();
@@ -79,13 +81,14 @@ if(saveEntry?.color){
 saveEntry.color = currentColor
 }
 
-if(saveEntry === undefined && cellEntry === undefined){
+if(saveEntry === undefined ){ //&& cellEntry === undefined
 
 const newEntry = {
 id: id,
 name: "",
 desc: "",
 color: currentColor,
+
 }
 
 data.push(newEntry)

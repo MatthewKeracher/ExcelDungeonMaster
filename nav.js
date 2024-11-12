@@ -157,7 +157,7 @@ input.click();
 function handleEnter(){
 
 const logo = document.getElementById("startLogo");
-logo.style.display = "none"
+logo.style.display = "none";
 
 captureGridSize();
 

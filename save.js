@@ -1,13 +1,18 @@
 // Function to save data to localStorage
 function saveData() {
 localStorage.setItem('data', JSON.stringify(data));
+localStorage.setItem('zones', JSON.stringify(zones));
 }
 
 // Function to load data from localStorage
 function loadData() {
 const savedData = localStorage.getItem('data');
+const savedZones = localStorage.getItem('zones');
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
+}
+if(savedZones){
+zones = JSON.parse(savedZones);  
 }
 }
 
@@ -62,7 +67,7 @@ data.push(saveEntry)
 
 }
 
-//loadData();
+loadData();
 updateGrid();
 
 

@@ -103,7 +103,6 @@ idBox.textContent = coords + '.' + row + '.' + col
 textDiv.innerHTML = ''
 placeName.value = ''
 
-
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 

@@ -15,41 +15,61 @@ function paintCurrentCell(colInput){
     paintCell(currentCell);
 }
 
-function fillCells(cell){
+function fillCells(cell) {
 
     if(!isFilling){return}
 
-    //get Cell Information
-    const col = cell.getAttribute('col');
-    const row = cell.getAttribute('row');
-    const id =  coords + '.' + row + '.' + col;
-    const cellEntry = data.find(entry => entry.id === id);
-    
+    const oldColor = cell.style.backgroundColor;
+    if (currentColor === oldColor) return;
 
-    let allCells = document.querySelectorAll(".hex"); 
-    let oldColor 
+    const startCol = cell.getAttribute('col');
+    const startRow = cell.getAttribute('row');
+    updateColor(startCol, startRow);
+  
+    const queue = [[startCol, startRow]];
+    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1,1], [-1, -1], [1, -1], [-1, 1]];
+  
+    while (queue.length > 0) {
+   
+      const [currentCol, currentRow] = queue.pop();
+      const div = getDiv(currentRow, currentCol);
 
-    if (allCells.length === 0) {
-        const zone = cell.getAttribute('zone');
-        oldColor = cell.style.backgroundColor;
-       if(zone){
-        allCells = document.querySelectorAll(`[zone="${zone}"]`);
-       }else{
-        allCells = document.querySelectorAll(".grid-cell");
-       }
-    }else{
-       oldColor = cell.querySelector('.middle').style.backgroundColor;
+      if (div.style.backgroundColor !== oldColor) continue;
+  
+      div.style.backgroundColor = currentColor;
+  
+      for (const [dCol, dRow] of directions) {
+        const newCol = parseInt(currentCol) + dCol;
+        const newRow = parseInt(currentRow) + dRow;
+        const newDiv = getDiv(newRow, newCol);
+        console.log(newDiv)
+        
+          if (newDiv && newDiv.style.backgroundColor === oldColor) {
+            updateColor(newCol, newRow)
+            queue.push([newCol, newRow]);
+          }
+        
+      }
     }
 
-    allCells.forEach(cell => {
+    saveData();
     
-    const col = cell.getAttribute('col');
-    const row = cell.getAttribute('row');
+    if(isHexMap){
+    updateHexGrid()
+    }else{
+    updateSquareGrid()   
+    }
+
+    handleFill()
+
+  }
+
+  function updateColor(col, row){
     const id =  coords + '.' + row + '.' + col;
-    
+
     const saveEntry = data.find(entry => entry.id === id)
 
-    if(saveEntry?.color === oldColor){ //&& isConnected
+    if(saveEntry?.color){ 
        saveEntry.color = currentColor
     }
 
@@ -64,21 +84,72 @@ function fillCells(cell){
             
             data.push(newEntry)
             
-    }
+    }};
 
-    });
+// function fillCells(cell){
 
-    saveData();
+//     if(!isFilling){return}
+
+//     //get Cell Information
+//     const col = cell.getAttribute('col');
+//     const row = cell.getAttribute('row');
+//     const id =  coords + '.' + row + '.' + col;
+//     const cellEntry = data.find(entry => entry.id === id);
     
-    if(isHexMap){
-    updateHexGrid()
-    }else{
-    updateSquareGrid()   
-    }
 
-    handleFill()
+//     let allCells = document.querySelectorAll(".hex"); 
+//     let oldColor 
 
-}
+//     if (allCells.length === 0) {
+//         const zone = cell.getAttribute('zone');
+//         oldColor = cell.style.backgroundColor;
+//        if(zone){
+//         allCells = document.querySelectorAll(`[zone="${zone}"]`);
+//        }else{
+//         allCells = document.querySelectorAll(".grid-cell");
+//        }
+//     }else{
+//        oldColor = cell.querySelector('.middle').style.backgroundColor;
+//     }
+
+//     allCells.forEach(cell => {
+    
+//     const col = cell.getAttribute('col');
+//     const row = cell.getAttribute('row');
+//     const id =  coords + '.' + row + '.' + col;
+    
+//     const saveEntry = data.find(entry => entry.id === id)
+
+//     if(saveEntry?.color === oldColor){ //&& isConnected
+//        saveEntry.color = currentColor
+//     }
+
+//     if(saveEntry === undefined && cellEntry === undefined){
+
+//         const newEntry = {
+//             id: id,
+//             name: "",
+//             desc: "",
+//             color: currentColor,
+//             }
+            
+//             data.push(newEntry)
+            
+//     }
+
+//     });
+
+//     saveData();
+    
+//     if(isHexMap){
+//     updateHexGrid()
+//     }else{
+//     updateSquareGrid()   
+//     }
+
+//     handleFill()
+
+// }
 
 function paintCell(cell) {
 

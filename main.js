@@ -11,6 +11,8 @@ let coords = '0.0';
 let region = 'Excel_DM'
 let regionObj = data[0];
 
+let zones = [];
+
 let currentObj = [];
 let currentZone = [];
 
@@ -73,6 +75,7 @@ squareRows = regionObj.rows? regionObj.rows : squareRows;
 squareCols = regionObj.cols? regionObj.cols : squareCols;
 
 createGrid(squareRows, squareCols);
+loadZones();
 
 } else {
 

@@ -1,4 +1,4 @@
-let zones = [];
+
 let zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
 let inZone = false
 
@@ -138,6 +138,7 @@ toDraw.forEach(zone => {
 drawZone(zone)
 })
 
+
 updateZoneNames()
 
 }
@@ -160,6 +161,7 @@ drawArea: zoneLimits,
 }
 
 zones.push(zoneEntry);
+saveData();
 clearZoneLimits();
 }
 
@@ -185,6 +187,8 @@ label.textContent = zone.name
 
 
 }
+
+
 
 
 

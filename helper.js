@@ -31,7 +31,6 @@ return obj
 }
 
 function getDiv(row, col){
-console.log(row, col)
 const div = document.querySelector(`[row="${row}"][col="${col}"]`);
 return div;
     

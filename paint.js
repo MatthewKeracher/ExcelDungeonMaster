@@ -3,206 +3,145 @@ let currentColor = document.getElementById('color1').style.backgroundColor;
 
 function setColor(color) {
 currentColor = color;
-}
+};
 
 function setCurrentColor(colInput){
 currentColor = window.getComputedStyle(colInput).backgroundColor;
-}
+};
 
 function paintCurrentCell(colInput){
-    if(!isPainting){return}
-    currentCell = getCurrentDiv();
-    paintCell(currentCell);
-}
+if(!isPainting){return}
+currentCell = getCurrentDiv();
+paintCell(currentCell);
+};
 
 function fillCells(cell) {
+    if (!isFilling) return;
 
-    if(!isFilling){return}
+    const getCellColor = (div) => {
+        return isHexMap ? div.querySelector('.middle').style.backgroundColor : div.style.backgroundColor;
+    };
 
-    const oldColor = cell.style.backgroundColor;
+    const setCellColor = (div, color) => {
+        if (isHexMap) {
+            div.querySelector('.middle').style.backgroundColor = color;
+        } else {
+            div.style.backgroundColor = color;
+        }
+    };
+
+    const oldColor = getCellColor(cell);
     if (currentColor === oldColor) return;
 
-    const startCol = cell.getAttribute('col');
-    const startRow = cell.getAttribute('row');
-    updateColor(startCol, startRow);
-  
-    const queue = [[startCol, startRow]];
-    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1,1], [-1, -1], [1, -1], [-1, 1]];
-  
-    while (queue.length > 0) {
-   
-      const [currentCol, currentRow] = queue.pop();
-      const div = getDiv(currentRow, currentCol);
+    const startCol = parseInt(cell.getAttribute('col'));
+    const startRow = parseInt(cell.getAttribute('row'));
 
-      if (div.style.backgroundColor !== oldColor) continue;
-  
-      div.style.backgroundColor = currentColor;
-  
-      for (const [dCol, dRow] of directions) {
-        const newCol = parseInt(currentCol) + dCol;
-        const newRow = parseInt(currentRow) + dRow;
-        const newDiv = getDiv(newRow, newCol);
-        console.log(newDiv)
+    const queue = [[startCol, startRow]];
+    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1]] 
+      
+    while (queue.length > 0) {
+        const [currentCol, currentRow] = queue.pop();
+        const div = getDiv(currentRow, currentCol);
         
-          if (newDiv && newDiv.style.backgroundColor === oldColor) {
-            updateColor(newCol, newRow)
-            queue.push([newCol, newRow]);
-          }
-        
-      }
+        if (!div || getCellColor(div) !== oldColor) continue;
+
+        setCellColor(div, currentColor);
+        updateColor(currentCol, currentRow);
+
+        for (const [dCol, dRow] of directions) {
+            const newCol = currentCol + dCol;
+            const newRow = currentRow + dRow;
+            const newDiv = getDiv(newRow, newCol);
+
+            if (newDiv && getCellColor(newDiv) === oldColor) {
+                queue.push([newCol, newRow]);
+            }
+        }
     }
 
     saveData();
-    
-    if(isHexMap){
-    updateHexGrid()
-    }else{
-    updateSquareGrid()   
+
+    if (isHexMap) {
+        updateHexGrid();
+    } else {
+        updateSquareGrid();
     }
 
-    handleFill()
+    handleFill();
+}
 
-  }
+function updateColor(col, row){
+const id =  coords + '.' + row + '.' + col;
 
-  function updateColor(col, row){
-    const id =  coords + '.' + row + '.' + col;
+const saveEntry = data.find(entry => entry.id === id)
 
-    const saveEntry = data.find(entry => entry.id === id)
+if(saveEntry?.color){ 
+saveEntry.color = currentColor
+}
 
-    if(saveEntry?.color){ 
-       saveEntry.color = currentColor
-    }
+if(saveEntry === undefined && cellEntry === undefined){
 
-    if(saveEntry === undefined && cellEntry === undefined){
+const newEntry = {
+id: id,
+name: "",
+desc: "",
+color: currentColor,
+}
 
-        const newEntry = {
-            id: id,
-            name: "",
-            desc: "",
-            color: currentColor,
-            }
-            
-            data.push(newEntry)
-            
-    }};
+data.push(newEntry)
 
-// function fillCells(cell){
-
-//     if(!isFilling){return}
-
-//     //get Cell Information
-//     const col = cell.getAttribute('col');
-//     const row = cell.getAttribute('row');
-//     const id =  coords + '.' + row + '.' + col;
-//     const cellEntry = data.find(entry => entry.id === id);
-    
-
-//     let allCells = document.querySelectorAll(".hex"); 
-//     let oldColor 
-
-//     if (allCells.length === 0) {
-//         const zone = cell.getAttribute('zone');
-//         oldColor = cell.style.backgroundColor;
-//        if(zone){
-//         allCells = document.querySelectorAll(`[zone="${zone}"]`);
-//        }else{
-//         allCells = document.querySelectorAll(".grid-cell");
-//        }
-//     }else{
-//        oldColor = cell.querySelector('.middle').style.backgroundColor;
-//     }
-
-//     allCells.forEach(cell => {
-    
-//     const col = cell.getAttribute('col');
-//     const row = cell.getAttribute('row');
-//     const id =  coords + '.' + row + '.' + col;
-    
-//     const saveEntry = data.find(entry => entry.id === id)
-
-//     if(saveEntry?.color === oldColor){ //&& isConnected
-//        saveEntry.color = currentColor
-//     }
-
-//     if(saveEntry === undefined && cellEntry === undefined){
-
-//         const newEntry = {
-//             id: id,
-//             name: "",
-//             desc: "",
-//             color: currentColor,
-//             }
-            
-//             data.push(newEntry)
-            
-//     }
-
-//     });
-
-//     saveData();
-    
-//     if(isHexMap){
-//     updateHexGrid()
-//     }else{
-//     updateSquareGrid()   
-//     }
-
-//     handleFill()
-
-// }
+}};
 
 function paintCell(cell) {
 
-    if(!isPainting){return};
+if(!isPainting){return};
 
-    const row = cell.getAttribute('row');
-    const col = cell.getAttribute('col');
-    const searchId = coords + '.' + row + '.' + col;
-    const cellObj = getObj(searchId);
+const row = cell.getAttribute('row');
+const col = cell.getAttribute('col');
+const searchId = coords + '.' + row + '.' + col;
+const cellObj = getObj(searchId);
 
-    //Stop Crowding
-    if(searchId === lastCellPainted.id && currentColor === lastCellPainted.color){return}
-    lastCellPainted.id = searchId;
-    lastCellPainted.color = currentColor;
+//Stop Crowding
+if(searchId === lastCellPainted.id && currentColor === lastCellPainted.color){return}
+lastCellPainted.id = searchId;
+lastCellPainted.color = currentColor;
 
-    if(cellObj){
-    cellObj.color = currentColor;
-    }else{
-    const saveEntry = {
-    id: searchId,
-    name: "",
-    desc: "",
-    color: isPainting? currentColor : '',
-    }
-  
-    data.push(saveEntry)
-    }
-
-    saveData();
-    
-    if(!isHexMap){
-    updateSquareGrid()
-    }else{
-    updateHexGrid()
-    }
-    
+if(cellObj){
+cellObj.color = currentColor;
+}else{
+const saveEntry = {
+id: searchId,
+name: "",
+desc: "",
+color: isPainting? currentColor : '',
 }
+
+data.push(saveEntry)
+}
+
+saveData();
+
+if(!isHexMap){
+updateSquareGrid()
+}else{
+updateHexGrid()
+}
+
+};
 
 let isShiftPressed = false;
 
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Shift') {
-        isShiftPressed = true;
-    }
+if (event.key === 'Shift') {
+isShiftPressed = true;
+}
 });
 
 document.addEventListener('keyup', function(event) {
-    if (event.key === 'Shift') {
-        isShiftPressed = false;
-    }
+if (event.key === 'Shift') {
+isShiftPressed = false;
+}
 });
-
-
 
 // Function to set the selected color when clicked
 function setColor(swatchElement) {
@@ -218,30 +157,30 @@ currentColor = swatchElement.style.backgroundColor;
 
 // Function to open color picker and change color on Shift-click
 function editColor(event, swatchElement) {
-    event.preventDefault(); // Prevent default right-click behavior
-    
-        // Create a hidden color input element
-        const colorInput = document.createElement('input');
-        colorInput.type = 'color';
-        colorInput.value = rgbToHex(swatchElement.style.backgroundColor); // Set initial value to current swatch color
+event.preventDefault(); // Prevent default right-click behavior
 
-        // Trigger color input click and change the swatch color
-        colorInput.click();
-        colorInput.addEventListener('input', function() {
-            swatchElement.style.backgroundColor = colorInput.value; // Update swatch color
-            
-            if (!regionObj.palette) {
-                regionObj.palette = [];
-            }
-    
-            regionObj.palette.push({id: swatchElement.id, color: colorInput.value})
-            
-            setColor(swatchElement)
+// Create a hidden color input element
+const colorInput = document.createElement('input');
+colorInput.type = 'color';
+colorInput.value = rgbToHex(swatchElement.style.backgroundColor); // Set initial value to current swatch color
 
-        });
+// Trigger color input click and change the swatch color
+colorInput.click();
+colorInput.addEventListener('input', function() {
+swatchElement.style.backgroundColor = colorInput.value; // Update swatch color
 
-        
-          
+if (!regionObj.palette) {
+regionObj.palette = [];
+}
+
+regionObj.palette.push({id: swatchElement.id, color: colorInput.value})
+
+setColor(swatchElement)
+
+});
+
+
+
 }
 
 function loadPalette(){
@@ -266,9 +205,9 @@ setColor(swatchElement)
 
 // Helper function to convert RGB to HEX
 function rgbToHex(rgb) {
-    const rgbArray = rgb.match(/\d+/g);
-    return "#" + rgbArray.map(x => {
-        const hex = parseInt(x).toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
-    }).join('');
+const rgbArray = rgb.match(/\d+/g);
+return "#" + rgbArray.map(x => {
+const hex = parseInt(x).toString(16);
+return hex.length == 1 ? "0" + hex : hex;
+}).join('');
 }

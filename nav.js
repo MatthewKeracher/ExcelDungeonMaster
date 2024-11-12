@@ -70,6 +70,8 @@ function handleNew() {
         cols: 40,
         }];
 
+    zones = []; 
+
 updateGrid();
 
 idBox.textContent = '';

@@ -65,7 +65,7 @@ z-index: 1;
     right: 12px;
     bottom: 12px;
     left: 12px;
-    background-color: rgba(0, 255, 0, 0.168);
+    /* background-color: rgba(0, 255, 0, 0.168); */
     z-index: -1;
 }
 
@@ -99,7 +99,7 @@ flex: 0 0 auto;
 position: relative;
 width: 25px;
 height: 25px;
-border: 1.7px solid rgba(0, 255, 0, 0.168);
+border: 1.7px solid black;
 background: var(--default-color);
 opacity: 1;
 transition: border-color 0.3s ease;
@@ -113,6 +113,7 @@ flex: 0 0 auto;
 position: relative;
 width: 25px;
 height: 25px;
+border: 1.7px solid black;
 background: rgb(29, 29, 29);
 transition: border-color 0.3s ease;
 display: flex;
@@ -173,6 +174,7 @@ margin-top: calc(var(--hex-margin-top, 28px));
 .hex:hover .right { 
 filter: brightness(1.5);
 }
+
 
 .hex:hover {
 cursor: pointer;

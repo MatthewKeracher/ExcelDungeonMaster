@@ -87,14 +87,16 @@ inZone = true;
 function deleteZone(zone) {
 showPrompt('Do you want to delete the Zone?').then(shouldDelete => {
 if (shouldDelete) {
+drawZone(zone, "erase")
 const index = zones.findIndex(entry => entry.id === zone.id);
 zones.splice(index, 1);
 loadZones();
+
 }
 });
 }
 
-function drawZone(zone) {
+function drawZone(zone, erase) {
 let drawArea = zone.drawArea;
 
 const cells = [];
@@ -111,6 +113,27 @@ cells.forEach(cell => {
 cell.classList.remove('grid-cell')
 cell.classList.add('zone-cell');
 cell.setAttribute('zone', zone.id)
+
+const row = parseInt(cell.getAttribute('row'));
+const col = parseInt(cell.getAttribute('col'));
+const style = erase? "2px solid black" : "2px solid white";
+
+if (row === drawArea.startY) {
+    cell.style.borderTop = style;
+}
+
+if (row === drawArea.endY) {
+    cell.style.borderBottom = style;
+}
+
+if (col === drawArea.startX) {
+    cell.style.borderLeft = style;
+}
+
+if (col === drawArea.endX) {
+    cell.style.borderRight = style;
+}
+
 });
 
 }

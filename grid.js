@@ -48,6 +48,7 @@ function createGrid(rows, cols) {
 
 function selectedCellStyle(cell){
 
+try{
 if(lastCell !== ''){
 lastCell.classList.remove("flashing");
 lastCell.style.backgroundColor
@@ -56,6 +57,7 @@ lastCell.style.backgroundColor
 cell.classList.add("flashing");
 
 lastCell = cell;
+}catch{}
 
 }
 

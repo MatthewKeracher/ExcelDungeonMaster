@@ -23,6 +23,7 @@ function setHexagonSize() {
 function createHexagons(rows, cols) {
     const gridContainer = document.getElementById('gridContainer');
     gridContainer.innerHTML = '';  // Clear previous map
+   
 
     setHexagonSize();
 

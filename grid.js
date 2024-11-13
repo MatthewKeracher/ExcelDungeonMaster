@@ -45,6 +45,7 @@ function selectedCellStyle(cell){
 
 if(lastCell !== ''){
 lastCell.classList.remove("flashing");
+lastCell.style.backgroundColor
 }
 
 cell.classList.add("flashing");

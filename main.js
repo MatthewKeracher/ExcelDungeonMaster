@@ -1,15 +1,18 @@
 //Global Variables
+let defaultRows = 35;
+let defaultCols = 53;
+
+
 let defaultData = [{
   id: "0.0",
   name: "Your World",
   desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap.",
-  rows: 80,
-  cols: 80,
+  rows: defaultRows,
+  cols: defaultCols,
   }];
 
-
 let data = defaultData;
-    
+
 let coords = '0.0';
 let region = 'Excel_DM'
 let regionObj = data[0];
@@ -19,10 +22,10 @@ let zones = [];
 let currentObj = [];
 let currentZone = [];
 
-let hexRows = 80;
-let hexCols = 80;
-let squareRows = 50; //Not working.
-let squareCols = 50;
+let hexRows = defaultRows;
+let hexCols = defaultCols;
+let squareRows = defaultRows;
+let squareCols = defaultCols;
 
 
 let isHexMap = true; //load grid map by default
@@ -34,7 +37,7 @@ let isFilling = false;
 let lastCell = '';
 let lastHex = '';
 
-let defaultColour = "black"; //for Empty Grid Cells
+let defaultColour = "rgb(6, 5, 5)"; //for Empty Grid Cells
 let eraser = document.getElementById('eraser')
 eraser.style.backgroundColor = defaultColour;
 
@@ -81,6 +84,7 @@ createGrid(squareRows, squareCols);
 loadZones();
 
 } else {
+
 
 hexRows = regionObj.rows? regionObj.rows : hexRows;
 hexCols = regionObj.cols? regionObj.cols : hexCols;

@@ -7,6 +7,7 @@
 :root {
     --mode-color: rgba(0, 255, 0, 1);
     --mode-color-trans: rgba(0, 255, 0, 0.4);
+    --default-color: rgb(6, 5, 5);
 }
 
 

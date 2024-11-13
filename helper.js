@@ -1,7 +1,7 @@
 function captureGridSize(){
 
 if (isHexMap) {
-regionObj.cols = hexRows
+regionObj.cols = hexCols
 regionObj.rows = hexRows
 } else {
 regionObj.cols = squareCols

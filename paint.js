@@ -39,11 +39,11 @@ function fillCells(cell) {
     const startRow = parseInt(cell.getAttribute('row'));
 
     const queue = [[startCol, startRow]];
-    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1], [1,1], [-1,-1]] 
-      
+    
     while (queue.length > 0) {
         const [currentCol, currentRow] = queue.pop();
         const div = getDiv(currentRow, currentCol);
+        let directions = getDirectionsHelper(currentCol);
         
         if (!div || getCellColor(div) !== oldColor) continue;
 
@@ -70,6 +70,27 @@ function fillCells(cell) {
     }
 
     handleFill();
+}
+
+function getDirectionsHelper(col){
+
+let directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1], [1,1], [-1,-1]] 
+
+//Special Rule for offset even cols in HexMap
+if(isHexMap){
+    if (col % 2 === 0) {
+        
+    directions = [[0, -1], [-1, -1], [1, -1], [-1, 0], [1, 0], [0, 1]];
+
+    } else {
+
+    directions = [[0,-1],[-1,0],[1,0],[0,1],[-1,1],[1,1]];
+
+    }
+}
+
+return directions
+
 }
 
 function updateColor(col, row){

@@ -75,6 +75,12 @@ function createHexagons(rows, cols) {
                 }
             });
 
+            // hexagon.addEventListener('mouseover', function() {
+            //     if(currentMode === 'map'){
+            //         changeCell(hexagon)
+            //     }
+            // });
+
             hexRow.appendChild(hexagon);
         }
         gridContainer.appendChild(hexRow);
@@ -167,14 +173,13 @@ function changeHex(hexagon){
 if(currentMode !== "map"){return};
 
 selectedHexStyle(hexagon);
-updateHexNames();
+updateNames();
 
 //Set new id.
 let row = hexagon.getAttribute('row');
 let col = hexagon.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
-//loadData
 textDiv.innerHTML = ''
 placeName.value = ''
 
@@ -208,33 +213,11 @@ updateHexColors(hex, saveEntry);
 
 })
 
-updateHexNames();
+updateNames();
 
 }
 
-function updateHexNames(){
 
-const hexagons = document.querySelectorAll(".hex");
-
-hexagons.forEach(hex => {
-
-const col = hex.getAttribute('col');
-const row = hex.getAttribute('row');
-const id =  coords + '.' + row + '.' + col;
-
-const saveEntry = data.find(entry => entry.id === id)
-const hexLabel = hex.querySelector('.cellLabel');
-hexLabel.textContent = "";
-
-if(saveEntry){
-hex.setAttribute('name', saveEntry.name)
-hexLabel.textContent = saveEntry.name
-
-}
-
-})
-
-}
 
 function selectedHexStyle(hex){
 
@@ -253,6 +236,16 @@ lastHex = hex;
 }
 
 function updateHexColors(hex, saveEntry){
+
+// const row = parseInt(hex.getAttribute('row'))
+// const col = parseInt(hex.getAttribute('col'))
+
+// if(row === 0 || col === 0){
+//     hex.querySelector('.left').style.borderRightColor = "transparent";
+//     hex.querySelector('.middle').style.backgroundColor = "transparent";
+//     hex.querySelector('.right').style.borderLeftColor = "transparent";
+
+// }else 
 
 if(saveEntry){
 hex.querySelector('.left').style.borderRightColor = saveEntry.color;

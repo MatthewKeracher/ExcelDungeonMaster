@@ -50,7 +50,6 @@ return div;
 
 function goToEntry(id) {
 
-//loadData
 textDiv.innerHTML = ''
 placeName.value = ''
 

@@ -32,6 +32,11 @@ function createGrid(rows, cols) {
                     paintCell(gridCell);
                 }
             });
+            // gridCell.addEventListener('mouseover', function() {
+            //     if(currentMode === 'map'){
+            //         changeCell(gridCell)
+            //     }
+            // });
 
             gridRow.appendChild(gridCell);
         }
@@ -92,7 +97,7 @@ function changeCell(gridCell){
 if(currentMode !== "map"){return};
 
 selectedCellStyle(gridCell);
-updateCellNames();
+updateNames();
 updateZoneNames();
 
 //Set new id.
@@ -100,7 +105,6 @@ let row = gridCell.getAttribute('row');
 let col = gridCell.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
-//loadData
 textDiv.innerHTML = ''
 placeName.value = ''
 
@@ -142,43 +146,86 @@ updateCellColors(cell, saveEntry);
 
 })
 
-updateCellNames();
+updateNames();
 loadZones();
 updateZoneNames();
 
 
 }
 
-function updateCellNames(){
+function updateNames(){
 
-const cells = document.querySelectorAll(".grid-cell");
+    let cells = isHexMap? document.querySelectorAll(".hex"): document.querySelectorAll(".grid-cell");
+    
+    cells.forEach(cell => {
+    
+    const col = cell.getAttribute('col');
+    const row = cell.getAttribute('row');
+    const id =  coords + '.' + row + '.' + col;
+    
+    const saveEntry = data.find(entry => entry.id === id)
+    const label = cell.querySelector('.cellLabel');
+    label.textContent = "";
+    
+    if(saveEntry){
 
-cells.forEach(cell => {
+    cell.setAttribute('name', saveEntry.name)
+        label.textContent = saveEntry.name !== ""? "△" : "";
+        label.style.fontWeight = 'bold';
 
-const col = cell.getAttribute('col');
-const row = cell.getAttribute('row');
-const id =  coords + '.' + row + '.' + col;
+    cell.addEventListener("mouseover", () => {
+        label.textContent = saveEntry.name
+        label.style.fontWeight = 'normal';
+        
+    });
 
-const saveEntry = data.find(entry => entry.id === id)
-const label = cell.querySelector('.cellLabel');
-label.textContent = "";
+    cell.addEventListener("mouseout", () => {
+        label.textContent = saveEntry.name !== ""? "△" : "";
+        label.style.fontWeight = 'bold';
+    });
+    
+    }
+    
+    })
+    
+    }
 
-if(saveEntry){
-cell.setAttribute('name', saveEntry.name)
-label.textContent = saveEntry.name
+    function showNames() {
+        let cells = isHexMap ? document.querySelectorAll(".hex") : document.querySelectorAll(".grid-cell");
+        
+        // Create a Map for faster lookup
+        const dataMap = new Map(data.map(entry => [entry.id, entry.name]));
+        
+        cells.forEach(cell => {
+            const col = cell.getAttribute('col');
+            const row = cell.getAttribute('row');
+            const id = `${coords}.${row}.${col}`;
+            
+            const label = cell.querySelector('.cellLabel');
+            const name = dataMap.get(id) || "";
+            
+            if (label.textContent !== name) {
+                label.textContent = name;
+                label.style.fontWeight = 'normal';
+            }
+        });
+    }
 
-}
 
-})
-
-}
 
 function updateCellColors(cell, saveEntry){
 
-if(saveEntry){
-cell.style.backgroundColor = saveEntry.color;
-}else{
-cell.style.backgroundColor =  defaultColour;
-}
+    // const row = parseInt(cell.getAttribute('row'))
+    // const col = parseInt(cell.getAttribute('col'))
+    
+    // if(row === 0 || col === 0){
+    // cell.style.backgroundColor = "transparent";
+    // }else 
+    
+    if(saveEntry){
+    cell.style.backgroundColor = saveEntry.color;
+    }else{
+    cell.style.backgroundColor =  defaultColour;
+    }
 }
 

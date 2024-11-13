@@ -47,16 +47,26 @@ background: var(--mode-color);
 
 
 #imageCanvas {
-position: absolute;       /* Position it absolutely within the gridContainer */
+position: absolute;       
 top: 0;
 left: 0;
-z-index: 0;              /* Behind other elements */
+z-index: 0;            
 }
 
 #gridContainer {
-position: relative;       /* Keep the grid positioned normally */
+position: relative;       
 z-index: 1;   
-background-color: rgba(0, 255, 0, 0.168);        /* In front of the canvas */
+}
+
+#gridContainer::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    background-color: rgba(0, 255, 0, 0.168);
+    z-index: -1;
 }
 
 /* Define the flashing animation */
@@ -161,7 +171,7 @@ margin-top: calc(var(--hex-margin-top, 28px));
 .hex:hover .middle,
 .hex:hover .left,
 .hex:hover .right { 
-filter: brightness(2);
+filter: brightness(1.5);
 }
 
 .hex:hover {

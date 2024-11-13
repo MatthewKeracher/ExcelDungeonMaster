@@ -67,6 +67,9 @@ break;
 case 'enter':
 clipZone();
 break;
+case 'shift':
+showNames();
+break;
 }
 
 if(isHexMap === true){
@@ -289,6 +292,8 @@ const key = event.key.toLowerCase();
 // Check for the Shift key
 if (key === 'shift') {
 isShiftHeld = false;
+
+updateNames();
 //toggleHexLabelsVisibility(false);
 if(isPainting){
 toggleAutoPaint(false);

@@ -67,7 +67,7 @@ data.push(saveEntry)
 
 }
 
-//loadData();
+loadData();
 updateGrid();
 
 

@@ -127,9 +127,9 @@ textDiv.scrollTop = textDiv.scrollHeight;
 //Save Content
 let div = getCurrentDiv()
 saveEntry(div);
-updateCellNames();
+updateNames();
 updateZoneNames();
-updateHexNames();
+updateNames();
 
 
 //COMMAND MODE

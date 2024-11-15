@@ -219,6 +219,7 @@ updateNames();
 
 
 
+
 function selectedHexStyle(hex){
 
 if(lastHex !== ''){
@@ -258,5 +259,3 @@ hex.querySelector('.right').style.borderLeftColor =  defaultColour;
 }
 
 }
-
-// createHexagons(hexRows,hexCols);

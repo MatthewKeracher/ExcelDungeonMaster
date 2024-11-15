@@ -17,7 +17,9 @@ position: relative;
 
 #gridImageContainer {
 position: relative;      
-overflow: auto;         
+overflow: auto; 
+width: 100%;
+height: 99%;        
 }
 
 #gridImageContainer::-webkit-scrollbar {
@@ -46,15 +48,15 @@ background: var(--mode-color);
 }
 
 
-#imageCanvas {
+/* #imageCanvas {
 position: absolute;       
 top: 0;
 left: 0;
 z-index: 0;            
-}
+} */
 
 #gridContainer {
-position: relative;       
+position: relative;      
 z-index: 1;   
 }
 
@@ -201,10 +203,35 @@ margin-top: calc(var(--hex-margin-bottom, 28px) / 2); /* Adjust based on the ver
 }
 
 .transparent {
-opacity: 0.5; /* Adjust this value as needed */
+opacity: 0; /* Adjust this value as needed */
+pointer-events: none;
 
 }
 
 .zoning {
 filter: brightness(2)
+}
+
+#canvasContainer {
+position: absolute;       
+top: 0;
+left: 0;
+z-index: 0; 
+}
+
+#imageCanvas {
+display: block;
+}
+
+.resize-handle {
+position: absolute;
+width: 10px;
+height: 10px;
+background-color: var(--mode-color);
+cursor: se-resize;
+}
+
+.bottom-right {
+bottom: 0;
+right: 0;
 }

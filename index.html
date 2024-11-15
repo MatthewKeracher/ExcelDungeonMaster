@@ -17,17 +17,17 @@
         <nav class="toolbar">
             <ul>
                 <!-- File Dropdown -->
-                <li>
+                <!-- <li>
                     <a href="#">File</a>
                     <ul class="dropdown">
                         <li><a href="#" id="newButton" title="Erase All Data" onclick="handleNew()">New</a></li>
                         <li><a href="#" id="loadButton" title="Hotkey: L" onclick="handleLoad()">Load</a></li>
                         <li><a href="#" id="exportButton" title="Hotkey: S" onclick="handleExport()">Export</a></li>
                     </ul>
-                </li>
+                </li> -->
         
                 <!-- Edit Dropdown -->
-                <li>
+                <!-- <li>
                     <a href="#">Edit</a>
                     <ul class="dropdown">
                         <li><a href="#" id="paintButton" title="Hotkey: P" onclick="handlePaint()">Paint</a></li>
@@ -35,23 +35,23 @@
                         <li><a href="#" id="enterButton" title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
                         <li><a href="#" id="exitButton" title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
                     </ul>
-                </li>
+                </li> -->
         
                 <!-- Grid Settings Dropdown -->
-                <li>
+                <!-- <li>
                     <a href="#">Grid Settings</a>
                     <ul class="dropdown">
                         <li><a href="#" id="gridButton" title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
-                        <li><a href="#" id="hexSizeButton" title="Set the size of Hex Grid." onclick="setHexGrid()">Hex Grid Size</a></li>
-                        <li><a href="#" id="squareSizeButton" title="Set the size of Square Grid." onclick="setSquareGrid()">Square Grid Size</a></li>
+                        <li><a href="#" id="gridSizeButton" title="Set the size of Grid." onclick="setGridSize()">Set Grid Size</a></li>
                     </ul>
-                </li>
+                </li> -->
         
                 <!-- Image Settings Dropdown -->
                 <li>
                     <a href="#">Image Settings</a>
                     <ul class="dropdown">
                         <li><a href="#" id="imageButton" title="Impose Image Behind Grid." onclick="getImage()">Image</a></li>
+                        <li><a href="#" id="hexifyButton" title="Make Image Hex." onclick="confirmPaintHexMap()">Hexify</a></li>
                         <li><a href="#" id="increaseImageSizeButton" onclick="increaseImageSize()">Increase Size</a></li>
                         <li><a href="#" id="decreaseImageSizeButton" onclick="decreaseImageSize()">Decrease Size</a></li>
                     </ul>
@@ -121,8 +121,11 @@
             </div>
 
                 <div id="gridImageContainer">
-                    <canvas id="imageCanvas"></canvas>
-                    <div id="gridContainer"></div> <!-- This is where your grid will be rendered -->
+                    <div id="canvasContainer">
+                        <canvas id="imageCanvas"></canvas>
+                        <div class="resize-handle bottom-right"></div>
+                      </div>
+                    <div id="gridContainer"></div> 
                 </div>
         </div>
 
@@ -134,15 +137,15 @@
     <!-- Link to external JavaScript file -->
     <script src="main.js"></script>
     <script src="helper.js"></script>
-    <script src="labels.js"></script>
     <script src="zones.js"></script>
     <script src="paint.js"></script>
     <script src="hex.js"></script>
     <script src="grid.js"></script>
+    <script src="image.js"></script>
     <script src="nav.js"></script>
     <script src="save.js"></script>
     <script src="hotkeys.js"></script>
-    <script src="items.js"></script>
+    <script src="commands/items.js"></script>
     <script src="commands/commands.js"></script>
     <script src="commands/monsters.js"></script>
     <script src="commands/npcs.js"></script>

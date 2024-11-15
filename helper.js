@@ -1,12 +1,8 @@
 function captureGridSize(){
 
-if (isHexMap) {
-regionObj.cols = hexCols
-regionObj.rows = hexRows
-} else {
-regionObj.cols = squareCols
-regionObj.rows = squareRows
-}
+regionObj.cols = currentCols
+regionObj.rows = currentRows
+
 }
 
 function emptyStoryteller(){
@@ -72,7 +68,7 @@ function parseParent(str){
 
 // Split the string into an array of numbers
 const numbersArray = str.split('.');
-console.log(numbersArray)
+
 if(numbersArray.length === 2){return str}
 
 // Remove the last two elements

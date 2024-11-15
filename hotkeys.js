@@ -48,7 +48,6 @@ toggleAutoPaint(true);
 if (isCmdOrCtrl) {
 switch (key) {
 
-
 }
 
 
@@ -69,6 +68,17 @@ clipZone();
 break;
 case 'shift':
 showNames();
+break;
+case 'g':
+setGridSize();
+break;
+case 'n':
+    showPrompt('Make New Project: Are you sure you want to erase all data?').then(shouldDelete => {
+        if (shouldDelete) {
+            handleNew();
+        }
+        });
+
 break;
 }
 

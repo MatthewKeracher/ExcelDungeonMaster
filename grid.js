@@ -157,36 +157,41 @@ updateZoneNames();
 
 function updateNames(){
 
-    let cells = isHexMap? document.querySelectorAll(".hex"): document.querySelectorAll(".grid-cell");
+    const localEntrys = data.filter(entry => {
+        let idBoxPeriodCount = (idBox.textContent.match(/\./g) || []).length;
+        if(idBoxPeriodCount < 3){idBoxPeriodCount = 3}
+        const entryPeriodCount = (entry.id.match(/\./g) || []).length;
+        return entryPeriodCount === idBoxPeriodCount;
+    });
+
+    const localNames = localEntrys.filter(entry => entry.name !== "");
+
+    if(localNames.length === 0){return}
     
-    cells.forEach(cell => {
+    localNames.forEach(entry => {
     
-    const col = cell.getAttribute('col');
-    const row = cell.getAttribute('row');
-    const id =  coords + '.' + row + '.' + col;
+    const col = returnCol(entry.id);
+    const row = returnRow(entry.id);
+    const cell = document.querySelector(`[row="${row}"][col="${col}"]`);
     
-    const saveEntry = data.find(entry => entry.id === id)
     const label = cell.querySelector('.cellLabel');
     label.textContent = "";
-    
-    if(saveEntry){
 
-    cell.setAttribute('name', saveEntry.name)
-        label.textContent = saveEntry.name !== ""? "△" : "";
+    cell.setAttribute('name', entry.name)
+        label.textContent = entry.name !== ""? "△" : "";
         label.style.fontWeight = 'bold';
 
     cell.addEventListener("mouseover", () => {
-        label.textContent = saveEntry.name
+        label.textContent = entry.name
         label.style.fontWeight = 'normal';
         
     });
 
     cell.addEventListener("mouseout", () => {
-        label.textContent = saveEntry.name !== ""? "△" : "";
+        label.textContent = entry.name !== ""? "△" : "";
         label.style.fontWeight = 'bold';
     });
     
-    }
     
     })
     

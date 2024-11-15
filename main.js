@@ -8,7 +8,18 @@ let defaultData = [{
   name: "Your World",
   desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap.",
   rows: defaultRows,
-  cols: defaultCols,
+  cols: defaultCols, 
+  palette: [
+    { id: "color1", color: "rgb(57, 128, 60)" },
+    { id: "color2", color: "rgb(33, 113, 129)" },
+    { id: "color3", color: "rgb(16, 77, 23)" },
+    { id: "color4", color: "rgb(101, 69, 39)" },
+    { id: "color5", color: "rgb(124, 72, 144)" },
+    { id: "color6", color: "rgb(220, 181, 83)" },
+    { id: "color7", color: "rgb(85, 217, 197)" },
+    { id: "color8", color: "rgb(88, 83, 86)" },
+    { id: "color9", color: "rgb(185, 192, 162)" },
+  ]
   }];
 
 let data = defaultData;
@@ -22,10 +33,8 @@ let zones = [];
 let currentObj = [];
 let currentZone = [];
 
-let hexRows = defaultRows;
-let hexCols = defaultCols;
-let squareRows = defaultRows;
-let squareCols = defaultCols;
+let currentRows = defaultRows;
+let currentCols = defaultCols;
 
 
 let isHexMap = true; //load grid map by default
@@ -75,26 +84,25 @@ isHexMap = false
 isHexMap = true
 }
 
+currentRows = regionObj.rows? regionObj.rows : currentRows;
+currentCols = regionObj.cols? regionObj.cols : currentCols;
+
+
 if (!isHexMap) {
 
-squareRows = regionObj.rows? regionObj.rows : squareRows;
-squareCols = regionObj.cols? regionObj.cols : squareCols;
-
-createGrid(squareRows, squareCols);
+createGrid(currentRows, currentCols);
 loadZones();
 
 } else {
 
 
-hexRows = regionObj.rows? regionObj.rows : hexRows;
-hexCols = regionObj.cols? regionObj.cols : hexCols;
-
-createHexagons(hexRows, hexCols);
+createHexagons(currentRows, currentCols);
 
 }
 
 updateGrid()
 loadPalette()
+console.log(regionObj)
 
 }
 

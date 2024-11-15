@@ -10,13 +10,13 @@ if(!isPainting && currentMode === 'map'){
 isPainting = true
 isFilling = false
 
-paintButton.classList.add('highlight');
+// paintButton.classList.add('highlight');
 paletteDiv.style.display = "flex";
 
 }else{
 
 isPainting = false
-paintButton.classList.remove('highlight');
+// paintButton.classList.remove('highlight');
 paletteDiv.style.display = "none";
 
 }
@@ -29,19 +29,19 @@ const paletteDiv = document.getElementById('paletteDiv');
 
 if(currentMode === 'map'){
 
-    if(!isFilling){
+if(!isFilling){
 
-    isFilling = true
-    isPainting = false
-    
-    paletteDiv.style.display = "flex";
+isFilling = true
+isPainting = false
 
-    }else{
+paletteDiv.style.display = "flex";
 
-    isFilling = false
-    paletteDiv.style.display = "none";
+}else{
 
-    }
+isFilling = false
+paletteDiv.style.display = "none";
+
+}
 
 }
 }
@@ -62,11 +62,18 @@ loadGrid()
 
 function handleNew() {
 
-    data = defaultData;
+data = defaultData;
+regionObj = data[0];
 
-    zones = []; 
+zones = []; 
+coords = '0.0';
+removeData();
 
-updateGrid();
+currentRows = defaultRows;
+currentCols = defaultCols;
+
+
+loadGrid();
 
 idBox.textContent = '';
 textDiv.innerHTML = '';
@@ -188,114 +195,47 @@ goToEntry(returnObj.id);
 }
 
 
-function setHexGrid() {
-    showModal('hex');
-}
+function setGridSize() {
+const modal = document.getElementById('customPrompt');
+modal.style.display = 'block';
+const rows = document.getElementById('rows').value;
+rows.focus();
 
-function setSquareGrid() {
-    showModal('square');
-}
-
-function showModal(type) {
-    const modal = document.getElementById('customPrompt');
-    modal.style.display = 'block';
-    modal.setAttribute('data-grid-type', type);
 }
 
 function closeModal() {
-    const modal = document.getElementById('customPrompt');
-    modal.style.display = 'none';
+const modal = document.getElementById('customPrompt');
+modal.style.display = 'none';
 }
 
 function confirmGridSize() {
-    const modal = document.getElementById('customPrompt');
-    const rows = document.getElementById('rows').value;
-    const cols = document.getElementById('cols').value;
-    
-    if (rows && cols) {
-        if (modal.getAttribute('data-grid-type') === 'hex') {
-            hexCols = parseInt(cols)
-            hexRows = parseInt(rows)
-            createHexagons(hexRows, hexCols);
-            isHexMap = true;
-            updateGrid()
-        } else {
-            squareCols = parseInt(cols)
-            squareRows = parseInt(rows)
-            createGrid(squareRows, squareCols);
-            isHexMap = false;
-            updateGrid()
-        }
-        closeModal();
-    } else {
-        alert('Please enter valid numbers for rows and columns.');
-    }
+const modal = document.getElementById('customPrompt');
+const rows = document.getElementById('rows').value;
+const cols = document.getElementById('cols').value;
+
+if (rows && cols) {
+if (isHexMap) {
+currentCols = parseInt(cols)
+currentRows = parseInt(rows)
+createHexagons(currentRows, currentCols);
+isHexMap = true;
+updateGrid()
+} else {
+currentCols = parseInt(cols)
+currentRows = parseInt(rows)
+createGrid(currentRows, currentCols);
+isHexMap = false;
+updateGrid()
+}
+closeModal();
+} else {
+alert('Please enter valid numbers for rows and columns.');
+}
 
 
-    captureGridSize()
+captureGridSize()
 
 }
 
-let scaleFactor = 1; // Scale factor to track current size of the image
-let img = new Image(); // Global image variable
-let originalWidth, originalHeight; // Store original dimensions
 
-function getImage() {
-    const url = prompt("Enter image URL:");
-    img.crossOrigin = "Anonymous"; // Enable CORS
-    img.src = url;
-
-    img.onload = function() {
-        const canvas = document.getElementById('imageCanvas');
-        const ctx = canvas.getContext('2d');
-
-        // Set original dimensions
-        originalWidth = img.naturalWidth;
-        originalHeight = img.naturalHeight;
-
-        // Set canvas size to natural size
-        canvas.width = originalWidth;
-        canvas.height = originalHeight;
-
-        // Draw the image on the canvas
-        ctx.drawImage(img, 0, 0);
-
-        // Set the transparency for the grid container
-        const gridContainer = document.getElementById('gridContainer');
-        gridContainer.classList.add('transparent');
-    };
-
-    img.onerror = function() {
-        alert("Failed to load image. Please check the URL or CORS settings.");
-    };
-}
-
-function increaseImageSize() {
-    scaleFactor *= 1.05; // Increase size by 5%
-    updateCanvasSize();
-}
-
-function decreaseImageSize() {
-    scaleFactor *= 0.95; // Decrease size by 5%
-    updateCanvasSize();
-}
-
-function updateCanvasSize() {
-    const canvas = document.getElementById('imageCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Calculate new dimensions
-    const newWidth = originalWidth * scaleFactor;
-    const newHeight = originalHeight * scaleFactor;
-
-    // Set canvas dimensions
-    canvas.width = newWidth;
-    canvas.height = newHeight;
-
-    // Draw the scaled image on the canvas
-    ctx.drawImage(img, 0, 0, newWidth, newHeight);
-}
 

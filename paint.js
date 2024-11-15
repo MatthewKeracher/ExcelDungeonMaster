@@ -197,7 +197,11 @@ if (!regionObj.palette) {
 regionObj.palette = [];
 }
 
+let exists = regionObj.palette.find(entry => entry.id === swatchElement.id);
+
+if(exists){ exists.color = colorInput.value}else{
 regionObj.palette.push({id: swatchElement.id, color: colorInput.value})
+}
 
 setColor(swatchElement)
 

@@ -6,7 +6,7 @@ let defaultCols = 53;
 let defaultData = [{
   id: "0.0",
   name: "Your World",
-  desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap.",
+  desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap. For a full list of hotkeys use the command [`] 'help'.",
   rows: defaultRows,
   cols: defaultCols, 
   palette: [
@@ -103,45 +103,44 @@ createHexagons(currentRows, currentCols);
 
 updateGrid()
 loadPalette()
-console.log(regionObj)
 
 }
 
 
-// let inactivityTimer;
+let inactivityTimer;
 
-// // Function to show the inactivity image
-// function showInactivityImage() {
-// const container = document.getElementById('logoContainer');
-// container.style.display = 'block';
-// }
+// Function to show the inactivity image
+function showInactivityImage() {
+const container = document.getElementById('logoContainer');
+container.style.display = 'block';
+}
 
-// // Function to hide the inactivity image
-// function hideInactivityImage() {
-// const inactivityImage = document.getElementById('logoContainer');
-// inactivityImage.style.display = 'none';
-// }
+// Function to hide the inactivity image
+function hideInactivityImage() {
+const inactivityImage = document.getElementById('logoContainer');
+inactivityImage.style.display = 'none';
+}
 
-// // Reset the inactivity timer
-// function resetInactivityTimer() {
-// // Clear any existing timer
-// clearTimeout(inactivityTimer);
+// Reset the inactivity timer
+function resetInactivityTimer() {
+// Clear any existing timer
+clearTimeout(inactivityTimer);
 
-// // Hide the inactivity image if it's currently displayed
-// hideInactivityImage();
+// Hide the inactivity image if it's currently displayed
+hideInactivityImage();
 
-// // Start a new timer for 10 seconds (10000 milliseconds)
-// inactivityTimer = setTimeout(() => {
-// showInactivityImage();
-// }, 30000); // 10 seconds of inactivity
-// }
+// Start a new timer for 10 seconds (10000 milliseconds)
+inactivityTimer = setTimeout(() => {
+showInactivityImage();
+}, 30000); // 10 seconds of inactivity
+}
 
-// // Listen for user activity (mouse movement, key presses, etc.)
-// document.addEventListener('mousemove', resetInactivityTimer);
-// document.addEventListener('keydown', resetInactivityTimer);
+// Listen for user activity (mouse movement, key presses, etc.)
+document.addEventListener('mousemove', hideInactivityImage);
+document.addEventListener('keydown', hideInactivityImage);
 
-// // Start the initial inactivity timer when the page loads
-// resetInactivityTimer();
+// Start the initial inactivity timer when the page loads
+//resetInactivityTimer();
 
 
 

@@ -193,6 +193,8 @@ clearZoneLimits();
 function updateZoneNames(){
 
 const activeZones = zones.filter(zone => zone.coords === coords);
+
+if(activeZones.length > 0){
 activeZones.forEach(zone => {
 
 let area = zone.drawArea
@@ -207,7 +209,7 @@ label.textContent = zone.name
 
 });
 
-
+}
 
 }
 

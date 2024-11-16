@@ -192,6 +192,7 @@ regionName.textContent = regionObj && regionObj.name !== ''? regionObj.name : "E
 
 loadGrid();
 goToEntry(returnObj.id);
+showInactivityImage()
 
 }
 

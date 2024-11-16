@@ -34,6 +34,8 @@ function updateNames(){
     const allLabels = document.querySelectorAll('.cellLabel');
     allLabels.forEach(label => {label.textContent = ""})
 
+    updateZoneNames();
+
     const localEntrys = data.filter(entry => {
         let idBoxPeriodCount = (idBox.textContent.match(/\./g) || []).length;
         if(idBoxPeriodCount < 3){idBoxPeriodCount = 3}

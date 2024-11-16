@@ -42,6 +42,7 @@ let currentMode = "map";
 let modeColor = "whitesmoke";
 let isPainting = false;
 let isFilling = false;
+let isImaging = false;
 
 let lastCell = '';
 let lastHex = '';

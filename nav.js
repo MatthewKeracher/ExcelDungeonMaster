@@ -185,6 +185,7 @@ coords = parseParent(regionObj.id);
 let returnObj = regionObj
 regionObj = getObj(coords);
 
+
 //Set parent cell name as region name. 
 const regionName = document.getElementById('regionName');
 regionName.textContent = regionObj && regionObj.name !== ''? regionObj.name : "Excel_DM"

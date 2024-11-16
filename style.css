@@ -7,7 +7,7 @@
 :root {
     --mode-color: rgba(0, 255, 0, 1);
     --mode-color-trans: rgba(0, 255, 0, 0.4);
-    --default-color:  rgba(0, 255, 0, 0.168);
+    --default-color:  rgb(6, 5, 5);
     /* rgb(6, 5, 5); */
 }
 
@@ -15,7 +15,7 @@
 
 body {
     font-family: 'Cascadia';
-    background-color: rgb(39, 52, 39);
+    background-color: rgb(5, 11, 41);
     color: var(--mode-color);
 }
 
@@ -70,5 +70,5 @@ footer {
     text-align: center;
     position: fixed;
     width: 100%;
-    bottom: 0;
+    bottom: 10px;
 }

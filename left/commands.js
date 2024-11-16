@@ -79,7 +79,7 @@ textDiv.style.display = "block";
 textDiv.contentEditable = true;
 commandLine.style.display = "none";
 placeName.readOnly = false;
-placeName.placeholder="Click here to name this location."
+// placeName.placeholder="Location Name"
 
 //Change colour
 modeColor = "255,105,180";

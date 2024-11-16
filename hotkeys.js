@@ -67,7 +67,9 @@ case 'enter':
 clipZone();
 break;
 case 'shift':
+if(!isPainting){
 showNames();
+}
 break;
 case 'g':
 setGridSize();
@@ -106,6 +108,7 @@ if(isHexMap === true){
 // break;
 // }
 
+        
 }else if (!isPainting && isHexMap === false){
 
 switch (key) {
@@ -132,7 +135,34 @@ break;
 
 }else{
 
-if(isHexMap === true){
+if (isImaging){
+
+    switch (key) {
+        //For Moving Image
+        case 'w':
+        moveImage('up');
+        break;
+        case 's':
+        moveImage('down');
+        break;
+        case 'a':
+        moveImage('left');
+        break;
+        case 'd':
+        moveImage('right');
+        break;
+        case 'q':
+        sizeImage('decrease');
+        break;
+        case 'e':
+        sizeImage('increase');
+        break;
+        case 'enter':
+        confirmPaintHexMap();
+        break;
+    }
+
+}else if(isHexMap === true){
 
 switch (key) {
 //For HexNav
@@ -287,6 +317,9 @@ handleExport();
 break;
 case 'g':
 handleGrid();
+break;
+case 'i':
+getImage();
 break;
 
 

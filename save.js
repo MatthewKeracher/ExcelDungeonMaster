@@ -27,6 +27,12 @@ const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 
+console.log(regionObj, idBox.textContent)
+if(regionObj.id === idBox.textContent){
+const regionName = document.getElementById('regionName');
+regionName.textContent = placeName.value;
+}
+
 if(inZone){
 
 let zoneId = div.getAttribute('zone');
@@ -69,7 +75,8 @@ if(saveEntry.name === ""){
 saveEntry.name = ""
 }
 
-data.push(saveEntry)
+data.push(saveEntry);
+
 
 }
 

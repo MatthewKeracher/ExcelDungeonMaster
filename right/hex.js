@@ -87,17 +87,6 @@ function createHexagons(rows, cols) {
     }
 }
 
-
-function updateGrid(){
-
-if(isHexMap){
-updateHexGrid()
-}else{
-updateSquareGrid()
-}
-
-}
-
 function moveHex(dir){
 
 let str = idBox.textContent;
@@ -172,7 +161,7 @@ function changeHex(hexagon){
 
 if(currentMode !== "map"){return};
 
-selectedHexStyle(hexagon);
+selectedCellStyle(hexagon);
 updateNames();
 
 //Set new id.
@@ -198,7 +187,6 @@ saveData();
 
 
 function updateHexGrid(){
-
 const hexagons = document.querySelectorAll(".hex");
 
 hexagons.forEach(hex => {
@@ -209,7 +197,7 @@ const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id);
 
-updateHexColors(hex, saveEntry);
+updateCellColors(hex, saveEntry);
 
 })
 
@@ -218,44 +206,3 @@ updateNames();
 }
 
 
-
-
-function selectedHexStyle(hex){
-
-if(lastHex !== ''){
-lastHex.querySelector('.left').classList.remove("flashing");
-lastHex.querySelector('.middle').classList.remove("flashing");
-lastHex.querySelector('.right').classList.remove("flashing");
-}
-
-hex.querySelector('.left').classList.add("flashing");
-hex.querySelector('.middle').classList.add("flashing");
-hex.querySelector('.right').classList.add("flashing");
-
-lastHex = hex;
-
-}
-
-function updateHexColors(hex, saveEntry){
-
-// const row = parseInt(hex.getAttribute('row'))
-// const col = parseInt(hex.getAttribute('col'))
-
-// if(row === 0 || col === 0){
-//     hex.querySelector('.left').style.borderRightColor = "transparent";
-//     hex.querySelector('.middle').style.backgroundColor = "transparent";
-//     hex.querySelector('.right').style.borderLeftColor = "transparent";
-
-// }else 
-
-if(saveEntry){
-hex.querySelector('.left').style.borderRightColor = saveEntry.color;
-hex.querySelector('.middle').style.backgroundColor = saveEntry.color;
-hex.querySelector('.right').style.borderLeftColor = saveEntry.color;
-}else{
-hex.querySelector('.left').style.borderRightColor =  defaultColour;
-hex.querySelector('.middle').style.backgroundColor =  defaultColour;
-hex.querySelector('.right').style.borderLeftColor =  defaultColour;
-}
-
-}

@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel_DM</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="right.css">
-    <link rel="stylesheet" href="left.css">
+    <link rel="stylesheet" href="right/right.css">
+    <link rel="stylesheet" href="left/left.css">
     <link rel="stylesheet" href="nav.css">
-    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="right/popup.css">
 </head>
 <body>
 
@@ -47,7 +47,7 @@
                 </li> -->
         
                 <!-- Image Settings Dropdown -->
-                <li>
+                <!-- <li>
                     <a href="#">Image Settings</a>
                     <ul class="dropdown">
                         <li><a href="#" id="imageButton" title="Impose Image Behind Grid." onclick="getImage()">Image</a></li>
@@ -55,7 +55,7 @@
                         <li><a href="#" id="increaseImageSizeButton" onclick="increaseImageSize()">Increase Size</a></li>
                         <li><a href="#" id="decreaseImageSizeButton" onclick="decreaseImageSize()">Decrease Size</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
         </nav>
         
@@ -121,11 +121,9 @@
             </div>
 
                 <div id="gridImageContainer">
-                    <div id="canvasContainer">
-                        <canvas id="imageCanvas"></canvas>
-                        <div class="resize-handle bottom-right"></div>
-                      </div>
-                    <div id="gridContainer"></div> 
+                <div id="gridContainer"></div> 
+                <canvas id="imageCanvas"></canvas>
+               
                 </div>
         </div>
 
@@ -137,17 +135,18 @@
     <!-- Link to external JavaScript file -->
     <script src="main.js"></script>
     <script src="helper.js"></script>
-    <script src="zones.js"></script>
-    <script src="paint.js"></script>
-    <script src="hex.js"></script>
-    <script src="grid.js"></script>
-    <script src="image.js"></script>
     <script src="nav.js"></script>
-    <script src="save.js"></script>
     <script src="hotkeys.js"></script>
-    <script src="commands/items.js"></script>
-    <script src="commands/commands.js"></script>
-    <script src="commands/monsters.js"></script>
-    <script src="commands/npcs.js"></script>
+    <script src="right/zones.js"></script>
+    <script src="right/paint.js"></script>
+    <script src="right/hex.js"></script>
+    <script src="right/square.js"></script>
+    <script src="right/grid.js"></script>
+    <script src="right/image.js"></script>
+    <script src="save.js"></script>
+    <script src="left/items.js"></script>
+    <script src="left/commands.js"></script>
+    <script src="left/monsters.js"></script>
+    <script src="left/npcs.js"></script>
 </body>
 </html>

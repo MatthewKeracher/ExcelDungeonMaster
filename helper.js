@@ -82,7 +82,6 @@ return resultString
 
 }
 
-
 function returnRow(id){
 
 const numbersArray = id.split('.');
@@ -142,4 +141,62 @@ function showPrompt(message) {
             resolve(result);
         }
     });
+}
+
+// Color Processing
+function getColorAtPosition(x, y) {
+    const pixel = ctx.getImageData(x, y, 1, 1).data;
+    const pixelColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+    
+    if (!regionObj.palette || regionObj.palette.length === 0) {
+        return pixelColor;
+    }
+    
+    return findClosestColor(pixelColor, regionObj.palette);
+}
+
+function colorToRGB(color) {
+    if (color.startsWith('#')) {
+        return hexToRGB(color);
+    } else if (color.startsWith('rgb')) {
+        return parseRGB(color);
+    }
+}
+
+function hexToRGB(hex) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return { r, g, b };
+}
+
+function parseRGB(rgb) {
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return { r, g, b };
+}
+
+function findClosestColor(targetColor, palette) {
+    let closestColor = palette[0].color;
+    let minDistance = colorDistance(targetColor, closestColor);
+    
+    for (let i = 1; i < palette.length; i++) {
+        const distance = colorDistance(targetColor, palette[i].color);
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestColor = palette[i].color;
+        }
+    }
+    
+    return closestColor;
+}
+
+function colorDistance(color1, color2) {
+    const rgb1 = colorToRGB(color1);
+    const rgb2 = colorToRGB(color2);
+    
+    return Math.sqrt(
+        Math.pow(rgb1.r - rgb2.r, 2) +
+        Math.pow(rgb1.g - rgb2.g, 2) +
+        Math.pow(rgb1.b - rgb2.b, 2)
+    );
 }

@@ -24,17 +24,6 @@
     height: 10px;
 }
 
-@font-face {
-    font-family: "SoutaneBlack";
-    src: url("/fonts/SoutaneBlack.ttf") format('truetype');
-}
-
-@font-face {
-    font-family: "Cascadia";
-    src: url("/fonts/Cascadia.ttf") format('truetype');
-}
-
-
 #placeName {
     width: 100%;
     height: 21px;

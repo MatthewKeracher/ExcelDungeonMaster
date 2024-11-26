@@ -162,7 +162,6 @@ function changeHex(hexagon){
 if(currentMode !== "map"){return};
 
 selectedCellStyle(hexagon);
-updateNames();
 
 //Set new id.
 let row = hexagon.getAttribute('row');
@@ -201,7 +200,7 @@ updateCellColors(hex, saveEntry);
 
 })
 
-updateNames();
+showNames();
 
 }
 

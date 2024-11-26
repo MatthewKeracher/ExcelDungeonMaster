@@ -1,7 +1,6 @@
 
 function handlePaint() {
 
-const paintButton = document.getElementById('paintButton');
 const paletteDiv = document.getElementById('paletteDiv');
 
 
@@ -10,16 +9,59 @@ if(!isPainting && currentMode === 'map'){
 isPainting = true
 isFilling = false
 
-// paintButton.classList.add('highlight');
 paletteDiv.style.display = "flex";
 
 }else{
 
 isPainting = false
-// paintButton.classList.remove('highlight');
 paletteDiv.style.display = "none";
 
 }
+
+}
+
+function makeNewOuterLevel(){
+
+// Trigger selection mode.
+
+}
+
+function moveCell() {
+    console.log('isMoving', isMoving);
+
+    const cell = getCurrentDiv();
+    const row = cell.getAttribute('row');
+    const col = cell.getAttribute('col');
+    const id = coords + '.' + row + '.' + col + '.';
+
+    const children = data.filter(entry => entry.id.startsWith(id));
+
+    const cells = document.querySelectorAll('[row][col]')
+
+    cells.forEach(cell => {
+
+        cell.addEventListener('click', function() {
+
+            const newCell = getCurrentDiv()
+            const label = newCell.querySelector('.cellLabel');
+            console.log(label.textContent);
+        });
+
+    })
+
+    
+}
+
+function handleMove(){
+
+if(!isMoving && currentMode === 'map'){
+
+isMoving = true
+moveCell();
+
+}else{
+isMoving = false
+}   
 
 }
 
@@ -77,6 +119,33 @@ loadGrid();
 
 idBox.textContent = '';
 textDiv.innerHTML = '';
+
+}
+
+function clearMap(){
+
+let allCells = document.querySelectorAll('[row][col]')
+
+const dataLengthOld = data.length
+
+allCells.forEach(cell => {
+
+const row = cell.getAttribute('row');
+const col = cell.getAttribute('col');
+const id = coords + '.' + col + '.' + row;
+
+const index = data.findIndex(entry => entry.id === id)
+
+// if(index !== -1){console.log('deleting ' + index)}
+
+if(index !== -1){data.splice(index, 1)};
+
+})
+
+console.log(dataLengthOld - data.length + ' entries deleted')
+
+updateGrid();
+
 
 }
 
@@ -157,6 +226,8 @@ input.click();
 
 }
 
+
+
 function handleEnter(){
 
 const logo = document.getElementById("startLogo");
@@ -181,6 +252,8 @@ function handleExit(){
 //Remove 2 digits from coords and go there.
 coords = parseParent(regionObj.id);
 
+if(regionObj.id === '0.0'){makeNewOuterLevel()}
+
 //Get Obj for parent cell.
 let returnObj = regionObj
 regionObj = getObj(coords);
@@ -195,6 +268,8 @@ goToEntry(returnObj.id);
 showInactivityImage()
 
 }
+
+
 
 
 function setGridSize() {

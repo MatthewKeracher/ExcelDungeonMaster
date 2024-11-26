@@ -71,7 +71,7 @@ z-index: 1;
 filter: brightness(1);
 }
 50% {
-filter: brightness(3); 
+filter: brightness(2); 
 }
 100% {
 filter: brightness(1);

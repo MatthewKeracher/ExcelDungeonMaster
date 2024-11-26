@@ -114,19 +114,19 @@ if(isHexMap === true){
 switch (key) {
 //For HexNav
 case 'w':
-moveCell('up');
+moveFocus('up');
 addZone(currentCell)
 break;
 case 's':
-moveCell('down');
+moveFocus('down');
 addZone(currentCell)
 break;
 case 'a':
-moveCell('left');
+moveFocus('left');
 addZone(currentCell)
 break;
 case 'd':
-moveCell('right');
+moveFocus('right');
 addZone(currentCell)
 break;
 }
@@ -191,19 +191,19 @@ break;
 switch (key) {
 //For SquareNav
 case 'w':
-moveCell('up');
+moveFocus('up');
 clearZoneLimits();
 break;
 case 's':
-moveCell('down');
+moveFocus('down');
 clearZoneLimits();
 break;
 case 'a':
-moveCell('left');
+moveFocus('left');
 clearZoneLimits();
 break;
 case 'd':
-moveCell('right');
+moveFocus('right');
 clearZoneLimits();
 break;
 }
@@ -321,8 +321,16 @@ break;
 case 'i':
 getImage();
 break;
-
-
+case 'm':
+handleMove();
+break;
+case 'c':
+    showPrompt('Clear Current Map: Are you sure you want to erase all visible data?').then(shouldDelete => {
+        if (shouldDelete) {
+            clearMap();
+        }
+        });
+break;
 
 }
 }
@@ -336,7 +344,7 @@ const key = event.key.toLowerCase();
 if (key === 'shift') {
 isShiftHeld = false;
 
-updateNames();
+showMarkers();
 //toggleHexLabelsVisibility(false);
 if(isPainting){
 toggleAutoPaint(false);

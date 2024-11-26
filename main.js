@@ -43,6 +43,7 @@ let modeColor = "whitesmoke";
 let isPainting = false;
 let isFilling = false;
 let isImaging = false;
+let isMoving = false;
 
 let lastCell = '';
 let lastHex = '';

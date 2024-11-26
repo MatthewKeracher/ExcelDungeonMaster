@@ -127,10 +127,10 @@ textDiv.scrollTop = textDiv.scrollHeight;
 //Save Content
 let div = getCurrentDiv()
 saveEntry(div);
-updateNames();
-updateZoneNames();
-updateNames();
 
+updateZoneNames();
+showNames();    
+showMarkers();
 
 //COMMAND MODE
 } else if(currentMode === "command"){

@@ -44,7 +44,7 @@ gridContainer.appendChild(gridRow);
 }
 }
 
-function moveCell(dir){
+function moveFocus(dir){
 
 let str = idBox.textContent;
 let numbersArray = str.split('.');
@@ -81,7 +81,7 @@ function changeCell(gridCell){
 if(currentMode !== "map"){return};
 
 selectedCellStyle(gridCell);
-updateNames();
+showMarkers();
 updateZoneNames();
 
 //Set new id.
@@ -130,7 +130,7 @@ updateCellColors(cell, saveEntry);
 
 })
 
-updateNames();
+showMarkers();
 loadZones();
 updateZoneNames();
 

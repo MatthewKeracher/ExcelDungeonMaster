@@ -11,6 +11,15 @@
     /* rgb(6, 5, 5); */
 }
 
+@font-face {
+    font-family: "SoutaneBlack";
+    src: url("/fonts/SoutaneBlack.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "Cascadia";
+    src: url("/fonts/Cascadia.ttf") format('truetype');
+}
 
 
 body {

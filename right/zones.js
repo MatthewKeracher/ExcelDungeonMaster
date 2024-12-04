@@ -116,22 +116,31 @@ cell.setAttribute('zone', zone.id)
 
 const row = parseInt(cell.getAttribute('row'));
 const col = parseInt(cell.getAttribute('col'));
-const style = erase? "2px solid black" : "2px solid white";
+const style = erase? "0.1px solid black" : "2px solid white";
+const defaultStyle = "0.1px solid black"
 
 if (row === drawArea.startY) {
     cell.style.borderTop = style;
+} else{
+    cell.style.borderTop = defaultStyle;
 }
 
 if (row === drawArea.endY) {
     cell.style.borderBottom = style;
+} else{
+    cell.style.borderBottom = defaultStyle;
 }
 
 if (col === drawArea.startX) {
     cell.style.borderLeft = style;
+} else{
+    cell.style.borderLeft = defaultStyle;
 }
 
 if (col === drawArea.endX) {
     cell.style.borderRight = style;
+} else{
+    cell.style.borderRight = defaultStyle;
 }
 
 });

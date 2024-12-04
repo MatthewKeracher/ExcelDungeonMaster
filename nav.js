@@ -26,30 +26,63 @@ function makeNewOuterLevel(){
 
 }
 
+function moveCellEvent(e) {
+    if (!isMoving) return;
+
+    const newCell = e.currentTarget;
+    const newRow = newCell.getAttribute('row');
+    const newCol = newCell.getAttribute('col');
+    const newId = coords + '.' + newRow + '.' + newCol;
+
+    showPrompt('Move Cell and Contents: Are you sure you want to move everything?').then(shouldMove => {
+        if (shouldMove) {
+            // Move Logic
+            
+            childrenToMove.forEach(child => {
+                console.log(parentToMove.id, newId)
+                let newChildId = child.id.replace(parentToMove.id, newId);
+                child.id = newChildId;
+                
+                //console.log(child.id + ' -> ' + newChildId);
+                
+            });
+            parentToMove.id = newId;
+            updateGrid();
+        }
+        
+        // Reset moving state
+        isMoving = false;
+        parentToMove = null;
+        childrenToMove = null;
+        saveData();
+        console.log('isMoving', isMoving);
+        
+        // Remove event listeners
+        const cells = document.querySelectorAll('[row][col]');
+        cells.forEach(cell => {
+            cell.removeEventListener('click', moveCellEvent);
+        });
+    });
+}
+
+
 function moveCell() {
+   
     console.log('isMoving', isMoving);
 
     const cell = getCurrentDiv();
     const row = cell.getAttribute('row');
     const col = cell.getAttribute('col');
-    const id = coords + '.' + row + '.' + col + '.';
+    const id = coords + '.' + row + '.' + col;
+    parentToMove = data.find(entry => entry.id === id);
+    childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
 
-    const children = data.filter(entry => entry.id.startsWith(id));
+    console.log(childrenToMove);
 
-    const cells = document.querySelectorAll('[row][col]')
-
+    const cells = document.querySelectorAll('[row][col]');
     cells.forEach(cell => {
-
-        cell.addEventListener('click', function() {
-
-            const newCell = getCurrentDiv()
-            const label = newCell.querySelector('.cellLabel');
-            console.log(label.textContent);
-        });
-
-    })
-
-    
+        cell.addEventListener('click', moveCellEvent);
+    });
 }
 
 function handleMove(){
@@ -125,6 +158,7 @@ textDiv.innerHTML = '';
 function clearMap(){
 
 let allCells = document.querySelectorAll('[row][col]')
+console.log(allCells.length + ' cells to clear.')
 
 const dataLengthOld = data.length
 
@@ -132,18 +166,18 @@ allCells.forEach(cell => {
 
 const row = cell.getAttribute('row');
 const col = cell.getAttribute('col');
-const id = coords + '.' + col + '.' + row;
+const id = coords + '.' + row + '.' + col;
 
 const index = data.findIndex(entry => entry.id === id)
-
-// if(index !== -1){console.log('deleting ' + index)}
 
 if(index !== -1){data.splice(index, 1)};
 
 })
 
 console.log(dataLengthOld - data.length + ' entries deleted')
+console.log(data.length + ' entries remaining.')
 
+saveData();
 updateGrid();
 
 

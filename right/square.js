@@ -126,6 +126,7 @@ const id =  coords + '.' + row + '.' + col;
 const saveEntry = data.find(entry => entry.id === id);
 
 updateCellColors(cell, saveEntry);
+addLabelEvents(cell, saveEntry);
 
 
 })

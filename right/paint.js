@@ -1,9 +1,9 @@
 let lastCellPainted = {id: '', color: ''};
 let currentColor = document.getElementById('color1').style.backgroundColor;
 
-function setColor(color) {
-currentColor = color;
-};
+// function setColor(color) {
+// currentColor = color;
+// };
 
 function setCurrentColor(colInput){
 currentColor = window.getComputedStyle(colInput).backgroundColor;

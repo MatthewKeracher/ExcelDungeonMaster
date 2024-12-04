@@ -19,9 +19,13 @@ console.error(`Could not find cellLabel on (${col},${row})`, cell, entry);
 return;
 }
 
+if(entry){
+
+if(entry.name !== ""){
 label.textContent = "△";
 label.style.fontWeight = 'bold';
 cell.setAttribute('name', entry.name);
+}
 
 cell.addEventListener("mouseover", () => {
 label.textContent = entry.name;
@@ -29,9 +33,13 @@ label.style.fontWeight = 'normal';
 });
 
 cell.addEventListener("mouseout", () => {
+if(label.textContent !== ""){
 label.textContent = "△";
 label.style.fontWeight = 'bold';
+}
 });
+
+}
 
 }
 
@@ -83,22 +91,21 @@ const allCells = document.querySelectorAll("[row],[col]");
 if(isHexMap){
 
 allCells.forEach(cell => {
-cell.querySelector('.left').classList.remove("flashing");
-cell.querySelector('.middle').classList.remove("flashing");
-cell.querySelector('.right').classList.remove("flashing");
+cell.querySelector('.left').classList.remove("hexSelect");
+cell.querySelector('.right').classList.remove("hexSelect");
+
 });
 
-cell.querySelector('.left').classList.add("flashing");
-cell.querySelector('.middle').classList.add("flashing");
-cell.querySelector('.right').classList.add("flashing");
+cell.querySelector('.left').classList.add("hexSelect");
+cell.querySelector('.right').classList.add("hexSelect");
 
 }else{
 
 allCells.forEach(cell => {
-cell.classList.remove("flashing")
+cell.classList.remove("squareSelect")
 });
 
-cell.classList.add("flashing")
+cell.classList.add("squareSelect")
 }
 
 }

@@ -64,6 +64,7 @@ case '<':
 handleExit();
 break;
 case 'enter':
+if(isHexMap){return};
 clipZone();
 break;
 case 'shift':

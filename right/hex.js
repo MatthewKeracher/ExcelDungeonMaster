@@ -55,6 +55,7 @@ function createHexagons(rows, cols) {
             label.classList.add('cellLabel');
             label.innerText = ``; 
             hexagon.appendChild(label);
+            
 
             if (col % 2 === 1) {
                 hexagon.classList.add('colEven');
@@ -197,6 +198,7 @@ const id =  coords + '.' + row + '.' + col;
 const saveEntry = data.find(entry => entry.id === id);
 
 updateCellColors(hex, saveEntry);
+addLabelEvents(hex, saveEntry);
 
 })
 

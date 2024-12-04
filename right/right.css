@@ -68,21 +68,28 @@ z-index: 1;
 /* Define the flashing animation */
 @keyframes flash {
 0% {
-filter: brightness(1);
+filter: brightness(20)
 }
 50% {
-filter: brightness(2); 
+filter: brightness(10)
+}
+75% {
+filter: brightness(5);     
 }
 100% {
-filter: brightness(1);
+filter: brightness(10)
 
 }
 }
 
+.hexSelect {
+animation: flash 2s infinite;
+opacity: 0.4; 
+}
 
-/* Apply the animation to the hex when selected */
-.flashing {
-animation: flash 0.5s infinite; /* Flash every 0.5 seconds, looping infinitely */
+.squareSelect {
+outline: 1px solid lime;
+z-index: 10;
 }
 
 .grid-row {

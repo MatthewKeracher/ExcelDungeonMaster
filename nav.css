@@ -6,8 +6,9 @@
     display: flex;
     align-items: center;
     background-color: black;
-    border-bottom: 1px solid var(--mode-color);
-    height: 25px; /* Adjust as needed */
+    border-bottom: 0.2vh solid var(--mode-color);
+    height: 3vh; /* Adjust as needed */
+    font-size: 2vh;
 }
 
 .topContainer > div {

@@ -77,7 +77,8 @@ footer {
     background-color: transparent;
     color: var(--mode-color);
     text-align: center;
+    font-size: 1.8vh;
     position: fixed;
     width: 100%;
-    bottom: 10px;
+    bottom: 0.2vh;
 }

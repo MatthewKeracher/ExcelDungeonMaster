@@ -110,9 +110,36 @@ function makeNPC(npcClass, level, npcName) {
 
     HTML += `</div>`; // End of flex container
 
+    HTML += generateRandomItemsTable(['weapons', 'weapons', 'armor']);
+
     HTML += `<br><br>`;
+
     return HTML;
 }
+
+function generateRandomItemsTable(categories) {
+    let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+
+    // Generate body with random items
+    tableHTML += '<tbody>';
+    categories.forEach(category => {
+        if (items[category] && items[category].length > 0) {
+            const randomItem = items[category][Math.floor(Math.random() * items[category].length)];
+            tableHTML += `<tr>
+            <td contenteditable="true" style="min-width: 100px; padding: 5px;">${randomItem.name}</td>
+            <td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.damage? randomItem.damage: randomItem.AC? "AC " + randomItem.AC: ""}</td>
+            <td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.weight + ' lbs'} </td>
+            </tr>
+        `;
+        } else {
+            tableHTML += '<td contenteditable="true" style="min-width: 100px; padding: 5px;">No item available</td>';
+        }
+    });
+    tableHTML += '</tbody></table>';
+
+    return tableHTML;
+}
+
 
 function makeScores(npcClass){
 

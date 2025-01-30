@@ -65,6 +65,35 @@ function placeCaretAtEnd(el) {
     selection.addRange(range); // Add the new range (caret at the end)
 }
 
+// Function to insert content at the caret position
+function insertAtCaret(htmlContent) {
+    const selection = window.getSelection();
+    
+    if (!selection.rangeCount) {
+        // If no range is selected, append at the end of the textDiv
+        textDiv.innerHTML += htmlContent;
+        return;
+    }
+
+    const range = selection.getRangeAt(0); // Get the current range
+    range.deleteContents(); // Remove any selected content
+
+    // Create a new element from the HTML string
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+
+    // Insert each child of the temporary div into the range
+    Array.from(tempDiv.childNodes).forEach(node => range.insertNode(node));
+
+    // Move the caret to the end of the inserted content
+    range.setStartAfter(tempDiv.lastChild);
+    range.collapse(true);
+
+    // Update selection with the new range
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+
 function toggleModes() {
 isPainting = true
 handlePaint();
@@ -118,6 +147,7 @@ textDiv.blur();
 placeName.blur();
 
 //Change Content
+// insertAtCaret(handleCommands())
 textDiv.innerHTML += handleCommands();
 
 //Change Content
@@ -167,7 +197,7 @@ function handleCommands() {
     inputText = resolveNestedCommands(inputText);
 
     // Check for command types: roll, monster, or npc
-    const commandRegex = /^(roll|monster|npc)\s+(.+)/i;
+    const commandRegex = /^(add|roll|monster|npc)\s+(.+)/i;
     const match = inputText.match(commandRegex);
 
     if (match) {
@@ -175,6 +205,8 @@ function handleCommands() {
         const params = match[2].trim(); // The remaining text after the command type
 
         switch (commandType) {
+            case 'add':
+                return handleAddCommand(params);
             case 'roll':
                 return handleRollCommand(params);
             case 'monster':
@@ -188,6 +220,49 @@ function handleCommands() {
         return '\n{Invalid command format}';
     }
 }
+
+function handleAddCommand(params) {
+    const [addType, ...rest] = params.split(' ');
+    switch (addType) {
+        case 'line':
+            return `<br><hr>`;
+        case 'table':
+            if (rest[0] === 'weapons') {
+                return generateItemsTable(rest[0]);
+            } else if (rest[0] === 'armor') {
+                return generateItemsTable(rest[0]);  
+            } else if (rest[0] === 'general') {
+                return generateItemsTable(rest[0]);
+            } else {
+                handleTableCommand(rest.join(' '));
+                }
+            break;
+        default:
+            return '{Add command not recognized}';
+    }
+}
+
+function handleTableCommand(params) {
+    const [rows, cols] = params.split(' ').map(Number);
+    if (isNaN(rows) || isNaN(cols)) {
+        return '\n{Invalid table format. Use "add table rows cols"}';
+    }
+    return generateTable(rows, cols);
+}
+
+function generateTable(rows, cols) {
+    let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+    for (let i = 0; i < rows; i++) {
+        tableHTML += '<tr>';
+        for (let j = 0; j < cols; j++) {
+            tableHTML += '<td contenteditable="true" style="min-width: 50px; min-height: 20px; padding: 5px;"></td>';
+        }
+        tableHTML += '</tr>';
+    }
+    tableHTML += '</table>';
+    return tableHTML;
+}
+
 
 
 function handleRollCommand(params) {

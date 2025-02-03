@@ -9,6 +9,7 @@
     border-bottom: 0.2vh solid var(--mode-color);
     height: 3vh; /* Adjust as needed */
     font-size: 2vh;
+    font-family: 'SoutaneBlack';
 }
 
 .topContainer > div {

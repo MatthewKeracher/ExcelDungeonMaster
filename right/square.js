@@ -81,7 +81,6 @@ function changeCell(gridCell){
 if(currentMode !== "map"){return};
 
 selectedCellStyle(gridCell);
-showMarkers();
 updateZoneNames();
 
 //Set new id.
@@ -91,12 +90,14 @@ idBox.textContent = coords + '.' + row + '.' + col
 
 textDiv.innerHTML = ''
 placeName.value = ''
+placeSymbol.value = ''
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;
+placeSymbol.value = loadEntry.symbol? loadEntry.symbol : "◦";
 textDiv.innerHTML = loadEntry.desc;
 }
 
@@ -131,7 +132,6 @@ addLabelEvents(cell, saveEntry);
 
 })
 
-showMarkers();
 loadZones();
 updateZoneNames();
 

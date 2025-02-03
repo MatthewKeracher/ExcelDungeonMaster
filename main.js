@@ -56,6 +56,7 @@ let eraser = document.getElementById('eraser')
 eraser.style.backgroundColor = defaultColour;
 
 const placeName = document.getElementById('placeName')
+const placeSymbol = document.getElementById('placeSymbol')
 const textDiv = document.getElementById('textDiv'); 
 const idBox = document.getElementById('idBox');
 const modeBox = document.getElementById('modeBox');
@@ -65,6 +66,7 @@ const promptMsg = document.getElementById('promptMsg');
 
 //Default
 placeName.value = "Excel_DM"
+placeSymbol.value = ""
 textDiv.innerHTML = ``;
 modeBox.innerHTML = `<b>Map Mode</b>`
 

@@ -1,5 +1,5 @@
 .right-section {
-flex-basis: 66%;
+flex-basis: 69%;
 height: 100%;
 display: flex;
 flex-direction: column;
@@ -7,6 +7,7 @@ justify-content: flex-start;
 align-items: flex-start;
 position: relative;
 overflow: hidden;
+zoom:150%;
 }
 
 #gridImageContainer {
@@ -186,7 +187,8 @@ cursor: pointer;
 .cellLabel {
 display: block;
 position: absolute;
-font-family: "Cascadia";
+font-family: "SoutaneBlack";
+font-size: 22px;
 white-space: nowrap;
 color: whitesmoke;
 padding: 0px;

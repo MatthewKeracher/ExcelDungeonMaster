@@ -8,6 +8,7 @@ regionObj.rows = currentRows
 function emptyStoryteller(){
 
 placeName.value = "";
+placeSymbol.value = "";
 textDiv.innerHTML = "";
 
 }
@@ -48,11 +49,13 @@ function goToEntry(id) {
 
 textDiv.innerHTML = ''
 placeName.value = ''
+placeSymbol.value = ''
 
 let entry = getObj(id)
 
 if(entry){
 placeName.value = entry.name;
+placeSymbol.value = entry.symbol? entry.symbol : "◦";
 textDiv.innerHTML = entry.desc.trim();
 idBox.textContent = entry.id;
 }

@@ -171,12 +171,14 @@ idBox.textContent = coords + '.' + row + '.' + col
 
 textDiv.innerHTML = ''
 placeName.value = ''
+placeSymbol.value = ''
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;
+placeSymbol.value = loadEntry.symbol? loadEntry.symbol : "◦";
 textDiv.innerHTML = loadEntry.desc;
 }
 
@@ -202,7 +204,7 @@ addLabelEvents(hex, saveEntry);
 
 })
 
-showNames();
+//showNames();
 
 }
 

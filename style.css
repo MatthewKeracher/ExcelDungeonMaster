@@ -50,7 +50,7 @@ body {
     display: none;
     position: absolute;
     top: 30%;
-    left: 10%;
+    left: 30%;
     z-index: 1000;
     text-align: center;
     border: 1px solid var(--mode-color);

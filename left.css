@@ -24,23 +24,45 @@
     height: 10px;
 }
 
-#placeName {
+#placeContainer {
+    display: flex;
+    align-items: center;
     width: 100%;
+    margin-bottom: 15px;
+}
+
+#placeSymbol {
+    width: 45px; /* Adjust as needed */
+    height: 30px;
+    border: none;
+    color: var(--mode-color);
+    font-family: 'Cascadia';
+    font-size: 32px;
+    letter-spacing: 2px;
+    text-align: center;
+    resize: none;
+    overflow: hidden;
+    background-color: rgba(128, 68, 99, 0.609);
+    margin-right: 10px; /* Space between symbol and name */
+}
+
+#placeName {
+    flex: 1; /* Takes up remaining space */
     height: 21px;
     border: none;
-    margin-bottom: 15px;
     color: var(--mode-color);
     font-family: 'Cascadia';
     font-size: 18px;
     letter-spacing: 2px;
-    vertical-align: middle;
-    text-align: center;
+    text-align: center; /* Align text to the left */
     resize: none;
-    overflow: auto;
+    overflow: hidden;
     background-color: rgba(128, 68, 99, 0.609);
 }
 
-#placeName:read-only {
+
+#placeName,
+#placeSymbol:read-only {
     background-color: black; 
 }
 
@@ -77,7 +99,7 @@
     color: var(--mode-color);
     font-family: 'Cascadia';
     font-size: 15px;
-    line-height: 1.5;
+    /* line-height: 1.5; */
     resize: none;
     overflow: auto;
     white-space: pre-wrap
@@ -110,7 +132,8 @@
 
 #textDiv:focus,
 #placeName:focus,
-#commandLine:focus {
+#commandLine:focus,
+#placeSymbol:focus {
 outline: none;
 }
 

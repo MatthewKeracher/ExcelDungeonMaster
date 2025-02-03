@@ -25,6 +25,8 @@ const key = event.key.toLowerCase(); // Convert the pressed key to lowercase
 const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 const isCmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
 const placeName = document.getElementById('placeName');
+const placeSymbol = document.getElementById('placeSymbol');
+
 let currentCell = getCurrentDiv();
 
 
@@ -32,6 +34,7 @@ let currentCell = getCurrentDiv();
 if (
 !textDiv.contains(document.activeElement) &&
 !placeName.contains(document.activeElement) &&
+!placeSymbol.contains(document.activeElement) &&
 !commandLine.contains(document.activeElement)
 ) {
 
@@ -69,7 +72,7 @@ clipZone();
 break;
 case 'shift':
 if(!isPainting){
-showNames();
+//showNames();
 }
 break;
 case 'g':
@@ -292,7 +295,8 @@ case 'n':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
 toggleModes();
-placeName.focus();
+placeSymbol.focus();
+placeSymbol.select();
 break;
 case 'p':
 if(!isPPressed) {
@@ -309,6 +313,12 @@ case 'enter':
 if(isFilling){
 fillCells(currentCell)
 }
+break;
+case '-':
+changeZoom('out');
+break;
+case '=':
+changeZoom('in');
 break;
 case 'l':
 handleLoad();
@@ -345,7 +355,6 @@ const key = event.key.toLowerCase();
 if (key === 'shift') {
 isShiftHeld = false;
 
-showMarkers();
 //toggleHexLabelsVisibility(false);
 if(isPainting){
 toggleAutoPaint(false);
@@ -404,6 +413,33 @@ break;
 
 }
 };
+
+function trapFocus(containerElement) {
+    const focusableElements = containerElement.querySelectorAll(
+      'input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+  
+    containerElement.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        const isShiftTab = e.shiftKey;
+        
+        if (isShiftTab && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!isShiftTab && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    });
+  }
+  
+  // Usage
+  const formContainer = document.querySelector('.left-section');
+  trapFocus(formContainer);
+  
 
 
 addHotkeys();

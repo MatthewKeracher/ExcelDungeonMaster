@@ -108,6 +108,7 @@ textDiv.style.display = "block";
 textDiv.contentEditable = true;
 commandLine.style.display = "none";
 placeName.readOnly = false;
+placeSymbol.readOnly = false;
 // placeName.placeholder="Location Name"
 
 //Change colour
@@ -136,6 +137,7 @@ modeBox.innerHTML = `<b>Map Mode</b>`
 textDiv.style.display = "block";
 textDiv.contentEditable = false;
 commandLine.style.display = "none";
+placeSymbol.readOnly = true;
 placeName.readOnly = true;
 
 //Change colour
@@ -144,6 +146,7 @@ toggleModeColor();
 
 //What is focused
 textDiv.blur();
+placeSymbol.blur();
 placeName.blur();
 
 //Change Content
@@ -159,8 +162,7 @@ let div = getCurrentDiv()
 saveEntry(div);
 
 updateZoneNames();
-showNames();    
-showMarkers();
+//showNames();    
 
 //COMMAND MODE
 } else if(currentMode === "command"){
@@ -171,6 +173,7 @@ modeBox.innerHTML = `<b>Command Mode</b>`
 textDiv.style.display = "block";
 textDiv.contentEditable = false;
 commandLine.style.display = "block";
+placeSymbol.readOnly = true;
 placeName.readOnly = true;
 
 //Change colour
@@ -225,7 +228,7 @@ function handleAddCommand(params) {
     const [addType, ...rest] = params.split(' ');
     switch (addType) {
         case 'line':
-            return `<br><hr>`;
+            return `<hr>`;
         case 'table':
             if (rest[0] === 'weapons') {
                 return generateItemsTable(rest[0]);

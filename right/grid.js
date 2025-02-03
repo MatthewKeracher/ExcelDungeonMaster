@@ -22,20 +22,22 @@ return;
 if(entry){
 
 if(entry.name !== ""){
-label.textContent = "△";
-label.style.fontWeight = 'bold';
+label.textContent = entry.symbol? entry.symbol:"◦";
+label.style.fontWeight = 'normal';
 cell.setAttribute('name', entry.name);
+cell.setAttribute('sym', entry.symbol);
 }
 
 cell.addEventListener("mouseover", () => {
 label.textContent = entry.name;
-label.style.fontWeight = 'normal';
+label.style.fontSize = '12px'
 });
 
 cell.addEventListener("mouseout", () => {
 if(label.textContent !== ""){
-label.textContent = "△";
-label.style.fontWeight = 'bold';
+let sym = cell.getAttribute('sym');
+label.textContent = sym;
+label.style.fontSize = '22px'
 }
 });
 
@@ -63,23 +65,11 @@ const name = dataMap.get(id) || "";
 
 if (label.textContent !== name) {
 label.textContent = name;
-label.style.fontWeight = 'normal';
+//label.style.fontWeight = 'normal';
 
 }
 });
 }
-
-function showMarkers() {
-    let cellLabels = document.querySelectorAll(`.cellLabel`);
-
-    cellLabels.forEach(label => {
-    
-    if(label.textContent !== ""){
-    label.textContent = "△";
-    label.style.fontWeight = 'bold';
-    }
-    });
-    }
 
 
 
@@ -129,6 +119,31 @@ cell.style.backgroundColor = saveEntry.color;
 cell.style.backgroundColor =  defaultColour;
 }
 }
+
+}
+
+function changeZoom(dir){
+
+// Select the element
+const rightSection = document.querySelector('.right-section');
+
+// Get the current zoom level
+let currentZoom = parseFloat(rightSection.style.zoom) || 1.5; // Default to 1 if not set
+
+if(dir === 'in'){
+
+// Increase zoom by 1%
+currentZoom += 0.03; // This subtracts 1%
+
+}else if (dir === 'out'){
+
+// Decrease zoom by 10%
+currentZoom -= 0.03; // This subtracts 1%
+
+}
+
+// Set the new zoom level
+rightSection.style.zoom = currentZoom + " ";
 
 }
 

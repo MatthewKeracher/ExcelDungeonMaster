@@ -151,6 +151,7 @@ function loadZone(gridCell, zone){
 
 
 placeName.value = zone.name;
+placeSymbol.value = zone.placeSymbol;
 textDiv.innerHTML = zone.desc;
 
 }

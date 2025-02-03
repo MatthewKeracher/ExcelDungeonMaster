@@ -26,6 +26,13 @@ function saveEntry(div){
 const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
+const placeSymbol = document.getElementById('placeSymbol')
+
+const cellLabel = div.querySelector('.cellLabel');
+    if (cellLabel) {
+        cellLabel.textContent = placeSymbol.value? placeSymbol.value : '◦';
+        div.setAttribute('sym', placeSymbol.value);
+    }
 
 console.log(regionObj, idBox.textContent)
 if(regionObj.id === idBox.textContent){
@@ -39,6 +46,7 @@ let zoneId = div.getAttribute('zone');
 let zone = zones.find(entry => entry.id === zoneId)
 
 zone.name = placeName.value;
+zone.symbol = placeSymbol.value;
 zone.desc = textDiv.innerHTML;
 
 }else{
@@ -47,17 +55,21 @@ let exists = data.find(entry => entry.id === idBox.textContent)
 
 if(exists){
 exists.name = placeName.value;
+exists.symbol = placeSymbol.value;
 exists.desc = textDiv.innerHTML;
 
-if(exists.desc !== "" && exists.name === ""){
-exists.name = "*"
-}
+// if(exists.desc !== "" && exists.name === ""){
+// exists.name = "◦"
+// }
 
 }else{
 makeNewEntry();
 }
 
 }
+
+garbageCollection();
+
 
 }
 
@@ -66,6 +78,7 @@ function makeNewEntry(){
 const saveEntry = {
 id: idBox.textContent,
 name: placeName.value,
+symbol: placeSymbol.value,
 desc: textDiv.innerHTML,
 grid: isHexMap? "hex" : "square",
 palette: defaultData[0].palette
@@ -76,6 +89,25 @@ saveEntry.name = ""
 }
 
 data.push(saveEntry);
+
+
+}
+
+
+function garbageCollection(){
+
+data.forEach(entry => {
+
+if(entry.name !== "*"){
+return
+}
+
+if(entry.desc === ""){
+entry.name = ""   
+}
+
+
+})
 
 
 }

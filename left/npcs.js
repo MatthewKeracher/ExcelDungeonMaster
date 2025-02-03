@@ -72,6 +72,8 @@ function makeNPC(npcClass, level, npcName) {
         }
     }
 
+    HTML += generateRandomItemsTable(['weapons', 'weapons', 'armor']);
+
     HTML += `</div>`; // End of left column
 
     // Right Column 
@@ -109,8 +111,6 @@ function makeNPC(npcClass, level, npcName) {
     HTML += `</div>`; // End of right column
 
     HTML += `</div>`; // End of flex container
-
-    HTML += generateRandomItemsTable(['weapons', 'weapons', 'armor']);
 
     HTML += `<br><br>`;
 

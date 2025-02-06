@@ -1,0 +1,112 @@
+#journal {
+    width: 100%;
+    height: 100%;
+    background-color: none;  
+    display: flex;
+    font-size: 15px;
+    color: var(--mode-color);
+}
+
+#journal-id{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+#journal-entry-name{
+    width: 84%;
+    height: 5%;
+    background-color: black;
+    color: var(--mode-color);
+    font-family: 'SoutaneBlack';
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-align: left; 
+    resize: none;
+    border: none;
+    
+}
+
+#journal-entry-name:read-only {
+    background-color: black; 
+}
+
+#journal hr {
+    color: var(--mode-color); /* Optional, but not necessary for <hr> */
+    border: none; /* Remove the default border */
+    border-top: 1px dashed var(--mode-color); /* Set a dotted top border with the dynamic color */
+    height: 0; /* Since the border-top is used, we set height to 0 */
+    margin-bottom: 0;
+}
+
+#journal-left{
+    float: left;
+    margin-right: 1%;
+    border-right: 2px solid var(--mode-color);
+    width: 15%;
+    height:100%;
+    background-color: rgb(5, 11, 41);
+}
+
+#journal-left a {
+    display: block;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+#journal-left a:hover {
+    text-decoration: underline;
+}
+
+#journal-right{
+    display: block;
+    width:84%;
+    height:92%;
+    background-color: transparent;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#journal-right,
+#journal-entry-name:focus {
+outline: none;
+}
+
+#journal-entry-name:read-only {
+background-color: black; 
+}
+
+#journal-right::-webkit-scrollbar {
+    width: 10px;
+}
+
+#journal-right::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+#journal-right::-webkit-scrollbar-corner {
+    background: black;
+}
+
+#journal-right::-webkit-scrollbar-track {
+    background: rgb(65, 77, 65);
+}
+
+#journal-right::-webkit-scrollbar-thumb {
+    background: var(--mode-color-trans);
+    border-radius: 2px;
+}
+
+#journal-right::-webkit-scrollbar-thumb:hover {
+    background: var(--mode-color);
+}
+
+.entryLink{
+    color: solid var(--mode-color);
+}
+
+.entryLink:focus {
+    color: white;
+    background-color: solid var(--mode-color);
+    outline: none;
+}

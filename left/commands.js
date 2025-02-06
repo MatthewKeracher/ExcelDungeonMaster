@@ -95,6 +95,7 @@ function insertAtCaret(htmlContent) {
 }
 
 function toggleModes() {
+
 isPainting = true
 handlePaint();
 
@@ -104,12 +105,13 @@ if (currentMode === "edit") {
 modeBox.innerHTML = `<b>Edit Mode</b>`
 
 //Change what displays
-textDiv.style.display = "block";
 textDiv.contentEditable = true;
 commandLine.style.display = "none";
 placeName.readOnly = false;
 placeSymbol.readOnly = false;
-// placeName.placeholder="Location Name"
+
+journalRight.contentEditable = true;
+entryName.readOnly = false;
 
 //Change colour
 modeColor = "255,105,180";
@@ -121,8 +123,17 @@ textDiv.innerHTML += handleCommands();
 const textContent = textDiv.value;
 
 //What is focused
-placeCaretAtEnd(textDiv)
-textDiv.scrollTop = textDiv.scrollHeight;
+if(!journalShowing){
+    placeCaretAtEnd(textDiv)
+    textDiv.scrollTop = textDiv.scrollHeight;
+}else{
+    entryName.focus();
+    entryName.select();
+
+    if (event.target.matches('a#addNewEntry.entryLink')) {
+    journalId.textContent = journalData.length + 1;
+    }
+}
 
 //Change Content    
 hitPointInit();
@@ -134,11 +145,14 @@ hitPointInit();
 modeBox.innerHTML = `<b>Map Mode</b>`
 
 //Change what displays
-textDiv.style.display = "block";
 textDiv.contentEditable = false;
 commandLine.style.display = "none";
 placeSymbol.readOnly = true;
 placeName.readOnly = true;
+
+journalRight.contentEditable = false;
+entryName.readOnly = true;
+
 
 //Change colour
 modeColor = "0, 255, 0";
@@ -148,6 +162,10 @@ toggleModeColor();
 textDiv.blur();
 placeSymbol.blur();
 placeName.blur();
+
+if(journalShowing){
+journalLeft.focus()
+}
 
 //Change Content
 // insertAtCaret(handleCommands())
@@ -160,6 +178,7 @@ textDiv.scrollTop = textDiv.scrollHeight;
 //Save Content
 let div = getCurrentDiv()
 saveEntry(div);
+saveData();
 
 updateZoneNames();
 //showNames();    

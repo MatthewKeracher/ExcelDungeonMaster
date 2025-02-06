@@ -202,6 +202,7 @@ clearZoneLimits();
 
 function updateZoneNames(){
 
+try{
 const activeZones = zones.filter(zone => zone.coords === coords);
 
 if(activeZones.length > 0){
@@ -218,6 +219,10 @@ const label = cell.querySelector('.cellLabel');
 label.textContent = zone.name
 
 });
+
+}
+
+}catch{
 
 }
 

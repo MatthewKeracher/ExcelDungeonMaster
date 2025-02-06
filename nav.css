@@ -37,7 +37,7 @@ nav.toolbar {
     background-color: black;
     color: var(--mode-color);
     padding: 5px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 nav.toolbar ul {

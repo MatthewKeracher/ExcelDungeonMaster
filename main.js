@@ -61,6 +61,16 @@ const textDiv = document.getElementById('textDiv');
 const idBox = document.getElementById('idBox');
 const modeBox = document.getElementById('modeBox');
 
+//journal Divs
+let journalData = [];
+let journalShowing = false;
+const grid = document.getElementById('gridImageContainer');
+const entryName = document.getElementById('journal-entry-name');
+const journalDiv = document.getElementById('journal');
+const journalLeft = document.getElementById('journal-left');
+const journalRight = document.getElementById('journal-right');
+const journalId = document.getElementById('journal-id');
+
 const promptBox = document.getElementById('promptBox');
 const promptMsg = document.getElementById('promptMsg');
 
@@ -69,6 +79,7 @@ placeName.value = "Excel_DM"
 placeSymbol.value = ""
 textDiv.innerHTML = ``;
 modeBox.innerHTML = `<b>Map Mode</b>`
+journalDiv.style.display = 'none';
 
 const welcomeMessage = `Press ">" to Enter Your World.`;
 

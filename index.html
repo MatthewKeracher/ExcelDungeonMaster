@@ -9,63 +9,14 @@
     <link rel="stylesheet" href="left.css">
     <link rel="stylesheet" href="nav.css">
     <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="journal/journal.css">
 </head>
 <body>
 
-    <div class="topContainer">
-    
-        <!-- <nav class="toolbar">
-            <ul> -->
-                <!-- File Dropdown -->
-                <!-- <li>
-                    <a href="#">File</a>
-                    <ul class="dropdown">
-                        <li><a href="#" id="newButton" title="Erase All Data" onclick="handleNew()">New</a></li>
-                        <li><a href="#" id="loadButton" title="Hotkey: L" onclick="handleLoad()">Load</a></li>
-                        <li><a href="#" id="exportButton" title="Hotkey: S" onclick="handleExport()">Export</a></li>
-                    </ul>
-                </li> -->
-        
-                <!-- Edit Dropdown -->
-                <!-- <li>
-                    <a href="#">Edit</a>
-                    <ul class="dropdown">
-                        <li><a href="#" id="paintButton" title="Hotkey: P" onclick="handlePaint()">Paint</a></li>
-                        <li><a href="#" id="fillButton" title="Hotkey: F" onclick="handleFill()">Fill</a></li>
-                        <li><a href="#" id="enterButton" title="Hotkey: E" onclick="handleEnter()">Go In</a></li>
-                        <li><a href="#" id="exitButton" title="Hotkey: Q" onclick="handleExit()">Go Out</a></li>
-                    </ul>
-                </li> -->
-        
-                <!-- Grid Settings Dropdown -->
-                <!-- <li>
-                    <a href="#">Grid Settings</a>
-                    <ul class="dropdown">
-                        <li><a href="#" id="gridButton" title="Change between a square and hex grid." onclick="handleGrid(20,24)">Hex/Squares</a></li>
-                        <li><a href="#" id="gridSizeButton" title="Set the size of Grid." onclick="setGridSize()">Set Grid Size</a></li>
-                    </ul>
-                </li> -->
-        
-                <!-- Image Settings Dropdown -->
-                <!-- <li>
-                    <a href="#">Image Settings</a>
-                    <ul class="dropdown">
-                        <li><a href="#" id="imageButton" title="Impose Image Behind Grid." onclick="getImage()">Image</a></li>
-                        <li><a href="#" id="hexifyButton" title="Make Image Hex." onclick="confirmPaintHexMap()">Hexify</a></li>
-                        <li><a href="#" id="increaseImageSizeButton" onclick="increaseImageSize()">Increase Size</a></li>
-                        <li><a href="#" id="decreaseImageSizeButton" onclick="decreaseImageSize()">Decrease Size</a></li>
-                    </ul>
-                </li> -->
-            <!-- </ul>
-        </nav> -->
-        
-       
-        <div id="modeBox"></div>
-        <div id="regionName">Excel_DM</div>
-        <div id="idBox"></div>
-        
-  
-
+<div class="topContainer">
+    <div id="modeBox"></div>
+    <div id="regionName">Excel_DM</div>
+    <div id="idBox"></div>
 </div>
 
 <div id="promptBox" class="modal">
@@ -124,13 +75,29 @@
         <div class="right-section">
 
             <img id="startLogo" src="img/logo.gif"/>
+            
+            <div id="journal">
+
+                <div id="journal-left">
+                </div>
+
+                <div id="journal-id"></div>
+                <input id="journal-entry-name" autocomplete="off" readonly="true" maxlength="28"></input>  
+                <br>
+
+                <div id="journal-right"></div>
+               
+            </div>
+
                 <div id="gridImageContainer">
                 <div id="gridContainer"></div> 
                 <canvas id="imageCanvas"></canvas>
                
-                </div>
-    
         </div>
+        
+        </div>
+
+        
 
     <!-- Optional Footer -->
     <footer>
@@ -153,5 +120,6 @@
     <script src="left/commands.js"></script>
     <script src="left/monsters.js"></script>
     <script src="left/npcs.js"></script>
+    <script src="journal/journal.js"></script>
 </body>
 </html>

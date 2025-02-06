@@ -35,7 +35,9 @@ if (
 !textDiv.contains(document.activeElement) &&
 !placeName.contains(document.activeElement) &&
 !placeSymbol.contains(document.activeElement) &&
-!commandLine.contains(document.activeElement)
+!commandLine.contains(document.activeElement) &&
+!journalRight.contains(document.activeElement) &&
+!entryName.contains(document.activeElement)
 ) {
 
 if (key === 'shift') {
@@ -48,9 +50,15 @@ toggleAutoPaint(true);
 }
 
 // Handle Ctrl key
-if (isCmdOrCtrl) {
+if (isCmdOrCtrl && !journalShowing) {
+console.log('ctrl pushed')
 switch (key) {
-
+case 'c':
+copyTile();
+break;
+case 'v':
+pasteTile();
+break;
 }
 
 
@@ -166,7 +174,7 @@ if (isImaging){
         break;
     }
 
-}else if(isHexMap === true){
+}else if(isHexMap === true && journalShowing === false){
 
 switch (key) {
 //For HexNav
@@ -192,7 +200,8 @@ break;
 
 }else{
 
-switch (key) {
+switch (key && journalShowing === false) {
+
 //For SquareNav
 case 'w':
 moveFocus('up');
@@ -289,9 +298,16 @@ break;
 case 'tab':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
-toggleModes();
+toggleModes(event);
 break;
 case 'n':
+event.preventDefault(); // Prevent default action
+currentMode = 'edit';
+toggleModes();
+placeName.focus();
+placeName.select();
+break;
+case 'y':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
 toggleModes();
@@ -336,11 +352,25 @@ case 'm':
 handleMove();
 break;
 case 'c':
+  if(!isCmdOrCtrl){
     showPrompt('Clear Current Map: Are you sure you want to erase all visible data?').then(shouldDelete => {
         if (shouldDelete) {
             clearMap();
         }
         });
+      };
+break;
+case 'delete':
+  if(!journalShowing){
+  showPrompt('Delete this tile and contents?').then(shouldDelete => {
+    if (shouldDelete) {
+        deleteTile()
+    }
+    });
+  }
+break;
+case 'home':
+triggerJournal();
 break;
 
 }
@@ -369,6 +399,7 @@ let hasName = label.textContent;
 label.style.display = isVisible && hasName ? 'block' : 'none'; // Change to 'inline-block' if needed
 });
 }
+
 }else if(currentMode === 'command'){
 
 switch (event.key) {

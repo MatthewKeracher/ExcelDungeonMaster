@@ -2,6 +2,7 @@
 function saveData() {
 localStorage.setItem('data', JSON.stringify(data));
 localStorage.setItem('zones', JSON.stringify(zones));
+localStorage.setItem('journal', JSON.stringify(journalData));
 }
 
 function removeData() {
@@ -13,11 +14,15 @@ function removeData() {
 function loadData() {
 const savedData = localStorage.getItem('data');
 const savedZones = localStorage.getItem('zones');
+const savedJournal = localStorage.getItem('journal');
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
 }
 if(savedZones){
 zones = JSON.parse(savedZones);  
+}
+if(savedJournal){
+journalData = JSON.parse(savedJournal)
 }
 }
 
@@ -68,7 +73,9 @@ makeNewEntry();
 
 }
 
-garbageCollection();
+if(journalShowing){
+saveJournalEntry();
+}
 
 
 }
@@ -94,23 +101,7 @@ data.push(saveEntry);
 }
 
 
-function garbageCollection(){
 
-data.forEach(entry => {
-
-if(entry.name !== "*"){
-return
-}
-
-if(entry.desc === ""){
-entry.name = ""   
-}
-
-
-})
-
-
-}
 
 loadData();
 updateGrid();

@@ -1,3 +1,45 @@
+let clipboard = [];
+
+function copyTile(){
+
+const textDiv = document.getElementById('textDiv');
+const placeName = document.getElementById('placeName')
+const placeSymbol = document.getElementById('placeSymbol');
+
+clipboard.name = placeName.value;
+clipboard.symbol = placeSymbol.value;
+clipboard.desc = textDiv.innerHTML;
+
+}
+
+function pasteTile(){
+
+const textDiv = document.getElementById('textDiv');
+const placeName = document.getElementById('placeName')
+const placeSymbol = document.getElementById('placeSymbol');
+
+placeName.value = clipboard.name;
+placeSymbol.value = clipboard.symbol ;
+textDiv.innerHTML = clipboard.desc;
+
+//Save to File
+let div = getCurrentDiv()
+saveEntry(div);
+
+}
+
+function deleteTile(){
+
+const idBox = document.getElementById('idBox');
+const index = data.findIndex(entry => entry.id === idBox.textContent);
+
+data.splice(index, 1)
+loadGrid();
+saveData();
+
+}
+
+
 function updateGrid(){
 if(isHexMap){
 updateHexGrid()
@@ -23,7 +65,7 @@ if(entry){
 
 if(entry.name !== ""){
 label.textContent = entry.symbol? entry.symbol:"◦";
-label.style.fontWeight = 'normal';
+label.style.fontSize = '22px'
 cell.setAttribute('name', entry.name);
 cell.setAttribute('sym', entry.symbol);
 }

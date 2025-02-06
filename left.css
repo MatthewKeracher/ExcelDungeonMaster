@@ -32,11 +32,11 @@
 }
 
 #placeSymbol {
-    width: 45px; /* Adjust as needed */
-    height: 30px;
+    width: 60px; /* Adjust as needed */
+    height: 40px;
     border: none;
     color: var(--mode-color);
-    font-family: 'Cascadia';
+    font-family: 'SoutaneBlack';
     font-size: 32px;
     letter-spacing: 2px;
     text-align: center;

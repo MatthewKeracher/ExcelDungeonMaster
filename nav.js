@@ -184,37 +184,44 @@ loadGrid();
 }
 
 function handleExport() {
-    // Convert the data array to a JSON string
-    const dataStr = JSON.stringify(data, null, 2); // Pretty print with 2 spaces
-    const jounalStr = JSON.stringify(journalData, null, 2); 
-    //const zones = JSON.stringify(zones, null, 2); 
     const regionName = document.getElementById('regionName');
     
-    // Create a Blob object with the data
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    
+    // Create an object that includes all three data sets
+    const exportData = {
+        data: data,
+        journalData: journalData,
+        zones: zones
+    };
+
+    // Convert the combined object to a JSON string
+    const exportStr = JSON.stringify(exportData, null, 2); // Pretty print with 2 spaces
+
+    // Create a Blob object with the combined data
+    const blob = new Blob([exportStr], { type: 'application/json' });
+
     // Create a temporary anchor element
     const a = document.createElement('a');
-    
+
     // Create an object URL for the Blob
     const url = URL.createObjectURL(blob);
     a.href = url;
-    
+
     // Set the download attribute to specify the filename
-    a.download = regionName? regionName.textContent + '.json' : 'data.json';
-    
+    a.download = regionName ? regionName.textContent + '.json' : 'data.json';
+
     // Append the anchor to the body (required for Firefox)
     document.body.appendChild(a);
-    
+
     // Programmatically click the anchor to trigger the download
     a.click();
-    
+
     // Remove the anchor from the DOM
     document.body.removeChild(a);
-    
+
     // Release the object URL
     URL.revokeObjectURL(url);
-    }
+}
+
 
     function handleLoad() {
         // Create a hidden input element to trigger the file explorer
@@ -238,23 +245,23 @@ function handleExport() {
                         const loadedData = JSON.parse(e.target.result);
     
                         // Check if the loaded data has the expected structure
-                        if (loadedData.data && loadedData.journalData) {
-                            // && loadedData.zones
+                        // if (loadedData.data && loadedData.journalData && loadedData.zones) {
+                            
                             // Replace the current data with the loaded data
                             data = loadedData.data;
                             journalData = loadedData.journalData;
-                            //zones = loadedData.zones;
+                            zones = loadedData.zones;
     
                             console.log("Data successfully loaded:", data);
                             console.log("Journal data successfully loaded:", journalData);
-                            //console.log("Zones successfully loaded:", zones);
+                            console.log("Zones successfully loaded:", zones);
     
                             // Update UI elements
                             updateGrid();
                             // Add any other necessary UI updates for journalData and zones
-                        } else {
-                            console.error("Loaded file does not have the expected structure");
-                        }
+                        // } else {
+                        //     console.error("Loaded file does not have the expected structure");
+                        // }
                     } catch (error) {
                         console.error("Error parsing JSON file:", error);
                     }

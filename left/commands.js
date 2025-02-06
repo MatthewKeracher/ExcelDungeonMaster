@@ -65,35 +65,6 @@ function placeCaretAtEnd(el) {
     selection.addRange(range); // Add the new range (caret at the end)
 }
 
-// Function to insert content at the caret position
-function insertAtCaret(htmlContent) {
-    const selection = window.getSelection();
-    
-    if (!selection.rangeCount) {
-        // If no range is selected, append at the end of the textDiv
-        textDiv.innerHTML += htmlContent;
-        return;
-    }
-
-    const range = selection.getRangeAt(0); // Get the current range
-    range.deleteContents(); // Remove any selected content
-
-    // Create a new element from the HTML string
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
-
-    // Insert each child of the temporary div into the range
-    Array.from(tempDiv.childNodes).forEach(node => range.insertNode(node));
-
-    // Move the caret to the end of the inserted content
-    range.setStartAfter(tempDiv.lastChild);
-    range.collapse(true);
-
-    // Update selection with the new range
-    selection.removeAllRanges();
-    selection.addRange(range);
-}
-
 function toggleModes() {
 
 isPainting = true
@@ -117,16 +88,13 @@ entryName.readOnly = false;
 modeColor = "255,105,180";
 toggleModeColor();
 
-
-//Change Content
-textDiv.innerHTML += handleCommands();
-const textContent = textDiv.value;
-
-//What is focused
 if(!journalShowing){
+    textDiv.innerHTML += handleCommands();
+    const textContent = textDiv.value;
     placeCaretAtEnd(textDiv)
     textDiv.scrollTop = textDiv.scrollHeight;
 }else{
+    journalRight.innerHTML += handleCommands();
     entryName.focus();
     entryName.select();
 
@@ -167,13 +135,15 @@ if(journalShowing){
 journalLeft.focus()
 }
 
-//Change Content
-// insertAtCaret(handleCommands())
-textDiv.innerHTML += handleCommands();
+if(!journalShowing){
+    textDiv.innerHTML += handleCommands();
+    textDiv.scrollTop = textDiv.scrollHeight;
+}else{
+    journalRight.innerHTML += handleCommands();
+}
 
 //Change Content
 hitPointInit();
-textDiv.scrollTop = textDiv.scrollHeight;
 
 //Save Content
 let div = getCurrentDiv()
@@ -296,7 +266,7 @@ function handleRollCommand(params) {
         const numDice = parseInt(match[1]);
         const diceSides = parseInt(match[2]);
         const rolledValue = rollDice(numDice, diceSides);
-        return `<br><hr><br><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
+        return `<br><hr><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
     }
 
     return '\n{Invalid roll format. Use XdY format}';

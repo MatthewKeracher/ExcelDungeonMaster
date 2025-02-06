@@ -16,7 +16,7 @@
 #journal-entry-name{
     width: 84%;
     height: 5%;
-    background-color: black;
+    background-color:black;
     color: var(--mode-color);
     font-family: 'SoutaneBlack';
     font-size: 22px;
@@ -28,7 +28,7 @@
 }
 
 #journal-entry-name:read-only {
-    background-color: black; 
+    background-color: black
 }
 
 #journal hr {
@@ -45,7 +45,7 @@
     border-right: 2px solid var(--mode-color);
     width: 15%;
     height:100%;
-    background-color: rgb(5, 11, 41);
+    background-color: black;
 }
 
 #journal-left a {
@@ -66,6 +66,10 @@
     overflow-y: auto;
     overflow-x: auto;
 }
+
+/* #journal-right[contenteditable="true"] {
+    background-color: rgb(5, 11, 41);
+} */
 
 #journal-right,
 #journal-entry-name:focus {

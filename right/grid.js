@@ -64,7 +64,7 @@ return;
 if(entry){
 
 if(entry.name !== ""){
-label.textContent = entry.symbol? entry.symbol:"◦";
+label.textContent = entry.symbol && entry.id !== '0.0'? entry.symbol:"◦";
 label.style.fontSize = '22px'
 cell.setAttribute('name', entry.name);
 cell.setAttribute('sym', entry.symbol);

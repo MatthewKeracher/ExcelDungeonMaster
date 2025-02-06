@@ -76,7 +76,7 @@ const promptMsg = document.getElementById('promptMsg');
 
 //Default
 placeName.value = "Excel_DM"
-placeSymbol.value = ""
+placeSymbol.value = "⚅"
 textDiv.innerHTML = ``;
 modeBox.innerHTML = `<b>Map Mode</b>`
 journalDiv.style.display = 'none';

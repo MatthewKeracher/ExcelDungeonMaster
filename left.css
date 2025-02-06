@@ -51,10 +51,10 @@
     height: 21px;
     border: none;
     color: var(--mode-color);
-    font-family: 'Cascadia';
-    font-size: 18px;
+    font-family: 'SoutaneBlack';
+    font-size: 22px;
     letter-spacing: 2px;
-    text-align: center; /* Align text to the left */
+    text-align: left; /* Align text to the left */
     resize: none;
     overflow: hidden;
     background-color: rgba(128, 68, 99, 0.609);
@@ -77,7 +77,7 @@
     padding-top: 5px;
     border-top: 1px solid var(--mode-color);
     background-color: rgb(52, 47, 39);
-    color: var(--mode-color);
+    color: lime;
 
     font-size: 18px;
     letter-spacing: 1px;
@@ -136,8 +136,6 @@
 #placeSymbol:focus {
 outline: none;
 }
-
-
 
 
 #paletteDiv {

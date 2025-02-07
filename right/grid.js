@@ -77,7 +77,7 @@ label.style.fontSize = '12px'
 
 cell.addEventListener("mouseout", () => {
 if(label.textContent !== ""){
-label.textContent = entry.symbol;
+label.textContent = entry.symbol !== ""? entry.symbol : entry.name.charAt(0);
 label.style.fontSize = '22px'
 }
 });
@@ -141,27 +141,68 @@ cell.classList.add("squareSelect")
 
 }
 
-function updateCellColors(cell, saveEntry){
+function checkWall(cell) {
 
-if(isHexMap){
-if(saveEntry){
-cell.querySelector('.left').style.borderRightColor = saveEntry.color;
-cell.querySelector('.middle').style.backgroundColor = saveEntry.color;
-cell.querySelector('.right').style.borderLeftColor = saveEntry.color;
-}else{
-cell.querySelector('.left').style.borderRightColor =  defaultColour;
-cell.querySelector('.middle').style.backgroundColor =  defaultColour;
-cell.querySelector('.right').style.borderLeftColor =  defaultColour;
-}
-}else{
-if(saveEntry){
-cell.style.backgroundColor = saveEntry.color;
-}else{
-cell.style.backgroundColor =  defaultColour;
-}
+    if(cell.classList.contains('zone-cell') || cell.classList.contains('zoning')){return false}
+
+    const row = parseInt(cell.getAttribute('row'));
+    const col = parseInt(cell.getAttribute('col'));
+    
+    // Define adjacent cell positions (up, down, left, right)
+    const adjacentPositions = [
+        [row - 1, col],     // up
+        [row + 1, col],     // down
+        [row, col - 1],     // left
+        [row, col + 1],     // right
+        [row - 1, col - 1], // up-left
+        [row - 1, col + 1], // up-right
+        [row + 1, col - 1], // down-left
+        [row + 1, col + 1]  // down-right
+
+    ];
+    
+    // Check each adjacent cell
+    for (let [adjRow, adjCol] of adjacentPositions) {
+        const adjacentCell = document.querySelector(`[row="${adjRow}"][col="${adjCol}"]`);
+        if (adjacentCell && adjacentCell.classList.contains('zone-cell') ||
+            adjacentCell && adjacentCell.classList.contains('zoning')) {
+            return true; // Found an adjacent zone-cell
+        }
+    }
+    
+    return false; // No adjacent zone-cells found
 }
 
+
+function updateCellColors(cell, saveEntry) {
+
+    if (isHexMap) {
+        if (saveEntry) {
+            cell.querySelector('.left').style.borderRightColor = saveEntry.color;
+            cell.querySelector('.middle').style.backgroundColor = saveEntry.color;
+            cell.querySelector('.right').style.borderLeftColor = saveEntry.color;
+        } else {
+            cell.querySelector('.left').style.borderRightColor = defaultColour;
+            cell.querySelector('.middle').style.backgroundColor = defaultColour;
+            cell.querySelector('.right').style.borderLeftColor = defaultColour;
+        }
+    } else {
+
+        // let isgridCell = cell.classList.contains('grid-cell');
+        // let isWall = checkWall(cell);
+      
+        // if (saveEntry && saveEntry !== 'ignore') {
+        //     cell.style.backgroundColor = saveEntry.color;
+        // }else if(cell.classList.contains('zoning')){
+        //     cell.style.backgroundColor = "white"
+        // }else if(isWall){
+        //     cell.style.backgroundColor = "rgb(40,100,165)"
+        // } else if(isgridCell) {
+        //     cell.style.backgroundColor = defaultColour;
+        // }
+    }
 }
+
 
 function changeZoom(dir){
 

@@ -32,6 +32,8 @@ const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 const placeSymbol = document.getElementById('placeSymbol')
+const inZone = div.classList.contains('inZone');
+
 
 const cellLabel = div.querySelector('.cellLabel');
     if (cellLabel) {
@@ -39,7 +41,7 @@ const cellLabel = div.querySelector('.cellLabel');
         div.setAttribute('sym', placeSymbol.value);
     }
 
-console.log(regionObj, idBox.textContent)
+// console.log(regionObj, idBox.textContent)
 if(regionObj.id === idBox.textContent){
 const regionName = document.getElementById('regionName');
 regionName.textContent = placeName.value;
@@ -53,6 +55,8 @@ let zone = zones.find(entry => entry.id === zoneId)
 zone.name = placeName.value;
 zone.symbol = placeSymbol.value;
 zone.desc = textDiv.innerHTML;
+
+console.log('saving zone...', zones)
 
 }else{
 

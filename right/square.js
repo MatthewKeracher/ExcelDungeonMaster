@@ -80,8 +80,10 @@ function changeCell(gridCell){
 
 if(currentMode !== "map"){return};
 
+console.log('changing cell...')
+
 selectedCellStyle(gridCell);
-updateZoneNames();
+// labelZones();
 
 //Set new id.
 let row = gridCell.getAttribute('row');
@@ -101,13 +103,19 @@ placeSymbol.value = loadEntry.symbol? loadEntry.symbol : loadEntry.name !== ""? 
 textDiv.innerHTML = loadEntry.desc;
 }
 
-const zone = checkIfZone(gridCell);
+if(gridCell.classList.contains('inZone')){
 
-if(zone !== undefined && textDiv.innerHTML === '' && placeName.value === ''){
-inZone = true;
-loadZone(gridCell, zone)
-}else{
-inZone = false;
+    let zoneDiv = getDiv(row, col);
+    console.log(zoneDiv)
+    let zoneId = zoneDiv.getAttribute('zone');
+    console.log(zoneId)
+    let zone = zones.find(entry => entry.id === zoneId);
+    console.log(zone)
+
+    textDiv.innerHTML = zone.desc? zone.desc : "";
+    placeName.value = zone.name;
+    placeSymbol.value = zone.symbol;
+
 }
 
 saveData();
@@ -133,7 +141,7 @@ addLabelEvents(cell, saveEntry);
 })
 
 loadZones();
-updateZoneNames();
+labelZones();
 
 
 }

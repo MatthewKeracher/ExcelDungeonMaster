@@ -1,5 +1,6 @@
 let selectedColorElement = null;
 let isShiftHeld = false;
+let isDelHeld = false;
 let isPPressed = false;
 
 function removeHotKeys(){
@@ -51,7 +52,6 @@ toggleAutoPaint(true);
 
 // Handle Ctrl key
 if (isCmdOrCtrl && !journalShowing) {
-console.log('ctrl pushed')
 switch (key) {
 case 'c':
 copyTile();
@@ -76,6 +76,7 @@ handleExit();
 break;
 case 'enter':
 if(isHexMap){return};
+console.log('clipping Zone...')
 clipZone();
 break;
 case 'shift':
@@ -123,25 +124,24 @@ if(isHexMap === true){
         
 }else if (!isPainting && isHexMap === false){
 
+let newCell
+
 switch (key) {
 //For HexNav
 case 'w':
-moveFocus('up');
-addZone(currentCell)
+addCellToZone(currentCell,'up')
 break;
 case 's':
-moveFocus('down');
-addZone(currentCell)
+addCellToZone(currentCell,'down')
 break;
 case 'a':
-moveFocus('left');
-addZone(currentCell)
+addCellToZone(currentCell,'left')
 break;
 case 'd':
-moveFocus('right');
-addZone(currentCell)
+addCellToZone(currentCell,'right')
 break;
 }
+
 
 }
 
@@ -205,19 +205,19 @@ switch (key ) {
 //For SquareNav
 case 'w':
 moveFocus('up');
-clearZoneLimits();
+//stopMakingRoom();
 break;
 case 's':
 moveFocus('down');
-clearZoneLimits();
+//stopMakingRoom();
 break;
 case 'a':
 moveFocus('left');
-clearZoneLimits();
+//stopMakingRoom();
 break;
 case 'd':
 moveFocus('right');
-clearZoneLimits();
+//stopMakingRoom();
 break;
 }
 
@@ -361,13 +361,17 @@ case 'c':
       };
 break;
 case 'delete':
-  if(!journalShowing){
-  showPrompt('Delete this tile and contents?').then(shouldDelete => {
-    if (shouldDelete) {
-        deleteTile()
-    }
-    });
+  
+if(!isHexMap && !journalShowing){
+removeCellFromZone(currentCell)
+
+}else if(!journalShowing){
+showPrompt('Delete this tile and contents?').then(shouldDelete => {
+  if (shouldDelete) {
+      deleteTile()
   }
+  });
+}
 break;
 case 'home':
 triggerJournal();

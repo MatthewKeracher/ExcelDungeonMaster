@@ -74,7 +74,7 @@ function fillCells(cell) {
 
 function getDirectionsHelper(col){
 
-let directions = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1], [1,1], [-1,-1]] 
+let directions = [[0,0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1], [1,1], [-1,-1]] 
 
 //Special Rule for offset even cols in HexMap
 if(isHexMap){

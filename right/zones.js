@@ -1,256 +1,198 @@
+let classicBlue = "rgb(40, 100, 165)"
 
-let zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
-let inZone = false
+function addCellToZone(currentCell, dir){
 
-function addZone(currentCell) {
-    let cell = zoneLimits.startX === Infinity ? currentCell : getCurrentDiv();
-    let row = parseInt(cell.getAttribute('row')); // y
-    let col = parseInt(cell.getAttribute('col')); // x
+startInZone = currentCell.classList.contains('inZone');
 
-    let alreadyZone = checkIfZone(currentCell);
-    if (alreadyZone !== undefined) {
-        deleteZone(alreadyZone);
-    }
-
-    // Initialize zoneLimits if it's the first cell
-    if (zoneLimits.startX === Infinity) {
-        zoneLimits.startX = zoneLimits.endX = col;
-        zoneLimits.startY = zoneLimits.endY = row;
-    } else {
-        // Update zoneLimits considering all directions
-        zoneLimits.startX = Math.min(zoneLimits.startX, col);
-        zoneLimits.endX = Math.max(zoneLimits.endX, col);
-        zoneLimits.startY = Math.min(zoneLimits.startY, row);
-        zoneLimits.endY = Math.max(zoneLimits.endY, row);
-    }
-
-    // Remove 'zoning' class from all cells
-    let allCells = document.querySelectorAll('.zoning');
-    allCells.forEach(cell => cell.classList.remove('zoning'));
-
-
-    // Add 'zoning' class to cells within the zone
-    for (let r = zoneLimits.startY; r <= zoneLimits.endY; r++) {
-        for (let c = zoneLimits.startX; c <= zoneLimits.endX; c++) {
-            let cell = document.querySelector(`[row="${r}"][col="${c}"]`);
-            if (cell) {
-                cell.classList.add('zoning');
-            }
-        }
-    }
+if(startInZone){
+moveFocus(dir);
 }
 
-function checkIfZone(div){
-
-if(zones.length === 0){return undefined}
-
-//All Zones with Coords Matching
-const activeZones = zones.filter(zone => zone.coords === coords);
-let zone = undefined;
-
-activeZones.forEach(entry => {
-
-const area = entry.drawArea;
-
-const x = div.getAttribute('col');
-const y = div.getAttribute('row');
-
-if(x >= area.startX && x<= area.endX){
-if(y >= area.startY && y<= area.endY){
-zone = entry;
-}
+if(currentZone.length === 0){
+getZone(currentCell);
 }
 
-});
-
-return zone;
-
-};
-
-function clearZoneLimits(){
-zoneLimits = {startX: Infinity, startY: Infinity, endX: -Infinity, endY: -Infinity};
-
-let zoningCells = document.querySelectorAll('.zoning');
-zoningCells.forEach(cell => cell.classList.remove('zoning'));
-}
-
-function clipZone() {
-
-// Remove 'zoning' class from all cells
-let allCells = document.querySelectorAll('[row][col]');
-allCells.forEach(cell => cell.classList.remove('zoning'));
-
-saveZone();
-loadZones();
-inZone = true;
-
-
-}
-
-function deleteZone(zone) {
-showPrompt('Do you want to delete the Zone?').then(shouldDelete => {
-if (shouldDelete) {
-drawZone(zone, "erase")
-const index = zones.findIndex(entry => entry.id === zone.id);
-zones.splice(index, 1);
-loadGrid();
-
-}
-});
-}
-
-function drawZone(zone, erase) {
-let drawArea = zone.drawArea;
-console.log('drawing Zone...')
-
-const cells = [];
-for (let row = drawArea.startY; row <= drawArea.endY; row++) {
-for (let col = drawArea.startX; col <= drawArea.endX; col++) {
-let cell = document.querySelector(`[row="${row}"][col="${col}"]`);
-if (cell) {
-cells.push(cell);
-}
-}
-}
-
-cells.forEach(cell => {
-cell.classList.remove('grid-cell')
-cell.classList.add('zone-cell');
-cell.setAttribute('zone', zone.id)
-
-const label = cell.querySelector('.cellLabel');
-if(label){
-label.classList.remove('cellLabel');
-label.classList.add('zoneLabel');
-}
+let cell = getCurrentDiv()
 
 const row = parseInt(cell.getAttribute('row'));
 const col = parseInt(cell.getAttribute('col'));
-const style = erase? "0.1px solid black" : "2px solid white";
-const defaultStyle = "0.1px solid black"
 
-if (row === drawArea.startY) {
-    cell.style.borderTop = style;
-} else{
-    cell.style.borderTop = defaultStyle;
+cell.classList.add('inZone');
+currentZone.points.push({row,col});
+cell.style.backgroundColor = 'white';
+cell.style.border = "0.1px solid " + classicBlue;
+walls("add", row, col);
+
+const div = getDiv(row, col);
+      div.setAttribute('zone', currentZone.id);
+
+console.log(div);
+    
 }
 
-if (row === drawArea.endY) {
-    cell.style.borderBottom = style;
-} else{
-    cell.style.borderBottom = defaultStyle;
+function removeCellFromZone(cell){
+
+    const row = parseInt(cell.getAttribute('row'));
+    const col = parseInt(cell.getAttribute('col'));
+    
+    currentZone.points = currentZone.points.filter(entry => entry.row !== row || entry.col !== col);
+    cell.classList.remove('inZone')
+    walls("remove", row, col);
+    
+    
 }
 
-if (col === drawArea.startX) {
-    cell.style.borderLeft = style;
-} else{
-    cell.style.borderLeft = defaultStyle;
+function walls(action, row, col) {
+    
+    const adjCells = getDirectionsHelper();
+
+    let whites = [];
+
+    for (let [adjRow, adjCol] of adjCells) {  
+        
+        let adjCell = document.querySelector(`[row="${row + adjRow}"][col="${col + adjCol}"]`);
+        if (!adjCell) continue;
+
+        if (action === "add") {
+            if (!adjCell.classList.contains('inZone')) {
+                adjCell.style.backgroundColor = classicBlue;
+                adjCell.style.border = "0.1px solid " + classicBlue;
+            }
+
+        } else if (action === "remove") {
+          
+            if(adjCell.classList.contains('inZone')){
+                let adjRow = parseInt(adjCell.getAttribute('row'));
+                let adjCol = parseInt(adjCell.getAttribute('col'));
+                whites.push({adjRow, adjCol}) 
+                
+            } else {
+                adjCell.style.backgroundColor = 'black';
+                adjCell.style.border = "0.1px solid black";
+                console.log('does not contain a zone')
+            }
+
+        }
+    }
+
+    if(action === "remove"){
+    //console.log(whites)
+    for (let {adjRow, adjCol} of whites) {   
+    walls("add" ,adjRow, adjCol);
+    }
+
+}
 }
 
-if (col === drawArea.endX) {
-    cell.style.borderRight = style;
-} else{
-    cell.style.borderRight = defaultStyle;
-}
+function labelZones(){
 
-});
+    // const activeZones = zones.filter(zone => zone.coords === coords);
 
-}
-
-function loadZone(gridCell, zone){
-
-
-placeName.value = zone.name;
-placeSymbol.value = zone.symbol;
-textDiv.innerHTML = zone.desc;
+    // if(activeZones.length > 0){
+    // activeZones.forEach(zone => {
+    
+    // let area = zone.points
+    // let midY = Math.floor((area.endY + area.startY) /2);
+    // let midX = Math.floor((area.endX + area.startX) /2);
+    
+    // const id =  coords + '.' + midY + '.' + midX;
+    // const cell = getDiv(midY, midX);
+    // const label = cell.querySelector('.zoneLabel');
+    
+    // if(label && zone.name !== null){
+    // label.textContent = zone.name;
+    // }
+    
+    // });
+    
+    // }
 
 }
 
 function loadZones(){
 
-// Remove 'zone-cell' class from all cells
-let allCells = document.querySelectorAll('.zone-cell');
-allCells.forEach(cell => cell.removeAttribute('zone'));
-allCells.forEach(cell => cell.classList.remove('zone-cell'));
-allCells.forEach(cell => cell.classList.add('grid-cell'));
-
-//All Zones with Coords Matching
-console.log(zones)
-const toDraw = zones.filter(zone => zone.coords === coords);
-
-toDraw.forEach(zone => {
-drawZone(zone)
-})
-
-
-updateZoneNames()
-
-}
-
-function saveZone() {
-    let i = zones.length + 1;
-    let zoneId;
-    let alreadyExists;
-
-    do {
-        zoneId = `${coords}.${i}`;
-        alreadyExists = zones.find(entry => entry.id === zoneId);
-        i++;
-    } while (alreadyExists);
-
-    const zoneEntry = {
-        id: zoneId,
-        symbol: '',
-        name: '',
-        desc: '',
-        coords: coords,
-        drawArea: {...zoneLimits},
-    };
-
-    zones.push(zoneEntry);
-    saveData();
-    clearZoneLimits();
-}
-
-
-function updateZoneNames(){
-
 const activeZones = zones.filter(zone => zone.coords === coords);
 
-if(activeZones.length > 0){
 activeZones.forEach(zone => {
 
-let area = zone.drawArea
-let midY = Math.floor((area.endY + area.startY) /2);
-let midX = Math.floor((area.endX + area.startX) /2);
+const points = zone.points;
 
-const id =  coords + '.' + midY + '.' + midX;
-const cell = getDiv(midY, midX);
-const label = cell.querySelector('.zoneLabel');
+points.forEach(point => {
 
-if(label && zone.name !== null){
-label.textContent = zone.name;
+let cell = document.querySelector(`[row="${point.row}"][col="${point.col}"]`);
+    cell.classList.add('inZone');
+    cell.style.backgroundColor = 'white';
+    cell.style.border = "0.1px solid " + classicBlue;
+    walls("add", point.row, point.col);
+
+    const div = getDiv(point.row, point.col);
+    div.setAttribute('zone', zone.id);
+
+})
+
+})
+
 }
 
-});
+function getZone(cell) {
+    const row = parseInt(cell.getAttribute('row'));
+    const col = parseInt(cell.getAttribute('col'));
 
+    const activeZones = zones.filter(zone => zone.coords === coords);
+
+    for (let zone of activeZones) {
+        if (zone.points.some(point => point.row === row && point.col === col)) {
+            currentZone = zone;
+            return; // Exit the function once we find the matching zone
+        }
+    }
+
+    if(currentZone.length === 0){
+
+    let zoneId;
+
+        let i = zones.length + 1;
+        let alreadyExists;
+
+        do {
+            zoneId = `${coords}.${i}`;
+            alreadyExists = zones.find(entry => entry.id === zoneId);
+            i++;
+        } while (alreadyExists);
+
+        currentZone.id = zoneId;
+
+        // If no matching zone is found, create a new one
+        currentZone = {
+            coords: coords,
+            id: zoneId, // You need to implement this function
+            points: [{row, col}], // Start with the current cell
+            name: '',
+            desc: '',
+            symbol: '',
+        };
+
+
+    }
+    
+    
 }
 
 
+function clipZone() {
+     // Convert points to a Set to remove duplicates
+    const uniquePoints = new Set(currentZone.points.map(point => JSON.stringify(point)));
+    currentZone.points = Array.from(uniquePoints).map(point => JSON.parse(point));
+    
+        let savedZoneIndex = zones.findIndex(zone => zone.id === currentZone.id);
+        if (savedZoneIndex !== -1) {
+            console.log('updating zone...');
+            zones[savedZoneIndex] = currentZone;
+        }else{
+            console.log('pushing new zone...');
+            zones.push(currentZone);
+        }
+    
+    console.log(zones)
+    currentZone = [];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

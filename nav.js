@@ -178,6 +178,8 @@ console.log(dataLengthOld - data.length + ' entries deleted')
 console.log(data.length + ' entries remaining.')
 
 //Erase Zones
+zones = []
+console.log(zones)
 zones = zones.filter(zone => zone.coords !== coords);
 
 saveData();

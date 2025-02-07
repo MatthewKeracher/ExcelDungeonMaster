@@ -150,7 +150,7 @@ let div = getCurrentDiv()
 saveEntry(div);
 saveData();
 
-updateZoneNames();
+labelZones();
   
 
 //COMMAND MODE

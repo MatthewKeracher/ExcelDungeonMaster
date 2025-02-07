@@ -104,8 +104,7 @@ flex: 0 0 auto;
 position: relative;
 width: 25px;
 height: 25px;
-border: 0.5px solid black;
-background: var(--default-color);
+border: none;
 opacity: 1;
 transition: border-color 0.3s ease;
 display: flex;
@@ -113,12 +112,17 @@ justify-content: center;
 align-items: center;
 }
 
+.wall{
+    background-color: rgb(40, 100, 165);
+}
+
 .zone-cell {
 flex: 0 0 auto;
 position: relative;
 width: 25px;
 height: 25px;
-border: 1.7px solid rgb(29, 29, 29);;
+border: 0.1px solid rgb(40, 100, 165);
+background-color: white;
 transition: border-color 0.3s ease;
 display: flex;
 justify-content: center;
@@ -226,10 +230,6 @@ margin-top: calc(var(--hex-margin-bottom, 28px) / 2); /* Adjust based on the ver
 opacity: 0; /* Adjust this value as needed */
 pointer-events: none;
 
-}
-
-.zoning {
-filter: brightness(2)
 }
 
 #canvasContainer {

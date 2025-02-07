@@ -118,12 +118,28 @@ flex: 0 0 auto;
 position: relative;
 width: 25px;
 height: 25px;
-border: 1.7px solid black;
-background: rgb(29, 29, 29);
+border: 1.7px solid rgb(29, 29, 29);;
 transition: border-color 0.3s ease;
 display: flex;
 justify-content: center;
 align-items: center;
+}
+
+.zoneLabel {
+display: block;
+position: absolute;
+font-family: "SoutaneBlack";
+font-size: 12px;
+white-space: nowrap;
+color: whitesmoke;
+padding: 0px;
+border-radius: 3px;
+z-index: 100;
+pointer-events: none;
+transition: opacity 0.2s ease;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
 }
 
 .grid-cell:hover .cellLabel{

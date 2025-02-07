@@ -97,7 +97,7 @@ currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;
-placeSymbol.value = loadEntry.symbol? loadEntry.symbol : "◦";
+placeSymbol.value = loadEntry.symbol? loadEntry.symbol : loadEntry.name !== ""? loadEntry.name.charAt(0): "";
 textDiv.innerHTML = loadEntry.desc;
 }
 

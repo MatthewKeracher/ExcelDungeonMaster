@@ -55,7 +55,7 @@ let entry = getObj(id)
 
 if(entry){
 placeName.value = entry.name;
-placeSymbol.value = entry.symbol? entry.symbol : entry.name.charAt(1);
+placeSymbol.value = entry.symbol? entry.symbol : entry.name.length !== ""? entry.name.charAt(0): "";
 textDiv.innerHTML = entry.desc.trim();
 idBox.textContent = entry.id;
 }

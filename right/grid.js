@@ -57,14 +57,14 @@ const row = cell.getAttribute('row');
 const label = cell.querySelector('.cellLabel');
 
 if (!label) {
-console.error(`Could not find cellLabel on (${col},${row})`, cell, entry);
+//console.error(`Could not find cellLabel on (${col},${row})`, cell, entry);
 return;
 }
 
 if(entry){
 
 if(entry.name !== ""){
-label.textContent = entry.symbol && entry.id !== '0.0'? entry.symbol:"◦";
+label.textContent = entry.symbol && entry.id !== '0.0'? entry.symbol: entry.id !== '0.0' && entry.name? entry.name.charAt(0) : "";
 label.style.fontSize = '22px'
 cell.setAttribute('name', entry.name);
 cell.setAttribute('sym', entry.symbol);
@@ -77,8 +77,7 @@ label.style.fontSize = '12px'
 
 cell.addEventListener("mouseout", () => {
 if(label.textContent !== ""){
-let sym = cell.getAttribute('sym');
-label.textContent = sym;
+label.textContent = entry.symbol;
 label.style.fontSize = '22px'
 }
 });

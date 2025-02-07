@@ -151,7 +151,7 @@ saveEntry(div);
 saveData();
 
 updateZoneNames();
-//showNames();    
+  
 
 //COMMAND MODE
 } else if(currentMode === "command"){

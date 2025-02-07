@@ -35,7 +35,7 @@ const placeSymbol = document.getElementById('placeSymbol')
 
 const cellLabel = div.querySelector('.cellLabel');
     if (cellLabel) {
-        cellLabel.textContent = placeSymbol.value? placeSymbol.value : '◦';
+        cellLabel.textContent = placeSymbol.value? placeSymbol.value : placeName.value.charAt(0);
         div.setAttribute('sym', placeSymbol.value);
     }
 
@@ -62,10 +62,6 @@ if(exists){
 exists.name = placeName.value;
 exists.symbol = placeSymbol.value;
 exists.desc = textDiv.innerHTML;
-
-// if(exists.desc !== "" && exists.name === ""){
-// exists.name = "◦"
-// }
 
 }else{
 makeNewEntry();

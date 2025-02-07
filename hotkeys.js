@@ -198,9 +198,9 @@ moveHex('down-right');
 break;
 }
 
-}else{
+}else if(journalShowing === false){
 
-switch (key && journalShowing === false) {
+switch (key ) {
 
 //For SquareNav
 case 'w':

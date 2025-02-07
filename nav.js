@@ -177,6 +177,9 @@ if(index !== -1){data.splice(index, 1)};
 console.log(dataLengthOld - data.length + ' entries deleted')
 console.log(data.length + ' entries remaining.')
 
+//Erase Zones
+zones = zones.filter(zone => zone.coords !== coords);
+
 saveData();
 loadGrid();
 
@@ -255,6 +258,8 @@ function handleExport() {
                             console.log("Data successfully loaded:", data);
                             console.log("Journal data successfully loaded:", journalData);
                             console.log("Zones successfully loaded:", zones);
+
+                            if(Array.isArray(zones) === false){zones = []}
     
                             // Update UI elements
                             updateGrid();

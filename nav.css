@@ -114,3 +114,7 @@ nav.toolbar ul li > .dropdown:hover {
     background-color: rgb(39, 52, 39);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+#idBox{
+    color: black;
+}

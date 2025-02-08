@@ -33,7 +33,6 @@ return div;
     
 }
 
-
 function getCurrentDiv(){
 
 let id = idBox.textContent;
@@ -202,4 +201,24 @@ function colorDistance(color1, color2) {
         Math.pow(rgb1.g - rgb2.g, 2) +
         Math.pow(rgb1.b - rgb2.b, 2)
     );
+}
+
+function autoSpacing(){
+
+    console.log('autospacing...')
+
+    let text = textDiv.innerHTML;
+
+    console.log(text)
+
+    text = text.replace(/\.\s/g, '.<br><br>');
+    
+    // Replace periods at the end of the text with a period and two line breaks
+    text = text.replace(/\.$/g, '.<br><br>');
+    
+    // Update the innerHTML of the textDiv
+    textDiv.innerHTML = text;
+
+    console.log(text)
+
 }

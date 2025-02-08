@@ -109,7 +109,7 @@ function walls(action, row, col) {
             } else {
                 adjCell.style.backgroundColor = 'black';
                 adjCell.style.border = "0.1px solid black";
-                console.log('does not contain a zone')
+                //console.log('does not contain a zone')
             }
 
         }
@@ -265,7 +265,7 @@ function getZone(cell) {
     for (let zone of activeZones) {
         if (zone.points.some(point => point.row === row && point.col === col)) {
             currentZone = zone;
-            console.log('found Zone for: ' + row + ',' + col, currentZone)
+            //console.log('found Zone for: ' + row + ',' + col, currentZone)
             return; // Exit the function once we find the matching zone
         }
     }
@@ -305,14 +305,14 @@ function clipZone(currentCell) {
     const uniquePoints = new Set(currentZone.points.map(point => JSON.stringify(point)));
     currentZone.points = Array.from(uniquePoints).map(point => JSON.parse(point));
 
-        console.log('clipZone', currentZone)
+        //console.log('clipZone', currentZone)
     
         let savedZoneIndex = zones.findIndex(zone => zone.id === currentZone.id);
         if (savedZoneIndex !== -1) {
-            console.log('updating zone...');
+            //console.log('updating zone...');
             zones[savedZoneIndex] = currentZone;
         }else{
-            console.log('pushing new zone...');
+            //console.log('pushing new zone...');
             zones.push(currentZone);
         }
     

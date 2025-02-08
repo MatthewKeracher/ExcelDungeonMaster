@@ -117,7 +117,7 @@ if(gridCell.classList.contains('inZone')){
     if(point.symbol){
         placeSymbol.value = point.symbol
         }
-        console.log(cellDiv)
+        //console.log(cellDiv)
 
     currentZone = []
 

@@ -111,6 +111,7 @@ hitPointInit();
 } else if(currentMode === "map"){
 //Change Mode
 modeBox.innerHTML = `<b>Map Mode</b>`
+autoSpacing();
 
 //Change what displays
 textDiv.contentEditable = false;

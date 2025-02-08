@@ -76,7 +76,6 @@ handleExit();
 break;
 case 'enter':
 if(isHexMap){return};
-//console.log('clipping Zone...')
 clipZone(currentCell);
 break;
 case 'shift':
@@ -380,7 +379,6 @@ break;
 case 'home':
 triggerJournal();
 break;
-
 }
 }
 

@@ -14,17 +14,30 @@ clipboard.desc = textDiv.innerHTML;
 
 function pasteTile(){
 
+    let div = getCurrentDiv()
+
+    if(div.classList.contains('inZone')){
+
+        const placeSymbol = document.getElementById('placeSymbol');
+        placeSymbol.value = clipboard.symbol ;
+        saveEntry(div);
+        updateGrid();
+
+    return
+    }
+
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 const placeSymbol = document.getElementById('placeSymbol');
+
 
 placeName.value = clipboard.name;
 placeSymbol.value = clipboard.symbol ;
 textDiv.innerHTML = clipboard.desc;
 
 //Save to File
-let div = getCurrentDiv()
 saveEntry(div);
+updateGrid();
 
 }
 
@@ -57,27 +70,26 @@ const row = cell.getAttribute('row');
 const label = cell.querySelector('.cellLabel');
 
 if (!label) {
-//console.error(`Could not find cellLabel on (${col},${row})`, cell, entry);
 return;
 }
 
 if(entry){
 
-if(entry.name !== ""){
-label.textContent = entry.symbol && entry.id !== '0.0'? entry.symbol: entry.id !== '0.0' && entry.name? entry.name.charAt(0) : "";
+label.textContent = entry.symbol;
 label.style.fontSize = '22px'
 cell.setAttribute('name', entry.name);
 cell.setAttribute('sym', entry.symbol);
-}
 
 cell.addEventListener("mouseover", () => {
+if(entry.name !== ""){
 label.textContent = entry.name;
 label.style.fontSize = '12px'
+}
 });
 
 cell.addEventListener("mouseout", () => {
 if(label.textContent !== ""){
-label.textContent = entry.symbol !== ""? entry.symbol : entry.name.charAt(0);
+label.textContent = entry.symbol;
 label.style.fontSize = '22px'
 }
 });
@@ -113,8 +125,6 @@ label.textContent = name;
 }
 
 
-
-
 function selectedCellStyle(cell){
 
 const allCells = document.querySelectorAll("[row],[col]");
@@ -140,39 +150,6 @@ cell.classList.add("squareSelect")
 }
 
 }
-
-function checkWall(cell) {
-
-    if(cell.classList.contains('zone-cell') || cell.classList.contains('zoning')){return false}
-
-    const row = parseInt(cell.getAttribute('row'));
-    const col = parseInt(cell.getAttribute('col'));
-    
-    // Define adjacent cell positions (up, down, left, right)
-    const adjacentPositions = [
-        [row - 1, col],     // up
-        [row + 1, col],     // down
-        [row, col - 1],     // left
-        [row, col + 1],     // right
-        [row - 1, col - 1], // up-left
-        [row - 1, col + 1], // up-right
-        [row + 1, col - 1], // down-left
-        [row + 1, col + 1]  // down-right
-
-    ];
-    
-    // Check each adjacent cell
-    for (let [adjRow, adjCol] of adjacentPositions) {
-        const adjacentCell = document.querySelector(`[row="${adjRow}"][col="${adjCol}"]`);
-        if (adjacentCell && adjacentCell.classList.contains('zone-cell') ||
-            adjacentCell && adjacentCell.classList.contains('zoning')) {
-            return true; // Found an adjacent zone-cell
-        }
-    }
-    
-    return false; // No adjacent zone-cells found
-}
-
 
 function updateCellColors(cell, saveEntry) {
 
@@ -210,7 +187,7 @@ function changeZoom(dir){
 const rightSection = document.querySelector('.right-section');
 
 // Get the current zoom level
-let currentZoom = parseFloat(rightSection.style.zoom) || 1.5; // Default to 1 if not set
+let currentZoom = parseFloat(rightSection.style.zoom) || 1; 
 
 if(dir === 'in'){
 

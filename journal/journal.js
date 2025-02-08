@@ -108,12 +108,12 @@ function deleteJournalEntry(entryId){
 
 let exists = journalData.findIndex(entry => entry.id === entryId);
 
-console.log('entry index: ', exists)
-console.log('journalShowing ', journalShowing)
+//console.log('entry index: ', exists)
+//console.log('journalShowing ', journalShowing)
 
 if(exists > -1 && journalShowing === true){
 
-console.log('deleting...')
+//console.log('deleting...')
 journalData.splice(exists, 1)
 entryName.value = '';
 journalRight.innerHTML = '';
@@ -139,12 +139,12 @@ desc: journalRight.innerHTML,
 if(journal.name !== ''){
 
 let exists = journalData.findIndex(entry => entry.id === saveEntry.id)
-console.log(saveEntry.id)
+//console.log(saveEntry.id)
 
 if(exists > -1){
 journalData[exists] = saveEntry;
 }else{
-console.log(exists)
+//console.log(exists)
 journalData.push(saveEntry);
 }
 

@@ -76,12 +76,12 @@ handleExit();
 break;
 case 'enter':
 if(isHexMap){return};
-console.log('clipping Zone...')
-clipZone();
+//console.log('clipping Zone...')
+clipZone(currentCell);
 break;
 case 'shift':
 if(!isPainting){
-//showNames();
+
 }
 break;
 case 'g':
@@ -218,6 +218,10 @@ break;
 case 'd':
 moveFocus('right');
 //stopMakingRoom();
+break;
+case 'k':
+labelZones();
+showZoneNames();
 break;
 }
 
@@ -362,7 +366,7 @@ case 'c':
 break;
 case 'delete':
   
-if(!isHexMap && !journalShowing){
+if(currentCell.classList.contains('inZone')){
 removeCellFromZone(currentCell)
 
 }else if(!journalShowing){

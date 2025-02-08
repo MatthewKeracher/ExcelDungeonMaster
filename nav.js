@@ -39,11 +39,11 @@ function moveCellEvent(e) {
             // Move Logic
             
             childrenToMove.forEach(child => {
-                console.log(parentToMove.id, newId)
+                //console.log(parentToMove.id, newId)
                 let newChildId = child.id.replace(parentToMove.id, newId);
                 child.id = newChildId;
                 
-                //console.log(child.id + ' -> ' + newChildId);
+                ////console.log(child.id + ' -> ' + newChildId);
                 
             });
             parentToMove.id = newId;
@@ -55,7 +55,7 @@ function moveCellEvent(e) {
         parentToMove = null;
         childrenToMove = null;
         saveData();
-        console.log('isMoving', isMoving);
+        //console.log('isMoving', isMoving);
         
         // Remove event listeners
         const cells = document.querySelectorAll('[row][col]');
@@ -68,7 +68,7 @@ function moveCellEvent(e) {
 
 function moveCell() {
    
-    console.log('isMoving', isMoving);
+    //console.log('isMoving', isMoving);
 
     const cell = getCurrentDiv();
     const row = cell.getAttribute('row');
@@ -77,7 +77,7 @@ function moveCell() {
     parentToMove = data.find(entry => entry.id === id);
     childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
 
-    console.log(childrenToMove);
+    //console.log(childrenToMove);
 
     const cells = document.querySelectorAll('[row][col]');
     cells.forEach(cell => {
@@ -158,7 +158,7 @@ textDiv.innerHTML = '';
 function clearMap(){
 
 let allCells = document.querySelectorAll('[row][col]')
-console.log(allCells.length + ' cells to clear.')
+//console.log(allCells.length + ' cells to clear.')
 
 const dataLengthOld = data.length
 
@@ -174,12 +174,12 @@ if(index !== -1){data.splice(index, 1)};
 
 })
 
-console.log(dataLengthOld - data.length + ' entries deleted')
-console.log(data.length + ' entries remaining.')
+//console.log(dataLengthOld - data.length + ' entries deleted')
+//console.log(data.length + ' entries remaining.')
 
 //Erase Zones
-zones = []
-console.log(zones)
+//zones = []
+//console.log(zones)
 zones = zones.filter(zone => zone.coords !== coords);
 
 saveData();
@@ -257,9 +257,9 @@ function handleExport() {
                             journalData = loadedData.journalData;
                             zones = loadedData.zones;
     
-                            console.log("Data successfully loaded:", data);
-                            console.log("Journal data successfully loaded:", journalData);
-                            console.log("Zones successfully loaded:", zones);
+                            //console.log("Data successfully loaded:", data);
+                            //console.log("Journal data successfully loaded:", journalData);
+                            //console.log("Zones successfully loaded:", zones);
 
                             if(Array.isArray(zones) === false){zones = []}
     

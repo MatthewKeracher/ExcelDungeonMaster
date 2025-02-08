@@ -90,7 +90,7 @@ opacity: 0.4;
 }
 
 .squareSelect {
-outline: 1px solid lime;
+outline: 3px solid lime;
 z-index: 10;
 }
 
@@ -110,7 +110,14 @@ transition: border-color 0.3s ease;
 display: flex;
 justify-content: center;
 align-items: center;
+aspect-ratio: 1 / 1;
 }
+
+.grid-cell::before {
+    content: attr(cellSymbol);
+    display: inline-block;
+    vertical-align: middle;
+  }
 
 .wall{
     background-color: rgb(40, 100, 165);

@@ -149,9 +149,7 @@ hitPointInit();
 let div = getCurrentDiv()
 saveEntry(div);
 saveData();
-
-labelZones();
-  
+updateGrid();
 
 //COMMAND MODE
 } else if(currentMode === "command"){

@@ -105,22 +105,14 @@ isHexMap = true
 currentRows = regionObj.rows? regionObj.rows : currentRows;
 currentCols = regionObj.cols? regionObj.cols : currentCols;
 
-
 if (!isHexMap) {
-
 createGrid(currentRows, currentCols);
 loadZones();
-
 } else {
-
-
 createHexagons(currentRows, currentCols);
-
 }
-
 updateGrid()
 loadPalette()
-
 }
 
 

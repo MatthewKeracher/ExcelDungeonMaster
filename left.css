@@ -175,6 +175,25 @@ border-color: #000;
     color: var(--mode-color);
 }
 
+.tableCell {
+    min-width: 150px;
+    height: 30px;
+    padding: 5px;
+    color: var(--mode-color);
+    border-color: var(--mode-color);
+}
+
+.tableCell:focus {
+    outline: none;
+    color: white;
+
+}
+
+.tableHeader{
+    background-color: var(--mode-color);
+    color:#000;
+    }
+
 
 
 

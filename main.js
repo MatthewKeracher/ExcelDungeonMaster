@@ -70,6 +70,7 @@ const journalDiv = document.getElementById('journal');
 const journalLeft = document.getElementById('journal-left');
 const journalRight = document.getElementById('journal-right');
 const journalId = document.getElementById('journal-id');
+const scaleSelector = document.getElementById('scaleSelector');
 
 const promptBox = document.getElementById('promptBox');
 const promptMsg = document.getElementById('promptMsg');

@@ -83,6 +83,9 @@ placeSymbol.readOnly = false;
 
 journalRight.contentEditable = true;
 entryName.readOnly = false;
+scaleSelector.style.display = "block";
+
+tabTables();
 
 //Change colour
 modeColor = "255,105,180";
@@ -95,8 +98,14 @@ if(!journalShowing){
     textDiv.scrollTop = textDiv.scrollHeight;
 }else{
     journalRight.innerHTML += handleCommands();
-    entryName.focus();
-    entryName.select();
+
+        if(entryName.value !== ""){
+            journalLeft.focus()
+        }else{
+            entryName.focus();
+            entryName.select();
+        }
+    
 
     if (event.target.matches('a#addNewEntry.entryLink')) {
     journalId.textContent = journalData.length + 1;
@@ -132,15 +141,16 @@ textDiv.blur();
 placeSymbol.blur();
 placeName.blur();
 
-if(journalShowing){
-journalLeft.focus()
-}
+tabTables();
+
+journalLeft.focus();
 
 if(!journalShowing){
     textDiv.innerHTML += handleCommands();
     textDiv.scrollTop = textDiv.scrollHeight;
 }else{
-    journalRight.innerHTML += handleCommands();
+    journalRight.innerHTML += handleCommands()
+   
 }
 
 //Change Content
@@ -225,7 +235,7 @@ function handleAddCommand(params) {
             } else if (rest[0] === 'general') {
                 return generateItemsTable(rest[0]);
             } else {
-                handleTableCommand(rest.join(' '));
+                return handleTableCommand(rest.join(' '));
                 }
             break;
         default:
@@ -242,21 +252,87 @@ function handleTableCommand(params) {
 }
 
 function generateTable(rows, cols) {
-    let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
     for (let i = 0; i < rows; i++) {
         tableHTML += '<tr>';
         for (let j = 0; j < cols; j++) {
-            tableHTML += '<td contenteditable="true" style="min-width: 50px; min-height: 20px; padding: 5px;"></td>';
+            if (i === 0) {
+                // Add tableHeader class for the first row
+                tableHTML += `<td contenteditable="false" tabindex="0" class="tableCell tableHeader"></td>`;
+            } else {
+                tableHTML += `<td contenteditable="false" tabindex="0" class="tableCell"></td>`;
+            }
         }
         tableHTML += '</tr>';
     }
     tableHTML += '</table>';
+    console.log(tableHTML)
     return tableHTML;
+}
+
+function tabTables(){
+
+const tables = document.querySelectorAll('.tableCell');
+
+if(currentMode === 'edit'){
+
+tables.forEach(table => {
+let currentCell = null;
+
+table.contentEditable = "true"
+table.setAttribute('tabindex', '0');
+
+table.addEventListener('keydown', function(event) {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    
+    if (!currentCell) {
+      currentCell = table.querySelector('td');
+    } else {
+      currentCell = currentCell.nextElementSibling || currentCell.parentElement.nextElementSibling?.firstElementChild;
+      if (!currentCell) {
+        currentCell = table.querySelector('td');
+      }
+    }
+    
+    currentCell.focus();
+    selectCellContents(currentCell);
+  }
+});
+
+function selectCellContents(cell) {
+  const range = document.createRange();
+  range.selectNodeContents(cell);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+table.addEventListener('focus', function() {
+  if (!currentCell) {
+    currentCell = table.querySelector('td');
+    currentCell.focus();
+  }
+});
+
+table.addEventListener('blur', function() {
+  currentCell = null;
+});
+
+});
+
+}else{
+tables.forEach(table => table.contentEditable = "false");
+}
+
 }
 
 
 
+
+
 function handleRollCommand(params) {
+
     // Assume params will contain something like '1d20'
     const diceRegex = /^(\d+)d(\d+)$/i;
     const match = params.match(diceRegex);
@@ -266,11 +342,81 @@ function handleRollCommand(params) {
         const diceSides = parseInt(match[2]);
         const rolledValue = rollDice(numDice, diceSides);
         return `<br><hr><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
+    } else{
+
+        const tableName = params.toLowerCase();
+        const journalEntry = journalData.find(entry => entry.name.toLowerCase() === params);
+        
+        if (journalEntry) {
+            // Create a temporary container
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = journalEntry.desc;
+        
+            // Find the table with class 'table'
+            const table = tempContainer.querySelector('.table');
+
+            console.log(table)
+        
+            if (table && table.rows.length > 0) {
+                // Return the first row
+                return rollonTable(table)
+            } else {
+                console.log("Table or first row not found");
+                return null;
+            }
+        } else {
+            console.log("Journal entry not found");
+            return null;
+        }
+        
     }
 
     return '\n{Invalid roll format. Use XdY format}';
 }
 
+function rollonTable(table) {
+    if (!table || table.rows.length < 1) {
+        return "<table><tr><td>Table is empty</td></tr></table>";
+    }
+
+    const firstRow = table.rows[0];
+    const hasHeader = firstRow.cells[0].classList.contains('tableHeader');
+
+    let headers = [];
+    let startIndex = 0;
+
+    if (hasHeader) {
+        headers = Array.from(firstRow.cells).map(cell => cell.innerHTML.trim());
+        startIndex = 1;
+    }
+
+    if (table.rows.length === startIndex) {
+        return "<table><tr><td>Table has only headers</td></tr></table>";
+    }
+
+    // Get a random row (excluding the header row if it exists)
+    const randomIndex = Math.floor(Math.random() * (table.rows.length - startIndex)) + startIndex;
+    const selectedRow = table.rows[randomIndex];
+
+    // Get the values of each cell in the selected row
+    const cellValues = Array.from(selectedRow.cells).map(cell => cell.innerHTML.trim());
+
+    let result = '<table class="table">';
+    
+    if (hasHeader) {
+        // Add header row
+        result += '<tr class="tableHeader tableCell">' + headers.map(header => `<th>${header}</th>`).join(' ') + '</tr>';
+        // Add data row
+        result += '<tr class="tableCell">' + cellValues.map(value => `<td>${value}</td>`).join('') + '</tr>';
+    } else {
+        // Just add the data row
+        result += '<tr class="tableCell">' + cellValues.map(value => `<td>${value}</td>`).join('') + '</tr>';
+    }
+
+    result += '</table>';
+
+    return result;
+}
 
 
 function handleMonsterCommand(params) {

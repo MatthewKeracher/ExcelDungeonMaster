@@ -828,10 +828,10 @@ const items = {
     const firstItem = items[type][0];
     const headers = Object.keys(firstItem).filter(header => header !== 'description');
 
-    let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
     
     // Generate table headers
-    tableHTML += '<thead><tr>';
+    tableHTML += '<thead class="tableHeader"><tr>';
     headers.forEach(header => {
         tableHTML += `<th>${header.charAt(0).toUpperCase() + header.slice(1)}</th>`;
     });
@@ -843,16 +843,16 @@ const items = {
         // Main row with item details
         tableHTML += '<tr>';
         headers.forEach(header => {
-            tableHTML += `<td contenteditable="true">${item[header]}</td>`;
+            tableHTML += `<td class="tableCell">${item[header]}</td>`;
         });
         tableHTML += '</tr>';
 
-        // Description row (if exists)
-        if (item.description) {
-            tableHTML += `<tr>
-                <td colspan="${headers.length}" style="color: gray; font-style: italic;">${item.description}</td>
-            </tr>`;
-        }
+        // // Description row (if exists)
+        // if (item.description) {
+        //     tableHTML += `<tr>
+        //         <td colspan="${headers.length}" style="color: gray; font-style: italic;">${item.description}</td>
+        //     </tr>`;
+        // }
     });
     tableHTML += '</tbody></table>';
 

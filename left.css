@@ -175,6 +175,10 @@ border-color: #000;
     color: var(--mode-color);
 }
 
+.table{
+    width: 100%
+}
+
 .tableCell {
     width: 60px;
     height: 20px;

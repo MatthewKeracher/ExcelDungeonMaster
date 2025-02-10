@@ -109,6 +109,7 @@ function createAddNewButton() {
       journalRight.contentEditable = "false";
       journalLeft.innerHTML = ``;
       journalRight.innerHTML = ``;
+      scaleSelector.value = coords;
   });
 
   linkWrapper.appendChild(link);
@@ -218,6 +219,8 @@ saveData();
 
 function saveJournalEntry(){
 
+let scaleSelector = document.getElementById('scaleSelector')
+
 let saveEntry = {
 
 scale: scaleSelector.value,
@@ -293,7 +296,7 @@ function fillScaleSelector() {
       }
       
       scaleSelector.appendChild(newOption);
-      scaleSelector.style.display = "none";
+      //scaleSelector.style.display = "none";
   }
 }
 

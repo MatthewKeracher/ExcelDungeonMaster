@@ -111,7 +111,7 @@ placeSymbol.readOnly = false;
 journalLeft.contentEditable = true;
 journalRight.contentEditable = true;
 entryName.readOnly = false;
-scaleSelector.style.display = "block";
+//scaleSelector.style.display = "block";
 tabTables()
 
 //Change colour

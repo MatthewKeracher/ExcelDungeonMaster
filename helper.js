@@ -203,9 +203,9 @@ function colorDistance(color1, color2) {
     );
 }
 
-function autoSpacing(){
+function autoSpacing(div){
 
-    let text = textDiv.innerHTML;
+    let text = div.innerHTML;
 
     text = text.replace(/\.\s/g, '.<br><br>');
     
@@ -213,7 +213,7 @@ function autoSpacing(){
     text = text.replace(/\.$/g, '.<br><br>');
     
     // Update the innerHTML of the textDiv
-    textDiv.innerHTML = text;
+    div.innerHTML = text;
 
 
 }

@@ -73,6 +73,17 @@ body {
     margin-bottom: 10px;
 }
 
+#htmlBox{
+    height: 400px;
+    width: 600px;
+    padding: 5px;
+    font-family: 'Cascadia';
+    font-size: 12px;
+    color: var(--mode-color);
+    background-color: var(--background);
+    outline: 2px solid var(--mode-color)
+}
+
 
 footer {
     background-color: transparent;

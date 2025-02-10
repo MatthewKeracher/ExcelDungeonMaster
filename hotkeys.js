@@ -3,6 +3,17 @@ let isShiftHeld = false;
 let isDelHeld = false;
 let isPPressed = false;
 
+let elementsToCheck = [
+  textDiv,
+  placeName,
+  placeSymbol,
+  commandLine,
+  journalLeft,
+  journalRight,
+  entryName,
+  scaleSelector
+];
+
 function removeHotKeys(){
 document.removeEventListener('keydown', keyDownHotKeys);
 document.removeEventListener('keyup', keyUpHotKeys);
@@ -27,20 +38,16 @@ const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 const isCmdOrCtrl = isMac ? event.metaKey : event.ctrlKey;
 const placeName = document.getElementById('placeName');
 const placeSymbol = document.getElementById('placeSymbol');
+const scaleSelector = document.getElementById('scaleSelector');
+const commandLine = document.getElementById('commandLine');
 
 let currentCell = getCurrentDiv();
 
+const isActiveElementOutside = elementsToCheck.every(element => 
+  !element.contains(document.activeElement)
+);
 
-// Check if inputs are not focused
-if (
-!textDiv.contains(document.activeElement) &&
-!placeName.contains(document.activeElement) &&
-!placeSymbol.contains(document.activeElement) &&
-!commandLine.contains(document.activeElement) &&
-!journalLeft.contains(document.activeElement) &&
-!journalRight.contains(document.activeElement) &&
-!entryName.contains(document.activeElement)
-) {
+if(isActiveElementOutside){
 
 if (key === 'shift') {
 isShiftHeld = true;
@@ -292,7 +299,7 @@ switch (key) {
 case 'Escape':
 event.preventDefault();
 currentMode = 'map';
-toggleModes();
+toggleModes(event.target);
 break;
 case '`':
 event.preventDefault(); // Prevent default action
@@ -302,7 +309,7 @@ break;
 case 'tab':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
-toggleModes(event);
+toggleModes();
 break;
 case 'n':
 event.preventDefault(); // Prevent default action
@@ -365,17 +372,21 @@ case 'c':
       };
 break;
 case 'delete':
-  
-if(currentCell.classList.contains('inZone')){
-removeCellFromZone(currentCell)
 
-}else if(!journalShowing){
-showPrompt('Delete this tile and contents?').then(shouldDelete => {
-  if (shouldDelete) {
-      deleteTile()
-  }
-  });
-}
+if(!journalShowing){
+
+  if(currentCell.classList.contains('inZone')){
+    removeCellFromZone(currentCell)
+  }else{
+
+  showPrompt('Delete this tile and contents?').then(shouldDelete => {
+    if (shouldDelete) {
+        deleteTile()
+    }
+    });
+
+}};
+
 break;
 case 'home':
 triggerJournal();
@@ -413,17 +424,20 @@ switch (event.key) {
 case 'Escape':
 event.preventDefault();
 currentMode = 'map';
+commandLine.style.height = '30px'
+commandLine.maxLength = 28;
 toggleModes();
 break;
 case 'Enter':
 event.preventDefault(); 
 currentMode = 'map';
+commandLine.style.height = '30px'
+commandLine.maxLength = 28;
 toggleModes();
 break;
 case '`':
 event.preventDefault(); 
-currentMode = 'command';
-toggleModes();
+expandConsole();
 break; 
 }
 
@@ -443,7 +457,7 @@ break;
 case '`':
 event.preventDefault(); 
 currentMode = 'command';
-toggleModes();
+toggleModes(event.target);
 break; 
 }
 
@@ -452,32 +466,7 @@ break;
 }
 };
 
-function trapFocus(containerElement) {
-    const focusableElements = containerElement.querySelectorAll(
-      'input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-  
-    containerElement.addEventListener('keydown', function(e) {
-      if (e.key === 'Tab') {
-        const isShiftTab = e.shiftKey;
-        
-        if (isShiftTab && document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        } else if (!isShiftTab && document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
-      }
-    });
-  }
-  
-  // Usage
-  const formContainer = document.querySelector('.left-section');
-  trapFocus(formContainer);
-  
+
 
 
 addHotkeys();

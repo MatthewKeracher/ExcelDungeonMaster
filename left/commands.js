@@ -1,5 +1,9 @@
+let source
 
-
+function expandConsole(){
+    commandLine.style.height = '100%'
+    commandLine.maxLength = 1000;
+}
 
 function toggleModeColor() {
     const root = document.documentElement;
@@ -65,8 +69,32 @@ function placeCaretAtEnd(el) {
     selection.addRange(range); // Add the new range (caret at the end)
 }
 
-function toggleModes() {
+function trapFocus(elements) {
+    if (!elements || elements.length === 0) {
+        console.warn("trapFocusBetweenElements called with an empty or null array of elements.");
+        return;
+    }
+  
+    const firstElement = elements[0];
+    const lastElement = elements[elements.length - 1];
+  
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+            const isShiftTab = e.shiftKey;
+  
+            if (isShiftTab && document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+            } else if (!isShiftTab && document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+            }
+        }
+    });
+  }
 
+  
+function toggleModes(activeDiv) {
 isPainting = true
 handlePaint();
 
@@ -85,20 +113,23 @@ journalRight.contentEditable = true;
 entryName.readOnly = false;
 scaleSelector.style.display = "block";
 
-tabTables();
-
 //Change colour
 modeColor = "255,105,180";
 toggleModeColor();
 
+if(source){
+source.innerHTML += handleCommands();
+}else{
+textDiv.innerHTML += handleCommands();  
+}
+
 if(!journalShowing){
-    textDiv.innerHTML += handleCommands();
+    trapFocus([placeSymbol, placeName, textDiv])
     const textContent = textDiv.value;
     placeCaretAtEnd(textDiv)
     textDiv.scrollTop = textDiv.scrollHeight;
 }else{
-    //journalLeft.innerHTML += handleCommands();
-    journalRight.innerHTML += handleCommands();
+    trapFocus([journalLeft, journalRight]);
 
         if(entryName.value !== ""){
             journalLeft.focus()
@@ -121,8 +152,13 @@ hitPointInit();
 } else if(currentMode === "map"){
 //Change Mode
 modeBox.innerHTML = `<b>Map Mode</b>`
-autoSpacing();
 
+if(journalShowing){
+autoSpacing(journalLeft);
+autoSpacing(journalRight);
+}else{
+autoSpacing(textDiv)
+}
 //Change what displays
 textDiv.contentEditable = false;
 commandLine.style.display = "none";
@@ -142,18 +178,16 @@ textDiv.blur();
 placeSymbol.blur();
 placeName.blur();
 
-tabTables();
-
+if(journalShowing){
 journalSideBar.focus();
-
-if(!journalShowing){
-    textDiv.innerHTML += handleCommands();
-    textDiv.scrollTop = textDiv.scrollHeight;
-}else{
-    //journalLeft.innerHTML += handleCommands()
-    journalRight.innerHTML += handleCommands()
-   
 }
+
+if(source){
+source.innerHTML += handleCommands()
+}else{
+textDiv.innerHTML += handleCommands()
+}
+
 
 //Change Content
 hitPointInit();
@@ -167,6 +201,7 @@ updateGrid();
 //COMMAND MODE
 } else if(currentMode === "command"){
 //Change Mode
+source = activeDiv;
 modeBox.innerHTML = `<b>Command Mode</b>`
 
 //Change what displays
@@ -190,8 +225,6 @@ hitPointInit();
 }
 
 function handleCommands() {
-
-    if(commandLine.value === ''){return ''}
 
     let inputText = commandLine.value;
     commandLine.value = '';
@@ -220,15 +253,13 @@ function handleCommands() {
                 return '{Command not recognized}';
         }
     } else {
-        return '\n{Invalid command format}';
+        return inputText;
     }
 }
 
 function handleAddCommand(params) {
     const [addType, ...rest] = params.split(' ');
     switch (addType) {
-        case 'line':
-            return `<hr>`;
         case 'table':
             if (rest[0] === 'weapons') {
                 return generateItemsTable(rest[0]);
@@ -238,19 +269,29 @@ function handleAddCommand(params) {
                 return generateItemsTable(rest[0]);
             } else {
                 return handleTableCommand(rest.join(' '));
-                }
+            }
             break;
         default:
             return '{Add command not recognized}';
     }
 }
 
+
+
 function handleTableCommand(params) {
-    const [rows, cols] = params.split(' ').map(Number);
+    let [rows, cols] = params.split(' ').map(Number);
+
+    // Handle cases where only one number is provided
+    if (!isNaN(rows) && isNaN(cols)) {
+        cols = 1; // Default cols to 1 if not provided
+    }
+
+    // Validate input
     if (isNaN(rows) || isNaN(cols)) {
         return '\n{Invalid table format. Use "add table rows cols"}';
     }
-    return generateTable(rows, cols);
+
+    return generateTable(rows + 1, cols);
 }
 
 function generateTable(rows, cols) {
@@ -271,66 +312,6 @@ function generateTable(rows, cols) {
     console.log(tableHTML)
     return tableHTML;
 }
-
-function tabTables(){
-
-const tables = document.querySelectorAll('.tableCell');
-
-if(currentMode === 'edit'){
-
-tables.forEach(table => {
-let currentCell = null;
-
-table.contentEditable = "true"
-table.setAttribute('tabindex', '0');
-
-table.addEventListener('keydown', function(event) {
-  if (event.key === 'Tab') {
-    event.preventDefault();
-    
-    if (!currentCell) {
-      currentCell = table.querySelector('td');
-    } else {
-      currentCell = currentCell.nextElementSibling || currentCell.parentElement.nextElementSibling?.firstElementChild;
-      if (!currentCell) {
-        currentCell = table.querySelector('td');
-      }
-    }
-    
-    currentCell.focus();
-    selectCellContents(currentCell);
-  }
-});
-
-function selectCellContents(cell) {
-  const range = document.createRange();
-  range.selectNodeContents(cell);
-  const selection = window.getSelection();
-  selection.removeAllRanges();
-  selection.addRange(range);
-}
-
-table.addEventListener('focus', function() {
-  if (!currentCell) {
-    currentCell = table.querySelector('td');
-    currentCell.focus();
-  }
-});
-
-table.addEventListener('blur', function() {
-  currentCell = null;
-});
-
-});
-
-}else{
-tables.forEach(table => table.contentEditable = "false");
-}
-
-}
-
-
-
 
 
 function handleRollCommand(params) {

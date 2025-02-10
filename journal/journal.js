@@ -22,10 +22,28 @@ function loadJournal() {
   // Clear
   journalSideBar.innerHTML = '';
   
-//   journalData.forEach(entry => {
-//    // entry.right = ""; // Copy the value of desc to left
-//     // delete entry.desc;       // Remove the desc property from the object
-//   });
+  journalData.forEach(entry => {
+   if(entry.id === ""){
+    console.log(entry)
+    let entryId;
+
+    let i = 0;
+    let alreadyExists;
+
+    do {
+        entryId = i;
+        alreadyExists = journalData.find(entry => entry.id === entryId);
+        i++;
+    } while (alreadyExists);
+
+    entry.id = entryId.toString();
+
+   }
+
+   if(entry.name === ""){
+    entry.name = 'Untitled Entry ' + entry.id
+   }
+  });
 
   // DropDown
   fillScaleSelector();
@@ -46,7 +64,6 @@ function loadJournal() {
 
   journalData.forEach(item => {
       if (item.name === '') return;
-      //const scale = item.scale.split('.').slice(0, -1).join('.');
       if (entriesByScale[item.scale]) {
           entriesByScale[item.scale].entries.push(item);
       }
@@ -252,6 +269,16 @@ function fillScaleSelector() {
 
   // Clear existing options
   scaleSelector.innerHTML = '';
+
+  scaledObjs.push({
+  name: 'Player Characters',
+  id: 'PC'
+  })
+
+  scaledObjs.push({
+  name: 'Rules',
+  id: 'BFRPG'
+  })
 
   // Add options based on scaledObjs in reverse order
   for (let i = scaledObjs.length - 1; i >= 0; i--) {

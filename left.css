@@ -177,7 +177,7 @@ border-color: #000;
 
 .tableCell {
     width: 60px;
-    height: 30px;
+    height: 20px;
     padding: 5px;
     color: var(--mode-color);
     border-color: var(--mode-color);

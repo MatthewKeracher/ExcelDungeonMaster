@@ -2,7 +2,6 @@ let source
 
 function expandConsole(){
     commandLine.style.height = '100%'
-    commandLine.maxLength = 1000;
 }
 
 function toggleModeColor() {

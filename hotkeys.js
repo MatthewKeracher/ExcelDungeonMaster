@@ -425,14 +425,12 @@ case 'Escape':
 event.preventDefault();
 currentMode = 'map';
 commandLine.style.height = '30px'
-commandLine.maxLength = 28;
 toggleModes();
 break;
 case 'Enter':
 event.preventDefault(); 
 currentMode = 'map';
 commandLine.style.height = '30px'
-commandLine.maxLength = 28;
 toggleModes();
 break;
 case '`':

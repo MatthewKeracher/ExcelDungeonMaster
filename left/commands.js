@@ -112,6 +112,7 @@ journalLeft.contentEditable = true;
 journalRight.contentEditable = true;
 entryName.readOnly = false;
 scaleSelector.style.display = "block";
+tabTables()
 
 //Change colour
 modeColor = "255,105,180";
@@ -177,6 +178,7 @@ toggleModeColor();
 textDiv.blur();
 placeSymbol.blur();
 placeName.blur();
+tabTables();
 
 if(journalShowing){
 journalSideBar.focus();
@@ -312,6 +314,64 @@ function generateTable(rows, cols) {
     console.log(tableHTML)
     return tableHTML;
 }
+
+function tabTables(){
+
+    const tables = document.querySelectorAll('.tableCell');
+    
+    if(currentMode === 'edit'){
+    
+    tables.forEach(table => {
+    let currentCell = null;
+    
+    table.contentEditable = "true"
+    table.setAttribute('tabindex', '0');
+    
+    table.addEventListener('keydown', function(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        
+        if (!currentCell) {
+          currentCell = table.querySelector('td');
+        } else {
+          currentCell = currentCell.nextElementSibling || currentCell.parentElement.nextElementSibling?.firstElementChild;
+          if (!currentCell) {
+            currentCell = table.querySelector('td');
+          }
+        }
+        
+        currentCell.focus();
+        selectCellContents(currentCell);
+      }
+    });
+    
+    function selectCellContents(cell) {
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    
+    table.addEventListener('focus', function() {
+      if (!currentCell) {
+        currentCell = table.querySelector('td');
+        currentCell.focus();
+      }
+    });
+    
+    table.addEventListener('blur', function() {
+      currentCell = null;
+    });
+    
+    });
+    
+    }else{
+    tables.forEach(table => table.contentEditable = "false");
+    }
+    
+    }
+    
 
 
 function handleRollCommand(params) {

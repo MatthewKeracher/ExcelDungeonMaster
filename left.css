@@ -176,7 +176,7 @@ border-color: #000;
 }
 
 .tableCell {
-    min-width: 150px;
+    width: 60px;
     height: 30px;
     padding: 5px;
     color: var(--mode-color);

@@ -139,10 +139,6 @@ if(!journalShowing){
             entryName.select();
         }
     
-
-    if (event.target.matches('a#addNewEntry.entryLink')) {
-    journalId.textContent = journalData.length + 1;
-    }
 }
 
 //Change Content    

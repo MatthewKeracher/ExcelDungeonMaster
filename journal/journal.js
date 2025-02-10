@@ -94,6 +94,24 @@ function loadJournal() {
   addKeyboardNavigation();
 }
 
+function getNewJournalId(){
+
+    let entryId
+    let i = 0;
+    let alreadyExists;
+
+    do {
+        entryId = i;
+        alreadyExists = journalData.find(entry => parseInt(entry.id) === parseInt(entryId));
+        i++;
+    } while (alreadyExists);
+
+    console.log(entryId)
+    return entryId
+
+
+}
+
 function createAddNewButton() {
   const linkWrapper = document.createElement('div');
   const link = document.createElement('a');
@@ -110,6 +128,7 @@ function createAddNewButton() {
       journalLeft.innerHTML = ``;
       journalRight.innerHTML = ``;
       scaleSelector.value = coords;
+      journalId.textContent = getNewJournalId();
   });
 
   linkWrapper.appendChild(link);
@@ -256,6 +275,7 @@ loadJournal();
 }
 
 function fillScaleSelector() {
+    
   // Get the select element
   const scaleSelector = document.getElementById('scaleSelector');
 
@@ -290,13 +310,17 @@ function fillScaleSelector() {
       newOption.value = obj.id;
       newOption.text = obj.name;
       
-      // Make the '0.0' option selected by default
-      if (obj.id === coords) {
-          newOption.selected = true;
-      }
-      
       scaleSelector.appendChild(newOption);
       //scaleSelector.style.display = "none";
   }
+
+  try{
+   const searchId = journalId.textContent;
+   const foundEntry = journalData.find(entry => parseInt(entry.id) === parseInt(searchId));
+   scaleSelector.value = foundEntry.scale;
+  }catch{
+   scaleSelector.value = coords;
+  }
+
 }
 

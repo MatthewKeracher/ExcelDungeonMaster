@@ -393,7 +393,7 @@ function handleRollCommand(params) {
         if (journalEntry) {
             // Create a temporary container
             const tempContainer = document.createElement('div');
-            tempContainer.innerHTML = journalEntry.desc;
+            tempContainer.innerHTML = journalEntry.left + journalEntry.right;
         
             // Find the table with class 'table'
             const table = tempContainer.querySelector('.table');
@@ -421,6 +421,8 @@ function rollonTable(table) {
     if (!table || table.rows.length < 1) {
         return "<table><tr><td>Table is empty</td></tr></table>";
     }
+
+    console.log(table)
 
     const firstRow = table.rows[0];
     const hasHeader = firstRow.cells[0].classList.contains('tableHeader');

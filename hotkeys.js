@@ -37,6 +37,7 @@ if (
 !placeName.contains(document.activeElement) &&
 !placeSymbol.contains(document.activeElement) &&
 !commandLine.contains(document.activeElement) &&
+!journalLeft.contains(document.activeElement) &&
 !journalRight.contains(document.activeElement) &&
 !entryName.contains(document.activeElement)
 ) {

@@ -30,7 +30,7 @@
     margin-bottom: 0;
 }
 
-#journal-left{
+#journal-sidebar{
     float: left;
     margin-right: 1%;
     border-right: 2px solid var(--mode-color);
@@ -39,30 +39,79 @@
     background-color: black;
 }
 
-#journal-left a {
+#journal-sidebar a {
     display: block;
     text-decoration: none;
     margin-bottom: 10px;
 }
 
-#journal-left a:hover {
+#journal-sidebar a:hover {
     text-decoration: underline;
 }
 
-#journal-right{
-    display: block;
-    width:79%;
-    height:92%;
-    background-color: transparent;
-    overflow-y: auto;
-    overflow-x: auto;
+#journal-top{
+    width: 64%;
+    height: 5%;
 }
 
-/* #journal-right[contenteditable="true"] {
-    background-color: rgb(5, 11, 41);
-} */
+    #journal-entry-name{
+        position: absolute;
+        width: 70%;
+        background-color:black;
+        color: var(--mode-color);
+        font-family: 'SoutaneBlack';
+        font-size: 22px;
+        letter-spacing: 2px;
+        text-align: left; 
+        resize: none;
+        border: none;
+        
+    }
+
+    #scaleSelector {
+        position:absolute;
+        right: 1%;
+        width: 20%;
+        padding: 5px;
+        font-size: 18px;
+        font-family: 'SoutaneBlack';
+        border: 1px solid var(--mode-color);
+        border-radius: 0px;
+        background-color: var(--background);
+        color: var(--mode-color);
+        cursor: pointer;
+    }
+
+#journal-bottom{
+display: flex;
+width:79%;
+height:93%;
+overflow-y: auto;
+overflow-x: auto;
+}
+
+#journal-left{
+    width: 49%;
+    height: 100%;
+    background-color: transparent;
+    /* border-right: 1px dotted var(--mode-color); */
+    margin-top: 3%;
+    margin-right: 1%;
+}
+
+#journal-right{
+    right: 1%;
+    width: 48%;
+    height: 100%;
+    background-color: transparent;
+    margin-top: 3%;
+   
+    
+}
+
 
 #journal-right,
+#journal-left,
 #journal-entry-name,
 #scaleSelector:focus {
 outline: none;
@@ -72,28 +121,30 @@ outline: none;
 background-color: black; 
 }
 
-#journal-right::-webkit-scrollbar {
+
+#journal-bottom::-webkit-scrollbar {
     width: 10px;
 }
 
-#journal-right::-webkit-scrollbar:horizontal {
+
+#journal-bottom::-webkit-scrollbar:horizontal {
     height: 10px;
 }
 
-#journal-right::-webkit-scrollbar-corner {
+#journal-bottom::-webkit-scrollbar-corner {
     background: black;
 }
 
-#journal-right::-webkit-scrollbar-track {
+#journal-bottom::-webkit-scrollbar-track {
     background: rgb(65, 77, 65);
 }
 
-#journal-right::-webkit-scrollbar-thumb {
+#journal-bottom::-webkit-scrollbar-thumb {
     background: var(--mode-color-trans);
     border-radius: 2px;
 }
 
-#journal-right::-webkit-scrollbar-thumb:hover {
+#journal-bottom::-webkit-scrollbar-thumb:hover {
     background: var(--mode-color);
 }
 
@@ -110,38 +161,5 @@ background-color: black;
 .journal-entry-container {
     display: flex;
     align-items: center;
-}
-
-#journal-top{
-    width: 64%;
-    height: 5%;
-}
-
-#journal-entry-name{
-    position: absolute;
-    width: 70%;
-    background-color:black;
-    color: var(--mode-color);
-    font-family: 'SoutaneBlack';
-    font-size: 22px;
-    letter-spacing: 2px;
-    text-align: left; 
-    resize: none;
-    border: none;
-    
-}
-
-#scaleSelector {
-    position:absolute;
-    right: 1%;
-    width: 20%;
-    padding: 5px;
-    font-size: 18px;
-    font-family: 'SoutaneBlack';
-    border: 1px solid var(--mode-color);
-    border-radius: 0px;
-    background-color: var(--background);
-    color: var(--mode-color);
-    cursor: pointer;
 }
 

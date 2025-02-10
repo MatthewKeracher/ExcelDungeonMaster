@@ -78,28 +78,30 @@
             
             <div id="journal">
 
-                <div id="journal-left">
+                <div id="journal-sidebar">
                 </div>
-
+                
                 <div id="journal-id"></div>
-
+                
                 <div id="journal-top">
-                <input id="journal-entry-name" autocomplete="off" readonly="true" maxlength="28"></input>  
-                <select id="scaleSelector"></select> 
+                    <input id="journal-entry-name" autocomplete="off" readonly="true" maxlength="28" tabindex="1">
+                    <select id="scaleSelector" tabindex="2"></select> 
                 </div>
-                <br>
-
-                <div id="journal-right"></div>
-               
+                               
+                <div id="journal-bottom">
+                    <div id="journal-left" tabindex="3"></div>
+                    <div id="journal-right" tabindex="4"></div>
+                </div>
             </div>
+                
 
                 <div id="gridImageContainer">
                 <div id="gridContainer"></div> 
                 <canvas id="imageCanvas"></canvas>
                
-        </div>
+                </div>
         
-        </div>
+        
 
         
 

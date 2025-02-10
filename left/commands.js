@@ -80,7 +80,7 @@ textDiv.contentEditable = true;
 commandLine.style.display = "none";
 placeName.readOnly = false;
 placeSymbol.readOnly = false;
-
+journalLeft.contentEditable = true;
 journalRight.contentEditable = true;
 entryName.readOnly = false;
 scaleSelector.style.display = "block";
@@ -97,6 +97,7 @@ if(!journalShowing){
     placeCaretAtEnd(textDiv)
     textDiv.scrollTop = textDiv.scrollHeight;
 }else{
+    //journalLeft.innerHTML += handleCommands();
     journalRight.innerHTML += handleCommands();
 
         if(entryName.value !== ""){
@@ -127,7 +128,7 @@ textDiv.contentEditable = false;
 commandLine.style.display = "none";
 placeSymbol.readOnly = true;
 placeName.readOnly = true;
-
+journalLeft.contentEditable = false;
 journalRight.contentEditable = false;
 entryName.readOnly = true;
 
@@ -143,12 +144,13 @@ placeName.blur();
 
 tabTables();
 
-journalLeft.focus();
+journalSideBar.focus();
 
 if(!journalShowing){
     textDiv.innerHTML += handleCommands();
     textDiv.scrollTop = textDiv.scrollHeight;
 }else{
+    //journalLeft.innerHTML += handleCommands()
     journalRight.innerHTML += handleCommands()
    
 }

@@ -20,15 +20,19 @@ loadJournal()
 
 function loadJournal() {
   // Clear
-  journalLeft.innerHTML = '';
-  console.log(journalData)
+  journalSideBar.innerHTML = '';
+  
+//   journalData.forEach(entry => {
+//    // entry.right = ""; // Copy the value of desc to left
+//     // delete entry.desc;       // Remove the desc property from the object
+//   });
 
   // DropDown
   fillScaleSelector();
 
   // Add New Button
   const addNewButton = createAddNewButton();
-  journalLeft.appendChild(addNewButton);
+  journalSideBar.appendChild(addNewButton);
 
   // Organize entries by scale
   const entriesByScale = {};
@@ -59,12 +63,12 @@ function loadJournal() {
           const header = document.createElement('h4');
           header.textContent = scaleData.name;
           header.style.color = "gold";
-          journalLeft.appendChild(header);
+          journalSideBar.appendChild(header);
 
           // Add entries for this scale
           scaleData.entries.forEach(item => {
               const linkWrapper = createEntryLink(item);
-              journalLeft.appendChild(linkWrapper);
+              journalSideBar.appendChild(linkWrapper);
           });
       }
   });
@@ -84,7 +88,10 @@ function createAddNewButton() {
   link.addEventListener('click', (e) => {
       e.preventDefault();
       entryName.value = '';
-      journalRight.innerHTML = '';
+      journalLeft.contentEditable = "false";
+      journalRight.contentEditable = "false";
+      journalLeft.innerHTML = ``;
+      journalRight.innerHTML = ``;
   });
 
   linkWrapper.appendChild(link);
@@ -103,7 +110,8 @@ function createEntryLink(item) {
   link.addEventListener('click', (e) => {
       e.preventDefault();
       entryName.value = item.name;
-      journalRight.innerHTML = item.desc;
+      journalLeft.innerHTML = item.left;
+      journalRight.innerHTML = item.right;
       journalId.textContent = item.id;
       scaleSelector.value = item.scale;
   });
@@ -180,7 +188,8 @@ if(exists > -1 && journalShowing === true){
 //console.log('deleting...')
 journalData.splice(exists, 1)
 entryName.value = '';
-journalRight.innerHTML = '';
+journalLeft.innerHTML = ``;
+journalRight.innerHTML = ``;
 journalId.textContent = '';
 
 loadJournal();
@@ -197,7 +206,8 @@ let saveEntry = {
 scale: scaleSelector.value,
 id: journalId.textContent,
 name: entryName.value,
-desc: journalRight.innerHTML,
+left: journalLeft.innerHTML,
+right: journalRight.innerHTML,
 
 }
 

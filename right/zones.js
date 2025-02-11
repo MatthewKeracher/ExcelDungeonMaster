@@ -162,7 +162,7 @@ function displayZoneName(zone, point) {
     const cell = document.querySelector(`[row="${point.row}"][col="${point.col}"]`);
     if (cell) {
         const nameElement = document.createElement('div');
-        nameElement.textContent = zone.name || 'Unnamed Room';
+        nameElement.textContent = zone.name || '';
         nameElement.style.position = 'absolute';
         nameElement.style.zIndex = '1000'
         nameElement.style.top = '50%';

@@ -856,11 +856,18 @@ function generateTableFromJSON(tableStr, section) {
     });
 
     let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
+
     
     // Generate table headers
     tableHTML += '<thead><tr>';
     headers.forEach(header => {
-        tableHTML += `<th>${header.split('.').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</th>`;
+
+        const formattedHeader = header
+        .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+        .replace(/^./, str => str.toUpperCase()); // Uppercase the first letter
+        tableHTML += `<th class="tableCell">${formattedHeader}</th>`;
+
+        //tableHTML += `<th class="tableCell">${header.split('.').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</th>`;
     });
     tableHTML += '</tr></thead>';
 
@@ -871,7 +878,7 @@ function generateTableFromJSON(tableStr, section) {
         headers.forEach(header => {
             const [key, subKey] = header.split('.');
             const value = subKey ? item[key][subKey] : item[key];
-            tableHTML += `<td>${value}</td>`;
+            tableHTML += `<td class="tableCell">${value}</td>`;
         });
         tableHTML += '</tr>';
     });

@@ -123,8 +123,8 @@ function createAddNewButton() {
   link.addEventListener('click', (e) => {
       e.preventDefault();
       entryName.value = '';
-      journalLeft.contentEditable = "false";
-      journalRight.contentEditable = "false";
+      journalLeft.contentEditable = "true";
+      journalRight.contentEditable = "true";
       journalLeft.innerHTML = ``;
       journalRight.innerHTML = ``;
       scaleSelector.value = coords;

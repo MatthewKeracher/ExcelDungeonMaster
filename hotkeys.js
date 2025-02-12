@@ -309,21 +309,23 @@ case 'tab':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
 toggleModes();
-textDiv.focus();
+if(!journalShowing){textDiv.focus()};
 break;
 case 'n':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
 toggleModes();
+if(!journalShowing){
 placeName.focus();
-placeName.select();
+placeName.select();}
 break;
 case 'y':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
 toggleModes();
+if(!journalShowing){
 placeSymbol.focus();
-placeSymbol.select();
+placeSymbol.select();}
 break;
 case 'p':
 if(!isPPressed) {
@@ -451,7 +453,9 @@ case 'tab':
 event.preventDefault(); 
 currentMode = 'map';
 toggleModes();
+if(!journalShowing){
 textDiv.focus();
+}
 break;
 case '`':
 event.preventDefault(); 

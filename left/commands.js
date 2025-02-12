@@ -111,8 +111,8 @@ commandLine.style.display = "none";
 
 //Journal
 entryName.disabled = false;
-journalLeft.disabled = false;
-journalRight.disabled = false;
+// journalLeft.disabled = false;
+// journalRight.disabled = false;
 
 //scaleSelector.style.display = "block";
 tabTables()
@@ -223,9 +223,24 @@ hitPointInit();
 }
 
 function handleCommands() {
-
     let inputText = commandLine.value;
     commandLine.value = '';
+
+    // Check if the input is valid JSON
+    try {
+        const parsedJSON = JSON.parse(inputText);
+
+        // If it's valid JSON, generate a table and return it
+        if (Array.isArray(parsedJSON)) {
+            let table = parsedJSON
+            return generateTableFromJSON(table)
+        } else if (typeof parsedJSON === 'object') {
+            let table = [parsedJSON]
+            return generateTableFromJSON(table)
+        }
+    } catch (e) {
+        // If it's not valid JSON, continue with command handling
+    }
 
     // Resolve nested commands before replacing other commands
     inputText = resolveNestedCommands(inputText);
@@ -251,9 +266,10 @@ function handleCommands() {
                 return '{Command not recognized}';
         }
     } else {
-        return inputText;
+        return inputText; // Return raw input if no command is recognized
     }
 }
+
 
 function handleAddCommand(params) {
     const [addType, table, section,  ...rest] = params.split(' ');

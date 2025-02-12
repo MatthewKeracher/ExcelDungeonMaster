@@ -1,220 +1,4 @@
-function makeHitBoxes(hitPoints, hit){
-
-    hitPoints = hitPoints === 0 ? 1 : hitPoints; // Ensure at least 1 hit point
-    const hpValue = parseInt(hitPoints);
-    let HTML = `HP: (${hit})\n`;
-
-    // Create a container div for checkboxes
-    HTML += `<div class="hp-checkbox-container" style="display: inline-block;">`;
-    HTML += `<br>${hitPoints} `; // Display the total hit points
-    // Create checkboxes for HP
-    for (let j = 0; j < hpValue; j++) {
-        // Create a div for each hit point checkbox
-        HTML += `<div class="hp-checkbox" data-hp="${j}" style="display: inline-block; cursor: pointer; margin-right: 5px;">☐</div>`;
-
-            
-            if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
-                HTML += '  ';
-            }
-            if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
-                HTML += '<br>   ';
-            }
-    }
-
-    HTML += `</div><br>`; // Close the checkbox container div
-
-    return HTML
-
-}
-
-
-function makeNPC(npcClass, level, npcName) {
-
-    const stats = {
-        name: npcName ? npcName : "John Smith",
-        class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
-    };
-
-    let HTML = '<br><hr><br>';
-
-    // Create a two-column layout
-    HTML += `<div style="display: flex;">`;
-
-    // Left Column for Ability Scores
-    HTML += `<div style="flex: 1; margin-right: 20px;">`;
-    HTML +=`<u>${stats.name}</u>\n`
-
-    const scores = makeScores(stats.class);
-    if (scores) {
-        HTML += `<br>`;
-        scores.forEach(score => {
-            HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
-        });
-    }
-
-    // Skills
-    const skills = getSkills(npcClass, level);
-    if (skills) {
-        HTML += `<br><br><u>Skills:</u><br>`;
-        Object.keys(skills).forEach(key => {
-            if (key !== 'level') {
-                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                HTML += `${formattedKey}: ${skills[key]}<br>`;
-            }
-        });
-    }
-
-    //Other Information
-    HTML += `<br>`
-    for (const [key, value] of Object.entries(stats)) {
-        if (key !== 'name' && key !== 'class') {
-            HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
-        }
-    }
-
-    HTML += generateRandomItemsTable(['weapons', 'weapons', 'armor']);
-
-    HTML += `</div>`; // End of left column
-
-    const XP = classTables(npcClass + 1, level, 'attackBonus');
-
-    // Right Column 
-    HTML += `<div style="flex: 1; text-align: left;">`
-    HTML += `Level ${level} ${stats.class}.<br>`
-    HTML += `Level ${level + 1} at ${XP} XP. <br>`
-
-    //Hitpoints
-    const hitDice = classTables(npcClass, level, 'hitDice')
-    const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
-
-    HTML += makeHitBoxes(hitPoints, hitDice)
-
-    //Saving Throws
-    const savingThrows = getSaveThrows(npcClass, level);
-    if (savingThrows) {
-        HTML += `<br><u>Saving Throws:</u><br>`;
-        Object.keys(savingThrows).forEach(key => {
-            if (key !== 'level') {
-                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
-            }
-        });
-    }
-
-    // Spells
-    const spells = getSpells(npcClass, level);
-    if (spells) {
-        HTML += `<br><br><u>Spells:</u><br>`;
-        spells.forEach(spell => {
-                HTML += `${spell.name}<br>`;
-            
-        });
-    }
-
-    HTML += `</div>`; // End of right column
-
-    HTML += `</div>`; // End of flex container
-
-    HTML += `<br><br>`;
-
-    return HTML;
-}
-
-function generateRandomItemsTable(categories) {
-    let tableHTML = '<table border="1" style="border-collapse: collapse;">';
-
-    // Generate body with random items
-    tableHTML += '<tbody>';
-    categories.forEach(category => {
-        if (items[category] && items[category].length > 0) {
-            const randomItem = items[category][Math.floor(Math.random() * items[category].length)];
-            tableHTML += `<tr>
-            <td contenteditable="true" style="min-width: 100px; padding: 5px;">${randomItem.name}</td>
-            <td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.damage? randomItem.damage: randomItem.AC? "AC " + randomItem.AC: ""}</td>
-            <td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.weight + ' lbs'} </td>
-            </tr>
-        `;
-        } else {
-            tableHTML += '<td contenteditable="true" style="min-width: 100px; padding: 5px;">No item available</td>';
-        }
-    });
-    tableHTML += '</tbody></table>';
-
-    return tableHTML;
-}
-
-
-
-function makeScores(npcClass){
-
-const scoreNames = ["str", "dex", "int", "wis", "con", "cha", "soc", "psy", "luk"];
-let scores = [];
-
-scoreNames.forEach(scoreName => {
-
-let prime
-
-switch (npcClass) {
-
-case 'Fighter':
-prime = 'str'
-break;
-
-case 'Thief':
-prime = 'dex'
-break;
-
-case 'Cleric':
-prime = 'wis'
-break;
-
-case 'Mage':
-prime = 'int'
-break;
-
-default:
-}
-
-let score = 0;
-let bonus = 0;
-
-if (prime === scoreName) {
-// Generate scores from 13 to 18
-score = Math.floor(Math.random() * (6)) + 13; // This gives scores 13-18
-} else {
-score = Math.floor(Math.random() * (12)) + 7;
-}
-
-const abilityScoreTable = [
-{ range: { min: 1, max: 3 }, bonus: -3 },
-{ range: { min: 4, max: 5 }, bonus: -2 },
-{ range: { min: 6, max: 8 }, bonus: -1 },
-{ range: { min: 9, max: 12 }, bonus: 0 },
-{ range: { min: 13, max: 15 }, bonus: 1 },
-{ range: { min: 16, max: 17 }, bonus: 2 },
-{ range: { min: 18, max: 18 }, bonus: 3 },
-];
-
-
-for (const entry of abilityScoreTable) {
-if (score >= entry.range.min && score <= entry.range.max) {
-bonus = entry.bonus;
-}
-}
-
-
-scores.push({name: scoreName, score: score, bonus: bonus})
-
-})
-
-return scores;
-
-}
-
-function classTables(npcClass, level, lookUp){
-  
-
-const tables = {
+const classTables = {
 fighter : [
 { level: 1, XP: "0", hitDice: '1d8' , attackBonus: 1},
 { level: 2, XP: "2000", hitDice: '2d8' , attackBonus: 2},
@@ -348,27 +132,108 @@ assassin: [
 { level: 20, XP: 1072500, hitDice: '9d4+22' },
 ]}
 
-let classKey = npcClass.toLowerCase();
-
-if(classKey === 'ranger'){classKey = 'fighter'};
-if(classKey === 'assassin'){classKey = 'thief'};
-
-const classTable = tables[classKey];
-
-if (classTable) {
-
-const entry = classTable.find(row => row.level === level);
-console.log(entry[lookUp])
-return entry[lookUp] || null; // Return the found entry or null if not found
-} else {
-return null; // Handle invalid class
+const skills = {
+thief : [
+{ level: 1, openLocks: 25, removeTraps: 20, pickPockets: 30, moveSilently: 25, climbWalls: 80, hide: 10, listen: 30 },
+{ level: 2, openLocks: 30, removeTraps: 25, pickPockets: 35, moveSilently: 30, climbWalls: 81, hide: 15, listen: 34 },
+{ level: 3, openLocks: 35, removeTraps: 30, pickPockets: 40, moveSilently: 35, climbWalls: 82, hide: 20, listen: 38 },
+{ level: 4, openLocks: 40, removeTraps: 35, pickPockets: 45, moveSilently: 40, climbWalls: 83, hide: 25, listen: 42 },
+{ level: 5, openLocks: 45, removeTraps: 40, pickPockets: 50, moveSilently: 45, climbWalls: 84, hide: 30, listen: 46 },
+{ level: 6, openLocks: 50, removeTraps: 45, pickPockets: 55, moveSilently: 50, climbWalls: 85, hide: 35, listen: 50 },
+{ level: 7, openLocks: 55, removeTraps: 50, pickPockets: 60, moveSilently: 55, climbWalls: 86, hide: 40, listen: 54 },
+{ level: 8, openLocks: 60, removeTraps: 55, pickPockets: 65, moveSilently: 60, climbWalls: 87, hide: 45, listen: 58 },
+{ level: 9, openLocks: 65, removeTraps: 60, pickPockets: 70, moveSilently: 65, climbWalls: 88, hide: 50, listen: 62 },
+{ level: 10, openLocks: 68, removeTraps: 63, pickPockets: 74, moveSilently: 68, climbWalls: 89, hide: 53, listen: 65 },
+{ level: 11, openLocks: 71, removeTraps: 66, pickPockets: 78, moveSilently: 71, climbWalls: 90, hide: 56, listen: 68 },
+{ level: 12, openLocks: 74, removeTraps: 69, pickPockets: 82, moveSilently: 74, climbWalls: 91, hide: 59, listen: 71 },
+{ level: 13, openLocks: 77, removeTraps: 72, pickPockets: 86, moveSilently: 77, climbWalls: 92, hide: 62, listen: 74 },
+{ level: 14, openLocks: 80, removeTraps: 75, pickPockets: 90, moveSilently: 80, climbWalls: 93, hide: 65, listen: 77 },
+{ level: 15, openLocks: 83, removeTraps: 78, pickPockets: 94, moveSilently: 83, climbWalls: 94, hide: 68, listen: 80 },
+{ level: 16, openLocks: 84, removeTraps: 79, pickPockets: 95, moveSilently: 85, climbWalls: 95, hide: 69, listen: 83 },
+{ level: 17, openLocks: 85, removeTraps: 80, pickPockets: 96, moveSilently: 87, climbWalls: 96, hide: 70, listen: 86 },
+{ level: 18, openLocks: 86, removeTraps: 81, pickPockets: 97, moveSilently: 89, climbWalls: 97, hide: 71, listen: 89 },
+{ level: 19, openLocks: 87, removeTraps: 82, pickPockets: 98, moveSilently: 91, climbWalls: 98, hide: 72, listen: 92 },
+{ level: 20, openLocks: 88, removeTraps: 83, pickPockets: 99, moveSilently: 93, climbWalls: 99, hide: 73, listen: 95 },
+],
+cleric: [
+{ level: 1, Skeleton: 13, Zombie: 17, Ghoul: 19, Wight: 'No', Wraith: 'No', Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 2, Skeleton: 11, Zombie: 15, Ghoul: 18, Wight: 20, Wraith: 'No', Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 3, Skeleton: 9, Zombie: 13, Ghoul: 17, Wight: 19, Wraith: 'No', Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 4, Skeleton: 7, Zombie: 11, Ghoul: 15, Wight: 18, Wraith: 20, Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 5, Skeleton: 5, Zombie: 9, Ghoul: 13, Wight: 17, Wraith: 19, Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 6, Skeleton: 3, Zombie: 7, Ghoul: 11, Wight: 15, Wraith: 18, Mummy: 20, Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 7, Skeleton: 2, Zombie: 5, Ghoul: 9, Wight: 13, Wraith: 17, Mummy: 19, Spectre: 'No', Vampire: 'No', Ghost: 'No' },
+{ level: 8, Skeleton: 'Automatic', Zombie: 3, Ghoul: 7, Wight: 11, Wraith: 15, Mummy: 18, Spectre: 20, Vampire: 'No', Ghost: 'No' },
+{ level: 9, Skeleton: 'Automatic', Zombie: 2, Ghoul: 5, Wight: 9, Wraith: 13, Mummy: 17, Spectre: 19, Vampire: 'No', Ghost: 'No' },
+{ level: 10, Skeleton: 'Automatic', Zombie: 'Automatic', Ghoul: 3, Wight: 7, Wraith: 11, Mummy: 15, Spectre: 18, Vampire: 20, Ghost: 'No' },
+{ level: 11, Skeleton: 'Damaged', Zombie: 'Automatic', Ghoul: 2, Wight: 5, Wraith: 9, Mummy: 13, Spectre: 17, Vampire: 19, Ghost: 'No' },
+{ level: 12, Skeleton: 'Damaged', Zombie: 'Automatic', Ghoul: 'Automatic', Wight: 3, Wraith: 7, Mummy: 11, Spectre: 15, Vampire: 18, Ghost: 20 },
+{ level: 13, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Automatic', Wight: 2, Wraith: 5, Mummy: 9, Spectre: 13, Vampire: 17, Ghost: 19 },
+{ level: 14, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Automatic', Wight: 'Automatic', Wraith: 3, Mummy: 7, Spectre: 11, Vampire: 15, Ghost: 18 },
+{ level: 15, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Automatic', Wraith: 2, Mummy: 5, Spectre: 9, Vampire: 13, Ghost: 17 },
+{ level: 16, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Automatic', Wraith: 'Automatic', Mummy: 3, Spectre: 7, Vampire: 11, Ghost: 15 },
+{ level: 17, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Automatic', Mummy: 2, Spectre: 5, Vampire: 9, Ghost: 13 },
+{ level: 18, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Automatic', Mummy: 'Automatic', Spectre: 3, Vampire: 7, Ghost: 11 },
+{ level: 19, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Damaged', Mummy: 'Automatic', Spectre: 2, Vampire: 5, Ghost: 9 },
+{ level: 20, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Damaged', Mummy: 'Automatic', Spectre: 'Automatic', Vampire: 3, Ghost: 7 },
+],
+ranger: [
+{ level: 1, moveSilently: 25, hide: 10, tracking: 40 },
+{ level: 2, moveSilently: 30, hide: 15, tracking: 44 },
+{ level: 3, moveSilently: 35, hide: 20, tracking: 48 },
+{ level: 4, moveSilently: 40, hide: 25, tracking: 52 },
+{ level: 5, moveSilently: 45, hide: 30, tracking: 56 },
+{ level: 6, moveSilently: 50, hide: 35, tracking: 60 },
+{ level: 7, moveSilently: 55, hide: 40, tracking: 64 },
+{ level: 8, moveSilently: 60, hide: 45, tracking: 68 },
+{ level: 9, moveSilently: 65, hide: 50, tracking: 72 },
+{ level: 10, moveSilently: 68, hide: 53, tracking: 75 },
+{ level: 11, moveSilently: 71, hide: 56, tracking: 78 },
+{ level: 12, moveSilently: 74, hide: 59, tracking: 81 },
+{ level: 13, moveSilently: 77, hide: 62, tracking: 84 },
+{ level: 14, moveSilently: 80, hide: 65, tracking: 87 },
+{ level: 15, moveSilently: 83, hide: 68, tracking: 90 },
+{ level: 16, moveSilently: 85, hide: 69, tracking: 91 },
+{ level: 17, moveSilently: 87, hide: 70, tracking: 92 },
+{ level: 18, moveSilently: 89, hide: 71, tracking: 93 },
+{ level: 19, moveSilently: 91, hide: 72, tracking: 94 },
+{ level: 20, moveSilently: 93, hide: 73, tracking: 95 },
+],
+assassin: [
+{ level: 1, openLocks: 15, pickPockets: 20, moveSilently: 20, climbWalls: 70, hide: 5, listen: 25, poison: 25 },
+{ level: 2, openLocks: 19, pickPockets: 25, moveSilently: 25, climbWalls: 72, hide: 10, listen: 29, poison: 30 },
+{ level: 3, openLocks: 23, pickPockets: 30, moveSilently: 30, climbWalls: 74, hide: 15, listen: 33, poison: 35 },
+{ level: 4, openLocks: 27, pickPockets: 35, moveSilently: 35, climbWalls: 76, hide: 20, listen: 37, poison: 40 },
+{ level: 5, openLocks: 31, pickPockets: 40, moveSilently: 40, climbWalls: 78, hide: 25, listen: 41, poison: 45 },
+{ level: 6, openLocks: 35, pickPockets: 45, moveSilently: 45, climbWalls: 80, hide: 30, listen: 45, poison: 50 },
+{ level: 7, openLocks: 39, pickPockets: 50, moveSilently: 50, climbWalls: 82, hide: 35, listen: 49, poison: 55 },
+{ level: 8, openLocks: 43, pickPockets: 55, moveSilently: 55, climbWalls: 84, hide: 40, listen: 53, poison: 60 },
+{ level: 9, openLocks: 47, pickPockets: 60, moveSilently: 60, climbWalls: 86, hide: 45, listen: 57, poison: 65 },
+{ level: 10, openLocks: 50, pickPockets: 63, moveSilently: 63, climbWalls: 87, hide: 48, listen: 60, poison: 69 },
+{ level: 11, openLocks: 53, pickPockets: 66, moveSilently: 66, climbWalls: 88, hide: 51, listen: 63, poison: 73 },
+{ level: 12, openLocks: 56, pickPockets: 69, moveSilently: 69, climbWalls: 89, hide: 54, listen: 66, poison: 77 },
+{ level: 13, openLocks: 59, pickPockets: 72, moveSilently: 72, climbWalls: 90, hide: 57, listen: 69, poison: 81 },
+{ level: 14, openLocks: 62, pickPockets: 75, moveSilently: 75, climbWalls: 91, hide: 60, listen: 72, poison: 85 },
+{ level: 15, openLocks: 65, pickPockets: 78, moveSilently: 78, climbWalls: 92, hide: 63, listen: 75, poison: 89 },
+{ level: 16, openLocks: 66, pickPockets: 79, moveSilently: 80, climbWalls: 93, hide: 64, listen: 77, poison: 91 },
+{ level: 17, openLocks: 67, pickPockets: 80, moveSilently: 82, climbWalls: 94, hide: 65, listen: 79, poison: 93 },
+{ level: 18, openLocks: 68, pickPockets: 81, moveSilently: 84, climbWalls: 95, hide: 66, listen: 81, poison: 95 },
+{ level: 19, openLocks: 69, pickPockets: 82, moveSilently: 86, climbWalls: 96, hide: 67, listen: 83, poison: 97 },
+{ level: 20, openLocks: 70, pickPockets: 83, moveSilently: 88, climbWalls: 97, hide: 68, listen: 85, poison: 99 },
+]
 }
 
-}
+const modifiers = [
+{ range: { min: 1, max: 3 }, bonus: -3 },
+{ range: { min: 4, max: 5 }, bonus: -2 },
+{ range: { min: 6, max: 8 }, bonus: -1 },
+{ range: { min: 9, max: 12 }, bonus: 0 },
+{ range: { min: 13, max: 15 }, bonus: 1 },
+{ range: { min: 16, max: 17 }, bonus: 2 },
+{ range: { min: 18, max: 18 }, bonus: 3 },
+];
 
-function getSaveThrows(npcClass, level){
-
-const tables = {
+const savingThrows = {
 fighter : [
 { level: 0, deathRay: 13, magicWands: 14, paralysisPetrify: 15, dragonBreath: 16, spells: 18 },
 { level: 1, deathRay: 12, magicWands: 13, paralysisPetrify: 14, dragonBreath: 15, spells: 17 },
@@ -462,11 +327,244 @@ thief: [
 
 }
 
+
+function makeHitBoxes(hitPoints, hit){
+
+hitPoints = hitPoints === 0 ? 1 : hitPoints; // Ensure at least 1 hit point
+const hpValue = parseInt(hitPoints);
+let HTML = `HP: (${hit})\n`;
+
+// Create a container div for checkboxes
+HTML += `<div class="hp-checkbox-container" style="display: inline-block;">`;
+HTML += `<br>${hitPoints} `; // Display the total hit points
+// Create checkboxes for HP
+for (let j = 0; j < hpValue; j++) {
+// Create a div for each hit point checkbox
+HTML += `<div class="hp-checkbox" data-hp="${j}" style="display: inline-block; cursor: pointer; margin-right: 5px;">☐</div>`;
+
+
+if ((j + 1) % 5 === 0 && j + 1 < hpValue) {
+HTML += '  ';
+}
+if ((j + 1) % 10 === 0 && j + 1 < hpValue) {
+HTML += '<br>   ';
+}
+}
+
+HTML += `</div><br>`; // Close the checkbox container div
+
+return HTML
+
+}
+
+
+function makeNPC(npcClass, level, npcName) {
+
+const stats = {
+name: npcName ? npcName : "John Smith",
+class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
+};
+
+let HTML = '<br><hr><br>';
+
+// Create a two-column layout
+HTML += `<div style="display: flex;">`;
+
+// Left Column for Ability Scores
+HTML += `<div style="flex: 1; margin-right: 20px;">`;
+HTML +=`<u>${stats.name}</u>\n`
+
+const scores = makeScores(stats.class);
+if (scores) {
+HTML += `<br>`;
+scores.forEach(score => {
+HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
+});
+}
+
+// Skills
+const skills = getSkills(npcClass, level);
+if (skills) {
+HTML += `<br><br><u>Skills:</u><br>`;
+Object.keys(skills).forEach(key => {
+if (key !== 'level') {
+const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+HTML += `${formattedKey}: ${skills[key]}<br>`;
+}
+});
+}
+
+//Other Information
+HTML += `<br>`
+for (const [key, value] of Object.entries(stats)) {
+if (key !== 'name' && key !== 'class') {
+HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
+}
+}
+
+HTML += generateRandomItemsTable(['weapons', 'weapons', 'armor']);
+
+HTML += `</div>`; // End of left column
+
+const XP = readClassTables(npcClass + 1, level, 'attackBonus');
+
+// Right Column 
+HTML += `<div style="flex: 1; text-align: left;">`
+HTML += `Level ${level} ${stats.class}.<br>`
+HTML += `Level ${level + 1} at ${XP} XP. <br>`
+
+//Hitpoints
+const hitDice = readClassTables(npcClass, level, 'hitDice')
+const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
+
+HTML += makeHitBoxes(hitPoints, hitDice)
+
+//Saving Throws
+const savingThrows = getSaveThrows(npcClass, level);
+if (savingThrows) {
+HTML += `<br><u>Saving Throws:</u><br>`;
+Object.keys(savingThrows).forEach(key => {
+if (key !== 'level') {
+const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
+}
+});
+}
+
+// Spells
+const spells = getSpells(npcClass, level);
+if (spells) {
+HTML += `<br><br><u>Spells:</u><br>`;
+spells.forEach(spell => {
+HTML += `${spell.name}<br>`;
+
+});
+}
+
+HTML += `</div>`; // End of right column
+
+HTML += `</div>`; // End of flex container
+
+HTML += `<br><br>`;
+
+return HTML;
+}
+
+function generateRandomItemsTable(categories) {
+let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+
+// Generate body with random items
+tableHTML += '<tbody>';
+categories.forEach(category => {
+if (items[category] && items[category].length > 0) {
+const randomItem = items[category][Math.floor(Math.random() * items[category].length)];
+tableHTML += `<tr>
+<td contenteditable="true" style="min-width: 100px; padding: 5px;">${randomItem.name}</td>
+<td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.damage? randomItem.damage: randomItem.AC? "AC " + randomItem.AC: ""}</td>
+<td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.weight + ' lbs'} </td>
+</tr>
+`;
+} else {
+tableHTML += '<td contenteditable="true" style="min-width: 100px; padding: 5px;">No item available</td>';
+}
+});
+tableHTML += '</tbody></table>';
+
+return tableHTML;
+}
+
+
+
+function makeScores(npcClass){
+
+const scoreNames = ["str", "dex", "int", "wis", "con", "cha", "soc", "psy", "luk"];
+let scores = [];
+
+scoreNames.forEach(scoreName => {
+
+let prime
+
+switch (npcClass) {
+
+case 'Fighter':
+prime = 'str'
+break;
+
+case 'Thief':
+prime = 'dex'
+break;
+
+case 'Cleric':
+prime = 'wis'
+break;
+
+case 'Mage':
+prime = 'int'
+break;
+
+default:
+}
+
+let score = 0;
+let bonus = 0;
+
+if (prime === scoreName) {
+// Generate scores from 13 to 18
+score = Math.floor(Math.random() * (6)) + 13; // This gives scores 13-18
+} else {
+score = Math.floor(Math.random() * (12)) + 7;
+}
+
+
+
+
+for (const entry of modifiers) {
+if (score >= entry.range.min && score <= entry.range.max) {
+bonus = entry.bonus;
+}
+}
+
+
+scores.push({name: scoreName, score: score, bonus: bonus})
+
+})
+
+return scores;
+
+}
+
+function readClassTables(npcClass, level, lookUp){
+
+
+
+
+let classKey = npcClass.toLowerCase();
+
+if(classKey === 'ranger'){classKey = 'fighter'};
+if(classKey === 'assassin'){classKey = 'thief'};
+
+const classTable = classTables[classKey];
+
+if (classTable) {
+
+const entry = classTable.find(row => row.level === level);
+console.log(entry[lookUp])
+return entry[lookUp] || null; // Return the found entry or null if not found
+} else {
+return null; // Handle invalid class
+}
+
+}
+
+function getSaveThrows(npcClass, level){
+
+
+
 let classKey = npcClass.toLowerCase();
 if(classKey === 'ranger'){classKey = 'fighter'};
 if(classKey === 'assassin'){classKey = 'thief'};
 
-const classTable = tables[classKey];
+const classTable = savingThrows[classKey];
 
 if (classTable) {
 const entry = classTable.find(row => row.level === level);
@@ -479,99 +577,10 @@ return null; // Handle invalid class
 
 function getSkills(npcClass, level){
 
-const tables = {
-thief : [
-{ level: 1, openLocks: 25, removeTraps: 20, pickPockets: 30, moveSilently: 25, climbWalls: 80, hide: 10, listen: 30 },
-{ level: 2, openLocks: 30, removeTraps: 25, pickPockets: 35, moveSilently: 30, climbWalls: 81, hide: 15, listen: 34 },
-{ level: 3, openLocks: 35, removeTraps: 30, pickPockets: 40, moveSilently: 35, climbWalls: 82, hide: 20, listen: 38 },
-{ level: 4, openLocks: 40, removeTraps: 35, pickPockets: 45, moveSilently: 40, climbWalls: 83, hide: 25, listen: 42 },
-{ level: 5, openLocks: 45, removeTraps: 40, pickPockets: 50, moveSilently: 45, climbWalls: 84, hide: 30, listen: 46 },
-{ level: 6, openLocks: 50, removeTraps: 45, pickPockets: 55, moveSilently: 50, climbWalls: 85, hide: 35, listen: 50 },
-{ level: 7, openLocks: 55, removeTraps: 50, pickPockets: 60, moveSilently: 55, climbWalls: 86, hide: 40, listen: 54 },
-{ level: 8, openLocks: 60, removeTraps: 55, pickPockets: 65, moveSilently: 60, climbWalls: 87, hide: 45, listen: 58 },
-{ level: 9, openLocks: 65, removeTraps: 60, pickPockets: 70, moveSilently: 65, climbWalls: 88, hide: 50, listen: 62 },
-{ level: 10, openLocks: 68, removeTraps: 63, pickPockets: 74, moveSilently: 68, climbWalls: 89, hide: 53, listen: 65 },
-{ level: 11, openLocks: 71, removeTraps: 66, pickPockets: 78, moveSilently: 71, climbWalls: 90, hide: 56, listen: 68 },
-{ level: 12, openLocks: 74, removeTraps: 69, pickPockets: 82, moveSilently: 74, climbWalls: 91, hide: 59, listen: 71 },
-{ level: 13, openLocks: 77, removeTraps: 72, pickPockets: 86, moveSilently: 77, climbWalls: 92, hide: 62, listen: 74 },
-{ level: 14, openLocks: 80, removeTraps: 75, pickPockets: 90, moveSilently: 80, climbWalls: 93, hide: 65, listen: 77 },
-{ level: 15, openLocks: 83, removeTraps: 78, pickPockets: 94, moveSilently: 83, climbWalls: 94, hide: 68, listen: 80 },
-{ level: 16, openLocks: 84, removeTraps: 79, pickPockets: 95, moveSilently: 85, climbWalls: 95, hide: 69, listen: 83 },
-{ level: 17, openLocks: 85, removeTraps: 80, pickPockets: 96, moveSilently: 87, climbWalls: 96, hide: 70, listen: 86 },
-{ level: 18, openLocks: 86, removeTraps: 81, pickPockets: 97, moveSilently: 89, climbWalls: 97, hide: 71, listen: 89 },
-{ level: 19, openLocks: 87, removeTraps: 82, pickPockets: 98, moveSilently: 91, climbWalls: 98, hide: 72, listen: 92 },
-{ level: 20, openLocks: 88, removeTraps: 83, pickPockets: 99, moveSilently: 93, climbWalls: 99, hide: 73, listen: 95 },
-],
-cleric: [
-{ level: 1, Skeleton: 13, Zombie: 17, Ghoul: 19, Wight: 'No', Wraith: 'No', Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 2, Skeleton: 11, Zombie: 15, Ghoul: 18, Wight: 20, Wraith: 'No', Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 3, Skeleton: 9, Zombie: 13, Ghoul: 17, Wight: 19, Wraith: 'No', Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 4, Skeleton: 7, Zombie: 11, Ghoul: 15, Wight: 18, Wraith: 20, Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 5, Skeleton: 5, Zombie: 9, Ghoul: 13, Wight: 17, Wraith: 19, Mummy: 'No', Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 6, Skeleton: 3, Zombie: 7, Ghoul: 11, Wight: 15, Wraith: 18, Mummy: 20, Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 7, Skeleton: 2, Zombie: 5, Ghoul: 9, Wight: 13, Wraith: 17, Mummy: 19, Spectre: 'No', Vampire: 'No', Ghost: 'No' },
-{ level: 8, Skeleton: 'Automatic', Zombie: 3, Ghoul: 7, Wight: 11, Wraith: 15, Mummy: 18, Spectre: 20, Vampire: 'No', Ghost: 'No' },
-{ level: 9, Skeleton: 'Automatic', Zombie: 2, Ghoul: 5, Wight: 9, Wraith: 13, Mummy: 17, Spectre: 19, Vampire: 'No', Ghost: 'No' },
-{ level: 10, Skeleton: 'Automatic', Zombie: 'Automatic', Ghoul: 3, Wight: 7, Wraith: 11, Mummy: 15, Spectre: 18, Vampire: 20, Ghost: 'No' },
-{ level: 11, Skeleton: 'Damaged', Zombie: 'Automatic', Ghoul: 2, Wight: 5, Wraith: 9, Mummy: 13, Spectre: 17, Vampire: 19, Ghost: 'No' },
-{ level: 12, Skeleton: 'Damaged', Zombie: 'Automatic', Ghoul: 'Automatic', Wight: 3, Wraith: 7, Mummy: 11, Spectre: 15, Vampire: 18, Ghost: 20 },
-{ level: 13, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Automatic', Wight: 2, Wraith: 5, Mummy: 9, Spectre: 13, Vampire: 17, Ghost: 19 },
-{ level: 14, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Automatic', Wight: 'Automatic', Wraith: 3, Mummy: 7, Spectre: 11, Vampire: 15, Ghost: 18 },
-{ level: 15, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Automatic', Wraith: 2, Mummy: 5, Spectre: 9, Vampire: 13, Ghost: 17 },
-{ level: 16, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Automatic', Wraith: 'Automatic', Mummy: 3, Spectre: 7, Vampire: 11, Ghost: 15 },
-{ level: 17, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Automatic', Mummy: 2, Spectre: 5, Vampire: 9, Ghost: 13 },
-{ level: 18, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Automatic', Mummy: 'Automatic', Spectre: 3, Vampire: 7, Ghost: 11 },
-{ level: 19, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Damaged', Mummy: 'Automatic', Spectre: 2, Vampire: 5, Ghost: 9 },
-{ level: 20, Skeleton: 'Damaged', Zombie: 'Damaged', Ghoul: 'Damaged', Wight: 'Damaged', Wraith: 'Damaged', Mummy: 'Automatic', Spectre: 'Automatic', Vampire: 3, Ghost: 7 },
-],
-ranger: [
-{ level: 1, moveSilently: 25, hide: 10, tracking: 40 },
-{ level: 2, moveSilently: 30, hide: 15, tracking: 44 },
-{ level: 3, moveSilently: 35, hide: 20, tracking: 48 },
-{ level: 4, moveSilently: 40, hide: 25, tracking: 52 },
-{ level: 5, moveSilently: 45, hide: 30, tracking: 56 },
-{ level: 6, moveSilently: 50, hide: 35, tracking: 60 },
-{ level: 7, moveSilently: 55, hide: 40, tracking: 64 },
-{ level: 8, moveSilently: 60, hide: 45, tracking: 68 },
-{ level: 9, moveSilently: 65, hide: 50, tracking: 72 },
-{ level: 10, moveSilently: 68, hide: 53, tracking: 75 },
-{ level: 11, moveSilently: 71, hide: 56, tracking: 78 },
-{ level: 12, moveSilently: 74, hide: 59, tracking: 81 },
-{ level: 13, moveSilently: 77, hide: 62, tracking: 84 },
-{ level: 14, moveSilently: 80, hide: 65, tracking: 87 },
-{ level: 15, moveSilently: 83, hide: 68, tracking: 90 },
-{ level: 16, moveSilently: 85, hide: 69, tracking: 91 },
-{ level: 17, moveSilently: 87, hide: 70, tracking: 92 },
-{ level: 18, moveSilently: 89, hide: 71, tracking: 93 },
-{ level: 19, moveSilently: 91, hide: 72, tracking: 94 },
-{ level: 20, moveSilently: 93, hide: 73, tracking: 95 },
-],
-assassin: [
-{ level: 1, openLocks: 15, pickPockets: 20, moveSilently: 20, climbWalls: 70, hide: 5, listen: 25, poison: 25 },
-{ level: 2, openLocks: 19, pickPockets: 25, moveSilently: 25, climbWalls: 72, hide: 10, listen: 29, poison: 30 },
-{ level: 3, openLocks: 23, pickPockets: 30, moveSilently: 30, climbWalls: 74, hide: 15, listen: 33, poison: 35 },
-{ level: 4, openLocks: 27, pickPockets: 35, moveSilently: 35, climbWalls: 76, hide: 20, listen: 37, poison: 40 },
-{ level: 5, openLocks: 31, pickPockets: 40, moveSilently: 40, climbWalls: 78, hide: 25, listen: 41, poison: 45 },
-{ level: 6, openLocks: 35, pickPockets: 45, moveSilently: 45, climbWalls: 80, hide: 30, listen: 45, poison: 50 },
-{ level: 7, openLocks: 39, pickPockets: 50, moveSilently: 50, climbWalls: 82, hide: 35, listen: 49, poison: 55 },
-{ level: 8, openLocks: 43, pickPockets: 55, moveSilently: 55, climbWalls: 84, hide: 40, listen: 53, poison: 60 },
-{ level: 9, openLocks: 47, pickPockets: 60, moveSilently: 60, climbWalls: 86, hide: 45, listen: 57, poison: 65 },
-{ level: 10, openLocks: 50, pickPockets: 63, moveSilently: 63, climbWalls: 87, hide: 48, listen: 60, poison: 69 },
-{ level: 11, openLocks: 53, pickPockets: 66, moveSilently: 66, climbWalls: 88, hide: 51, listen: 63, poison: 73 },
-{ level: 12, openLocks: 56, pickPockets: 69, moveSilently: 69, climbWalls: 89, hide: 54, listen: 66, poison: 77 },
-{ level: 13, openLocks: 59, pickPockets: 72, moveSilently: 72, climbWalls: 90, hide: 57, listen: 69, poison: 81 },
-{ level: 14, openLocks: 62, pickPockets: 75, moveSilently: 75, climbWalls: 91, hide: 60, listen: 72, poison: 85 },
-{ level: 15, openLocks: 65, pickPockets: 78, moveSilently: 78, climbWalls: 92, hide: 63, listen: 75, poison: 89 },
-{ level: 16, openLocks: 66, pickPockets: 79, moveSilently: 80, climbWalls: 93, hide: 64, listen: 77, poison: 91 },
-{ level: 17, openLocks: 67, pickPockets: 80, moveSilently: 82, climbWalls: 94, hide: 65, listen: 79, poison: 93 },
-{ level: 18, openLocks: 68, pickPockets: 81, moveSilently: 84, climbWalls: 95, hide: 66, listen: 81, poison: 95 },
-{ level: 19, openLocks: 69, pickPockets: 82, moveSilently: 86, climbWalls: 96, hide: 67, listen: 83, poison: 97 },
-{ level: 20, openLocks: 70, pickPockets: 83, moveSilently: 88, climbWalls: 97, hide: 68, listen: 85, poison: 99 },
-]
-}
+
 
 const classKey = npcClass.toLowerCase();
-const classTable = tables[classKey];
+const classTable = skills[classKey];
 
 if (classTable) {
 const entry = classTable.find(row => row.level === level);
@@ -583,57 +592,57 @@ return null; // Handle invalid class
 }
 
 function getSpells(npcClass, level) {
-    // Get the spell slots available for the NPC's class and level
-    const spellSlotsArray = classTables(npcClass, level, "spells");
+// Get the spell slots available for the NPC's class and level
+const spellSlotsArray = readClassTables(npcClass, level, "spells");
 
-    if(!spellSlotsArray){return}
+if(!spellSlotsArray){return}
 
-    // Convert spellSlotsArray into an array of key-value pairs
-    const spellSlots = spellSlotsArray.map((count, index) => ({
-        level: index + 1, // Spell levels are typically 1-based
-        count: count
-    }));
+// Convert spellSlotsArray into an array of key-value pairs
+const spellSlots = spellSlotsArray.map((count, index) => ({
+level: index + 1, // Spell levels are typically 1-based
+count: count
+}));
 
-    // Create a set to track used spells and an array to hold the selected spells
-    const usedSpells = new Set();
-    const selectedSpells = [];
+// Create a set to track used spells and an array to hold the selected spells
+const usedSpells = new Set();
+const selectedSpells = [];
 
-    // Loop through each spell level in the spellSlots array
-    spellSlots.forEach(spellLevelData => {
-        const spellLevel = spellLevelData.level; // Spell level
-        const numberOfSpellsAtLevel = spellLevelData.count; // Number of spells available at that level
+// Loop through each spell level in the spellSlots array
+spellSlots.forEach(spellLevelData => {
+const spellLevel = spellLevelData.level; // Spell level
+const numberOfSpellsAtLevel = spellLevelData.count; // Number of spells available at that level
 
-        // If there are no spells available for this level, continue to the next
-        if (numberOfSpellsAtLevel === 0) {
-            return;
-        }
+// If there are no spells available for this level, continue to the next
+if (numberOfSpellsAtLevel === 0) {
+return;
+}
 
-        // Filter spells based on class, current spell level, and ensure they haven't been used
-        const availableSpells = loadedData.spells.filter(spell => 
-            spell.class === npcClass && parseInt(spell.level) === spellLevel && !usedSpells.has(spell.name)
-        );
+// Filter spells based on class, current spell level, and ensure they haven't been used
+const availableSpells = loadedData.spells.filter(spell => 
+spell.class === npcClass && parseInt(spell.level) === spellLevel && !usedSpells.has(spell.name)
+);
 
-        // Randomly select spells based on the number of slots available at this level
-        for (let i = 0; i < numberOfSpellsAtLevel; i++) {
-            // If there are no more available spells, break out of the loop
-            if (availableSpells.length === 0) {
-                break;
-            }
+// Randomly select spells based on the number of slots available at this level
+for (let i = 0; i < numberOfSpellsAtLevel; i++) {
+// If there are no more available spells, break out of the loop
+if (availableSpells.length === 0) {
+break;
+}
 
-            // Randomly select a spell from the available spells
-            const randomIndex = Math.floor(Math.random() * availableSpells.length);
-            const chosenSpell = availableSpells[randomIndex];
+// Randomly select a spell from the available spells
+const randomIndex = Math.floor(Math.random() * availableSpells.length);
+const chosenSpell = availableSpells[randomIndex];
 
-            // Add the chosen spell to the selected spells array and mark it as used
-            selectedSpells.push(chosenSpell);
-            usedSpells.add(chosenSpell.name);
+// Add the chosen spell to the selected spells array and mark it as used
+selectedSpells.push(chosenSpell);
+usedSpells.add(chosenSpell.name);
 
-            // Remove the chosen spell from available spells to avoid duplicates
-            availableSpells.splice(randomIndex, 1);
-        }
-    });
+// Remove the chosen spell from available spells to avoid duplicates
+availableSpells.splice(randomIndex, 1);
+}
+});
 
-    return selectedSpells; // Return the array of selected spells
+return selectedSpells; // Return the array of selected spells
 }
 
 

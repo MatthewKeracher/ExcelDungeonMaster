@@ -106,7 +106,6 @@
 }
 
 #textDiv[contenteditable="false"] {
-pointer-events: none;
 cursor: default;
 }
 

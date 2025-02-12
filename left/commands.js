@@ -256,23 +256,21 @@ function handleCommands() {
 }
 
 function handleAddCommand(params) {
-    const [addType, ...rest] = params.split(' ');
+    const [addType, table, section,  ...rest] = params.split(' ');
     switch (addType) {
         case 'table':
-            if (rest[0] === 'weapons') {
-                return generateItemsTable(rest[0]);
-            } else if (rest[0] === 'armor') {
-                return generateItemsTable(rest[0]);  
-            } else if (rest[0] === 'general') {
-                return generateItemsTable(rest[0]);
+            if (!section) {
+                return generateTableFromJSON(table);
+            } else if (section) {
+                return generateTableFromJSON(table, section);
             } else {
-                return handleTableCommand(rest.join(' '));
+                return handleTableCommand(params.slice(addType.length + 1));
             }
-            break;
         default:
             return '{Add command not recognized}';
     }
 }
+
 
 
 

@@ -818,49 +818,64 @@ const items = {
 
 }
  
+function findObjectByName(objectName) {
+    console.log('looking for ' + objectName)
+    if (window[objectName]) {
+        return window[objectName];
+    } else {
+        return null; // Object not found
+    }
+}
  
- 
-  function generateItemsTable(type) {
-    if (!items[type] || items[type].length === 0) {
-        return '<p>No items found for this type.</p>';
+function generateTableFromJSON(tableStr, section) {
+  
+    let table = eval(tableStr)
+    if (!table) {
+        return `<p>No table found for type: ${tableStr}.</p>`;
     }
 
-    const firstItem = items[type][0];
-    const headers = Object.keys(firstItem).filter(header => header !== 'description');
+    let dataToUse;
+    
+    if (section && table) {
+        dataToUse = table[section];
+    } else {
+        // If no section specified or section not found, use the entire table
+        dataToUse = Object.values(table).flat();
+    }
+
+    if (!Array.isArray(dataToUse) || dataToUse.length === 0) {
+        return `<p>No data found in the table${sectionStr ? ` for section: ${sectionStr}` : ''}.</p>`;
+    }
+
+    // Determine headers based on the structure of the first item
+    const headers = Object.keys(dataToUse[0]).flatMap(key => {
+        if (typeof dataToUse[0][key] === 'object') {
+            return Object.keys(dataToUse[0][key]).map(subKey => `${key}.${subKey}`);
+        }
+        return key;
+    });
 
     let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
     
     // Generate table headers
-    tableHTML += '<thead class="tableHeader"><tr>';
+    tableHTML += '<thead><tr>';
     headers.forEach(header => {
-        tableHTML += `<th>${header.charAt(0).toUpperCase() + header.slice(1)}</th>`;
+        tableHTML += `<th>${header.split('.').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</th>`;
     });
     tableHTML += '</tr></thead>';
 
     // Generate table body
     tableHTML += '<tbody>';
-    items[type].forEach(item => {
-        // Main row with item details
+    dataToUse.forEach(item => {
         tableHTML += '<tr>';
         headers.forEach(header => {
-            tableHTML += `<td class="tableCell">${item[header]}</td>`;
+            const [key, subKey] = header.split('.');
+            const value = subKey ? item[key][subKey] : item[key];
+            tableHTML += `<td>${value}</td>`;
         });
         tableHTML += '</tr>';
-
-        // // Description row (if exists)
-        // if (item.description) {
-        //     tableHTML += `<tr>
-        //         <td colspan="${headers.length}" style="color: gray; font-style: italic;">${item.description}</td>
-        //     </tr>`;
-        // }
     });
     tableHTML += '</tbody></table>';
 
     return tableHTML;
 }
-
-
-
-
-
-

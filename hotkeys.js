@@ -451,6 +451,7 @@ case 'tab':
 event.preventDefault(); 
 currentMode = 'map';
 toggleModes();
+textDiv.focus();
 break;
 case '`':
 event.preventDefault(); 

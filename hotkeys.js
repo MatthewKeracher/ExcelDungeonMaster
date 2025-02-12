@@ -24,7 +24,6 @@ document.addEventListener('keydown', keyDownHotKeys);
 document.addEventListener('keyup', keyUpHotKeys);
 }
 
-
 function keyUpHotKeys(event){
 if (event.key.toLowerCase() === 'p') {
 isPPressed = false;
@@ -310,6 +309,7 @@ case 'tab':
 event.preventDefault(); // Prevent default action
 currentMode = 'edit';
 toggleModes();
+textDiv.focus();
 break;
 case 'n':
 event.preventDefault(); // Prevent default action

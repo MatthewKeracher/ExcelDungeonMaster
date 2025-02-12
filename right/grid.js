@@ -50,6 +50,10 @@ data.splice(index, 1)
 loadGrid();
 saveData();
 
+placeName.value = "";
+placeSymbol.value = "";
+textDiv.innerHTML = "";
+
 }
 
 

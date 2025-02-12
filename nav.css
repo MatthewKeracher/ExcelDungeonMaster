@@ -10,6 +10,7 @@
     height: 3vh; /* Adjust as needed */
     font-size: 2vh;
     font-family: 'SoutaneBlack';
+    cursor: default;
 }
 
 .topContainer > div {

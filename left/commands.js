@@ -99,17 +99,21 @@ handlePaint();
 
 //EDIT MODE
 if (currentMode === "edit") {
-//Change Mode
+//Change Mode 
 modeBox.innerHTML = `<b>Edit Mode</b>`
 
 //Change what displays
+placeName.disabled = false;
+placeSymbol.disabled = false;
+textDiv.disabled = false;
 textDiv.contentEditable = true;
 commandLine.style.display = "none";
-placeName.readOnly = false;
-placeSymbol.readOnly = false;
-journalLeft.contentEditable = true;
-journalRight.contentEditable = true;
-entryName.readOnly = false;
+
+//Journal
+entryName.disabled = false;
+journalLeft.disabled = false;
+journalRight.disabled = false;
+
 //scaleSelector.style.display = "block";
 tabTables()
 
@@ -124,20 +128,18 @@ textDiv.innerHTML += handleCommands();
 }
 
 if(!journalShowing){
-    trapFocus([placeSymbol, placeName, textDiv])
-    const textContent = textDiv.value;
-    placeCaretAtEnd(textDiv)
-    textDiv.scrollTop = textDiv.scrollHeight;
+trapFocus([placeSymbol, placeName, textDiv])
+placeCaretAtEnd(textDiv)
+textDiv.scrollTop = textDiv.scrollHeight;
 }else{
-    trapFocus([journalLeft, journalRight]);
+trapFocus([journalLeft, journalRight]);
 
-        if(entryName.value !== ""){
-            journalLeft.focus()
-        }else{
-            entryName.focus();
-            entryName.select();
-        }
-    
+if(entryName.value !== ""){
+journalLeft.focus()
+}else{
+entryName.focus();
+}
+
 }
 
 //Change Content    
@@ -155,15 +157,13 @@ autoSpacing(journalRight);
 }else{
 autoSpacing(textDiv)
 }
+
 //Change what displays
+placeName.disabled = true;
+placeSymbol.disabled = true;
+textDiv.disabled = true;
 textDiv.contentEditable = false;
 commandLine.style.display = "none";
-placeSymbol.readOnly = true;
-placeName.readOnly = true;
-journalLeft.contentEditable = false;
-journalRight.contentEditable = false;
-entryName.readOnly = true;
-
 
 //Change colour
 modeColor = "0, 255, 0";
@@ -203,10 +203,11 @@ modeBox.innerHTML = `<b>Command Mode</b>`
 
 //Change what displays
 textDiv.style.display = "block";
+placeName.disabled = true;
+placeSymbol.disabled = true;
+textDiv.disabled = true;
 textDiv.contentEditable = false;
 commandLine.style.display = "block";
-placeSymbol.readOnly = true;
-placeName.readOnly = true;
 
 //Change colour
 modeColor = "265,165,0";

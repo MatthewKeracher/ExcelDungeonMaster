@@ -91,6 +91,7 @@ footer {
     text-align: center;
     font-size: 1.8vh;
     position: fixed;
+    left: 0;
     width: 100%;
     bottom: 0.2vh;
 }

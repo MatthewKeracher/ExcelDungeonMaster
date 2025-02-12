@@ -105,6 +105,11 @@
     white-space: pre-wrap
 }
 
+#textDiv[contenteditable="false"] {
+pointer-events: none;
+cursor: default;
+}
+
 #textDiv::-webkit-scrollbar {
     width: 10px;
 }

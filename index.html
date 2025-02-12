@@ -41,11 +41,11 @@
         <div class="left-section">
 
             <div id="placeContainer">
-            <input id="placeSymbol" autocomplete="off" readonly="true" maxlength="5"></input>
-            <input id="placeName" autocomplete="off" readonly="true" maxlength="28"></input>
+            <input id="placeSymbol" autocomplete="off" disabled="true" maxlength="1"></input>
+            <input id="placeName" autocomplete="off" disabled="true" maxlength="28"></input>
             </div>
 
-            <div id="textDiv"></div>
+            <div id="textDiv" contenteditable="false"></div>
             <textarea id="commandLine" placeholder="insert commands or html"></textarea>
             
 
@@ -84,7 +84,7 @@
                 <div id="journal-id"></div>
                 
                 <div id="journal-top">
-                    <input id="journal-entry-name" autocomplete="off" readonly="true" maxlength="28">
+                    <input id="journal-entry-name" autocomplete="off" disabled="true" maxlength="28">
                     <select id="scaleSelector"></select> 
                 </div>
                                
@@ -125,5 +125,9 @@
     <script src="left/monsters.js"></script>
     <script src="left/npcs.js"></script>
     <script src="journal/journal.js"></script>
+
+    <!--External Libraries-->
+    <!-- <script src="/path/to/mousetrap.min.js"></script> -->
+
 </body>
 </html>

@@ -160,7 +160,9 @@ changeHex(div);
 
 function changeHex(hexagon){
 
-if(currentMode !== "map"){return};
+if(currentMode !== "map"){     
+saveEntry(getCurrentDiv())
+};
 
 selectedCellStyle(hexagon);
 
@@ -178,9 +180,14 @@ currentObj = loadEntry;
 
 if(loadEntry){
 placeName.value = loadEntry.name;
-placeSymbol.value = loadEntry.symbol !== ""? loadEntry.symbol : loadEntry.name.charAt(0);
+placeSymbol.value = loadEntry.symbol && loadEntry.symbol !== ""? loadEntry.symbol : loadEntry.name.charAt(0);
 textDiv.innerHTML = loadEntry.desc;
 }
+
+if(currentMode === "edit"){     
+textDiv.focus();
+placeCaretAtEnd(textDiv)
+};
 
 
 saveData();

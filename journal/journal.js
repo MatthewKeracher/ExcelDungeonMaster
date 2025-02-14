@@ -92,6 +92,13 @@ function loadJournal() {
 
   focusOnTargetEntry();
   addKeyboardNavigation();
+
+  entryName.disabled = true;
+  journalLeft.disabled = true;
+  journalRight.disabled = true;
+  journalLeft.contentEditable = false;
+  journalRight.contentEditable = false;
+
 }
 
 function getNewJournalId(){
@@ -123,12 +130,12 @@ function createAddNewButton() {
   link.addEventListener('click', (e) => {
       e.preventDefault();
       entryName.value = '';
-      journalLeft.contentEditable = "true";
-      journalRight.contentEditable = "true";
-      journalLeft.innerHTML = ``;
+       journalLeft.innerHTML = ``;
       journalRight.innerHTML = ``;
       scaleSelector.value = coords;
       journalId.textContent = getNewJournalId();
+      currentMode = 'edit';
+      toggleModes();
   });
 
   linkWrapper.appendChild(link);
@@ -146,15 +153,47 @@ function createEntryLink(item) {
 
   link.addEventListener('click', (e) => {
       e.preventDefault();
+
       entryName.value = item.name;
       journalLeft.innerHTML = item.left;
       journalRight.innerHTML = item.right;
       journalId.textContent = item.id;
       scaleSelector.value = item.scale;
+      styleTables();
   });
 
   linkWrapper.appendChild(link);
   return linkWrapper;
+}
+
+function styleTables() {
+    // Select all <th> elements
+    const headers = document.querySelectorAll('th');
+    headers.forEach(header => {
+        
+        if(!header.classList.contains('tableHeader')){
+            header.classList.add('tableHeader')
+        }
+
+        header.style = ''
+
+    });
+
+    // // Select all <tr> elements
+    // const rows = document.querySelectorAll('tr');
+    // rows.forEach(row => console.log(row));
+
+    // Select all <td> elements
+    const cells = document.querySelectorAll('td');
+    cells.forEach(cell => {
+        
+        if(!cell.classList.contains('tableCell')){
+            cell.classList.add('tableCell')
+        }
+
+        cell.style = ''
+
+    });
 }
 
 function focusOnTargetEntry() {

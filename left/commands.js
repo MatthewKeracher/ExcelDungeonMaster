@@ -111,8 +111,10 @@ commandLine.style.display = "none";
 
 //Journal
 entryName.disabled = false;
-// journalLeft.disabled = false;
-// journalRight.disabled = false;
+journalLeft.disabled = false;
+journalRight.disabled = false;
+journalLeft.contentEditable = true;
+journalRight.contentEditable = true;
 
 //scaleSelector.style.display = "block";
 tabTables()
@@ -165,6 +167,13 @@ textDiv.disabled = true;
 textDiv.contentEditable = false;
 commandLine.style.display = "none";
 
+//Journal
+entryName.disabled = true;
+journalLeft.disabled = true;
+journalRight.disabled = true;
+journalLeft.contentEditable = false;
+journalRight.contentEditable = false;
+
 //Change colour
 modeColor = "0, 255, 0";
 toggleModeColor();
@@ -209,6 +218,13 @@ textDiv.disabled = true;
 textDiv.contentEditable = false;
 commandLine.style.display = "block";
 
+//Journal
+entryName.disabled = true;
+journalLeft.disabled = true;
+journalRight.disabled = true;
+journalLeft.contentEditable = false;
+journalRight.contentEditable = false;
+
 //Change colour
 modeColor = "265,165,0";
 toggleModeColor();
@@ -246,7 +262,7 @@ function handleCommands() {
     inputText = resolveNestedCommands(inputText);
 
     // Check for command types: roll, monster, or npc
-    const commandRegex = /^(add|roll|monster|npc)\s+(.+)/i;
+    const commandRegex = /^(add|roll|monster|npc|trim|show)\s+(.+)/i;
     const match = inputText.match(commandRegex);
 
     if (match) {
@@ -254,6 +270,10 @@ function handleCommands() {
         const params = match[2].trim(); // The remaining text after the command type
 
         switch (commandType) {
+            case 'show':
+                return handleShowCommand(params);
+            case 'trim':
+                return handleTrimCommand(params);
             case 'add':
                 return handleAddCommand(params);
             case 'roll':
@@ -270,6 +290,65 @@ function handleCommands() {
     }
 }
 
+function handleShowCommand(params) {
+
+
+
+
+}
+
+function handleTrimCommand(params) {
+    const [table, ...rest] = params.split(' ');
+
+    if (table === 'table') {
+        const tables = document.querySelectorAll('.table');
+
+        tables.forEach(table => {
+            const rows = table.rows;
+            if (rows.length === 0) return;
+
+            const colsToRemove = [];
+            const colCount = rows[0].cells.length;
+
+            for (let colIndex = 0; colIndex < colCount; colIndex++) {
+                let isEmpty = true;
+
+                for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+                    const cell = rows[rowIndex].cells[colIndex];
+                    if (cell && cell.textContent.trim() !== '') {
+                        isEmpty = false;
+                        break;
+                    }
+                }
+
+                if (isEmpty) {
+                    colsToRemove.push(colIndex);
+                }
+            }
+
+            // Remove columns from the end to avoid index shifting issues
+            for (let i = colsToRemove.length - 1; i >= 0; i--) {
+                const colIndex = colsToRemove[i];
+                for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+                    rows[rowIndex].deleteCell(colIndex);
+                }
+            }
+        });
+
+        return '';
+    } else {
+        
+        const div = document.getElementById(table);
+        if (div) {
+            div.remove();
+            return ``;
+        } else {
+            return `{Div with id "${table}" not found}`;
+        } 
+
+
+    }
+}
 
 function handleAddCommand(params) {
     const [addType, table, section,  ...rest] = params.split(' ');
@@ -286,8 +365,6 @@ function handleAddCommand(params) {
             return '{Add command not recognized}';
     }
 }
-
-
 
 
 function handleTableCommand(params) {
@@ -324,6 +401,9 @@ function generateTable(rows, cols) {
     console.log(tableHTML)
     return tableHTML;
 }
+
+
+
 
 function tabTables(){
 

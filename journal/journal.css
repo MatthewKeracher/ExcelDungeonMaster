@@ -109,6 +109,11 @@ overflow-x: auto;
     
 }
 
+#journal-left[contenteditable="false"],
+#journal-right[contenteditable="false"] {
+    cursor: default;
+    }
+
 
 #journal-right,
 #journal-left,

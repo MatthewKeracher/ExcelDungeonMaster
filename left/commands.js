@@ -92,6 +92,31 @@ function trapFocus(elements) {
     });
   }
 
+  function insertAtCaret(html) {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const fragment = document.createDocumentFragment();
+    let node, lastNode;
+    while ((node = tempDiv.firstChild)) {
+        lastNode = fragment.appendChild(node);
+    }
+
+    range.insertNode(fragment);
+
+    // Move the caret to the end of the inserted content
+    if (lastNode) {
+        range.setStartAfter(lastNode);
+        range.setEndAfter(lastNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
   
 function toggleModes(activeDiv) {
 isPainting = true
@@ -304,12 +329,15 @@ function handleTrimCommand(params) {
         const tables = document.querySelectorAll('.table');
 
         tables.forEach(table => {
+            table.style.width = "100%"
             const rows = table.rows;
             if (rows.length === 0) return;
 
             const colsToRemove = [];
+            const rowsToRemove = [];
             const colCount = rows[0].cells.length;
 
+            // Check for empty columns
             for (let colIndex = 0; colIndex < colCount; colIndex++) {
                 let isEmpty = true;
 
@@ -333,20 +361,43 @@ function handleTrimCommand(params) {
                     rows[rowIndex].deleteCell(colIndex);
                 }
             }
+
+            // Check for empty rows
+            for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+                let isEmpty = true;
+
+                for (let colIndex = 0; colIndex < rows[rowIndex].cells.length; colIndex++) {
+                    const cell = rows[rowIndex].cells[colIndex];
+                    if (cell && cell.textContent.trim() !== '') {
+                        isEmpty = false;
+                        break;
+                    }
+                }
+
+                if (isEmpty) {
+                    rowsToRemove.push(rowIndex);
+                }
+            }
+
+            // Remove rows from the end to avoid index shifting issues
+            for (let i = rowsToRemove.length - 1; i >= 0; i--) {
+                const rowIndex = rowsToRemove[i];
+                table.deleteRow(rowIndex);
+            }
+        }); 
+
+        return '';
+    } else if(table === "text"){
+        
+    }else {
+        
+        const divsToDelete = document.querySelectorAll(table);
+
+        divsToDelete.forEach(div => {
+            div.remove();
         });
 
         return '';
-    } else {
-        
-        const div = document.getElementById(table);
-        if (div) {
-            div.remove();
-            return ``;
-        } else {
-            return `{Div with id "${table}" not found}`;
-        } 
-
-
     }
 }
 
@@ -354,13 +405,14 @@ function handleAddCommand(params) {
     const [addType, table, section,  ...rest] = params.split(' ');
     switch (addType) {
         case 'table':
-            if (!section) {
+            if(isFinite(table)){
+                console.log('making table')
+                return handleTableCommand(params.slice(addType.length + 1));
+            }else if (!section) {
                 return generateTableFromJSON(table);
             } else if (section) {
                 return generateTableFromJSON(table, section);
-            } else {
-                return handleTableCommand(params.slice(addType.length + 1));
-            }
+            } 
         default:
             return '{Add command not recognized}';
     }
@@ -596,7 +648,7 @@ function resolveNestedCommands(text) {
 
         // Evaluate the inner command and replace it with its result
         const evaluatedResult = evaluateInnerCommand(innerContent);
-        text = text.replace(innerCommand, evaluatedResult);
+        //text = text.replace(innerCommand, evaluatedResult);
     }
 
     return text;

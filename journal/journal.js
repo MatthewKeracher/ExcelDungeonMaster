@@ -217,7 +217,7 @@ function addKeyboardNavigation() {
               const currentFocus = document.activeElement;
               const currentIndex = Array.from(entryLinks).indexOf(currentFocus);
 
-              if (e.key === 'Delete') {
+              if (e.key === 'Delete' && journalShowing) {
                   handleDeleteEntry(entryLinks, currentIndex);
               } else {
                   navigateEntries(entryLinks, currentIndex, e.key);

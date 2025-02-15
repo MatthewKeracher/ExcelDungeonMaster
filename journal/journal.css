@@ -33,10 +33,37 @@
 #journal-sidebar{
     float: left;
     margin-right: 1%;
-    border-right: 2px solid var(--mode-color);
+    border-right: 1px solid var(--mode-color);
     width: 20%;
     height:100%;
     background-color: black;
+    overflow-y: scroll
+}
+
+#journal-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+#journal-sidebar::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+#journal-sidebar::-webkit-scrollbar-corner {
+    background: black;
+}
+
+#journal-sidebar::-webkit-scrollbar-track {
+    background: rgb(65, 77, 65);
+}
+
+#journal-sidebar::-webkit-scrollbar-thumb {
+    background: var(--mode-color-trans);
+    border-radius: 2px;
+}
+
+#journal-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--mode-color);
 }
 
 #journal-sidebar a {
@@ -71,7 +98,11 @@
     #scaleSelector {
         position:absolute;
         right: 1%;
-        width: 20%;
+        
+    }
+
+    .inputBox{
+        width: 250px;
         padding: 5px;
         font-size: 18px;
         font-family: 'SoutaneBlack';
@@ -80,6 +111,7 @@
         background-color: var(--background);
         color: var(--mode-color);
         cursor: pointer;
+
     }
 
 #journal-bottom{
@@ -120,6 +152,10 @@ overflow-x: auto;
 #journal-entry-name,
 #scaleSelector:focus {
 outline: none;
+}
+
+#journal h2{
+    font-family: 'SoutaneBlack';
 }
 
 #journal-entry-name:read-only {

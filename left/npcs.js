@@ -363,6 +363,37 @@ return HTML
 
 }
 
+function parseHitPoints(hit) {
+
+    // Check if the hit value is a fixed number
+    if (!hit.includes('d') && !hit.includes('-')) {
+    const fixedValue = parseInt(hit);
+    return rollDice(fixedValue, 8); // Treat as Xd8
+    }
+    
+    // Check for dice notation (e.g., "1d6", "1d6+1")
+    const diceMatch = hit.match(/^(\d*)d(\d+)([+-]\d+)?$/);
+    if (diceMatch) {
+    const numDice = diceMatch[1] ? parseInt(diceMatch[1]) : 1; // Default to 1 if not specified
+    // For dice notation, treat as d8
+    const sides = 8;
+    const modifier = diceMatch[3] ? parseInt(diceMatch[3]) : 0; // Default to 0 if not specified
+    
+    return rollDice(numDice, sides) + modifier; // Roll dice and apply modifier
+    }
+    
+    // Check for ranges (e.g., "3-3")
+    const rangeMatch = hit.match(/^(\d+)-(\d+)$/);
+    if (rangeMatch) {
+    const min = parseInt(rangeMatch[1]);
+    const max = parseInt(rangeMatch[2]);
+    const numDice = max; // Use the max as the number of d8s
+    return rollDice(numDice, 8) - min; // Roll numDice d8 and subtract min
+    }
+    
+    // If none of the above matches, return 0 as a fallback
+    return 0;
+    }
 
 function makeNPC(race, npcClass, level, npcName) {
     const stats = {

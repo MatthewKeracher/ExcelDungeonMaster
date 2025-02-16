@@ -89,9 +89,9 @@ footer {
     background-color: transparent;
     color: var(--mode-color);
     text-align: center;
-    font-size: 1.8vh;
+    font-size: 1.2vh;
     position: fixed;
     left: 0;
     width: 100%;
-    bottom: 0.2vh;
+    bottom: 0.4vh;
 }

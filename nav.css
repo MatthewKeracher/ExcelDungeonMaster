@@ -8,7 +8,7 @@
     background-color: black;
     border-bottom: 0.2vh solid var(--mode-color);
     height: 3vh; /* Adjust as needed */
-    font-size: 2vh;
+    font-size: 1.5vh;
     font-family: 'SoutaneBlack';
     cursor: default;
 }
@@ -28,9 +28,6 @@
 .topContainer > div:nth-child(3) {
     right: 2%;
 }
-
-
-
 
 
 /* Toolbar styles */
@@ -117,5 +114,5 @@ nav.toolbar ul li > .dropdown:hover {
 }
 
 #idBox{
-    color: hotpink;
+    color: var(--background);
 }

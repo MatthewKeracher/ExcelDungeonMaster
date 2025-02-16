@@ -260,7 +260,7 @@ function handleCommands() {
     inputText = resolveNestedCommands(inputText);
 
     // Check for command types: roll, monster, or npc
-    const commandRegex = /^(make|roll|monster|npc|trim|get)\s+(.+)/i;
+    const commandRegex = /^(search|return|make|roll|monster|npc|trim|get)\s+(.+)/i;
     const match = inputText.match(commandRegex);
 
     if (match) {
@@ -268,6 +268,8 @@ function handleCommands() {
         const params = match[2].trim(); // The remaining text after the command type
 
         switch (commandType) {
+            case 'return':
+                return handleReturnCommand(params);
             case 'trim':
                 return handleTrimCommand(params);
             case 'make':
@@ -288,6 +290,16 @@ function handleCommands() {
     }
 }
 
+function handleReturnCommand(params) {
+    try {
+        // Evaluate the query and return the results
+        const result = eval(params);
+        return JSON.stringify(result, null, 2); // Format the result as a JSON string for better readability
+    } catch (e) {
+        return `Error: ${e.message}`;
+    }
+}
+
 function handleTrimCommand(params) {
     const [table, ...rest] = params.split(' ');
 
@@ -295,7 +307,7 @@ function handleTrimCommand(params) {
         const tables = document.querySelectorAll('.table');
 
         tables.forEach(table => {
-            table.style.width = "100%"
+            table.style.width = "95%"
             const rows = table.rows;
             if (rows.length === 0) return;
 
@@ -686,17 +698,43 @@ function rollonTable(table) {
     return result;
 }
 
-
 function handleMonsterCommand(params) {
-    const monsterName = params.trim()
-    if (monsterName) {
-        let monster = searchMonster(monsterName);
-        return makeMonsterEntry(monster);
+    const [searchTerms, number] = params.trim().split(',');
+
+    if (searchTerms) {
+
+        function searchMonster(monsterName) {
+            // Replace commas with spaces and split the search string into individual words
+            const searchWords = monsterName.toLowerCase().replace(/,/g, ' ').split(' ');
+                
+            // Search for the closest match based on the number of matching words
+            let matches = [];
+
+            monsters.forEach(monster => {
+                const monsterWords = monster.name.toLowerCase().replace(/,/g, ' ').split(' ');
+                const matchCount = searchWords.reduce((count, word) => {
+                    return count + (monsterWords.includes(word) ? 1 : 0);
+                }, 0);
+    
+                if (matchCount === searchWords.length) {
+                    matches.push(monster);
+                }
+            });
+
+            return matches[0];
+        }
+    
+        let monster = searchMonster(searchTerms);
+        console.log(monster)
+    
+        if (number && !isNaN(number)) {
+            const num = parseInt(number);
+            return makeMonsterEntry(monster, num);
+        } else {
+            return makeMonsterEntry(monster);
+        }
     }
-
 }
-
-
 function handleNpcCommand(params) {
     // Example: 'human fighter 5 Rickshift'
     const npcRegex = /^(\w+)\s+(\w+)\s+(\d+)\s*(.*)/i;

@@ -66,7 +66,7 @@
     background-color: black; 
 }
 
-#commandLine{
+#commandLine {
     position: absolute;
     display: none;
     width: 100%;
@@ -86,15 +86,14 @@
    
     resize: none;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal; /* Allow text wrapping */
 }
-
 #textDiv {
     flex-grow: 1;
     height: 83vh;
     width: 100%;
     border: none;
-    padding: 0;
+    padding-right: 3%;
     background-color: black;
     color: var(--mode-color);
     font-family: 'Cascadia';
@@ -180,7 +179,7 @@ border-color: #000;
 }
 
 .table{
-    width: 100%
+    width: 95%
 }
 
 .tableCell {
@@ -202,6 +201,7 @@ border-color: #000;
 .tableHeader{
     background-color: var(--mode-color);
     color:#000;
+    font-weight: bold;
     }
 
 

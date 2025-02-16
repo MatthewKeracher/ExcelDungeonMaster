@@ -1,27 +1,12 @@
-function searchMonster(monsterName) {
-let foundMonster = null;
-let highestScore = 0;
-
-
-// Search for the closest match based on the name
-monsters.forEach(monster => {
-const score = getSimilarityScore(monster.name.toLowerCase(), monsterName.toLowerCase());
-if (score > highestScore) {
-highestScore = score;
-foundMonster = monster; // This keeps track of the closest match
-}
-});
-
-return foundMonster; // Return the found monster
-}
-
-function makeMonsterEntry(monster) {
+function makeMonsterEntry(monster, number = 1) {
     // Define the keys to exclude from the table
     let excludedKeys = ['name', 'description', 'appearing', 'treasure'];
     let savingThrows = getMonsterSave(monster.savingThrows);
     let individualTreasure = rollTreasure(monster.treasure, 'each');
     let lairTreasure = rollTreasure(monster.treasure, 'in lair');
   
+    // Generate hit point checkboxes based on the hit dice and number of monsters
+    hp(monster.hit, number);
 
     // Determine headers based on the structure of the monster
     const headers = Object.keys(monster).flatMap(key => {
@@ -161,19 +146,7 @@ function rollTreasure(treasure, locationFilter) {
     return 'Treasure not found';
     }
 
-function getSimilarityScore(str1, str2) {
-let matchCount = 0;
 
-// Count the number of matching characters
-for (let char of str1) {
-if (str2.includes(char)) {
-matchCount++;
-}
-}
-
-// Return a simple score based on the length of the shorter string
-return matchCount / Math.max(str1.length, str2.length);
-}
 
 function hitPointInit() {
     // Select all checkbox divs
@@ -187,10 +160,31 @@ function hitPointInit() {
     });
 }
 
+function hp(hitDice, number = 1) {
+    let HTML = '';
+
+    for (let j = 0; j < number; j++) {
+        let numHitboxes = rollDice(hitDice, 8);
+        HTML += `<h4 style='font-family:"SoutaneBlack"'>${numHitboxes.toString().padStart(2, '0')} | `;
+
+        for (let i = 0; i < numHitboxes; i++) {
+            const checkbox = document.createElement('div');
+            checkbox.textContent = '☐'; // Set the initial state to unchecked
+            checkbox.classList.add('hp-checkbox'); // Add a class for styling
+            checkbox.addEventListener('click', handleCheckboxClick); // Attach the click event listener
+            HTML += checkbox.outerHTML; // Add the checkbox to the HTML
+        }
+
+        HTML += `</h4>`;
+    }
+
+    return HTML; // Return the container with the hitboxes
+}
+
 function toggleCheckbox(checkbox) {
-if (checkbox.textContent === '☐') {
-checkbox.textContent = '☒'; 
-} 
+    if (checkbox.textContent === '☐') {
+        checkbox.textContent = '☒';
+    }
 }
 
 function handleCheckboxClick(event) {
@@ -206,7 +200,7 @@ function handleCheckboxClick(event) {
 
     // Check the clicked checkbox and all preceding ones
     let checkboxIndex = Array.from(checkboxes).indexOf(checkboxDiv);
-    
+
     for (let i = 0; i <= checkboxIndex; i++) {
         const currentCheckbox = checkboxes[i];
         currentCheckbox.textContent = '☒'; // Change to checked box
@@ -221,41 +215,9 @@ function handleCheckboxClick(event) {
     } else {
         // Reset color for other checkboxes if not the last
         checkboxes.forEach(checkbox => {
-            checkbox.style.color = modeColor; // Set the color of all checkboxes to gray
+            checkbox.style.color = modeColor; // Set the color of all checkboxes to the mode color
         });
     }
-}
-
-function parseHitPoints(hit) {
-
-// Check if the hit value is a fixed number
-if (!hit.includes('d') && !hit.includes('-')) {
-const fixedValue = parseInt(hit);
-return rollDice(fixedValue, 8); // Treat as Xd8
-}
-
-// Check for dice notation (e.g., "1d6", "1d6+1")
-const diceMatch = hit.match(/^(\d*)d(\d+)([+-]\d+)?$/);
-if (diceMatch) {
-const numDice = diceMatch[1] ? parseInt(diceMatch[1]) : 1; // Default to 1 if not specified
-// For dice notation, treat as d8
-const sides = 8;
-const modifier = diceMatch[3] ? parseInt(diceMatch[3]) : 0; // Default to 0 if not specified
-
-return rollDice(numDice, sides) + modifier; // Roll dice and apply modifier
-}
-
-// Check for ranges (e.g., "3-3")
-const rangeMatch = hit.match(/^(\d+)-(\d+)$/);
-if (rangeMatch) {
-const min = parseInt(rangeMatch[1]);
-const max = parseInt(rangeMatch[2]);
-const numDice = max; // Use the max as the number of d8s
-return rollDice(numDice, 8) - min; // Roll numDice d8 and subtract min
-}
-
-// If none of the above matches, return 0 as a fallback
-return 0;
 }
 
 function makeGem() {

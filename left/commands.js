@@ -12,51 +12,6 @@ function toggleModeColor() {
     root.style.setProperty('--mode-color-trans', `rgba(${modeColor}, 0.5)`);
 }
 
-function handleCheckboxClick(event) {
-    const checkboxDiv = event.currentTarget; // Get the clicked checkbox div
-    const container = checkboxDiv.parentElement; // Get the parent container
-    const checkboxes = container.querySelectorAll('.hp-checkbox'); // Select all checkboxes within the same container
-
-    // Uncheck all checkboxes in the container first
-    checkboxes.forEach(checkbox => {
-        checkbox.textContent = '☐'; // Change to unchecked box
-        checkbox.classList.remove('checked'); // Remove checked class
-    });
-
-    // Check the clicked checkbox and all preceding ones
-    let checkboxIndex = Array.from(checkboxes).indexOf(checkboxDiv);
-    
-    for (let i = 0; i <= checkboxIndex; i++) {
-        const currentCheckbox = checkboxes[i];
-        currentCheckbox.textContent = '☒'; // Change to checked box
-        currentCheckbox.classList.add('checked'); // Optionally add a class for styling
-    }
-
-    if (checkboxIndex === checkboxes.length - 1) {
-        // Change the color of all checkboxes to gray
-        checkboxes.forEach(checkbox => {
-            checkbox.style.color = 'gray'; // Set the color of all checkboxes to gray
-        });
-    } else {
-        // Reset color for other checkboxes if not the last
-        checkboxes.forEach(checkbox => {
-            checkbox.style.color = modeColor; // Set the color of all checkboxes to gray
-        });
-    }
-}
-
-function hitPointInit() {
-    // Select all checkbox divs
-    const checkboxes = document.querySelectorAll('.hp-checkbox');
-
-    // Remove existing event listeners by cloning the node and replacing the old one
-    checkboxes.forEach(checkbox => {
-        const newCheckbox = checkbox.cloneNode(true); // Clone the checkbox
-        checkbox.parentNode.replaceChild(newCheckbox, checkbox); // Replace old checkbox with new one
-        newCheckbox.addEventListener('click', handleCheckboxClick); // Add the click listener to the new checkbox
-    });
-}
-
 function placeCaretAtEnd(el) {
     el.focus(); // Focus on the div
     const range = document.createRange();
@@ -92,7 +47,7 @@ function trapFocus(elements) {
     });
   }
 
-  function insertAtCaret(html) {
+function insertAtCaret(html) {
     const selection = window.getSelection();
     if (!selection.rangeCount) return;
 
@@ -283,11 +238,29 @@ function handleCommands() {
         // If it's not valid JSON, continue with command handling
     }
 
+     // Check if the input is the name of a function and run it if it is
+     if (typeof window[inputText] === 'function') {
+        return window[inputText]();
+    }
+
+     // Check if the input is a function call with parameters and run it if it is
+     const functionCallRegex = /^(\w+)\((.*)\)$/;
+     const functionMatch = inputText.match(functionCallRegex);
+     if (functionMatch) {
+         const functionName = functionMatch[1];
+         const paramsString = functionMatch[2];
+         const params = paramsString.split(',').map(param => param.trim().replace(/^["']|["']$/g, '')); // Split and trim parameters
+ 
+         if (typeof window[functionName] === 'function') {
+             return window[functionName].apply(null, params);
+         }
+     }
+
     // Resolve nested commands before replacing other commands
     inputText = resolveNestedCommands(inputText);
 
     // Check for command types: roll, monster, or npc
-    const commandRegex = /^(add|roll|monster|npc|trim|show)\s+(.+)/i;
+    const commandRegex = /^(make|roll|monster|npc|trim|get)\s+(.+)/i;
     const match = inputText.match(commandRegex);
 
     if (match) {
@@ -295,12 +268,12 @@ function handleCommands() {
         const params = match[2].trim(); // The remaining text after the command type
 
         switch (commandType) {
-            case 'show':
-                return handleShowCommand(params);
             case 'trim':
                 return handleTrimCommand(params);
-            case 'add':
+            case 'make':
                 return handleAddCommand(params);
+            case 'get':
+                return handleGetCommand(params);
             case 'roll':
                 return handleRollCommand(params);
             case 'monster':
@@ -313,13 +286,6 @@ function handleCommands() {
     } else {
         return inputText; // Return raw input if no command is recognized
     }
-}
-
-function handleShowCommand(params) {
-
-
-
-
 }
 
 function handleTrimCommand(params) {
@@ -402,22 +368,139 @@ function handleTrimCommand(params) {
 }
 
 function handleAddCommand(params) {
-    const [addType, table, section,  ...rest] = params.split(' ');
-    switch (addType) {
+    const [makeType, number,  ...rest] = params.split(' ');
+    switch (makeType) {
         case 'table':
-            if(isFinite(table)){
-                console.log('making table')
-                return handleTableCommand(params.slice(addType.length + 1));
-            }else if (!section) {
-                return generateTableFromJSON(table);
-            } else if (section) {
-                return generateTableFromJSON(table, section);
+            if(isFinite(number)){
+                return handleTableCommand(params.slice(makeType.length + 1));
             } 
         default:
-            return '{Add command not recognized}';
+            return '{Make command not recognized}';
     }
 }
 
+function handleGetCommand(params) {
+    const [section, subSection,  ...rest] = params.split(' ');
+
+    if (section && subSection) {
+    return generateTableFromJSON(section, subSection);
+    } else if(section){
+    return generateTableFromJSON(section);
+    } else{       
+    return '{Get command not recognized}';
+    }
+}
+
+function findObjectByName(objectName) {
+    console.log('looking for ' + objectName)
+    if (window[objectName]) {
+        return window[objectName];
+    } else {
+        return null; // Object not found
+    }
+}
+
+function flattenObject(obj) {
+    const result = [];
+
+    function recurse(current, property) {
+        if (Object(current) !== current) {
+            result.push({ [property]: current });
+        } else if (Array.isArray(current)) {
+            for (let i = 0, l = current.length; i < l; i++) {
+                recurse(current[i], property ? `${property}.${i}` : `${i}`);
+            }
+            if (l === 0) {
+                result.push({ [property]: [] });
+            }
+        } else {
+            let isEmpty = true;
+            for (const p in current) {
+                isEmpty = false;
+                recurse(current[p], property ? `${property}.${p}` : p);
+            }
+            if (isEmpty && property) {
+                result.push({ [property]: {} });
+            }
+        }
+    }
+
+    recurse(obj, '');
+    return result;
+}
+ 
+function generateTableFromJSON(sectionStr, subSectionStr) {
+  
+    let section;
+    let subSection;
+    let dataToUse;
+
+    if (sectionStr) {
+        section = eval(sectionStr);
+    }
+
+    if (subSectionStr) {
+        subSection = section[subSectionStr];
+    }
+
+    if (!section) {
+        return `<p>No table found for name: ${sectionStr}.</p>`;
+    }
+
+    if (subSection) {
+        dataToUse = Object.entries(subSection).flatMap(([key, value]) => {
+            if (typeof value === 'object' && !Array.isArray(value)) {
+                return { name: key, ...value };
+            }
+            return { name: key, value };
+        });
+    } else {
+        dataToUse = Object.values(section).flat();
+    }
+
+    if (!Array.isArray(dataToUse) || dataToUse.length === 0) {
+        return `No data found in ${sectionStr} table for entry: ${subSectionStr}.`;
+    }
+
+    // Determine headers based on the structure of the first item
+    const headers = Object.keys(dataToUse[0]).flatMap(key => {
+        if (typeof dataToUse[0][key] === 'object') {
+            return Object.keys(dataToUse[0][key]).map(subKey => `${key}.${subKey}`);
+        }
+        return key;
+    });
+
+    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
+
+    
+    // Generate table headers
+    tableHTML += '<thead><tr>';
+    headers.forEach(header => {
+
+        const formattedHeader = header
+        .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+        .replace(/^./, str => str.toUpperCase()); // Uppercase the first letter
+        tableHTML += `<th class="tableCell tableHeader">${formattedHeader}</th>`;
+
+        //tableHTML += `<th class="tableCell">${header.split('.').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</th>`;
+    });
+    tableHTML += '</tr></thead>';
+
+    // Generate table body
+    tableHTML += '<tbody>';
+    dataToUse.forEach(item => {
+        tableHTML += '<tr>';
+        headers.forEach(header => {
+            const [key, subKey] = header.split('.');
+            const value = subKey ? item[key][subKey] : item[key];
+            tableHTML += `<td class="tableCell">${value}</td>`;
+        });
+        tableHTML += '</tr>';
+    });
+    tableHTML += '</tbody></table>';
+
+    return tableHTML;
+}
 
 function handleTableCommand(params) {
     let [rows, cols] = params.split(' ').map(Number);
@@ -453,7 +536,6 @@ function generateTable(rows, cols) {
     console.log(tableHTML)
     return tableHTML;
 }
-
 
 function tabTables(){
 
@@ -512,19 +594,21 @@ function tabTables(){
     
     }
     
-
-
 function handleRollCommand(params) {
-
     // Assume params will contain something like '1d20'
     const diceRegex = /^(\d+)d(\d+)$/i;
     const match = params.match(diceRegex);
+
+    if(!params){
+        const rolledValue = rollDice(1, 20);
+        return `<br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`; 
+    }
 
     if (match) {
         const numDice = parseInt(match[1]);
         const diceSides = parseInt(match[2]);
         const rolledValue = rollDice(numDice, diceSides);
-        return `<br><hr><br>You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
+        return `<br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
     } else{
 
         const tableName = params.toLowerCase();
@@ -554,7 +638,6 @@ function handleRollCommand(params) {
         
     }
 
-    return '\n{Invalid roll format. Use XdY format}';
 }
 
 function rollonTable(table) {
@@ -605,18 +688,12 @@ function rollonTable(table) {
 
 
 function handleMonsterCommand(params) {
-    // Example: '3 Goblins'
-    const monsterRegex = /^(\d+)\s+(.+)/i;
-    const match = params.match(monsterRegex);
-
-    if (match) {
-        const numAppearing = parseInt(match[1]);
-        const monsterName = match[2].trim();
-        const monsterCounts = searchMonster(monsterName, numAppearing);
-        return makeMonsterEntry(monsterCounts);
+    const monsterName = params.trim()
+    if (monsterName) {
+        let monster = searchMonster(monsterName);
+        return makeMonsterEntry(monster);
     }
 
-    return '\n{Invalid monster format. Use "X MonsterName"}';
 }
 
 
@@ -660,14 +737,29 @@ function evaluateInnerCommand(command) {
     return `{Evaluated: ${command}}`;
 }
 
+function parseDice(diceNotation) {
+    const diceRegex = /^(\d+)d(\d+)$/i;
+    const match = diceNotation.match(diceRegex);
+
+    if (match) {
+        const numDice = parseInt(match[1]);
+        const diceSides = parseInt(match[2]);
+        return { numDice, diceSides };
+    } else {
+        throw new Error('Invalid dice notation');
+    }
+}
+
 // Roll dice function
 function rollDice(numDice, diceSides) {
-    let total = 0;
+       let total = 0;
     for (let i = 0; i < numDice; i++) {
         total += Math.floor(Math.random() * diceSides) + 1;
     }
     return total;
 }
+
+
 
 
 

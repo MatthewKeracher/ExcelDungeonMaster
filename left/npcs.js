@@ -445,7 +445,7 @@ function makeNPC(race, npcClass, level, npcName) {
     if (spells) {
         HTML += '<br><br><u>Spells:</u><br>';
         spells.forEach(spell => {
-            HTML += `${spell.name}<br>`;
+            HTML += `${spell.Name}<br>`;
         });
     }
 
@@ -609,6 +609,7 @@ return null; // Handle invalid class
 function getSpells(npcClass, level) {
 // Get the spell slots available for the NPC's class and level
 const spellSlotsArray = readClassTables(npcClass, level, "spells");
+const classProper = npcClass.charAt(0).toUpperCase() + npcClass.slice(1);
 
 if(!spellSlotsArray){return}
 
@@ -624,7 +625,7 @@ const selectedSpells = [];
 
 // Loop through each spell level in the spellSlots array
 spellSlots.forEach(spellLevelData => {
-const spellLevel = spellLevelData.level; // Spell level
+const spellLevel = parseInt(spellLevelData.level); // Spell level
 const numberOfSpellsAtLevel = spellLevelData.count; // Number of spells available at that level
 
 // If there are no spells available for this level, continue to the next
@@ -632,10 +633,12 @@ if (numberOfSpellsAtLevel === 0) {
 return;
 }
 
+
+
+
 // Filter spells based on class, current spell level, and ensure they haven't been used
-const availableSpells = loadedData.spells.filter(spell => 
-spell.class === npcClass && parseInt(spell.level) === spellLevel && !usedSpells.has(spell.name)
-);
+const availableSpells = spells.filter(entry => 
+entry.Class === classProper && parseInt(entry.Level) === spellLevel && !usedSpells.has(entry.Name));
 
 // Randomly select spells based on the number of slots available at this level
 for (let i = 0; i < numberOfSpellsAtLevel; i++) {
@@ -650,13 +653,13 @@ const chosenSpell = availableSpells[randomIndex];
 
 // Add the chosen spell to the selected spells array and mark it as used
 selectedSpells.push(chosenSpell);
-usedSpells.add(chosenSpell.name);
+usedSpells.add(chosenSpell.Name);
 
 // Remove the chosen spell from available spells to avoid duplicates
 availableSpells.splice(randomIndex, 1);
 }
 });
-
+console.log(selectedSpells)
 return selectedSpells; // Return the array of selected spells
 }
 

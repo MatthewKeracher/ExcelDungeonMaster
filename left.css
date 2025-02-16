@@ -186,6 +186,7 @@ border-color: #000;
 .tableCell {
     width: 60px;
     min-height: 20px;
+    vertical-align: top;
     height: auto;
     padding: 5px;
     color: var(--mode-color);

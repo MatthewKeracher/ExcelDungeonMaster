@@ -217,3 +217,16 @@ function autoSpacing(div){
 
 
 }
+
+function addCollapsibleEventListeners() {
+    const headers = document.querySelectorAll('.collapsable .header');
+    headers.forEach(header => {
+        header.addEventListener('click', function() {
+            if(currentMode !== 'map') return;
+            const contentRows = header.parentElement.querySelectorAll('.content');
+            contentRows.forEach(row => {
+                row.style.display = row.style.display === 'none' ? '' : 'none';
+            });
+        });
+    });
+}

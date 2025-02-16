@@ -327,6 +327,12 @@ thief: [
 
 }
 
+const races = [
+    { race: 'halfling', deathRay: 4, magicWands: 4, paralysisPetrify: 4, dragonBreath: 3, spells: 4 },
+    { race: 'human', deathRay: 0, magicWands: 0, paralysisPetrify: 0, dragonBreath: 0, spells: 0 },
+    { race: 'elf', deathRay: 0, magicWands: 2, paralysisPetrify: 1, dragonBreath: 0, spells: 2  },
+    { race: 'dwarf', deathRay: 4, magicWands: 4, paralysisPetrify: 4, dragonBreath: 3, spells: 4 },
+]
 
 function makeHitBoxes(hitPoints, hit){
 
@@ -358,96 +364,95 @@ return HTML
 }
 
 
-function makeNPC(npcClass, level, npcName) {
+function makeNPC(race, npcClass, level, npcName) {
+    const stats = {
+        name: npcName ? npcName : "John Smith",
+        class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
+        race: race.charAt(0).toUpperCase() + race.slice(1),
+    };
 
-const stats = {
-name: npcName ? npcName : "John Smith",
-class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
-};
+    let HTML = '<table border="1" class="table collapsable" style="border-collapse: collapse;">';
 
-let HTML = '<br><hr><br>';
+    // Create the table header
+    HTML += '<tr>';
+    HTML += '<td contenteditable="false" tabindex="0" class="tableCell tableHeader">';
+    HTML += `<b>Level ${level} ${stats.race} ${stats.class}</b>`;
+    HTML += '</td>';
+    HTML += '<td contenteditable="false" tabindex="0" class="tableCell tableHeader">';
+    HTML += `<b>${stats.name}</b>`;
+    HTML += '</td>';
+    HTML += '</tr>';
 
-// Create a two-column layout
-HTML += `<div style="display: flex;">`;
+    // Prepare the table body
+    HTML += '<tr><td contenteditable="false" tabindex="0" class="tableCell">';
 
-// Left Column for Ability Scores
-HTML += `<div style="flex: 1; margin-right: 20px;">`;
-HTML +=`<u>${stats.name}</u>\n`
+    // Hitpoints
+    const hitDice = readClassTables(npcClass, level, 'hitDice');
+    const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
+    const scores = makeScores(stats.class);
 
-const scores = makeScores(stats.class);
-if (scores) {
-HTML += `<br>`;
-scores.forEach(score => {
-HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
-});
-}
+    // Attack Bonus
+    const attackBonus = readClassTables(npcClass, level, 'attackBonus');
+    const melee = attackBonus + scores.find(score => score.name === 'str').bonus;
+    const ranged = attackBonus + scores.find(score => score.name === 'dex').bonus;
 
-// Skills
-const skills = getSkills(npcClass, level);
-if (skills) {
-HTML += `<br><br><u>Skills:</u><br>`;
-Object.keys(skills).forEach(key => {
-if (key !== 'level') {
-const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-HTML += `${formattedKey}: ${skills[key]}<br>`;
-}
-});
-}
+    HTML += `HP: (${hitDice}) ${hitPoints} <br>` //makeHitBoxes(hitPoints, hitDice);
+    HTML += `Melee: +${melee}  Ranged: +${ranged}  <br><br>`;
 
-//Other Information
-HTML += `<br>`
-for (const [key, value] of Object.entries(stats)) {
-if (key !== 'name' && key !== 'class') {
-HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
-}
-}
+    if (scores) {
+        HTML += '<br>';
+        scores.forEach(score => {
+            HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
+        });
+    }
 
-HTML += generateRandomItemsTable(['weapons', 'weapons', 'armor']);
+    // Other Information
+    HTML += '<br>';
+    for (const [key, value] of Object.entries(stats)) {
+        if (key !== 'name' && key !== 'class' && key !== 'race') {
+            HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
+        }
+    }
 
-HTML += `</div>`; // End of left column
+    const XP = readClassTables(npcClass + 1, level, 'attackBonus');
 
-const XP = readClassTables(npcClass + 1, level, 'attackBonus');
+    // Saving Throws
+    const savingThrows = getSaveThrows(npcClass, level, race);
+    if (savingThrows) {
+        HTML += '<br><u>Saving Throws:</u><br>';
+        Object.keys(savingThrows).forEach(key => {
+            if (key !== 'level') {
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
+            }
+        });
+    }
 
-// Right Column 
-HTML += `<div style="flex: 1; text-align: left;">`
-HTML += `Level ${level} ${stats.class}.<br>`
-HTML += `Level ${level + 1} at ${XP} XP. <br>`
+    // Skills
+    const skills = getSkills(npcClass, level);
+    if (skills) {
+        HTML += '<br><br><u>Skills:</u><br>';
+        Object.keys(skills).forEach(key => {
+            if (key !== 'level') {
+                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                HTML += `${formattedKey}: ${skills[key]}<br>`;
+            }
+        });
+    }
 
-//Hitpoints
-const hitDice = readClassTables(npcClass, level, 'hitDice')
-const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
+    // Spells
+    const spells = getSpells(npcClass, level);
+    if (spells) {
+        HTML += '<br><br><u>Spells:</u><br>';
+        spells.forEach(spell => {
+            HTML += `${spell.name}<br>`;
+        });
+    }
 
-HTML += makeHitBoxes(hitPoints, hitDice)
+    HTML += '</td><td contenteditable="false" tabindex="0" class="tableCell"></td></tr>';
+    HTML += '</table>';
 
-//Saving Throws
-const savingThrows = getSaveThrows(npcClass, level);
-if (savingThrows) {
-HTML += `<br><u>Saving Throws:</u><br>`;
-Object.keys(savingThrows).forEach(key => {
-if (key !== 'level') {
-const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
-}
-});
-}
-
-// Spells
-const spells = getSpells(npcClass, level);
-if (spells) {
-HTML += `<br><br><u>Spells:</u><br>`;
-spells.forEach(spell => {
-HTML += `${spell.name}<br>`;
-
-});
-}
-
-HTML += `</div>`; // End of right column
-
-HTML += `</div>`; // End of flex container
-
-HTML += `<br><br>`;
-
-return HTML;
+    return HTML;
 }
 
 function generateRandomItemsTable(categories) {
@@ -556,23 +561,33 @@ return null; // Handle invalid class
 
 }
 
-function getSaveThrows(npcClass, level){
+function getSaveThrows(npcClass, level, race) {
+    let classKey = npcClass.toLowerCase();
+    if (classKey === 'ranger') { classKey = 'fighter'; }
+    if (classKey === 'assassin') { classKey = 'thief'; }
 
+    let raceKey = !race ? 'human' : race.toLowerCase();
 
+    const classTable = savingThrows[classKey];
+    const raceTable = races.find(r => r.race === raceKey);
 
-let classKey = npcClass.toLowerCase();
-if(classKey === 'ranger'){classKey = 'fighter'};
-if(classKey === 'assassin'){classKey = 'thief'};
+    if (classTable && raceTable) {
+        let entry = classTable.find(row => row.level === level);
 
-const classTable = savingThrows[classKey];
+        // Add Race Bonuses to Saving Throws
+        for (const key in entry) {
+            if (entry.hasOwnProperty(key) && key !== 'level') {
+                let bonus = raceTable[key];
+                if (bonus) {
+                    entry[key] += ` (+${bonus})`;
+                }
+            }
+        }
 
-if (classTable) {
-const entry = classTable.find(row => row.level === level);
-return entry || null; // Return the found entry or null if not found
-} else {
-return null; // Handle invalid class
-}
-
+        return entry || null; // Return the found entry or null if not found
+    } else {
+        return null; // Handle invalid class or race
+    }
 }
 
 function getSkills(npcClass, level){

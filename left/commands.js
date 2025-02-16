@@ -455,8 +455,6 @@ function generateTable(rows, cols) {
 }
 
 
-
-
 function tabTables(){
 
     const tables = document.querySelectorAll('.tableCell');
@@ -623,18 +621,20 @@ function handleMonsterCommand(params) {
 
 
 function handleNpcCommand(params) {
-    // Example: 'fighter 5 Rickshift'
-    const npcRegex = /^(\w+)\s+(\d+)\s*(.*)/i;
+    // Example: 'human fighter 5 Rickshift'
+    const npcRegex = /^(\w+)\s+(\w+)\s+(\d+)\s*(.*)/i;
     const match = params.match(npcRegex);
 
     if (match) {
-        const npcClass = match[1].toLowerCase();
-        const level = parseInt(match[2]);
-        const npcName = match[3] ? match[3].trim() : undefined; // Name is optional
-        return makeNPC(npcClass, level, npcName);
+        const race = match[1].toLowerCase();
+        console.log(race)
+        const npcClass = match[2].toLowerCase();
+        const level = parseInt(match[3]);
+        const npcName = match[3] ? match[4].trim() : undefined; // Name is optional
+        return makeNPC(race, npcClass, level, npcName);
     }
 
-    return '\n{Invalid NPC format. Use "Class Level [Name]"}';
+    return '\n{Invalid NPC format. Use "Race Class Level [Name]"}';
 }
 
 // Function to resolve nested commands

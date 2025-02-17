@@ -36,6 +36,8 @@ let currentZone = [];
 let currentRows = defaultRows;
 let currentCols = defaultCols;
 
+const gridContainer = document.getElementById('gridContainer');
+
 
 let isHexMap = true; //load grid map by default
 let currentMode = "map";
@@ -95,7 +97,6 @@ for (let i = 0; i < welcomeMessage.length; i++) {
 
 idBox.textContent = '0.0'
 
-
 function loadGrid(){
 
 if(regionObj?.grid === 'square'){
@@ -110,7 +111,31 @@ currentCols = regionObj.cols? regionObj.cols : currentCols;
 if (!isHexMap) {
 createGrid(currentRows, currentCols);
 loadZones();
+
+gridContainer.style.zoom = '150%'
+
 } else {
+
+let coordsLength = coords.split('.').length;
+
+if(coordsLength < 4){
+gridContainer.style.zoom = '800%'
+
+setTimeout(() => {
+  grid.scrollLeft = 1900;
+  grid.scrollTop = 900;
+}, 100);
+
+}else{
+gridContainer.style.zoom = '150%'  
+
+setTimeout(() => {
+  grid.scrollLeft = 0;
+  grid.scrollTop = 0;
+}, 100);
+
+}
+
 createHexagons(currentRows, currentCols);
 }
 updateGrid()

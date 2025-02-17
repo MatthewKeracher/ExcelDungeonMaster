@@ -26,6 +26,33 @@ function makeNewOuterLevel(){
 
 }
 
+function handleMove(){
+
+    if(!isMoving && currentMode === 'map'){
+    
+    isMoving = true
+   
+    const cell = getCurrentDiv();
+        const row = cell.getAttribute('row');
+        const col = cell.getAttribute('col');
+        const id = coords + '.' + row + '.' + col;
+        parentToMove = data.find(entry => entry.id === id);
+        childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
+        zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.'));   
+    
+        
+        const cells = document.querySelectorAll('[row][col]');
+        cells.forEach(cell => {
+            cell.addEventListener('click', moveCellEvent);
+        });
+    
+    }else{
+    isMoving = false
+    }   
+    
+    }
+
+
 function moveCellEvent(e) {
     if (!isMoving) return;
 
@@ -36,26 +63,38 @@ function moveCellEvent(e) {
 
     showPrompt('Move Cell and Contents: Are you sure you want to move everything?').then(shouldMove => {
         if (shouldMove) {
-            // Move Logic
-            
+
+            deleteTile();
+          
             childrenToMove.forEach(child => {
-                //console.log(parentToMove.id, newId)
                 let newChildId = child.id.replace(parentToMove.id, newId);
-                child.id = newChildId;
+                    child.id = newChildId;
                 
-                ////console.log(child.id + ' -> ' + newChildId);
+            //console.log(child.id + ' -> ' + newChildId);
                 
             });
+
+            zonesToMove.forEach(zone => {
+                let newZoneCoords = zone.coords.replace(parentToMove.id, newId);
+                zone.coords = newZoneCoords;
+            });
+
+            console.log(parentToMove.id + ' -> ' + newId);
             parentToMove.id = newId;
-            updateGrid();
+            
+            // setTimeout(() => {
+                saveData();
+                loadGrid();
+            //   }, 1000);
+           
         }
         
         // Reset moving state
         isMoving = false;
         parentToMove = null;
         childrenToMove = null;
-        saveData();
-        //console.log('isMoving', isMoving);
+        
+        console.log('isMoving', isMoving);
         
         // Remove event listeners
         const cells = document.querySelectorAll('[row][col]');
@@ -65,38 +104,6 @@ function moveCellEvent(e) {
     });
 }
 
-
-function moveCell() {
-   
-    //console.log('isMoving', isMoving);
-
-    const cell = getCurrentDiv();
-    const row = cell.getAttribute('row');
-    const col = cell.getAttribute('col');
-    const id = coords + '.' + row + '.' + col;
-    parentToMove = data.find(entry => entry.id === id);
-    childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
-
-    //console.log(childrenToMove);
-
-    const cells = document.querySelectorAll('[row][col]');
-    cells.forEach(cell => {
-        cell.addEventListener('click', moveCellEvent);
-    });
-}
-
-function handleMove(){
-
-if(!isMoving && currentMode === 'map'){
-
-isMoving = true
-moveCell();
-
-}else{
-isMoving = false
-}   
-
-}
 
 function handleFill(){
 

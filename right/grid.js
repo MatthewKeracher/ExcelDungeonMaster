@@ -1,5 +1,6 @@
 let clipboard = [];
 
+
 function copyTile(){
 
 const textDiv = document.getElementById('textDiv');
@@ -66,40 +67,47 @@ updateSquareGrid()
 
 }
 
-function addLabelEvents(cell, entry){
 
+const mouseOverHandler = (entry, label) => () => {
+    if (entry.name !== "") {
+        label.textContent = entry.name;
+        label.style.fontSize = '12px';
+    }
+};
+
+const mouseOutHandler = (entry, label) => () => {
+    if (label.textContent !== "") {
+        label.textContent = entry.symbol;
+        label.style.fontSize = '22px';
+    }
+};
+
+
+function addLabelEvents(cell, entry) {
 const col = cell.getAttribute('col');
 const row = cell.getAttribute('row');
 
 const label = cell.querySelector('.cellLabel');
 
-if (!label) {
-return;
-}
+label.textContent = '';
+cell.setAttribute('name', '');
+cell.setAttribute('sym', '');
 
-if(entry){
+// Remove existing event listeners
+cell.removeEventListener("mouseover", mouseOverHandler(entry, label));
+cell.removeEventListener("mouseout", mouseOutHandler(entry, label));
 
+
+if (entry) {
 label.textContent = entry.symbol;
-label.style.fontSize = '22px'
+label.style.fontSize = '22px';
 cell.setAttribute('name', entry.name);
 cell.setAttribute('sym', entry.symbol);
 
-cell.addEventListener("mouseover", () => {
-if(entry.name !== ""){
-label.textContent = entry.name;
-label.style.fontSize = '12px'
+// Add new event listeners
+cell.addEventListener("mouseover", mouseOverHandler(entry, label));
+cell.addEventListener("mouseout", mouseOutHandler(entry, label));
 }
-});
-
-cell.addEventListener("mouseout", () => {
-if(label.textContent !== ""){
-label.textContent = entry.symbol;
-label.style.fontSize = '22px'
-}
-});
-
-}
-
 }
 
 function showNames() {
@@ -187,26 +195,24 @@ function updateCellColors(cell, saveEntry) {
 
 function changeZoom(dir){
 
-// Select the element
-const rightSection = document.querySelector('.right-section');
 
-// Get the current zoom level
-let currentZoom = parseFloat(rightSection.style.zoom) || 1; 
+    // // Get the current zoom level
+    // let currentZoom = parseFloat(gridContainer.style.zoom) || 1; 
 
-if(dir === 'in'){
+    // if(dir === 'in'){
 
-// Increase zoom by 1%
-currentZoom += 0.03; // This subtracts 1%
+    // // Increase zoom by 1%
+    // currentZoom += 0.03; // This subtracts 1%
 
-}else if (dir === 'out'){
+    // }else if (dir === 'out'){
 
-// Decrease zoom by 10%
-currentZoom -= 0.03; // This subtracts 1%
+    // // Decrease zoom by 10%
+    // currentZoom -= 0.03; // This subtracts 1%
 
-}
+    // }
 
-// Set the new zoom level
-rightSection.style.zoom = currentZoom + " ";
+    // // Set the new zoom level
+    // gridContainer.style.zoom = currentZoom + " ";
 
-}
+    }
 

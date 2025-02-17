@@ -21,6 +21,7 @@ const lastLoc = localStorage.getItem('location');
 
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
+//data = data.filter(entry => !(!entry.color && entry.name === '' && entry.desc === ''));
 }
 if(savedZones){
 zones = JSON.parse(savedZones);  

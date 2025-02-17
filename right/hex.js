@@ -21,9 +21,8 @@ function setHexagonSize() {
 
 
 function createHexagons(rows, cols) {
-    const gridContainer = document.getElementById('gridContainer');
+  
     gridContainer.innerHTML = '';  // Clear previous map
-   
 
     setHexagonSize();
 
@@ -75,13 +74,7 @@ function createHexagons(rows, cols) {
                     paintCell(hexagon);
                 }
             });
-
-            // hexagon.addEventListener('mouseover', function() {
-            //     if(currentMode === 'map'){
-            //         changeCell(hexagon)
-            //     }
-            // });
-
+        
             hexRow.appendChild(hexagon);
         }
         gridContainer.appendChild(hexRow);
@@ -202,17 +195,83 @@ hexagons.forEach(hex => {
 
 const col = hex.getAttribute('col');
 const row = hex.getAttribute('row');
+const div = document.querySelector(`[row="${row}"][col="${col}"]`);
 const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id);
 
+// let coordsLength = coords.split('.').length;
+
+// const parent = saveEntry.id;
+// const parentPeriodCount = (parent.match(/\./g) || []).length;
+// const children = data.filter(entry => {
+//     const childPeriodCount = (entry.id.match(/\./g) || []).length;
+//     return entry.id.startsWith(parent) && childPeriodCount === parentPeriodCount + 2;
+// });
+
+// if(coordsLength < 4 && children.length > 0){
+// updateCellBackground(div);
+// }else{
 updateCellColors(hex, saveEntry);
+// }
+
+
 addLabelEvents(hex, saveEntry);
+
+
 
 })
 
-//showNames();
 
 }
+
+function updateCellBackground(div){
+
+ // Create a canvas element
+ const canvas = document.createElement('canvas');
+ const context = canvas.getContext('2d');
+
+ // Set the dimensions of the canvas to match the dimensions of a hexagon
+ const hexWidth = 100; // Replace with the actual width of a hexagon
+ const hexHeight = 86.6; // Replace with the actual height of a hexagon
+ canvas.width = hexWidth;
+ canvas.height = hexHeight;
+
+ // Calculate the size of each hexagon
+ const hexSize = Math.sqrt((hexWidth * hexHeight) / children.length);
+
+ // Draw each pixel on the canvas in a honeycomb shape
+ children.forEach((child, index) => {
+     const col = index % Math.ceil(hexWidth / hexSize);
+     const row = Math.floor(index / Math.ceil(hexWidth / hexSize));
+     const x = col * hexSize * 3/4;
+     const y = row * hexSize + (col % 2) * (hexSize / 2);
+     context.fillStyle = child.color || '#FFFFFF'; // Default to white if no color is provided
+     drawHexagon(context, x, y, hexSize);
+ });
+
+    // Convert the canvas to a data URL
+    const imgData = canvas.toDataURL('image/png');
+    console.log('Image Data URL:', imgData);
+
+    // Set the background image for the hexagon
+    div.style.backgroundImage = `url(${imgData})`;
+}
+
+function drawHexagon(context, x, y, size) {
+    const angle = Math.PI / 3;
+    context.beginPath();
+    for (let i = 0; i < 6; i++) {
+        context.lineTo(x + size * Math.cos(angle * i), y + size * Math.sin(angle * i));
+    }
+    context.closePath();
+    context.fill();
+}
+
+
+
+
+
+
 
 

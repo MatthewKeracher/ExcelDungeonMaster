@@ -3,7 +3,7 @@ function saveData() {
 localStorage.setItem('data', JSON.stringify(data));
 localStorage.setItem('zones', JSON.stringify(zones));
 localStorage.setItem('journal', JSON.stringify(journalData));
-localStorage.setItem('location', idBox.textContent);
+localStorage.setItem('location', JSON.stringify(scrollData));
 }
 
 
@@ -21,7 +21,8 @@ const lastLoc = localStorage.getItem('location');
 
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
-//data = data.filter(entry => !(!entry.color && entry.name === '' && entry.desc === ''));
+collectGarbage();
+
 }
 if(savedZones){
 zones = JSON.parse(savedZones);  
@@ -30,7 +31,10 @@ if(savedJournal){
 journalData = JSON.parse(savedJournal)
 }
 if(lastLoc){
-//idBox.textContent = lastLoc;
+scrollData = JSON.parse(lastLoc)
+//console.log('loadData():')
+//console.log(scrollData)
+//console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
 }
 }
 
@@ -65,7 +69,6 @@ let pointEntry = zone.points.find(point => point.row === row && point.col === co
 
 pointEntry.symbol = placeSymbol.value;
 
-
 }else{
 
 let exists = data.find(entry => entry.id === idBox.textContent)
@@ -74,6 +77,8 @@ if(exists){
 exists.name = placeName.value;
 exists.symbol = placeSymbol.value;
 exists.desc = textDiv.innerHTML;
+exists.scrollData = scrollData
+//console.log(exists)
 
 const cellLabel = div.querySelector('.cellLabel');
 if (cellLabel) {
@@ -102,7 +107,8 @@ name: placeName.value,
 symbol: placeSymbol.value,
 desc: textDiv.innerHTML,
 grid: isHexMap? "hex" : "square",
-palette: defaultData[0].palette
+palette: defaultData[0].palette,
+scrollData: scrollData,
 }
 
 if(saveEntry.name === ""){
@@ -110,7 +116,7 @@ saveEntry.name = ""
 }
 
 data.push(saveEntry);
-
+//console.log(saveEntry)
 
 }
 

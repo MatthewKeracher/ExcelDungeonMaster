@@ -3,21 +3,14 @@ function handlePaint() {
 
 const paletteDiv = document.getElementById('paletteDiv');
 
-
 if(!isPainting && currentMode === 'map'){
-
 isPainting = true
 isFilling = false
-
 paletteDiv.style.display = "flex";
-
 }else{
-
 isPainting = false
 paletteDiv.style.display = "none";
-
 }
-
 }
 
 function makeNewOuterLevel(){
@@ -38,10 +31,11 @@ function handleMove(){
         const id = coords + '.' + row + '.' + col;
         parentToMove = data.find(entry => entry.id === id);
         childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
-        zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.'));  
+        zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.')|| zone.coords === id);  
         journalToMove = journalData.filter(entry => entry.scale.startsWith(id + '.') || entry.scale.startsWith(id));   
         console.log(journalToMove)
     
+        console.log(zonesToMove)
         
         const cells = document.querySelectorAll('[row][col]');
         cells.forEach(cell => {
@@ -53,7 +47,6 @@ function handleMove(){
     }   
     
     }
-
 
 function moveCellEvent(e) {
     if (!isMoving) return;
@@ -67,6 +60,7 @@ function moveCellEvent(e) {
         if (shouldMove) {
 
             deleteTile();
+
           
             childrenToMove.forEach(child => {
                 let newChildId = child.id.replace(parentToMove.id, newId);
@@ -74,9 +68,15 @@ function moveCellEvent(e) {
                 
             });
 
-            zonesToMove.forEach(zone => {
+            zonesToMove.forEach(zone => {              
+
+                const zoneSpecialId = zone.id.split('.').slice(-1)[0]; 
+                
                 let newZoneCoords = zone.coords.replace(parentToMove.id, newId);
                 zone.coords = newZoneCoords;
+
+                let newZoneId = zone.id.replace(parentToMove.id, newId);
+                zone.id = newZoneId + '.' + zoneSpecialId;    
             });
 
             journalToMove.forEach(entry => {
@@ -86,10 +86,9 @@ function moveCellEvent(e) {
 
             parentToMove.id = newId;
             
-            // setTimeout(() => {
                 saveData();
-                loadGrid();
-            //   }, 1000);
+                loadGrid();  
+
            
         }
         
@@ -109,7 +108,6 @@ function moveCellEvent(e) {
         });
     });
 }
-
 
 function handleFill(){
 
@@ -203,6 +201,7 @@ loadGrid();
 
 function handleExport() {
     const regionName = document.getElementById('regionName');
+
     
     // Create an object that includes all three data sets
     const exportData = {
@@ -240,66 +239,66 @@ function handleExport() {
     URL.revokeObjectURL(url);
 }
 
+function handleLoad() {
+// Create a hidden input element to trigger the file explorer
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'application/json'; // Accept only JSON files
 
-    function handleLoad() {
-        // Create a hidden input element to trigger the file explorer
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'application/json'; // Accept only JSON files
-    
-        // When the user selects a file, read its contents
-        input.addEventListener('change', function(event) {
-            const file = event.target.files[0]; // Get the selected file
-            if (file) {
-                const reader = new FileReader();
-    
-                // Empty
-                idBox.textContent = '';
-    
-                // Set up the callback for when the file is loaded
-                reader.onload = function(e) {
-                    try {
-                        // Parse the JSON content from the file
-                        const loadedData = JSON.parse(e.target.result);
-    
-                        // Check if the loaded data has the expected structure
-                        // if (loadedData.data && loadedData.journalData && loadedData.zones) {
-                            
-                            // Replace the current data with the loaded data
-                            data = loadedData.data;
-                            journalData = loadedData.journalData;
-                            zones = loadedData.zones;
-    
-                            //console.log("Data successfully loaded:", data);
-                            //console.log("Journal data successfully loaded:", journalData);
-                            //console.log("Zones successfully loaded:", zones);
+// When the user selects a file, read its contents
+input.addEventListener('change', function(event) {
+const file = event.target.files[0]; // Get the selected file
+if (file) {
+const reader = new FileReader();
 
-                            if(Array.isArray(zones) === false){zones = []}
-    
-                            // Update UI elements
-                            updateGrid();
-                            // Add any other necessary UI updates for journalData and zones
-                        // } else {
-                        //     console.error("Loaded file does not have the expected structure");
-                        // }
-                    } catch (error) {
-                        console.error("Error parsing JSON file:", error);
-                    }
-                };
-    
-                // Read the file as text
-                reader.readAsText(file);
-            }
-        });
-    
-        // Trigger the file explorer by clicking the hidden input
-        input.click();
-    }
-    
+// Empty
+idBox.textContent = '';
 
+// Set up the callback for when the file is loaded
+reader.onload = function(e) {
+try {
+// Parse the JSON content from the file
+const loadedData = JSON.parse(e.target.result);
 
+// Check if the loaded data has the expected structure
+// if (loadedData.data && loadedData.journalData && loadedData.zones) {
+
+// Replace the current data with the loaded data
+data = loadedData.data;
+journalData = loadedData.journalData;
+zones = loadedData.zones;
+
+collectGarbage();
+
+//console.log("Data successfully loaded:", data);
+//console.log("Journal data successfully loaded:", journalData);
+//console.log("Zones successfully loaded:", zones);
+
+if(Array.isArray(zones) === false){zones = []}
+
+// Update UI elements
+updateGrid();
+// Add any other necessary UI updates for journalData and zones
+// } else {
+//     console.error("Loaded file does not have the expected structure");
+// }
+} catch (error) {
+console.error("Error parsing JSON file:", error);
+}
+};
+
+// Read the file as text
+reader.readAsText(file);
+}
+});
+
+// Trigger the file explorer by clicking the hidden input
+input.click();
+}
+    
 function handleEnter(){
-
+    
+//console.log('handleEnter():')
 const logo = document.getElementById("startLogo");
 logo.style.display = "none";
 
@@ -307,17 +306,57 @@ captureGridSize();
 
 //Set selected cell as regionObj
 regionObj = getObj(idBox.textContent);
+
+regionObj.scrollData = {
+    X: scrollConvert(grid.scrollLeft, "percentage", "X"), 
+    Y: scrollConvert(grid.scrollTop, "percentage", "Y"), 
+    Z: gridContainer.style.zoom}
+
+    //console.log(scrollData)
+    //console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
+
 const regionName = document.getElementById('regionName');
 regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
 coords = regionObj.id;
 
 loadGrid();
 goToEntry(regionObj.id);
-updateGrid();
+
+}
+
+function handleTravel(regionRowAdd, regionColAdd, destRow, destCol){
+
+console.log('handleTravel()')
+const here = getCurrentDiv()
+console.log(here)
+
+//Transform Coords for Direction and Go There
+const oldRegionCol = coords.split('.').slice(-1)[0]; // get last
+const oldRegionRow = coords.split('.').slice(-2, -1)[0]; // get second last
+const returnCoords = coords.split('.').slice(0, -2).join('.'); // return coords without last two
+
+const newRegionCol = parseInt(oldRegionCol, 10) + parseInt(regionColAdd, 10)
+const newRegionRow = parseInt(oldRegionRow, 10) + parseInt(regionRowAdd, 10)
+coords = returnCoords + '.' + newRegionRow + '.' + newRegionCol
+
+const destination = coords + '.' + destRow + '.' + destCol;
+console.log(destination)
+//Move
+regionObj = getObj(coords);
+const regionName = document.getElementById('regionName');
+regionName.textContent = regionObj && regionObj.name !== ''? regionObj.name : "Excel_DM"
+
+loadGrid();
+goToEntry(destination);
 
 }
 
 function handleExit(){
+
+//console.log('handleExit')
+
+//Move scrollbar to be over regionObj
+scrollData = regionObj.scrollData
 
 //Remove 2 digits from coords and go there.
 coords = parseParent(regionObj.id);
@@ -364,7 +403,7 @@ if (rows && cols) {
 if (isHexMap) {
 currentCols = parseInt(cols)
 currentRows = parseInt(rows)
-createHexagons(currentRows, currentCols);
+createHexagons(currentRows, currentCols, gridContainer);
 isHexMap = true;
 updateGrid()
 } else {

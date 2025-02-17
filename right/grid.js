@@ -196,23 +196,23 @@ function updateCellColors(cell, saveEntry) {
 function changeZoom(dir){
 
 
-    // // Get the current zoom level
-    // let currentZoom = parseFloat(gridContainer.style.zoom) || 1; 
+    // Get the current zoom level
+    let currentZoom = parseFloat(gridContainer.style.zoom) || 1; 
 
-    // if(dir === 'in'){
+    if(dir === 'in'){
 
-    // // Increase zoom by 1%
-    // currentZoom += 0.03; // This subtracts 1%
+    // Increase zoom by 1%
+    currentZoom += 0.5; // This subtracts 1%
 
-    // }else if (dir === 'out'){
+    }else if (dir === 'out'){
 
-    // // Decrease zoom by 10%
-    // currentZoom -= 0.03; // This subtracts 1%
+    // Decrease zoom by 10%
+    currentZoom -= 0.5; // This subtracts 1%
 
-    // }
+    }
 
-    // // Set the new zoom level
-    // gridContainer.style.zoom = currentZoom + " ";
+    // Set the new zoom level
+    gridContainer.style.zoom = currentZoom + " ";
 
     }
 

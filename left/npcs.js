@@ -584,7 +584,7 @@ const classTable = classTables[classKey];
 if (classTable) {
 
 const entry = classTable.find(row => row.level === level);
-console.log(entry[lookUp])
+//console.log(entry[lookUp])
 return entry[lookUp] || null; // Return the found entry or null if not found
 } else {
 return null; // Handle invalid class
@@ -690,7 +690,7 @@ usedSpells.add(chosenSpell.Name);
 availableSpells.splice(randomIndex, 1);
 }
 });
-console.log(selectedSpells)
+//console.log(selectedSpells)
 return selectedSpells; // Return the array of selected spells
 }
 

@@ -404,7 +404,7 @@ function handleGetCommand(params) {
 }
 
 function findObjectByName(objectName) {
-    console.log('looking for ' + objectName)
+    //console.log('looking for ' + objectName)
     if (window[objectName]) {
         return window[objectName];
     } else {
@@ -545,7 +545,7 @@ function generateTable(rows, cols) {
         tableHTML += '</tr>';
     }
     tableHTML += '</table>';
-    console.log(tableHTML)
+    //console.log(tableHTML)
     return tableHTML;
 }
 
@@ -640,11 +640,11 @@ function handleRollCommand(params) {
                 // Return the first row
                 return rollonTable(table)
             } else {
-                console.log("Table or first row not found");
+                //console.log("Table or first row not found");
                 return null;
             }
         } else {
-            console.log("Journal entry not found");
+            //console.log("Journal entry not found");
             return null;
         }
         
@@ -657,7 +657,7 @@ function rollonTable(table) {
         return "<table><tr><td>Table is empty</td></tr></table>";
     }
 
-    console.log(table)
+    //console.log(table)
 
     const firstRow = table.rows[0];
     const hasHeader = firstRow.cells[0].classList.contains('tableHeader');
@@ -725,7 +725,7 @@ function handleMonsterCommand(params) {
         }
     
         let monster = searchMonster(searchTerms);
-        console.log(monster)
+        //console.log(monster)
     
         if (number && !isNaN(number)) {
             const num = parseInt(number);
@@ -742,7 +742,7 @@ function handleNpcCommand(params) {
 
     if (match) {
         const race = match[1].toLowerCase();
-        console.log(race)
+        //console.log(race)
         const npcClass = match[2].toLowerCase();
         const level = parseInt(match[3]);
         const npcName = match[3] ? match[4].trim() : undefined; // Name is optional

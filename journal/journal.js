@@ -24,7 +24,7 @@ function loadJournal() {
   
   journalData.forEach(entry => {
    if(entry.id === ""){
-    console.log(entry)
+    //(entry)
     let entryId;
 
     let i = 0;
@@ -76,7 +76,7 @@ function loadJournal() {
 
       if (scaleData && scaleData.entries.length > 0) {
           // Add header
-          console.log(scaleData)
+          //console.log(scaleData)
           const header = document.createElement('h4');
           header.textContent = scaleData.name;
           header.style.color = "gold";
@@ -113,7 +113,7 @@ function getNewJournalId(){
         i++;
     } while (alreadyExists);
 
-    console.log(entryId)
+    //console.log(entryId)
     return entryId
 
 
@@ -294,7 +294,7 @@ journalData.forEach(entry => {
 if (!entry.scale){entry.scale = "0.0"}
 })
 
-console.log(journalData)
+//console.log(journalData)
 
 if(journal.name !== ''){
 

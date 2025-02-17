@@ -1,6 +1,6 @@
 //Global Variables
-let defaultRows = 35;
-let defaultCols = 53;
+let defaultRows = 30;
+let defaultCols = 42;
 
 
 let defaultData = [{
@@ -27,6 +27,7 @@ let data = defaultData;
 let coords = '0.0';
 let region = 'Excel_DM'
 let regionObj = data[0];
+let scrollData = {X: 0, Y:0, Z:1}
 
 let zones = [];
 
@@ -36,7 +37,7 @@ let currentZone = [];
 let currentRows = defaultRows;
 let currentCols = defaultCols;
 
-const gridContainer = document.getElementById('gridContainer');
+const div = document.getElementById('gridContainer');
 
 
 let isHexMap = true; //load grid map by default
@@ -96,7 +97,6 @@ for (let i = 0; i < welcomeMessage.length; i++) {
     }, i * 25); 
   }
   
-
 idBox.textContent = '0.0'
 
 function loadGrid(){
@@ -107,41 +107,31 @@ isHexMap = false
 isHexMap = true
 }
 
-currentRows = regionObj.rows? regionObj.rows : currentRows;
-currentCols = regionObj.cols? regionObj.cols : currentCols;
+// currentRows = regionObj.rows? regionObj.rows : currentRows;
+// currentCols = regionObj.cols? regionObj.cols : currentCols;
 
 if (!isHexMap) {
-createGrid(currentRows, currentCols);
+createGrid(60, 60);
 loadZones();
-
-gridContainer.style.zoom = '150%'
-
 } else {
-
-let coordsLength = coords.split('.').length;
-
-if(coordsLength < 4){
-gridContainer.style.zoom = '800%'
-
-setTimeout(() => {
-  grid.scrollLeft = 1900;
-  grid.scrollTop = 900;
-}, 100);
-
-}else{
-gridContainer.style.zoom = '150%'  
-
-setTimeout(() => {
-  grid.scrollLeft = 0;
-  grid.scrollTop = 0;
-}, 100);
-
-}
-
-createHexagons(currentRows, currentCols);
+createHexagons(currentRows, currentCols, gridContainer);
 }
 updateGrid()
 loadPalette()
+
+setTimeout(() => {
+//console.log('loadGrid():')
+
+grid.scrollLeft = scrollConvert(scrollData.X, "pixels", "X")
+grid.scrollTop =  scrollConvert(scrollData.Y, "pixels", "Y")
+
+//console.log(scrollData)
+//console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
+
+gridContainer.style.zoom = scrollData.Z;
+}, 10);
+
+
 }
 
 

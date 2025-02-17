@@ -54,7 +54,7 @@ const { rows, cols } = calculateGridSize();
 let cells;
 
 if (isHexMap) {
-createHexagons(rows, cols);
+createHexagons(rows, cols, gridContainer);
 cells = document.querySelectorAll('.hex');
 } else {
 createGrid(rows, cols);

@@ -13,6 +13,41 @@ textDiv.innerHTML = "";
 
 }
 
+function collectGarbage() {
+    const totalTrash = data.length;
+    data = data.filter(entry => entry.rows !== null || entry.cols !== null);
+    //console.log(data[0]);
+    //console.log('Deleted ' + (totalTrash - data.length) + ' entries');
+
+    const coordCount = {};
+    data.forEach(entry => {
+        if (coordCount[entry.coords]) {
+            coordCount[entry.coords]++;
+        } else {
+            coordCount[entry.coords] = 1;
+        }
+    });
+
+    const duplicateCount = Object.values(coordCount).filter(count => count > 1).length;
+    //console.log('Number of entries with duplicate coords: ' + duplicateCount);
+}
+
+function scrollConvert(input, option, X) {
+
+//Give pixels to grid, and give percentages to scrollData.
+//console.log(input, option, X)
+const totalPixels = X === 'X'? grid.scrollWidth :  grid.scrollHeight;
+    
+    if(option === 'pixels') {
+        return (input / 100) * totalPixels;
+    } else if(option === 'percentage') {
+        return (input / totalPixels) * 100;
+    } else {
+        throw new Error('Invalid option provided to scrollConvert');
+    }
+
+}
+
 function getObj(coords){
 
 let obj = data.find(entry => entry.id === coords)
@@ -57,6 +92,8 @@ placeName.value = entry.name;
 placeSymbol.value = entry.symbol? entry.symbol : entry.name.length !== ""? entry.name.charAt(0): "";
 textDiv.innerHTML = entry.desc.trim();
 idBox.textContent = entry.id;
+}else{
+idBox.textContent = id;
 }
 
 if(id !== '0.0'){

@@ -11,11 +11,11 @@ overflow: hidden;
 }
 
 #gridImageContainer::-webkit-scrollbar {
-width: 5px;
+width: 10px;
 }
 
 #gridImageContainer::-webkit-scrollbar:horizontal {
-height: 5px;
+height: 10px;
 }
 
 #gridImageContainer::-webkit-scrollbar-corner {
@@ -37,7 +37,7 @@ background: var(--mode-color);
 
 #gridImageContainer {
 position: relative;   
-overflow: auto; 
+overflow-y: scroll; 
 width: 100%;
 height: 100%;       
 }
@@ -168,7 +168,32 @@ position: relative;
 float: left;
 margin-right: calc(var(--hex-margin-right, -12px));
 margin-bottom: calc(var(--hex-margin-bottom, -25px));
+cursor: default;
+}
 
+.Odd {
+    position: absolute; 
+    display: block;
+    top: -5%; 
+    left: -5%;                     
+    width: 110%;       
+    height: 80%;     
+    z-index: -1;       
+    pointer-events: none; 
+    background-color: transparent;
+    
+}
+
+.Even {
+    position: absolute; 
+    display: block;
+    top: -5%; 
+    left: -5%;                     
+    width: 110%;       
+    height: 110%;     
+    z-index: -1;       
+    pointer-events: none; 
+    background-color: transparent;  
 }
 
 .hex .left {
@@ -178,6 +203,8 @@ border-right: calc(var(--hex-side, 15px)) solid var(--default-color);
 border-top: calc(var(--hex-height, 26px)) solid transparent;
 border-bottom: calc(var(--hex-height, 26px)) solid transparent;
 transition: border-color 0.3s ease;
+background-size: cover; /* Ensure the background image covers the entire hex */
+background-repeat: no-repeat; /* Prevent the background image from repeating */
 }
 
 .hex .middle {
@@ -186,6 +213,9 @@ width: calc(var(--hex-width, 30px));
 height: calc(var(--hex-total-height, 52px));
 background: var(--default-color);
 transition: background-color 0.3s ease;
+background-size: cover;  
+background-repeat: no-repeat; /* Prevent the background image from repeating */
+
 }
 
 .hex .right {
@@ -195,6 +225,9 @@ border-left: calc(var(--hex-side, 15px)) solid var(--default-color);
 border-top: calc(var(--hex-height, 26px)) solid transparent;
 border-bottom: calc(var(--hex-height, 26px)) solid transparent;
 transition: border-color 0.3s ease;
+background-size: cover; /* Ensure the background image covers the entire hex */
+background-repeat: no-repeat; /* Prevent the background image from repeating */
+background-position: -10px 0;
 }
 
 .hex.colEven {
@@ -217,6 +250,7 @@ display: block;
 position: absolute;
 font-family: "SoutaneBlack";
 font-size: 22px;
+font-weight: bold;
 white-space: nowrap;
 color: whitesmoke;
 padding: 0px;

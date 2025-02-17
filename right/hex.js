@@ -20,11 +20,26 @@ function setHexagonSize() {
 }
 
 
-function createHexagons(rows, cols) {
+
+let midRow 
+let midCol 
+let lowerBound
+let upperBound
+
+
+
+function createHexagons(rows, cols, div) {
   
-    gridContainer.innerHTML = '';  // Clear previous map
+    div.innerHTML = '';  // Clear previous map
+    let angle = 2
 
     setHexagonSize();
+
+    midCol = 20
+    midRow = 15 //Math.floor(rows/2)
+  
+    lowerBound = midCol - 8
+    upperBound = midCol + 8
 
     for (let row = 0; row < rows; row++) {
         // Create a row for hexagons
@@ -32,6 +47,8 @@ function createHexagons(rows, cols) {
         hexRow.classList.add('hex-row');
 
         for (let col = 0; col < cols; col++) {
+         
+
             // Create a hexagon div
             const hexagon = document.createElement('div');
             hexagon.classList.add('hex');
@@ -49,16 +66,34 @@ function createHexagons(rows, cols) {
             rightPart.classList.add('right');
             hexagon.appendChild(rightPart);
 
+
+            if (col % 2 === 1) {
+                hexagon.classList.add('colEven');
+            }
+
+            if(col > lowerBound && col < upperBound && row < (midRow * 2)){
+
+             // Create a canvas element for the background
+             const canvas = document.createElement('canvas');
+
+             if (col % 2 === 1) {
+                canvas.classList.add('hexCanvas');
+                canvas.classList.add('Even');
+            }else{
+                canvas.classList.add('hexCanvas');
+                canvas.classList.add('Odd');
+            }
+             // Optional: Add class for styling
+ 
+             //if(row === 5 && col === 12){
+             hexagon.appendChild(canvas);
+             //}
+
             // Create Label for Hexagon
             const label = document.createElement('div');
             label.classList.add('cellLabel');
             label.innerText = ``; 
             hexagon.appendChild(label);
-            
-
-            if (col % 2 === 1) {
-                hexagon.classList.add('colEven');
-            }
 
             hexagon.setAttribute('col', col);
             hexagon.setAttribute('row', row);
@@ -75,10 +110,60 @@ function createHexagons(rows, cols) {
                 }
             });
         
+       }
             hexRow.appendChild(hexagon);
         }
-        gridContainer.appendChild(hexRow);
+        div.appendChild(hexRow);
+
+        if(row % 2 === 1 && row < midRow){
+            lowerBound -= angle;
+            upperBound += angle;
+        } else if(row % 2 === 1){
+            lowerBound += angle;
+            upperBound -= angle;
+        }
+        
     }
+}
+
+function getCompass() {
+     
+    const hexes = document.querySelectorAll('.hex');
+     
+    let minRow = Infinity;
+    let maxRow = -Infinity;
+    let minCol = Infinity;
+    let maxCol = -Infinity;
+
+    let North = null;
+    let South = null;
+    let East = null;
+    let West = null;
+
+    hexes.forEach(hex => {
+        const row = parseInt(hex.getAttribute('row'));
+        const col = parseInt(hex.getAttribute('col'));
+
+        if (row < minRow) {
+            minRow = row;
+            North = minRow;
+        }
+        if (row > maxRow) {
+            maxRow = row;
+            South = maxRow;
+        }
+        if (col < minCol) {
+            minCol = col;
+            West = minCol;
+        }
+        if (col > maxCol) {
+            maxCol = col;
+            East = maxCol;
+        }
+    });
+
+    console.log(North, South, East, West)
+    return { North, South, East, West };
 }
 
 function moveHex(dir){
@@ -145,17 +230,165 @@ else if(dir === 'down-right'){
     }
 }
 
-
+try{
 const div = document.querySelector(`[row="${row}"][col="${col}"]`);
 paintCell(div);
 changeHex(div);
+}catch{
+  
+let { North, South, East, West } = getCompass();
+let regionRowAdd
+let regionColAdd
+let destRow
+let destCol
+
+const regionCol = regionObj.cols;
+console.log('regionObj:', regionObj)
+console.log('regionCol:' + regionCol)
+
+//Working
+if(row < North && col < upperBound && col > lowerBound){ 
+    console.log('North')
+
+    regionRowAdd = -1
+    regionColAdd = 0
+
+    destRow = South
+    destCol = col
+    
+}else if (row > South && col < upperBound && col > lowerBound){ 
+    console.log('South')
+    regionRowAdd = 1
+    regionColAdd = 0
+
+    destRow = North
+    destCol = col
+
+}else if (col < lowerBound && row > midRow){ 
+    console.log('South West')
+
+    destCol = upperBound + (lowerBound - col)
+
+        const colDivs = Array.from(document.querySelectorAll(`[col="${destCol}"]`));
+        const smallestDiv = colDivs.reduce((smallest, current) => {
+            const currentRow = parseInt(current.getAttribute('row'));
+            const smallestRow = parseInt(smallest.getAttribute('row'));
+            return currentRow < smallestRow ? current : smallest;
+        }, colDivs[0]);
+
+        destRow = smallestDiv.getAttribute('row');
+
+    if (regionCol % 2 === 0) {
+        //even
+        regionRowAdd = 0
+        regionColAdd = -1
+       
+    } else {
+        //odd
+        regionRowAdd = 1
+        regionColAdd = -1
+
+    }
+
+}else if (col < lowerBound && row < midRow){ //North  West
+    console.log('North West')
+
+    destCol = upperBound + (lowerBound - col)
+
+    const colDivs = Array.from(document.querySelectorAll(`[col="${destCol}"]`));
+    const largestDiv = colDivs.reduce((largest, current) => {
+        const currentRow = parseInt(current.getAttribute('row'));
+        const largestRow = parseInt(largest.getAttribute('row'));
+        return currentRow > largestRow ? current : largest;
+    }, colDivs[0]);
+
+
+    destRow = largestDiv.getAttribute('row');
+
+   
+    if (regionCol % 2 === 0) {
+        //even
+        regionRowAdd = -1
+        regionColAdd = -1
+    } else {
+        //odd
+        regionColAdd = -1
+        regionRowAdd = 0
+    }
+
+   
+
+
+
+}else if (col > lowerBound && row > midRow){ 
+    console.log('South East')
+
+    destCol = lowerBound + ( upperBound - col)
+
+    const colDivs = Array.from(document.querySelectorAll(`[col="${destCol}"]`));
+    const smallestDiv = colDivs.reduce((smallest, current) => {
+        const currentRow = parseInt(current.getAttribute('row'));
+        const smallestRow = parseInt(smallest.getAttribute('row'));
+        return currentRow < smallestRow ? current : smallest;
+    }, colDivs[0]);
+
+    destRow = smallestDiv.getAttribute('row');
+    
+
+    if (regionCol % 2 === 0) {
+        //even
+        regionRowAdd = 0
+        regionColAdd = 1
+       
+    } else {
+        //odd
+        regionRowAdd = 1
+        regionColAdd = 1
+
+    }
+
+  
+
+}else if (col > lowerBound && row < midRow){
+    console.log('North East')
+
+    destCol = lowerBound - (col - upperBound)
+
+    const colDivs = Array.from(document.querySelectorAll(`[col="${destCol}"]`));
+    const largestDiv = colDivs.reduce((largest, current) => {
+        const currentRow = parseInt(current.getAttribute('row'));
+        const largestRow = parseInt(largest.getAttribute('row'));
+        return currentRow > largestRow ? current : largest;
+    }, colDivs[0]);
+
+    destRow = largestDiv.getAttribute('row');
+
+    if (regionCol % 2 === 0) {
+        //even
+        regionRowAdd = -1
+        regionColAdd = 1
+
+    } else {
+        //odd
+        regionColAdd = 1
+        regionRowAdd = 0
+    }
+
+ 
 }
+    console.log(destRow, destCol)
+    handleTravel(regionRowAdd, regionColAdd, destRow, destCol);
+
+}};
 
 function changeHex(hexagon){
 
 if(currentMode !== "map"){     
 saveEntry(getCurrentDiv())
 };
+
+
+
 
 selectedCellStyle(hexagon);
 
@@ -200,73 +433,102 @@ const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id);
 
-// let coordsLength = coords.split('.').length;
+if(saveEntry){
+    
+let coordsLength = coords.split('.').length;
 
-// const parent = saveEntry.id;
-// const parentPeriodCount = (parent.match(/\./g) || []).length;
-// const children = data.filter(entry => {
-//     const childPeriodCount = (entry.id.match(/\./g) || []).length;
-//     return entry.id.startsWith(parent) && childPeriodCount === parentPeriodCount + 2;
-// });
+const parent = saveEntry.id;
+const parentPeriodCount = (parent.match(/\./g) || []).length;
 
-// if(coordsLength < 4 && children.length > 0){
-// updateCellBackground(div);
-// }else{
+let children = data.filter(entry => {
+    const childPeriodCount = (entry.id.match(/\./g) || []).length;
+    return entry.id.startsWith(parent + '.') && childPeriodCount === parentPeriodCount + 2;
+});
+
+children = children.filter(entry => entry.color);
+
+if(coordsLength < 4 && children.length > 0){
+updateCellBackground(div, children);
+}else{
 updateCellColors(hex, saveEntry);
-// }
-
+}
 
 addLabelEvents(hex, saveEntry);
-
-
+}
 
 })
 
 
 }
 
-function updateCellBackground(div){
+function updateCellBackground(div, children) {
+    const hexes = document.querySelectorAll(".hex");
+    let colorMap = [];
 
- // Create a canvas element
- const canvas = document.createElement('canvas');
- const context = canvas.getContext('2d');
+    hexes.forEach(hex => {
+        const col = hex.getAttribute('col');
+        const row = hex.getAttribute('row');
+        const rowCol = { row, col };
+        colorMap.push(rowCol);
+    });
 
- // Set the dimensions of the canvas to match the dimensions of a hexagon
- const hexWidth = 100; // Replace with the actual width of a hexagon
- const hexHeight = 86.6; // Replace with the actual height of a hexagon
- canvas.width = hexWidth;
- canvas.height = hexHeight;
+    collectGarbage()
 
- // Calculate the size of each hexagon
- const hexSize = Math.sqrt((hexWidth * hexHeight) / children.length);
+    children.forEach((child) => {
+        const id = child.id;
+        const col = id.split('.').slice(-1)[0]; // get last
+        const row = id.split('.').slice(-2, -1)[0]; // get second last
+        const hexEntry = colorMap.find(entry => entry.row === row && entry.col === col);
 
- // Draw each pixel on the canvas in a honeycomb shape
- children.forEach((child, index) => {
-     const col = index % Math.ceil(hexWidth / hexSize);
-     const row = Math.floor(index / Math.ceil(hexWidth / hexSize));
-     const x = col * hexSize * 3/4;
-     const y = row * hexSize + (col % 2) * (hexSize / 2);
-     context.fillStyle = child.color || '#FFFFFF'; // Default to white if no color is provided
-     drawHexagon(context, x, y, hexSize);
- });
+        if (hexEntry) {
+            hexEntry.color = child.color;
+        }
+    });
 
-    // Convert the canvas to a data URL
-    const imgData = canvas.toDataURL('image/png');
-    console.log('Image Data URL:', imgData);
+    colorMap = colorMap.filter(entry => entry.row !== null && entry.col !== null);
 
-    // Set the background image for the hexagon
-    div.style.backgroundImage = `url(${imgData})`;
-}
-
-function drawHexagon(context, x, y, size) {
-    const angle = Math.PI / 3;
-    context.beginPath();
-    for (let i = 0; i < 6; i++) {
-        context.lineTo(x + size * Math.cos(angle * i), y + size * Math.sin(angle * i));
+    const drawOnCanvas = (map, canvas) => {
+        const ctx = canvas.getContext('2d');
+        const hexSize = 20; 
+        const maxCol = Math.max(...map.map(entry => parseInt(entry.col))) + 1;
+        const maxRow = Math.max(...map.map(entry => parseInt(entry.row))) + 1;
+        canvas.width = maxCol * hexSize; 
+        canvas.height = maxRow * hexSize; 
+    
+        map.forEach(entry => {
+            let x = entry.col * (hexSize);
+            let y = entry.row * (hexSize);
+    
+            // Apply horizontal offset for even rows
+            if (entry.row % 2 === 0) {
+                x += hexSize / 2;
+            }
+    
+            ctx.fillStyle = entry.color;
+            drawHexagon(ctx, x, y, hexSize / 2);
+        });
+    };
+  
+    drawOnCanvas(colorMap, div.querySelector('.hexCanvas'));
+   
+    function drawHexagon(ctx, x, y, size) {
+        ctx.beginPath();
+        ctx.moveTo(x - size, y); // Left vertex
+        ctx.lineTo(x - size / 2, y - size * Math.sqrt(3) / 2); // Top left vertex
+        ctx.lineTo(x + size / 2, y - size * Math.sqrt(3) / 2); // Top right vertex
+        ctx.lineTo(x + size, y); // Right vertex
+        ctx.lineTo(x + size / 2, y + size * Math.sqrt(3) / 2); // Bottom right vertex
+        ctx.lineTo(x - size / 2, y + size * Math.sqrt(3) / 2); // Bottom left vertex
+        ctx.closePath();
+        ctx.fill();
     }
-    context.closePath();
-    context.fill();
+
+    div.querySelector('.left').style.borderRightColor = "transparent";
+    div.querySelector('.middle').style.backgroundColor = "transparent";
+    div.querySelector('.right').style.borderLeftColor = "transparent";
 }
+
+
 
 
 

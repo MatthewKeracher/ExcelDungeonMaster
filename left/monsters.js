@@ -86,7 +86,7 @@ function rollTreasure(treasure, locationFilter) {
     types.forEach(type => {
     if (loot[type]) {
     const entries = loot[type];
-    console.log(entries)
+    //console.log(entries)
     for (const [key, value] of Object.entries(entries)) {
     if (value.percentage !== 0) {
     // Roll a percentage to determine if the treasure is found
@@ -306,7 +306,7 @@ function makeJewelry() {
     // Construct the jewelry description
     const jewelry = `${numberFound} ${jewelryValue.type} ${jewelryType}s with ${gemType} worth ${jewelryValue.baseValue * valueAdjustment} gp each`;
 
-    console.log(jewelry)
+    //console.log(jewelry)
     return jewelry;
 }
 
@@ -380,7 +380,7 @@ function makeMagicItem() {
         magicItem = `${wandType}`;
     }
 
-    console.log(magicItem);
+    //console.log(magicItem);
     return magicItem;
 }
 

@@ -38,7 +38,9 @@ function handleMove(){
         const id = coords + '.' + row + '.' + col;
         parentToMove = data.find(entry => entry.id === id);
         childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
-        zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.'));   
+        zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.'));  
+        journalToMove = journalData.filter(entry => entry.scale.startsWith(id + '.') || entry.scale.startsWith(id));   
+        console.log(journalToMove)
     
         
         const cells = document.querySelectorAll('[row][col]');
@@ -70,8 +72,6 @@ function moveCellEvent(e) {
                 let newChildId = child.id.replace(parentToMove.id, newId);
                     child.id = newChildId;
                 
-            //console.log(child.id + ' -> ' + newChildId);
-                
             });
 
             zonesToMove.forEach(zone => {
@@ -79,7 +79,11 @@ function moveCellEvent(e) {
                 zone.coords = newZoneCoords;
             });
 
-            console.log(parentToMove.id + ' -> ' + newId);
+            journalToMove.forEach(entry => {
+                let newJournalId = entry.scale.replace(parentToMove.id, newId);
+                entry.scale = newJournalId;
+            });
+
             parentToMove.id = newId;
             
             // setTimeout(() => {
@@ -93,6 +97,8 @@ function moveCellEvent(e) {
         isMoving = false;
         parentToMove = null;
         childrenToMove = null;
+        zonesToMove = null;
+        journalToMove = null;
         
         console.log('isMoving', isMoving);
         

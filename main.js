@@ -49,6 +49,8 @@ let isImaging = false;
 let isMoving = false;
 let parentToMove = null;
 let childrenToMove = null;
+let zonesToMove = null;
+let journalToMove = null;
 
 let lastCell = '';
 let lastHex = '';

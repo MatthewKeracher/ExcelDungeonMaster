@@ -22,6 +22,16 @@
     src: url("Cascadia.ttf") format('truetype');
 }
 
+@font-face {
+    font-family: "elvish";
+    src: url("elvish.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "dwarvish";
+    src: url("dwarf.ttf") format('truetype');
+}
+
 
 body {
     font-family: 'Cascadia';

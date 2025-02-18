@@ -71,7 +71,7 @@ updateSquareGrid()
 const mouseOverHandler = (entry, label) => () => {
     if (entry.name !== "") {
         label.textContent = entry.name;
-        label.style.fontSize = '12px';
+        label.style.fontSize = '2vh';
     }
 };
 

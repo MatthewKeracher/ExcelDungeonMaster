@@ -30,6 +30,7 @@ let coords = '0.0';
 let region = 'Excel_DM'
 let regionObj = data[0];
 let scrollData = {X: 0, Y:0, Z:1}
+let DefaultZoom = 1;
 
 let zones = [];
 

@@ -341,47 +341,78 @@ function makeMagicItem() {
     let magicItem = '';
 
     if (itemType === 'Weapon') {
-        // Roll on the magicWeaponTable to determine the specific weapon
-        const weaponTypeRoll = rollDice(1, 100);
-        const weaponType = magicWeaponTable.find(weapon => weapon.range[0] <= weaponTypeRoll && weapon.range[1] >= weaponTypeRoll).weapon;
-
-        // Roll on the meleeWeaponBonusTable or rangedWeaponBonusTable to determine the bonus
-        const bonusTable = weaponType === 'Sling Bullet' || weaponType.includes('Arrow') || weaponType.includes('Bow') ? rangedWeaponBonusTable : meleeWeaponBonusTable;
-        const bonusRoll = rollDice(1, 100);
-        const bonus = bonusTable.find(bonus => bonus.range[0] <= bonusRoll && bonus.range[1] >= bonusRoll).bonus;
-
-        magicItem = `${weaponType} ${bonus}`;
+        magicItem = magicWeapon();
     } else if (itemType === 'Armour') {
-        // Roll on the magicArmourTable to determine the specific armour
-        const armourTypeRoll = rollDice(1, 100);
-        const armourType = magicArmourTable.find(armour => armour.range[0] <= armourTypeRoll && armour.range[1] >= armourTypeRoll).armour;
-
-        // Roll on the magicArmourAbilityTable to determine the bonus
-        const armourBonusRoll = rollDice(1, 100);
-        const armourBonus = magicArmourAbilityTable.find(bonus => bonus.range[0] <= armourBonusRoll && bonus.range[1] >= armourBonusRoll).armour;
-
-        magicItem = `${armourType} ${armourBonus}`;
+        magicItem = magicArmour();
     } else if (itemType === 'Potion') {
-        // Roll on the potionsTable to determine the specific potion
-        const potionTypeRoll = rollDice(1, 100);
-        const potionType = potionsTable.find(potion => potion.range[0] <= potionTypeRoll && potion.range[1] >= potionTypeRoll).type;
-        magicItem = `Potion of ${potionType}`;
+        magicItem = magicPotion();
     } else if (itemType === 'Scroll') {
-        // Roll on the scrollsTable to determine the specific scroll
-        const scrollTypeRoll = rollDice(1, 100);
-        const scrollType = scrollsTable.find(scroll => scroll.range[0] <= scrollTypeRoll && scroll.range[1] >= scrollTypeRoll).type;
-
-        magicItem = `${scrollType}`;
+        magicItem = magicScroll();
     } else if (itemType === 'Wand, Staff or Rod') {
-        // Roll on the wandsStavesRodsTable to determine the specific wand, staff, or rod
-        const wandTypeRoll = rollDice(1, 100);
-        const wandType = wandsStavesRodsTable.find(wand => wand.range[0] <= wandTypeRoll && wand.range[1] >= wandTypeRoll).type;
-
-        magicItem = `${wandType}`;
+        magicItem = magicWand();
+    } else if (itemType === 'Miscellaneous Item') {
+        magicItem = magicItem();
+    } else if (itemType === 'Rare Items') {
+        magicItem = rareItem();
     }
-
-    //console.log(magicItem);
     return magicItem;
 }
 
+function magicWeapon(){
+   const weaponTypeRoll = rollDice(1, 100);
+   const weaponType = magicWeaponTable.find(weapon => weapon.range[0] <= weaponTypeRoll && weapon.range[1] >= weaponTypeRoll).weapon;
+   const bonusTable = weaponType === 'Sling Bullet' || weaponType.includes('Arrow') || weaponType.includes('Bow') ? rangedWeaponBonusTable : meleeWeaponBonusTable;
+   const bonusRoll = rollDice(1, 100);
+   const bonus = bonusTable.find(bonus => bonus.range[0] <= bonusRoll && bonus.range[1] >= bonusRoll).bonus;
+   const weapon = `${weaponType} ${bonus}`;
+   return weapon
+ }
+ 
+
+function magicArmour(){
+   const armourTypeRoll = rollDice(1, 100);
+   const armourType = magicArmourTable.find(armour => armour.range[0] <= armourTypeRoll && armour.range[1] >= armourTypeRoll).armour;
+   const armourBonusRoll = rollDice(1, 100);
+   const armourBonus = magicArmourAbilityTable.find(bonus => bonus.range[0] <= armourBonusRoll && bonus.range[1] >= armourBonusRoll).armour;
+   const armour =  `${armourType} ${armourBonus}`;
+   return armour
+}
+
+function magicScroll(){
+    const scrollTypeRoll = rollDice(1, 100);
+    const scrollType = scrollsTable.find(scroll => scroll.range[0] <= scrollTypeRoll && scroll.range[1] >= scrollTypeRoll).type;
+    const scroll = `${scrollType}`
+    return scroll
+}
+
+function magicPotion(){
+    const potionTypeRoll = rollDice(1, 100);
+    const potionType = potionsTable.find(potion => potion.range[0] <= potionTypeRoll && potion.range[1] >= potionTypeRoll).type;
+    const potion = `Potion of ${potionType}`;
+    return potion
+}
+
+function magicWand(){
+    const wandTypeRoll = rollDice(1, 100);
+    const wandType = wandsStavesRodsTable.find(wand => wand.range[0] <= wandTypeRoll && wand.range[1] >= wandTypeRoll).type;
+    const wand = `${wandType}`;
+    return wand
+}
+
+function magicItem() {
+    const miscRoll = rollDice(1, 100);
+    const subtable = miscellaneousItemsTable.find(m => m.range[0] <= miscRoll && m.range[1] >= miscRoll).subtable;
+    const effectRoll = rollDice(1, 100);
+    const effect = subtable === 'Effect Subtable 1' ? effectSubtable1.find(e => e.range[0] <= effectRoll && e.range[1] >= effectRoll) : effectSubtable2.find(e => e.range[0] <= effectRoll && e.range[1] >= effectRoll);
+    const formRoll = rollDice(1, 100);
+    const form = formTable[effect.form].find(f => f.chance[0] <= formRoll && f.chance[1] >= formRoll).item;
+    return `${form} of ${effect.effect}`;
+}
+
+function rareItem() {
+    const rareItemRoll = rollDice(1, 100);
+    const rareItemObj = rareItems.find(item => item.range[0] <= rareItemRoll && item.range[1] >= rareItemRoll);
+    const rareItem = `${rareItemObj.type}`;
+    return rareItem
+}
 

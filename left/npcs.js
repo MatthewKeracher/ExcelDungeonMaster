@@ -476,7 +476,7 @@ function makeNPC(race, npcClass, level, npcName) {
     if (spells) {
         HTML += '<br><br><u>Spells:</u><br>';
         spells.forEach(spell => {
-            HTML += `${spell.Name}<br>`;
+            HTML += `${spell.name}<br>`;
         });
     }
 
@@ -623,8 +623,6 @@ function getSaveThrows(npcClass, level, race) {
 
 function getSkills(npcClass, level){
 
-
-
 const classKey = npcClass.toLowerCase();
 const classTable = skills[classKey];
 
@@ -665,11 +663,9 @@ return;
 }
 
 
-
-
 // Filter spells based on class, current spell level, and ensure they haven't been used
 const availableSpells = spells.filter(entry => 
-entry.Class === classProper && parseInt(entry.Level) === spellLevel && !usedSpells.has(entry.Name));
+entry.Class === classProper && parseInt(entry.Level) === spellLevel && !usedSpells.has(entry.name));
 
 // Randomly select spells based on the number of slots available at this level
 for (let i = 0; i < numberOfSpellsAtLevel; i++) {
@@ -684,7 +680,7 @@ const chosenSpell = availableSpells[randomIndex];
 
 // Add the chosen spell to the selected spells array and mark it as used
 selectedSpells.push(chosenSpell);
-usedSpells.add(chosenSpell.Name);
+usedSpells.add(chosenSpell.name);
 
 // Remove the chosen spell from available spells to avoid duplicates
 availableSpells.splice(randomIndex, 1);

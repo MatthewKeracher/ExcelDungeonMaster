@@ -77,20 +77,17 @@ function toggleModes(activeDiv) {
 isPainting = true
 handlePaint();
 
-//EDIT MODE
-if (currentMode === "edit") {
-//Change Mode 
+
+if (currentMode === "edit") { //EDIT MODE
 modeBox.innerHTML = `<b>Edit Mode</b>`
 
-//Change what displays
-placeName.disabled = false;
+placeName.disabled = false; //Change what displays
 placeSymbol.disabled = false;
 textDiv.disabled = false;
 textDiv.contentEditable = true;
 commandLine.style.display = "none";
 
-//Journal
-entryName.disabled = false;
+entryName.disabled = false; //Journal
 journalLeft.disabled = false;
 journalRight.disabled = false;
 journalLeft.contentEditable = true;
@@ -99,8 +96,7 @@ journalRight.contentEditable = true;
 //scaleSelector.style.display = "block";
 tabTables()
 
-//Change colour
-modeColor = "255,105,180";
+modeColor = "255,105,180";  //Change colour
 toggleModeColor();
 
 if(source){
@@ -110,28 +106,33 @@ textDiv.innerHTML += handleCommands();
 }
 
 if(!journalShowing){
+
 trapFocus([placeSymbol, placeName, textDiv])
-placeCaretAtEnd(textDiv)
 textDiv.scrollTop = textDiv.scrollHeight;
+textDiv.focus();
+placeCaretAtEnd(textDiv)
+
 }else{
 trapFocus([journalLeft, journalRight]);
 
-if(entryName.value !== ""){
-journalLeft.focus()
-}else{
-entryName.focus();
-}
-
+    if(entryName.value !== ""){
+    journalLeft.focus()
+    }else{
+    entryName.focus();
+    }
 }
 
 //Change Content    
 hitPointInit();
 
-
-//MAP MODE
-} else if(currentMode === "map"){
+} else if(currentMode === "map"){ //MAP MODE
 //Change Mode
 modeBox.innerHTML = `<b>Map Mode</b>`
+
+//What is focused
+placeName.blur();
+placeSymbol.blur();
+textDiv.focus();
 
 if(journalShowing){
 autoSpacing(journalLeft);
@@ -158,10 +159,9 @@ journalRight.contentEditable = false;
 modeColor = "0, 255, 0";
 toggleModeColor();
 
-//What is focused
-textDiv.blur();
-placeSymbol.blur();
-placeName.blur();
+
+
+
 tabTables();
 
 if(journalShowing){
@@ -179,15 +179,15 @@ textDiv.innerHTML += handleCommands()
 hitPointInit();
 
 //Save Content
-let div = getCurrentDiv()
+let div = getCurrentDiv();
 saveEntry(div);
 saveData();
 updateGrid();
 
-//COMMAND MODE
-} else if(currentMode === "command"){
-//Change Mode
-source = activeDiv;
+
+} else if(currentMode === "command"){ //COMMAND MODE
+
+source = activeDiv; //Change Mode
 modeBox.innerHTML = `<b>Command Mode</b>`
 
 //Change what displays
@@ -260,7 +260,7 @@ function handleCommands() {
     inputText = resolveNestedCommands(inputText);
 
     // Check for command types: roll, monster, or npc
-    const commandRegex = /^(search|return|make|roll|monster|npc|trim|get)\s+(.+)/i;
+    const commandRegex = /^(>|return|make|roll|monster|spell|npc|trim|get)\s+(.+)/i;
     const match = inputText.match(commandRegex);
 
     if (match) {
@@ -268,6 +268,8 @@ function handleCommands() {
         const params = match[2].trim(); // The remaining text after the command type
 
         switch (commandType) {
+            case '>':
+                return handleDoCommand(params);
             case 'return':
                 return handleReturnCommand(params);
             case 'trim':
@@ -280,6 +282,8 @@ function handleCommands() {
                 return handleRollCommand(params);
             case 'monster':
                 return handleMonsterCommand(params);
+            case 'spell':
+                return handleSpellCommands(params);     
             case 'npc':
                 return handleNpcCommand(params);
             default:
@@ -288,6 +292,36 @@ function handleCommands() {
     } else {
         return inputText; // Return raw input if no command is recognized
     }
+}
+
+function handleDoCommand(params){
+
+const [command, ...rest] = params.split(' ');
+
+switch (command) {
+    case 'save':
+        handleExport();
+        return ``
+    case 'load':
+        handleLoad();
+        return ``
+    case 'clear':
+        handleClear();
+        return ``
+    case 'new':
+        handleNew();
+        return ``  
+    case 'grid':
+         handleGrid();
+         return ``
+    case 'move':
+         handleMove(rest[0]);
+         return ``        
+    default:
+        return '{Command not recognized}';
+}
+
+
 }
 
 function handleReturnCommand(params) {
@@ -634,7 +668,7 @@ function handleRollCommand(params) {
             // Find the table with class 'table'
             const table = tempContainer.querySelector('.table');
 
-            console.log(table)
+            //console.log(table)
         
             if (table && table.rows.length > 0) {
                 // Return the first row
@@ -698,33 +732,63 @@ function rollonTable(table) {
     return result;
 }
 
+function searchFor(name, array) {
+ 
+    console.log(name, array)
+    const searchWords = name.toLowerCase().replace(/,/g, ' ').split(' ');
+        
+    // Search for the closest match based on the number of matching words
+    let matches = [];
+
+    array.forEach(entry => {
+        const words = entry.name.toLowerCase().replace(/,/g, ' ').split(' ');
+        const matchCount = searchWords.reduce((count, word) => {
+            return count + (words.includes(word) ? 1 : 0);
+        }, 0);
+
+        if (matchCount === searchWords.length) {
+            matches.push(entry);
+        }
+    });
+
+    return matches[0];
+}
+
+function find(name, array) {
+    const found = searchFor(name.toString(), eval(array));
+
+    if (!found) {
+        return `<p>No entry found for name: ${name}.</p>`;
+    }
+
+    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
+
+    // Generate table headers
+    tableHTML += '<thead><tr>';
+    tableHTML += '<th class="tableCell tableHeader">Key</th>';
+    tableHTML += '<th class="tableCell tableHeader">Value</th>';
+    tableHTML += '</tr></thead>';
+
+    // Generate table body
+    tableHTML += '<tbody>';
+    for (const key in found) {
+        tableHTML += '<tr>';
+        tableHTML += `<td class="tableCell">${key}</td>`;
+        tableHTML += `<td class="tableCell">${found[key]}</td>`;
+        tableHTML += '</tr>';
+    }
+    tableHTML += '</tbody></table>';
+
+    return tableHTML;
+}
+
+
+
 function handleMonsterCommand(params) {
     const [searchTerms, number] = params.trim().split(',');
 
     if (searchTerms) {
-
-        function searchMonster(monsterName) {
-            // Replace commas with spaces and split the search string into individual words
-            const searchWords = monsterName.toLowerCase().replace(/,/g, ' ').split(' ');
-                
-            // Search for the closest match based on the number of matching words
-            let matches = [];
-
-            monsters.forEach(monster => {
-                const monsterWords = monster.name.toLowerCase().replace(/,/g, ' ').split(' ');
-                const matchCount = searchWords.reduce((count, word) => {
-                    return count + (monsterWords.includes(word) ? 1 : 0);
-                }, 0);
-    
-                if (matchCount === searchWords.length) {
-                    matches.push(monster);
-                }
-            });
-
-            return matches[0];
-        }
-    
-        let monster = searchMonster(searchTerms);
+        let monster = searchFor(searchTerms, monsters);
         //console.log(monster)
     
         if (number && !isNaN(number)) {
@@ -735,6 +799,7 @@ function handleMonsterCommand(params) {
         }
     }
 }
+
 function handleNpcCommand(params) {
     // Example: 'human fighter 5 Rickshift'
     const npcRegex = /^(\w+)\s+(\w+)\s+(\d+)\s*(.*)/i;
@@ -763,7 +828,7 @@ function resolveNestedCommands(text) {
 
         // Evaluate the inner command and replace it with its result
         const evaluatedResult = evaluateInnerCommand(innerContent);
-        //text = text.replace(innerCommand, evaluatedResult);
+        text = text.replace(innerCommand, evaluatedResult);
     }
 
     return text;
@@ -790,7 +855,7 @@ function parseDice(diceNotation) {
 
 // Roll dice function
 function rollDice(numDice, diceSides) {
-       let total = 0;
+    let total = 0;
     for (let i = 0; i < numDice; i++) {
         total += Math.floor(Math.random() * diceSides) + 1;
     }

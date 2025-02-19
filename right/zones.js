@@ -1,9 +1,12 @@
 let classicBlue = "rgb(40, 100, 165)"
 
-function addCellToZone(currentCell, dir){
+function addCellToZone(dir){
+
+let currentCell = getCurrentDiv()
+console.log(currentCell)
 
 startInZone = currentCell.classList.contains('inZone');
-
+console.log(currentZone)
 if(currentZone.length === 0){
 getZone(currentCell);
 }
@@ -318,4 +321,5 @@ function clipZone(currentCell) {
     
     changeCell(currentCell)
     currentZone = [];
+    console.log(zones)
 }

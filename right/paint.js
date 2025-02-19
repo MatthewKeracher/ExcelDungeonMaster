@@ -93,13 +93,14 @@ return directions
 
 }
 
-function updateColor(col, row){
+function updateColor(col, row, specColor){
+    console.log(specColor)
 const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id)
 
 if(saveEntry?.color){ 
-saveEntry.color = currentColor
+saveEntry.color = specColor? specColor : currentColor
 }
 
 if(saveEntry === undefined ){ //&& cellEntry === undefined
@@ -213,7 +214,7 @@ setColor(swatchElement)
 
 function loadPalette(){
 
-let palette = regionObj?.palette;
+const palette = regionObj?.palette ?? defaultData.palette;
 
 if(palette){
 

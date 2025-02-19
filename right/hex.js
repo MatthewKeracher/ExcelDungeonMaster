@@ -73,21 +73,21 @@ function createHexagons(rows, cols, div) {
 
             if(col > lowerBound && col < upperBound && row < (midRow * 2)){
 
-             // Create a canvas element for the background
-             const canvas = document.createElement('canvas');
+            hexagon.classList.add('active');
 
-             if (col % 2 === 1) {
-                canvas.classList.add('hexCanvas');
-                canvas.classList.add('Even');
-            }else{
-                canvas.classList.add('hexCanvas');
-                canvas.classList.add('Odd');
-            }
-             // Optional: Add class for styling
- 
-             //if(row === 5 && col === 12){
-             hexagon.appendChild(canvas);
-             //}
+             // Create a canvas element for the background
+            //  const canvas = document.createElement('canvas');
+
+            //  if (col % 2 === 1) {
+            //     canvas.classList.add('hexCanvas');
+            //     canvas.classList.add('Even');
+            // }else{
+            //     canvas.classList.add('hexCanvas');
+            //     canvas.classList.add('Odd');
+            // }
+            
+            //  hexagon.appendChild(canvas);
+            
 
             // Create Label for Hexagon
             const label = document.createElement('div');
@@ -162,7 +162,7 @@ function getCompass() {
         }
     });
 
-    console.log(North, South, East, West)
+    //console.log(North, South, East, West)
     return { North, South, East, West };
 }
 
@@ -242,9 +242,9 @@ let regionColAdd
 let destRow
 let destCol
 
-const regionCol = regionObj.cols;
-console.log('regionObj:', regionObj)
-console.log('regionCol:' + regionCol)
+const regionCol = returnCol(regionObj.id);
+//console.log('regionObj:', regionObj)
+//console.log('regionCol:' + regionCol)
 
 //Working
 if(row < North && col < upperBound && col > lowerBound){ 
@@ -334,11 +334,13 @@ if(row < North && col < upperBound && col > lowerBound){
 
     destRow = smallestDiv.getAttribute('row');
     
+    console.log(regionObj)
 
     if (regionCol % 2 === 0) {
         //even
         regionRowAdd = 0
         regionColAdd = 1
+        console.log(regionCol + ' is even')
        
     } else {
         //odd
@@ -376,7 +378,8 @@ if(row < North && col < upperBound && col > lowerBound){
 
  
 }
-    console.log(destRow, destCol)
+    console.log('Destination', destRow, destCol)
+    console.log('Region', regionRowAdd, regionColAdd)
     handleTravel(regionRowAdd, regionColAdd, destRow, destCol);
 
 }};
@@ -386,8 +389,6 @@ function changeHex(hexagon){
 if(currentMode !== "map"){     
 saveEntry(getCurrentDiv())
 };
-
-
 
 
 selectedCellStyle(hexagon);
@@ -428,30 +429,30 @@ hexagons.forEach(hex => {
 
 const col = hex.getAttribute('col');
 const row = hex.getAttribute('row');
-const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+// const div = document.querySelector(`[row="${row}"][col="${col}"]`);
 const id =  coords + '.' + row + '.' + col;
 
 const saveEntry = data.find(entry => entry.id === id);
 
 if(saveEntry){
     
-let coordsLength = coords.split('.').length;
+// let coordsLength = coords.split('.').length;
 
-const parent = saveEntry.id;
-const parentPeriodCount = (parent.match(/\./g) || []).length;
+// const parent = saveEntry.id;
+// const parentPeriodCount = (parent.match(/\./g) || []).length;
 
-let children = data.filter(entry => {
-    const childPeriodCount = (entry.id.match(/\./g) || []).length;
-    return entry.id.startsWith(parent + '.') && childPeriodCount === parentPeriodCount + 2;
-});
+// let children = data.filter(entry => {
+//     const childPeriodCount = (entry.id.match(/\./g) || []).length;
+//     return entry.id.startsWith(parent + '.') && childPeriodCount === parentPeriodCount + 2;
+// });
 
-children = children.filter(entry => entry.color);
+// children = children.filter(entry => entry.color);
 
-if(coordsLength < 4 && children.length > 0){
-updateCellBackground(div, children);
-}else{
+// if(coordsLength < 4 && children.length > 0){
+// updateCellBackground(div, children);
+// }else{
 updateCellColors(hex, saveEntry);
-}
+// }
 
 addLabelEvents(hex, saveEntry);
 }

@@ -1,112 +1,97 @@
 
-function handlePaint() {
 
-const paletteDiv = document.getElementById('paletteDiv');
 
-if(!isPainting && currentMode === 'map'){
-isPainting = true
-isFilling = false
-paletteDiv.style.display = "flex";
+function handleMove(moveToID){
+
+if(!isMoving && currentMode === 'map'){
+
+isMoving = true
+
+const cell = getCurrentDiv();
+const row = cell.getAttribute('row');
+const col = cell.getAttribute('col');
+const id = coords + '.' + row + '.' + col;
+parentToMove = data.find(entry => entry.id === id);
+childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
+zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.')|| zone.coords === id);  
+journalToMove = journalData.filter(entry => entry.scale.startsWith(id + '.') || entry.scale.startsWith(id));   
+//console.log(journalToMove)
+
+const moveToCell = data.find(entry => entry.id === moveToID);
+
+if(moveToCell !== undefined){
+moveCellEvent(null, moveToCell)
 }else{
-isPainting = false
-paletteDiv.style.display = "none";
+const cells = document.querySelectorAll('[row][col]');
+cells.forEach(cell => {
+cell.addEventListener('click', moveCellEvent);
+});
 }
-}
-
-function makeNewOuterLevel(){
-
-// Trigger selection mode.
+}else{
+isMoving = false
+}   
 
 }
 
-function handleMove(){
+function moveCellEvent(e, moveToCell) {
+if (!isMoving) return;
 
-    if(!isMoving && currentMode === 'map'){
-    
-    isMoving = true
-   
-    const cell = getCurrentDiv();
-        const row = cell.getAttribute('row');
-        const col = cell.getAttribute('col');
-        const id = coords + '.' + row + '.' + col;
-        parentToMove = data.find(entry => entry.id === id);
-        childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
-        zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.')|| zone.coords === id);  
-        journalToMove = journalData.filter(entry => entry.scale.startsWith(id + '.') || entry.scale.startsWith(id));   
-        console.log(journalToMove)
-    
-        console.log(zonesToMove)
-        
-        const cells = document.querySelectorAll('[row][col]');
-        cells.forEach(cell => {
-            cell.addEventListener('click', moveCellEvent);
-        });
-    
-    }else{
-    isMoving = false
-    }   
-    
-    }
+const newCell = e === null? null : e.currentTarget;
+const newRow = newCell === null? null : newCell.getAttribute('row');
+const newCol = newCell === null? null :newCell.getAttribute('col');
+const newId = moveToCell? moveToCell.id : coords + '.' + newRow + '.' + newCol;
 
-function moveCellEvent(e) {
-    if (!isMoving) return;
+showPrompt('Move Cell and Contents: Are you sure you want to move everything?').then(shouldMove => {
+if (shouldMove) {
 
-    const newCell = e.currentTarget;
-    const newRow = newCell.getAttribute('row');
-    const newCol = newCell.getAttribute('col');
-    const newId = coords + '.' + newRow + '.' + newCol;
+// deleteTile();
 
-    showPrompt('Move Cell and Contents: Are you sure you want to move everything?').then(shouldMove => {
-        if (shouldMove) {
 
-            deleteTile();
+childrenToMove.forEach(child => {
+let newChildId = child.id.replace(parentToMove.id, newId);
+child.id = newChildId;
 
-          
-            childrenToMove.forEach(child => {
-                let newChildId = child.id.replace(parentToMove.id, newId);
-                    child.id = newChildId;
-                
-            });
+});
 
-            zonesToMove.forEach(zone => {              
+zonesToMove.forEach(zone => {              
 
-                const zoneSpecialId = zone.id.split('.').slice(-1)[0]; 
-                
-                let newZoneCoords = zone.coords.replace(parentToMove.id, newId);
-                zone.coords = newZoneCoords;
+const zoneSpecialId = zone.id.split('.').slice(-1)[0]; 
 
-                let newZoneId = zone.id.replace(parentToMove.id, newId);
-                zone.id = newZoneId + '.' + zoneSpecialId;    
-            });
+let newZoneCoords = zone.coords.replace(parentToMove.id, newId);
+zone.coords = newZoneCoords;
 
-            journalToMove.forEach(entry => {
-                let newJournalId = entry.scale.replace(parentToMove.id, newId);
-                entry.scale = newJournalId;
-            });
+let newZoneId = zone.id.replace(parentToMove.id, newId);
+zone.id = newZoneId + '.' + zoneSpecialId;    
+});
 
-            parentToMove.id = newId;
-            
-                saveData();
-                loadGrid();  
+journalToMove.forEach(entry => {
+let newJournalId = entry.scale.replace(parentToMove.id, newId);
+entry.scale = newJournalId;
+});
 
-           
-        }
-        
-        // Reset moving state
-        isMoving = false;
-        parentToMove = null;
-        childrenToMove = null;
-        zonesToMove = null;
-        journalToMove = null;
-        
-        console.log('isMoving', isMoving);
-        
-        // Remove event listeners
-        const cells = document.querySelectorAll('[row][col]');
-        cells.forEach(cell => {
-            cell.removeEventListener('click', moveCellEvent);
-        });
-    });
+parentToMove.id = newId;
+
+saveData();
+loadGrid();  
+
+
+}
+
+// Reset moving state
+isMoving = false;
+parentToMove = null;
+childrenToMove = null;
+zonesToMove = null;
+journalToMove = null;
+
+//console.log('isMoving', isMoving);
+
+// Remove event listeners
+const cells = document.querySelectorAll('[row][col]');
+cells.forEach(cell => {
+cell.removeEventListener('click', moveCellEvent);
+});
+});
 }
 
 function handleFill(){
@@ -146,12 +131,20 @@ loadGrid()
 
 }
 
-function handleNew() {
+function handleNew(){
+console.log('handleNew()')
 
+showPrompt('Make New Project: Are you sure you want to erase all data?').then(shouldDelete => {
+
+if (shouldDelete) {
+console.log('Deleting...')
 data = defaultData;
 regionObj = data[0];
+regionName.textContent = data[0].name;
+emptyStoryteller();
 
 zones = []; 
+journalData = [];
 coords = '0.0';
 removeData();
 
@@ -164,9 +157,18 @@ loadGrid();
 idBox.textContent = '';
 textDiv.innerHTML = '';
 
+placeName.value = data[0].name;
+placeSymbol.value = data[0].symbol;
+textDiv.innerHTML = data[0].desc;
+
+}});
+
 }
 
-function clearMap(){
+function handleClear() {
+
+showPrompt('Clear Current Map: Are you sure you want to erase all visible data?').then(shouldDelete => {
+if (shouldDelete) {
 
 let allCells = document.querySelectorAll('[row][col]')
 //console.log(allCells.length + ' cells to clear.')
@@ -196,50 +198,53 @@ zones = zones.filter(zone => zone.coords !== coords);
 saveData();
 loadGrid();
 
+}})
 
-}
+
+};
 
 function handleExport() {
-    const regionName = document.getElementById('regionName');
+const regionName = document.getElementById('regionName');
 
-    
-    // Create an object that includes all three data sets
-    const exportData = {
-        data: data,
-        journalData: journalData,
-        zones: zones
-    };
 
-    // Convert the combined object to a JSON string
-    const exportStr = JSON.stringify(exportData, null, 2); // Pretty print with 2 spaces
+// Create an object that includes all three data sets
+const exportData = {
+data: data,
+journalData: journalData,
+zones: zones
+};
 
-    // Create a Blob object with the combined data
-    const blob = new Blob([exportStr], { type: 'application/json' });
+// Convert the combined object to a JSON string
+const exportStr = JSON.stringify(exportData, null, 2); // Pretty print with 2 spaces
 
-    // Create a temporary anchor element
-    const a = document.createElement('a');
+// Create a Blob object with the combined data
+const blob = new Blob([exportStr], { type: 'application/json' });
 
-    // Create an object URL for the Blob
-    const url = URL.createObjectURL(blob);
-    a.href = url;
+// Create a temporary anchor element
+const a = document.createElement('a');
 
-    // Set the download attribute to specify the filename
-    a.download = regionName ? regionName.textContent + '.json' : 'data.json';
+// Create an object URL for the Blob
+const url = URL.createObjectURL(blob);
+a.href = url;
 
-    // Append the anchor to the body (required for Firefox)
-    document.body.appendChild(a);
+// Set the download attribute to specify the filename
+a.download = regionName ? regionName.textContent + '.json' : 'data.json';
 
-    // Programmatically click the anchor to trigger the download
-    a.click();
+// Append the anchor to the body (required for Firefox)
+document.body.appendChild(a);
 
-    // Remove the anchor from the DOM
-    document.body.removeChild(a);
+// Programmatically click the anchor to trigger the download
+a.click();
 
-    // Release the object URL
-    URL.revokeObjectURL(url);
-}
+// Remove the anchor from the DOM
+document.body.removeChild(a);
 
-function handleLoad() {
+// Release the object URL
+URL.revokeObjectURL(url);
+};
+
+function handleLoad()  {
+
 // Create a hidden input element to trigger the file explorer
 const input = document.createElement('input');
 input.type = 'file';
@@ -257,31 +262,18 @@ idBox.textContent = '';
 // Set up the callback for when the file is loaded
 reader.onload = function(e) {
 try {
-// Parse the JSON content from the file
 const loadedData = JSON.parse(e.target.result);
-
-// Check if the loaded data has the expected structure
-// if (loadedData.data && loadedData.journalData && loadedData.zones) {
-
-// Replace the current data with the loaded data
 data = loadedData.data;
 journalData = loadedData.journalData;
 zones = loadedData.zones;
 
 collectGarbage();
 
-//console.log("Data successfully loaded:", data);
-//console.log("Journal data successfully loaded:", journalData);
-//console.log("Zones successfully loaded:", zones);
-
 if(Array.isArray(zones) === false){zones = []}
 
-// Update UI elements
 updateGrid();
-// Add any other necessary UI updates for journalData and zones
-// } else {
-//     console.error("Loaded file does not have the expected structure");
-// }
+regionName.textContent = data[0].name
+
 } catch (error) {
 console.error("Error parsing JSON file:", error);
 }
@@ -294,41 +286,16 @@ reader.readAsText(file);
 
 // Trigger the file explorer by clicking the hidden input
 input.click();
-}
-    
-function handleEnter(){
-    
-//console.log('handleEnter():')
-const logo = document.getElementById("startLogo");
-logo.style.display = "none";
+};
 
-captureGridSize();
 
-//Set selected cell as regionObj
-regionObj = getObj(idBox.textContent);
-
-regionObj.scrollData = {
-    X: scrollConvert(grid.scrollLeft, "percentage", "X"), 
-    Y: scrollConvert(grid.scrollTop, "percentage", "Y"), 
-    Z: gridContainer.style.zoom}
-
-    //console.log(scrollData)
-    //console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
-
-const regionName = document.getElementById('regionName');
-regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
-coords = regionObj.id;
-
-loadGrid();
-goToEntry(regionObj.id);
-
-}
 
 function handleTravel(regionRowAdd, regionColAdd, destRow, destCol){
 
 console.log('handleTravel()')
 const here = getCurrentDiv()
-console.log(here)
+
+if(idBox.textContent.split('.').length === 4){return}
 
 //Transform Coords for Direction and Go There
 const oldRegionCol = coords.split('.').slice(-1)[0]; // get last
@@ -340,7 +307,7 @@ const newRegionRow = parseInt(oldRegionRow, 10) + parseInt(regionRowAdd, 10)
 coords = returnCoords + '.' + newRegionRow + '.' + newRegionCol
 
 const destination = coords + '.' + destRow + '.' + destCol;
-console.log(destination)
+//console.log(destination)
 //Move
 regionObj = getObj(coords);
 const regionName = document.getElementById('regionName');
@@ -350,35 +317,6 @@ loadGrid();
 goToEntry(destination);
 
 }
-
-function handleExit(){
-
-//console.log('handleExit')
-
-//Move scrollbar to be over regionObj
-scrollData = regionObj.scrollData
-
-//Remove 2 digits from coords and go there.
-coords = parseParent(regionObj.id);
-
-if(regionObj.id === '0.0'){makeNewOuterLevel()}
-
-//Get Obj for parent cell.
-let returnObj = regionObj
-regionObj = getObj(coords);
-
-
-//Set parent cell name as region name. 
-const regionName = document.getElementById('regionName');
-regionName.textContent = regionObj && regionObj.name !== ''? regionObj.name : "Excel_DM"
-
-loadGrid();
-goToEntry(returnObj.id);
-showInactivityImage()
-
-}
-
-
 
 
 function setGridSize() {
@@ -423,5 +361,24 @@ captureGridSize()
 
 }
 
+function makeNewOuterLevel(){
+
+    // Trigger selection mode.
+    
+    }
 
 
+    function handlePaint() {
+
+        const paletteDiv = document.getElementById('paletteDiv');
+        
+        if(!isPainting && currentMode === 'map'){
+        isPainting = true
+        isFilling = false
+        paletteDiv.style.display = "flex";
+        }else{
+        isPainting = false
+        paletteDiv.style.display = "none";
+        }
+
+        }

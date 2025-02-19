@@ -2,7 +2,7 @@ function getScrollSpells(npcClass, level) {
 
 const possibleSpells = spells.filter(spell => parseInt(spell.Level) === parseInt(level) && spell.Class === npcClass);
 const randomSpell = possibleSpells[Math.floor(Math.random() * possibleSpells.length)];    
-return randomSpell.Name;
+return randomSpell.name;
     
 }
 

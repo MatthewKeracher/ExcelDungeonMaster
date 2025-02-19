@@ -100,7 +100,8 @@
     font-size: 15px;
     /* line-height: 1.5; */
     resize: none;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     white-space: pre-wrap
 }
 

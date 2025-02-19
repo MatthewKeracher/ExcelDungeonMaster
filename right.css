@@ -86,7 +86,7 @@ filter: brightness(10)
 
 .hexSelect {
 animation: flash 2s infinite;
-opacity: 0.4; 
+opacity: 0.9; 
 }
 
 .squareSelect {
@@ -168,7 +168,6 @@ position: relative;
 float: left;
 margin-right: calc(var(--hex-margin-right, -12px));
 margin-bottom: calc(var(--hex-margin-bottom, -25px));
-cursor: default;
 }
 
 .Odd {

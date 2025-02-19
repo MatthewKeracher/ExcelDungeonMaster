@@ -15,9 +15,21 @@ textDiv.innerHTML = "";
 
 function collectGarbage() {
     const totalTrash = data.length;
-    data = data.filter(entry => entry.rows !== null || entry.cols !== null);
+    //data = data.filter(entry => entry.rows !== null || entry.cols !== null);
     //console.log(data[0]);
     //console.log('Deleted ' + (totalTrash - data.length) + ' entries');
+
+    // let i = 0
+
+    // data.forEach(entry => {
+    //     if (entry.palette === defaultData.palette) {
+            
+    //         delete entry.palette;
+    //         i++
+    //     }
+    // });
+
+    // console.log('Deleted ' + i+ ' palettes.')
 
     const coordCount = {};
     data.forEach(entry => {
@@ -75,17 +87,18 @@ let row = returnRow(id);
 let col = returnCol(id);
 
 const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+
+
 return div;
 
 }
 
 function goToEntry(id) {
 
-textDiv.innerHTML = ''
-placeName.value = ''
-placeSymbol.value = ''
+emptyStoryteller()
 
 let entry = getObj(id)
+console.log(entry)
 
 if(entry){
 placeName.value = entry.name;
@@ -160,23 +173,15 @@ function showPrompt(message) {
 
         promptBox.style.display = 'block';
         promptMsg.textContent = message;
-        promptBox.focus();
+        promptBox.focus();     
 
-        removeHotKeys();
-
-        function promptKeyHandler(event) {
-            if (event.key.toLowerCase() === 'y') {
-                cleanup(true);
-            } else if (event.key.toLowerCase() === 'n') {
-                cleanup(false);
-            }
-        }
-
-        document.addEventListener('keydown', promptKeyHandler);
+        Mousetrap.bind('y', () => cleanup(true));
+        Mousetrap.bind('n', () => cleanup(false));
 
         function cleanup(result) {
             promptBox.style.display = 'none';
-            addHotkeys();
+            Mousetrap.unbind('y');
+            Mousetrap.unbind('n');
             resolve(result);
         }
     });

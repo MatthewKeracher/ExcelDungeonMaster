@@ -10,6 +10,7 @@ localStorage.setItem('location', JSON.stringify(scrollData));
 function removeData() {
     localStorage.removeItem('data');
     localStorage.removeItem('zones');
+    localStorage.removeItem('journal');
 }
 
 // Function to load data from localStorage
@@ -44,58 +45,60 @@ const idBox = document.getElementById('idBox');
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 const placeSymbol = document.getElementById('placeSymbol')
-const inZone = div.classList.contains('inZone');
 
-const row = parseInt(div.getAttribute('row'));
-const col = parseInt(div.getAttribute('col'));
+const inZone = div? div.classList.contains('inZone') : null;
+const row = div? parseInt(div.getAttribute('row')) : null;
+const col = div? parseInt(div.getAttribute('col')) : null;
 
-
-// //console.log(regionObj, idBox.textContent)
 if(regionObj.id === idBox.textContent){
 const regionName = document.getElementById('regionName');
 regionName.textContent = placeName.value;
 }
 
-if(inZone){
+if (inZone !== null && inZone) {
 
-let zoneId = div.getAttribute('zone');
-let zone = zones.find(entry => entry.id === zoneId)
+    let zoneId = div.getAttribute('zone');
+   
+    let zone = zones.find(entry => entry.id === zoneId);
 
-zone.name = placeName.value;
-zone.desc = textDiv.innerHTML;
+    zone.name = placeName.value;
+    zone.desc = textDiv.innerHTML;
 
-//Save Individual Symbols to points.
-let pointEntry = zone.points.find(point => point.row === row && point.col === col);
+    // Save Individual Symbols to points.
+    let pointEntry = zone.points.find(point => point.row === row && point.col === col);
 
-pointEntry.symbol = placeSymbol.value;
+    pointEntry.symbol = placeSymbol.value;
 
-}else{
+} else {
 
-let exists = data.find(entry => entry.id === idBox.textContent)
+    console.log('saving...')
 
-if(exists){
-exists.name = placeName.value;
-exists.symbol = placeSymbol.value;
-exists.desc = textDiv.innerHTML;
-exists.scrollData = scrollData
-//console.log(exists)
+    let exists = data.find(entry => entry.id === idBox.textContent);
 
-const cellLabel = div.querySelector('.cellLabel');
-if (cellLabel) {
-    cellLabel.textContent = placeSymbol.value? placeSymbol.value : placeName.value.charAt(0);
-    div.setAttribute('sym', placeSymbol.value);
-}
+    if (exists) {
+        exists.name = placeName.value;
+        exists.symbol = placeSymbol.value;
+        exists.desc = textDiv.innerHTML;
+        exists.scrollData = scrollData;
+        // console.log(exists)
 
-}else{
-makeNewEntry();
-}
+        const cellLabel = div? div.querySelector('.cellLabel'): null;
+        if (cellLabel !== null) {
+            cellLabel.textContent = placeSymbol.value ? placeSymbol.value : placeName.value.charAt(0);
+            div.setAttribute('sym', placeSymbol.value);
+        }
+
+    console.log(exists)
+
+    } else {
+        makeNewEntry();
+    }
 
 }
 
 if(journalShowing){
 saveJournalEntry();
 }
-
 
 }
 
@@ -107,7 +110,7 @@ name: placeName.value,
 symbol: placeSymbol.value,
 desc: textDiv.innerHTML,
 grid: isHexMap? "hex" : "square",
-palette: defaultData[0].palette,
+// palette: defaultData[0].palette,
 scrollData: scrollData,
 }
 

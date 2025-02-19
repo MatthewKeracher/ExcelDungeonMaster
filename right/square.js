@@ -108,9 +108,11 @@ if(gridCell.classList.contains('inZone')){
     //console.log(zone)
     getZone(gridCell);
 
+    if(zone === undefined){console.warn('Cannot find Zone!')}
+
     textDiv.innerHTML = zone.desc? zone.desc : "";
     placeName.value = zone.name;
-
+   
     //Get Symbol from Point Entry
     let point = zone.points.find(point => point.row === row && point.col === col);
 

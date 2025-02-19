@@ -6,26 +6,30 @@ function copyTile(){
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
 const placeSymbol = document.getElementById('placeSymbol');
+const div = getCurrentDiv();
 
 clipboard.name = placeName.value;
 clipboard.symbol = placeSymbol.value;
 clipboard.desc = textDiv.innerHTML;
+clipboard.color = isHexMap? div.querySelector('.middle').style.backgroundColor : div.style.backgroundColor;
 
 }
 
 function pasteTile(){
 
-    let div = getCurrentDiv()
+let div = getCurrentDiv()
+let col = div.getAttribute('col')
+let row = div.getAttribute('row')
 
-    if(div.classList.contains('inZone')){
+if(div.classList.contains('inZone')){
 
-        const placeSymbol = document.getElementById('placeSymbol');
-        placeSymbol.value = clipboard.symbol ;
-        saveEntry(div);
-        updateGrid();
+const placeSymbol = document.getElementById('placeSymbol');
+placeSymbol.value = clipboard.symbol ;
+saveEntry(div);
+updateGrid();
 
-    return
-    }
+return
+}
 
 const textDiv = document.getElementById('textDiv');
 const placeName = document.getElementById('placeName')
@@ -36,6 +40,16 @@ placeName.value = clipboard.name;
 placeSymbol.value = clipboard.symbol ;
 textDiv.innerHTML = clipboard.desc;
 
+if (isHexMap) {
+div.querySelector('.left').style.borderLeftColor = clipboard.color;
+div.querySelector('.middle').style.backgroundColor = clipboard.color;
+div.querySelector('.right').style.borderRightColor = clipboard.color;
+} else {
+div.style.backgroundColor = clipboard.color;
+}
+
+updateColor(col, row, clipboard.color);
+
 //Save to File
 saveEntry(div);
 updateGrid();
@@ -43,7 +57,7 @@ updateGrid();
 }
 
 function deleteTile(){
-
+           
 const idBox = document.getElementById('idBox');
 const index = data.findIndex(entry => entry.id === idBox.textContent);
 
@@ -51,9 +65,8 @@ data.splice(index, 1)
 loadGrid();
 saveData();
 
-placeName.value = "";
-placeSymbol.value = "";
-textDiv.innerHTML = "";
+emptyStoryteller();
+
 
 }
 
@@ -69,17 +82,18 @@ updateSquareGrid()
 
 
 const mouseOverHandler = (entry, label) => () => {
-    if (entry.name !== "") {
-        label.textContent = entry.name;
-        label.style.fontSize = '2vh';
-    }
+if (entry.name !== "") {
+label.textContent = entry.name;
+label.style.fontSize = '1.5vh';
+label.style.fontWeight = 'normal'; 
+}
 };
 
 const mouseOutHandler = (entry, label) => () => {
-    if (label.textContent !== "") {
-        label.textContent = entry.symbol;
-        label.style.fontSize = '22px';
-    }
+if (label.textContent !== "") {
+label.textContent = entry.symbol;
+label.style.fontSize = '22px';
+}
 };
 
 
@@ -115,9 +129,9 @@ let cells = document.querySelectorAll(`[row][col]`);
 
 // Create a Map for faster lookup
 const dataMap = new Map(
-    data
-        .filter(entry => entry.name !== "")
-        .map(entry => [entry.id, entry.name])
+data
+.filter(entry => entry.name !== "")
+.map(entry => [entry.id, entry.name])
 );
 
 cells.forEach(cell => {
@@ -165,54 +179,41 @@ cell.classList.add("squareSelect")
 
 function updateCellColors(cell, saveEntry) {
 
-    if (isHexMap) {
-        if (saveEntry) {
-            cell.querySelector('.left').style.borderRightColor = saveEntry.color;
-            cell.querySelector('.middle').style.backgroundColor = saveEntry.color;
-            cell.querySelector('.right').style.borderLeftColor = saveEntry.color;
-        } else {
-            cell.querySelector('.left').style.borderRightColor = defaultColour;
-            cell.querySelector('.middle').style.backgroundColor = defaultColour;
-            cell.querySelector('.right').style.borderLeftColor = defaultColour;
-        }
-    } else {
-
-        // let isgridCell = cell.classList.contains('grid-cell');
-        // let isWall = checkWall(cell);
-      
-        // if (saveEntry && saveEntry !== 'ignore') {
-        //     cell.style.backgroundColor = saveEntry.color;
-        // }else if(cell.classList.contains('zoning')){
-        //     cell.style.backgroundColor = "white"
-        // }else if(isWall){
-        //     cell.style.backgroundColor = "rgb(40,100,165)"
-        // } else if(isgridCell) {
-        //     cell.style.backgroundColor = defaultColour;
-        // }
-    }
+if (isHexMap) {
+if (saveEntry) {
+cell.querySelector('.left').style.borderRightColor = saveEntry.color;
+cell.querySelector('.middle').style.backgroundColor = saveEntry.color;
+cell.querySelector('.right').style.borderLeftColor = saveEntry.color;
+} else {
+cell.querySelector('.left').style.borderRightColor = defaultColour;
+cell.querySelector('.middle').style.backgroundColor = defaultColour;
+cell.querySelector('.right').style.borderLeftColor = defaultColour;
+}
+} else {
+}
 }
 
 
 function changeZoom(dir){
 
 
-    // Get the current zoom level
-    let currentZoom = parseFloat(gridContainer.style.zoom) || 1; 
+// Get the current zoom level
+let currentZoom = parseFloat(gridContainer.style.zoom) || defaultZoom; 
 
-    if(dir === 'in'){
+if(dir === 'in'){
 
-    // Increase zoom by 1%
-    currentZoom += 0.5; // This subtracts 1%
+// Increase zoom by 1%
+currentZoom += 0.5; // This subtracts 1%
 
-    }else if (dir === 'out'){
+}else if (dir === 'out'){
 
-    // Decrease zoom by 10%
-    currentZoom -= 0.5; // This subtracts 1%
+// Decrease zoom by 10%
+currentZoom -= 0.5; // This subtracts 1%
 
-    }
+}
 
-    // Set the new zoom level
-    gridContainer.style.zoom = currentZoom + " ";
+// Set the new zoom level
+gridContainer.style.zoom = currentZoom + " ";
 
-    }
+}
 

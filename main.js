@@ -5,9 +5,11 @@ let defaultCols = 42;
 
 let defaultData = [{
   id: "0.0",
+  symbol: "🌎",
   name: "Your World",
   desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap. For a full list of hotkeys use the command [`] 'help'.",
   rows: defaultRows,
+  scrollData: {X: 50, Y:50, Z:1},
   cols: defaultCols, 
   palette: [
     { id: "color1", color: "rgb(57, 128, 60)" },
@@ -122,13 +124,25 @@ loadPalette()
 setTimeout(() => {
 //console.log('loadGrid():')
 
-grid.scrollLeft = scrollConvert(scrollData.X, "pixels", "X")
-grid.scrollTop =  scrollConvert(scrollData.Y, "pixels", "Y")
+try {
+  grid.scrollLeft = scrollConvert(scrollData.X, "pixels", "X");
+} catch (e) {
+  grid.scrollLeft = 50;
+}
 
-//console.log(scrollData)
-//console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
+try {
+  grid.scrollTop =  scrollConvert(scrollData.Y, "pixels", "Y")
+} catch (e) {
+  grid.scrollTop
+}
 
-gridContainer.style.zoom = scrollData.Z;
+try {
+  gridContainer.style.zoom = scrollData.Z;
+} catch (e) {
+  gridContainer.style.zoom = 1;
+}
+
+
 }, 10);
 
 

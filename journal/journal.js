@@ -2,6 +2,9 @@ let scaledObjs = [];
 
 function triggerJournal(){
 
+    const logo = document.getElementById("startLogo");
+    logo.style.display = "none";
+
 if(grid.style.display === 'none'){
     grid.style.display = 'block';
     journal.style.display = 'none';
@@ -210,7 +213,7 @@ function addKeyboardNavigation() {
   const entryLinks = document.querySelectorAll('.entryLink');
 
   document.addEventListener('keydown', (e) => {
-      if (currentMode === 'map') {
+      if (currentMode === 'map' && journalShowing) {
           if (e.key === 'w' || e.key === 's' || e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Delete') {
               e.preventDefault();
 

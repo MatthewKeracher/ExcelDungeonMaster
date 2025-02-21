@@ -77,15 +77,31 @@ function loadJournal() {
       const scale = obj.id;
       const scaleData = entriesByScale[scale];
 
-      if (scaleData && scaleData.entries.length > 0) {
-          // Add header
-          //console.log(scaleData)
-          const header = document.createElement('h4');
-          header.textContent = scaleData.name;
-          header.style.color = "gold";
-          journalSideBar.appendChild(header);
+      if (scaleData) { //&& scaleData.entries.length > 0
+  
+          const headerLink = document.createElement('a');
+          headerLink.textContent = scaleData.name;
+          headerLink.style.color = "gold";
+          headerLink.href = '#';
+          headerLink.style.cursor = 'pointer'; 
+  
+          
+          headerLink.addEventListener('click', (e) => {
+              e.preventDefault();
+              
+              entryName.value = scaleData.name + ' Settings';
+              
+              journalLeft.innerHTML = makeSettingsMenu(scale);
+              journalRight.innerHTML = ``;
+              journalId.textContent = ``;
+              scaleSelector.style.display = "none";
+          });
+  
+          journalSideBar.appendChild(headerLink);
+ 
+          scaleData.entries.sort((a, b) => a.name.localeCompare(b.name));
 
-          // Add entries for this scale
+          // Now create and append the sorted links
           scaleData.entries.forEach(item => {
               const linkWrapper = createEntryLink(item);
               journalSideBar.appendChild(linkWrapper);
@@ -101,6 +117,27 @@ function loadJournal() {
   journalRight.disabled = true;
   journalLeft.contentEditable = false;
   journalRight.contentEditable = false;
+
+}
+
+function makeSettingsMenu(objId){
+
+//get initial inflation value
+const obj = data.find(entry => entry.id === objId);
+const inf =  obj && obj.settings && 
+             obj.settings.inflation ?
+             obj.settings.inflation : 1;
+
+return `Inflation: <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}"></input> `
+
+}
+
+function updateInflation(value, objId){
+
+const obj = data.find(entry => entry.id === objId);
+obj.settings = {inflation: value}
+
+console.log(obj)
 
 }
 
@@ -161,6 +198,7 @@ function createEntryLink(item) {
       journalLeft.innerHTML = item.left;
       journalRight.innerHTML = item.right;
       journalId.textContent = item.id;
+      scaleSelector.style.display = "block";
       scaleSelector.value = item.scale;
       styleTables();
       formatTables();

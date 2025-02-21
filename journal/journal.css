@@ -95,10 +95,9 @@
         
     }
 
-    #scaleSelector {
+    #scaleSelector{
         position:absolute;
-        right: 1%;
-        
+        right: 1%; 
     }
 
     .inputBox{
@@ -150,7 +149,8 @@ overflow-x: auto;
 #journal-right,
 #journal-left,
 #journal-entry-name,
-#scaleSelector:focus {
+#scaleSelector:focus,
+.inputBox:focus {
 outline: none;
 }
 

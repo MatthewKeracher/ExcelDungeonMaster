@@ -1708,7 +1708,6 @@ const inn = {
 }
 
 ],
-
 "services":[
 {
 "name": "Grain and stabling for horse (daily)",
@@ -1753,6 +1752,45 @@ const inn = {
 ]
 
 
+
+
+}
+
+const animals = {
+    "mounts": [
+
+                {
+                "name": "Donkey",
+                "cost": "40",
+                "description": "Donkeys are hoofed mammals in the same family as the horse. They are smaller, but are strong and hardy. Burros are a similar species, and the statistics herein can be used for either; both varieties are capable of being taken into dungeons as pack animals. A light load for a donkey is up to 70 pounds; a heavy load, up to 140 pounds."
+                },
+                {
+                "name": "Mule",
+                "cost": "40",
+                "description": "Mules are a domestic equine hybrid between a donkey and a horse. Mules vary widely in size, and may be of any color. They are more patient, hardier and longer- lived than horses, and are perceived as less obstinate and more intelligent than donkeys. Like donkeys, they are capable of being taken into dungeons as pack animals. A light load for a mule is up to 300 pounds; a heavy load, up to 600 pounds."
+                },
+                {
+                "name": "Horse, Draft",
+                "cost": "120",
+                "description": "Draft Horses are large horses bred to be working animals doing hard tasks such as plowing and other farm labor. There are a number of breeds, with varying characteristics, but all share common traits of strength, patience, and a docile temperament. A light load for a draft horse is up to 350 pounds; a heavy load, up to 700 pounds."
+                },
+                {
+                "name": "Horse, Riding",
+                "cost": "75",
+                "description": "Riding Horses are smaller horses bred and trained for riding. They cannot effectively fight while the rider is mounted. A light load for a riding horse is up to 250 pounds; a heavy load, up to 500 pounds."
+                },
+                {
+                "name": "Horse, War",
+                "cost": "200",
+                "description": "War Horses are large, powerful horses which are both bred for their size, strength, and combat ability and trained to tolerate the sounds and stresses of battle. They are able to attack while the rider is mounted due to their training. A light load for a warhorse is up to 350 pounds; a heavy load, up to 700 pounds."
+                },
+                {
+                "name": "Pony",
+                "cost": "40",
+                "description": "A Pony is a variety of small horse. Compared to a larger horse, a pony may have a thicker coat, mane and tail, with proportionally shorter legs, a wider barrel, heavier bone, a thicker neck and a shorter, broader head. Ponies can be trained for war, and the morale in parentheses above is for a war pony; this does not allow them to fight while a rider is mounted, however. A light load for a pony is up to 275 pounds; a heavy load, up to 550 pounds."
+                },
+
+    ]
 }
 
 

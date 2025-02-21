@@ -478,14 +478,13 @@ function sortTables(order) {
 }
 
 function handleGetCommand(params) {
-    const [section, subSection, chance = 100, inflation = 1, ...rest] = params.split(' ');
+    const [section, subSection, chance = 100, ...rest] = params.split(' ');
 
     if (!section) return '{Get command not recognized}';
 
     const parsedChance = isFinite(chance) ? Number(chance) : 100;
-    const parsedInflation = isFinite(inflation) ? Number(inflation) : 1;
-
-    return generateTableFromJSON(section, subSection, parsedChance, parsedInflation);
+    
+    return generateTableFromJSON(section, subSection, parsedChance);
 }
 
 
@@ -527,7 +526,7 @@ function flattenObject(obj) {
     return result;
 }
  
-function generateTableFromJSON(sectionStr, subSectionStr, chance = 100, inflation = 1) {
+function generateTableFromJSON(sectionStr, subSectionStr, chance = 100) {
   
     let section;
     let subSection;
@@ -598,9 +597,8 @@ function generateTableFromJSON(sectionStr, subSectionStr, chance = 100, inflatio
              let cellAttributes = ``;
 
             if(key === "cost"){
-                
-                value = ammendPrices(value, inflation)
                 cellAttributes += `originalPrice="${value}"`
+                value = ammendPrices(value)
             }
 
             let cellClass = "tableCell";
@@ -688,35 +686,6 @@ function formatTables() {
             }
         });
 
-        const newInflation = 1
-
-        function recalcPrices(cost, inflation) { //recieves `2 sp, 6 cp`, 0.9
-               
-                const costParts = cost.split(', ').map(part => {
-                const [value, currency] = part.split(' ');
-                return { value: parseFloat(value), currency };
-                });
-
-            //convert everything to Ora, which is same as cp is rulebook. 
-            const conversionRates = {
-            'pp': 336,
-            'gp': 168,
-            'ep': 28,
-            'sp': 7,
-            'cp': 1
-            };
-
-            let totalCp = costParts.reduce((total, part) => {
-            console.log(total, part, conversionRates[part.currency])
-            return total + part.value * conversionRates[part.currency];
-            }, 0);
-
-            let originalPrice = (totalCp / inflation) /100 //reset back to gold
-
-            return ammendPrices(originalPrice, newInflation)
-
-            }
-
 
         const tables = document.querySelectorAll('.table');
 
@@ -727,7 +696,8 @@ function formatTables() {
             costCells.forEach(cell => {
 
             let originalPrice = cell.getAttribute('originalPrice');
-            cell.innerHTML = ammendPrices(parseFloat(originalPrice), newInflation);    
+               
+            cell.innerHTML = ammendPrices(originalPrice);    
 
             })
 
@@ -962,16 +932,24 @@ function rollDice(numDice, diceSides) {
 }
 
 //Economics Logic
-function ammendPrices(cost, inflation) {
-    cost = parseInt(cost * 100); // Convert to oras (1 ora = 0.01)
-    cost = cost * inflation
+function ammendPrices(cost) {
+   
+    let inflation = regionObj && regionObj.settings && 
+    regionObj.settings.inflation ?
+    regionObj.settings.inflation : 1;
+
+    cost = parseFloat(cost)
+      
+    cost = cost * 10; // Convert to oras (0.05 -> 5)  
+    
+    cost = Math.ceil(cost * inflation)
 
     const conversionRates = {
-    'pp': 336,
-    'gp': 168,
-    'ep': 28,
-    'sp': 7,
-    'cp': 1
+    'p': 336,
+    'g': 168,
+    'e': 28,
+    's': 7,
+    'c': 1
     };
 
     let result = [];
@@ -979,10 +957,11 @@ function ammendPrices(cost, inflation) {
     for (let [currency, rate] of Object.entries(conversionRates)) {
     if (cost >= rate) {
     let count = Math.floor(cost / rate);
-    result.push(`${count} ${currency}`);
+    result.push(`${count}${currency}`);
     cost %= rate;
     }
     }
+  
 
     const denomPrice = result.join(', ')
     

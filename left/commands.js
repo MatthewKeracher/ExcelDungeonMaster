@@ -94,7 +94,6 @@ journalLeft.contentEditable = true;
 journalRight.contentEditable = true;
 
 //scaleSelector.style.display = "block";
-tabTables()
 
 modeColor = "255,105,180";  //Change colour
 toggleModeColor();
@@ -104,6 +103,8 @@ source.innerHTML += handleCommands();
 }else{
 textDiv.innerHTML += handleCommands();  
 }
+
+formatTables();
 
 if(!journalShowing){
 
@@ -134,13 +135,6 @@ placeName.blur();
 placeSymbol.blur();
 textDiv.focus();
 
-if(journalShowing){
-autoSpacing(journalLeft);
-autoSpacing(journalRight);
-}else{
-autoSpacing(textDiv)
-}
-
 //Change what displays
 placeName.disabled = true;
 placeSymbol.disabled = true;
@@ -159,11 +153,6 @@ journalRight.contentEditable = false;
 modeColor = "0, 255, 0";
 toggleModeColor();
 
-
-
-
-tabTables();
-
 if(journalShowing){
 journalSideBar.focus();
 }
@@ -174,6 +163,14 @@ source.innerHTML += handleCommands()
 textDiv.innerHTML += handleCommands()
 }
 
+if(journalShowing){
+autoSpacing(journalLeft);
+autoSpacing(journalRight);
+}else{
+autoSpacing(textDiv)
+}
+
+formatTables();
 
 //Change Content
 hitPointInit();
@@ -257,10 +254,10 @@ function handleCommands() {
      }
 
     // Resolve nested commands before replacing other commands
-    inputText = resolveNestedCommands(inputText);
+    //inputText = resolveNestedCommands(inputText);
 
     // Check for command types: roll, monster, or npc
-    const commandRegex = /^(>|return|make|roll|monster|spell|npc|trim|get)\s+(.+)/i;
+    const commandRegex = /^(>|return|elvish|make|roll|monster|spell|npc|trim|get)\s+(.+)/i;
     const match = inputText.match(commandRegex);
 
     if (match) {
@@ -275,7 +272,7 @@ function handleCommands() {
             case 'trim':
                 return handleTrimCommand(params);
             case 'make':
-                return handleAddCommand(params);
+                return handleMakeCommand(params);
             case 'get':
                 return handleGetCommand(params);
             case 'roll':
@@ -286,12 +283,21 @@ function handleCommands() {
                 return handleSpellCommands(params);     
             case 'npc':
                 return handleNpcCommand(params);
+            case 'elvish':
+                return handleElvish(params);
             default:
                 return '{Command not recognized}';
         }
     } else {
         return inputText; // Return raw input if no command is recognized
     }
+}
+
+function handleElvish(params){
+
+const html = `<span style="font-family:'elvish'"> ${params} </span>`;
+return html
+
 }
 
 function handleDoCommand(params){
@@ -335,13 +341,14 @@ function handleReturnCommand(params) {
 }
 
 function handleTrimCommand(params) {
-    const [table, ...rest] = params.split(' ');
+    const [firstParam, ...rest] = params.split(' ');
 
-    if (table === 'table') {
+    if (firstParam === 'table') {
         const tables = document.querySelectorAll('.table');
 
         tables.forEach(table => {
-            table.style.width = "95%"
+            console.log(table)
+            table.style.width = "95%";
             const rows = table.rows;
             if (rows.length === 0) return;
 
@@ -396,14 +403,19 @@ function handleTrimCommand(params) {
                 const rowIndex = rowsToRemove[i];
                 table.deleteRow(rowIndex);
             }
+
+            
+            
+            
+
         }); 
 
         return '';
-    } else if(table === "text"){
+    } else if(firstParam === "text"){
         
     }else {
         
-        const divsToDelete = document.querySelectorAll(table);
+        const divsToDelete = document.querySelectorAll(firstParam);
 
         divsToDelete.forEach(div => {
             div.remove();
@@ -413,29 +425,70 @@ function handleTrimCommand(params) {
     }
 }
 
-function handleAddCommand(params) {
+function handleMakeCommand(params) {
     const [makeType, number,  ...rest] = params.split(' ');
+    console.log(params)
     switch (makeType) {
         case 'table':
             if(isFinite(number)){
                 return handleTableCommand(params.slice(makeType.length + 1));
             } 
+        break;
+        case 'sort':
+            if(isFinite(number)){
+                return makeSortButton(number);
+            } else{
+                return makeSortButton(1);
+            }
+        break;
         default:
             return '{Make command not recognized}';
     }
 }
 
-function handleGetCommand(params) {
-    const [section, subSection,  ...rest] = params.split(' ');
-
-    if (section && subSection) {
-    return generateTableFromJSON(section, subSection);
-    } else if(section){
-    return generateTableFromJSON(section);
-    } else{       
-    return '{Get command not recognized}';
-    }
+function makeSortButton(order) {
+    let button = `<button class="button" onclick="sortTables(${order})">Sort</button>`;
+    return button;
 }
+
+function sortTables(order) {
+    console.log('sorting...')
+    const tables = document.querySelectorAll('table');
+
+    tables.forEach(table => {
+        console.log(table)
+        let headers = Array.from(table.querySelectorAll('.tableHeader'));
+        console.log(headers)
+        const sortIndex = headers.findIndex(header => header.innerText.trim() === 'Sort');
+        console.log(headers, sortIndex)
+
+        if (sortIndex !== -1) {
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.rows);
+
+            rows.sort((a, b) => {
+                const valueA = parseInt(a.cells[sortIndex].innerText);
+                const valueB = parseInt(b.cells[sortIndex].innerText);
+                return (order === 1 ? valueA - valueB : valueB - valueA); // Ascending or Descending
+            });
+
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    });
+}
+
+function handleGetCommand(params) {
+    const [section, subSection, chance = 100, inflation = 1, ...rest] = params.split(' ');
+
+    if (!section) return '{Get command not recognized}';
+
+    const parsedChance = isFinite(chance) ? Number(chance) : 100;
+    const parsedInflation = isFinite(inflation) ? Number(inflation) : 1;
+
+    return generateTableFromJSON(section, subSection, parsedChance, parsedInflation);
+}
+
 
 function findObjectByName(objectName) {
     //console.log('looking for ' + objectName)
@@ -475,7 +528,7 @@ function flattenObject(obj) {
     return result;
 }
  
-function generateTableFromJSON(sectionStr, subSectionStr) {
+function generateTableFromJSON(sectionStr, subSectionStr, chance, inflation) {
   
     let section;
     let subSection;
@@ -535,11 +588,53 @@ function generateTableFromJSON(sectionStr, subSectionStr) {
     // Generate table body
     tableHTML += '<tbody>';
     dataToUse.forEach(item => {
+
+        if(chance && rollDice(1, 100) > chance) {return} // Roll for Chance of Occuring
+
         tableHTML += '<tr>';
         headers.forEach(header => {
             const [key, subKey] = header.split('.');
-            const value = subKey ? item[key][subKey] : item[key];
-            tableHTML += `<td class="tableCell">${value}</td>`;
+            let value = subKey ? item[key][subKey] : item[key];
+           
+                //Economics Logic
+                function ammendPrices(cost) {
+                cost = parseInt(cost * 100); // Convert to oras (1 ora = 0.01)
+                cost = cost * inflation
+
+                const conversionRates = {
+                'pp': 336,
+                'gp': 168,
+                'ep': 28,
+                'sp': 7,
+                'cp': 1
+                };
+
+                let result = [];
+
+                for (let [currency, rate] of Object.entries(conversionRates)) {
+                if (cost >= rate) {
+                let count = Math.floor(cost / rate);
+                result.push(`${count} ${currency}`);
+                cost %= rate;
+                }
+                }
+
+                const denomPrice = result.join(', ')
+                
+                return `${denomPrice}`;
+                }
+
+
+            if(key === "cost"){value = ammendPrices(value)}
+
+            let cellClass = "tableCell";
+
+            if (key === "description" && value.length > 0) {
+              cellClass += " description-cell";
+            }
+            
+            tableHTML += `<td class="${cellClass}">${value}</td>`;
+
         });
         tableHTML += '</tr>';
     });
@@ -583,62 +678,46 @@ function generateTable(rows, cols) {
     return tableHTML;
 }
 
-function tabTables(){
+function formatTables() {
+    const tableCells = document.querySelectorAll('.tableCell');
+    console.log('formatTables()')
 
-    const tables = document.querySelectorAll('.tableCell');
+    if (currentMode === 'edit') {
+        tableCells.forEach(cell => {
+            cell.contentEditable = "true";
+            cell.setAttribute('tabindex', '0');
+
+            cell.addEventListener('focus', function() {
+                const range = document.createRange();
+                //range.selectNodeContents(cell);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            });
+        });
+    } else {
+        tableCells.forEach(cell => cell.contentEditable = "false");
+    }
+
+        const rows = document.querySelectorAll('tr');
+        rows.forEach(row => {
+            const maxHeight = Array.from(row.cells)
+                .filter(cell => !cell.classList.contains('description-cell'))
+                .reduce((max, cell) => Math.max(max, cell.offsetHeight), 0);
+                      
+            const descCell = row.querySelector('.description-cell');
+            if (descCell) {
+                descCell.style.setProperty('--row-height', `${100}px`);
+                descCell.classList.add('collapsed');
+            }
+        });
+
+
     
-    if(currentMode === 'edit'){
-    
-    tables.forEach(table => {
-    let currentCell = null;
-    
-    table.contentEditable = "true"
-    table.setAttribute('tabindex', '0');
-    
-    table.addEventListener('keydown', function(event) {
-      if (event.key === 'Tab') {
-        event.preventDefault();
-        
-        if (!currentCell) {
-          currentCell = table.querySelector('td');
-        } else {
-          currentCell = currentCell.nextElementSibling || currentCell.parentElement.nextElementSibling?.firstElementChild;
-          if (!currentCell) {
-            currentCell = table.querySelector('td');
-          }
-        }
-        
-        currentCell.focus();
-        selectCellContents(currentCell);
-      }
-    });
-    
-    function selectCellContents(cell) {
-      const range = document.createRange();
-      range.selectNodeContents(cell);
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
     }
     
-    table.addEventListener('focus', function() {
-      if (!currentCell) {
-        currentCell = table.querySelector('td');
-        currentCell.focus();
-      }
-    });
-    
-    table.addEventListener('blur', function() {
-      currentCell = null;
-    });
-    
-    });
-    
-    }else{
-    tables.forEach(table => table.contentEditable = "false");
-    }
-    
-    }
+
+
     
 function handleRollCommand(params) {
     // Assume params will contain something like '1d20'

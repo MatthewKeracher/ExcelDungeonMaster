@@ -1,5 +1,7 @@
 Mousetrap.bind('>', function() {
 
+    if(!journalShowing){
+
     //console.log('handleEnter():')
     const logo = document.getElementById("startLogo");
     logo.style.display = "none";
@@ -23,12 +25,14 @@ Mousetrap.bind('>', function() {
     
     loadGrid();
     goToEntry(regionObj.id);
+
+    }
     
     });
 
 Mousetrap.bind('<', function() {
     
-    //console.log('handleExit')
+    if(!journalShowing){
     
     //Move scrollbar to be over regionObj
     scrollData = regionObj.scrollData
@@ -50,6 +54,8 @@ Mousetrap.bind('<', function() {
     loadGrid();
     goToEntry(returnObj.id);
     showInactivityImage()
+
+    }
     
     });
 
@@ -66,7 +72,7 @@ Mousetrap.bind(['shift+d', 'shift+l'], function() {
     if (!isPainting && !isHexMap) addCellToZone('right');
     });  
 Mousetrap.bind('shift', function() { 
-    if(!isHexMap){
+    if(!isHexMap && currentMode === 'map'){
     clipZone(); 
     }}, 'keyup'); 
 
@@ -167,20 +173,20 @@ Mousetrap.bindGlobal('`', function(e) {
             case 'map':
             e.preventDefault(); 
             currentMode = 'command';
-            toggleModes();  
+            toggleModes(journalShowing? e.target: '');  
             break;
     
             case 'edit':
     
             e.preventDefault(); 
             currentMode = 'command';
-            toggleModes();  
+            toggleModes(journalShowing? e.target: '');  
     
             break;
     
             case 'command':
             e.preventDefault(); 
-            expandConsole();
+            expandConsole(journalShowing? e.target: '');
     
         }
     });

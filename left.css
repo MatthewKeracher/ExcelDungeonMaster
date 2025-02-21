@@ -180,14 +180,14 @@ border-color: #000;
 }
 
 .table{
-    width: 95%
+    width: 95%;
+    border: none;
 }
 
 .tableCell {
-    width: 60px;
-    min-height: 20px;
+    min-width: 60px;
+    height: 100%;
     vertical-align: top;
-    height: auto;
     padding: 5px;
     color: var(--mode-color);
     border-color: var(--mode-color);
@@ -195,8 +195,25 @@ border-color: #000;
 
 .tableCell:focus {
     outline: none;
-    color: white;
+}
 
+.description-cell {
+    display: block;
+    overflow: hidden;
+}
+  
+
+  /* Use JavaScript to set max-height dynamically */
+.description-cell.collapsed {
+    max-height: var(--row-height);
+    color: var(--mode-color-trans)
+}
+
+/* Optional: Add hover effect to expand description */
+.description-cell:hover,
+.description-cell:focus {
+    max-height: none;
+    color: var(--mode-color)
 }
 
 .tableHeader{

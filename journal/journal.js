@@ -210,25 +210,34 @@ function focusOnTargetEntry() {
 }
 
 function addKeyboardNavigation() {
-  const entryLinks = document.querySelectorAll('.entryLink');
+    const entryLinks = document.querySelectorAll('.entryLink');
 
-  document.addEventListener('keydown', (e) => {
-      if (currentMode === 'map' && journalShowing) {
-          if (e.key === 'w' || e.key === 's' || e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Delete') {
-              e.preventDefault();
+    document.addEventListener('keydown', (e) => {
+        // Check if the current mode is 'map' and journal is showing
+        if (currentMode === 'map' && journalShowing) {
+            const currentFocus = document.activeElement;
+            
+            // Check if the focused element is one of the entry links
+            if (Array.from(entryLinks).includes(currentFocus)) {
+                // Check for specific keys
+                if (e.key === 'w' || e.key === 's' || e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Delete') {
+                    e.preventDefault();
 
-              const currentFocus = document.activeElement;
-              const currentIndex = Array.from(entryLinks).indexOf(currentFocus);
+                    const currentIndex = Array.from(entryLinks).indexOf(currentFocus);
 
-              if (e.key === 'Delete' && journalShowing) {
-                  handleDeleteEntry(entryLinks, currentIndex);
-              } else {
-                  navigateEntries(entryLinks, currentIndex, e.key);
-              }
-          }
-      }
-  });
+                    // Handle delete entry action
+                    if (e.key === 'Delete' && journalShowing) {
+                        handleDeleteEntry(entryLinks, currentIndex);
+                    } else {
+                        // Navigate through entries based on key pressed
+                        navigateEntries(entryLinks, currentIndex, e.key);
+                    }
+                }
+            }
+        }
+    });
 }
+
 
 function handleDeleteEntry(entryLinks, currentIndex) {
   showPrompt('Are you sure you want to delete this journal entry?').then(shouldDelete => {
@@ -344,6 +353,11 @@ function fillScaleSelector() {
   name: 'Rules',
   id: 'BFRPG'
   })
+
+scaledObjs.push({
+name: 'Session Log',
+id: 'SL'
+})
 
   // Add options based on scaledObjs in reverse order
   for (let i = scaledObjs.length - 1; i >= 0; i--) {

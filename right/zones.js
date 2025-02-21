@@ -70,6 +70,7 @@ function removeCellFromZone(cell){
     
     if(currentZone.length === 1){
     zones = zones.filter(zone => zone.id === currentZone.id)
+    console.log('Zone Deleted!')
     currentZone = []
     return
     }
@@ -304,6 +305,7 @@ function getZone(cell) {
 
 
 function clipZone(currentCell) {
+    if(currentZone){
      // Convert points to a Set to remove duplicates
     const uniquePoints = new Set(currentZone.points.map(point => JSON.stringify(point)));
     currentZone.points = Array.from(uniquePoints).map(point => JSON.parse(point));
@@ -322,4 +324,5 @@ function clipZone(currentCell) {
     changeCell(currentCell)
     currentZone = [];
     console.log(zones)
+    }
 }

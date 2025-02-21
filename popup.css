@@ -52,7 +52,7 @@ input {
 }
 
 button {
-    background-color: rgb(39, 52, 39);
+    background-color: var(--background);
     color: var(--mode-color);
     padding: 10px 15px;
     font-size: large;

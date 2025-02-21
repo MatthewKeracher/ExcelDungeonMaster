@@ -3,6 +3,7 @@ let defaultRows = 30;
 let defaultCols = 42;
 
 
+
 let defaultData = [{
   id: "0.0",
   symbol: "🌎",
@@ -17,8 +18,8 @@ let defaultData = [{
     { id: "color3", color: "rgb(16, 77, 23)" },
     { id: "color4", color: "rgb(101, 69, 39)" },
     { id: "color5", color: "rgb(124, 72, 144)" },
-    { id: "color6", color: "rgb(220, 181, 83)" },
-    { id: "color7", color: "rgb(85, 217, 197)" },
+    { id: "color6", color: "rgb(117, 122, 41)" },
+    { id: "color7", color: "rgb(12, 95, 83)" },
     { id: "color8", color: "rgb(88, 83, 86)" },
     { id: "color9", color: "rgb(185, 192, 162)" },
   ]
@@ -26,11 +27,11 @@ let defaultData = [{
 
 let data = defaultData;
 
-let coords = '0.0';
+let coords = "0.0";
 let region = 'Excel_DM'
 let regionObj = data[0];
 let scrollData = {X: 0, Y:0, Z:1}
-let DefaultZoom = 1;
+
 
 let zones = [];
 
@@ -55,9 +56,6 @@ let parentToMove = null;
 let childrenToMove = null;
 let zonesToMove = null;
 let journalToMove = null;
-
-let lastCell = '';
-let lastHex = '';
 
 let defaultColour = "rgb(6, 5, 5)"; //for Empty Grid Cells
 let eraser = document.getElementById('eraser')
@@ -100,7 +98,7 @@ for (let i = 0; i < welcomeMessage.length; i++) {
     }, i * 25); 
   }
   
-idBox.textContent = '0.0'
+idBox.textContent = data[0].id;
 
 function loadGrid(){
 

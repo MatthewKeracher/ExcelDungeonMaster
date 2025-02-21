@@ -1260,6 +1260,20 @@ const monsters = [
     "experience": "360 - 1,875"
   },
   {
+    "name": "Giant Hawk",
+    "armourClass": 14,
+    "hit": "4 (4d8+2)",
+    "damage": "1d6 claw or bite",
+    "move": "10', Fly 150' (50')",
+    "appearing": "Wild 1d3, Lair 1d3",
+    "attacks": "1 claw or bite",
+    "savingThrows": "Fighter: 4",
+    "morale": 8,
+    "treasure": "None",
+    "experience": 240,
+    "description": "Giant hawks are 4 to 6 feet long, with wingspans of 12 feet or more. They can carry off creatures of Halfling size or smaller. Like normal hawks, they will shy away from combat with any creature of equal or greater size, unless forced or cornered or their eggs or offspring are threatened. Giant hawks are formidable predators with keen eyesight, sharp talons, and powerful wings, making them effective hunters in open country and prairies."
+    },
+  {
     "armourClass": "13",
     "damage": "1d6",
     "description": "Hyenas are doglike carnivores who exhibit some of the behaviors of canines but are not related. They not only hunt but also scavenge and steal meals. A hungry hyena will chew on anything that is even remotely tainted by blood, meat or other food traces. They will mostly be found in the same savanna-like environments where lions and zebras may be found. They can live in clans of up to a hundred individuals, though smaller groups are more common. They are among the favorite pets of gnolls, who may take them into regions where they are not normally found.",

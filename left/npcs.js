@@ -402,15 +402,15 @@ function makeNPC(race, npcClass, level, npcName) {
         race: race.charAt(0).toUpperCase() + race.slice(1),
     };
 
-    let HTML = '<table border="1" class="table collapsable" style="border-collapse: collapse;">';
+    let HTML = '<table border="none" class="table">';
 
     // Create the table header
     HTML += '<tr>';
     HTML += '<td contenteditable="false" tabindex="0" class="tableCell tableHeader">';
-    HTML += `<b>Level ${level} ${stats.race} ${stats.class}</b>`;
+    HTML += `<b>${stats.name}</b>`;
     HTML += '</td>';
     HTML += '<td contenteditable="false" tabindex="0" class="tableCell tableHeader">';
-    HTML += `<b>${stats.name}</b>`;
+    HTML += `<b>Level ${level} ${stats.race} ${stats.class}</b>`;
     HTML += '</td>';
     HTML += '</tr>';
 

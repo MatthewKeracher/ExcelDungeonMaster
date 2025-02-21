@@ -347,8 +347,7 @@ function handleTrimCommand(params) {
         const tables = document.querySelectorAll('.table');
 
         tables.forEach(table => {
-            console.log(table)
-            table.style.width = "95%";
+            
             const rows = table.rows;
             if (rows.length === 0) return;
 
@@ -629,7 +628,7 @@ function generateTableFromJSON(sectionStr, subSectionStr, chance, inflation) {
 
             let cellClass = "tableCell";
 
-            if (key === "description" && value.length > 0) {
+            if (key === "description") {
               cellClass += " description-cell";
             }
             
@@ -680,8 +679,7 @@ function generateTable(rows, cols) {
 
 function formatTables() {
     const tableCells = document.querySelectorAll('.tableCell');
-    console.log('formatTables()')
-
+    
     if (currentMode === 'edit') {
         tableCells.forEach(cell => {
             cell.contentEditable = "true";
@@ -707,12 +705,20 @@ function formatTables() {
                       
             const descCell = row.querySelector('.description-cell');
             if (descCell) {
-                descCell.style.setProperty('--row-height', `${100}px`);
+                descCell.style.setProperty('--row-height', '100px');
                 descCell.classList.add('collapsed');
             }
         });
 
 
+        const tables = document.querySelectorAll('.table');
+
+        tables.forEach(table => {
+
+            table.style.width = "95%"
+            table.borders = 1
+
+        });
     
     }
     

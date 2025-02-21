@@ -198,7 +198,7 @@ function changeZoom(dir){
 
 
 // Get the current zoom level
-let currentZoom = parseFloat(gridContainer.style.zoom) || defaultZoom; 
+let currentZoom = parseFloat(gridContainer.style.zoom) || 1; 
 
 if(dir === 'in'){
 

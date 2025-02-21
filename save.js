@@ -3,7 +3,8 @@ function saveData() {
 localStorage.setItem('data', JSON.stringify(data));
 localStorage.setItem('zones', JSON.stringify(zones));
 localStorage.setItem('journal', JSON.stringify(journalData));
-localStorage.setItem('location', JSON.stringify(scrollData));
+localStorage.setItem('scrollData', JSON.stringify(scrollData));
+localStorage.setItem('regionObj', JSON.stringify(regionObj));
 }
 
 
@@ -11,31 +12,35 @@ function removeData() {
     localStorage.removeItem('data');
     localStorage.removeItem('zones');
     localStorage.removeItem('journal');
+    localStorage.removeItem('scrollData');
+    localStorage.removeItem('regionObj');
 }
 
 // Function to load data from localStorage
-function loadData() {
+function  loadData() {
 const savedData = localStorage.getItem('data');
 const savedZones = localStorage.getItem('zones');
 const savedJournal = localStorage.getItem('journal');
-const lastLoc = localStorage.getItem('location');
+const savedScrollData = localStorage.getItem('scrollData');
+const lastCellAt = localStorage.getItem('regionObj');
 
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
 collectGarbage();
-
 }
+
 if(savedZones){
 zones = JSON.parse(savedZones);  
 }
 if(savedJournal){
 journalData = JSON.parse(savedJournal)
 }
-if(lastLoc){
-scrollData = JSON.parse(lastLoc)
-//console.log('loadData():')
-//console.log(scrollData)
-//console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
+if(savedScrollData){
+scrollData = JSON.parse(savedScrollData)
+}
+if(lastCellAt){
+ regionObj = JSON.parse(lastCellAt)
+ idBox.textContent = regionObj.id;
 }
 }
 
@@ -95,6 +100,9 @@ if (inZone !== null && inZone) {
     }
 
 }
+
+
+
 
 if(journalShowing){
 saveJournalEntry();

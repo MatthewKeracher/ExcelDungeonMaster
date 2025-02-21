@@ -527,7 +527,7 @@ function flattenObject(obj) {
     return result;
 }
  
-function generateTableFromJSON(sectionStr, subSectionStr, chance, inflation) {
+function generateTableFromJSON(sectionStr, subSectionStr, chance = 100, inflation = 1) {
   
     let section;
     let subSection;
@@ -595,36 +595,13 @@ function generateTableFromJSON(sectionStr, subSectionStr, chance, inflation) {
             const [key, subKey] = header.split('.');
             let value = subKey ? item[key][subKey] : item[key];
            
-                //Economics Logic
-                function ammendPrices(cost) {
-                cost = parseInt(cost * 100); // Convert to oras (1 ora = 0.01)
-                cost = cost * inflation
+             let cellAttributes = ``;
 
-                const conversionRates = {
-                'pp': 336,
-                'gp': 168,
-                'ep': 28,
-                'sp': 7,
-                'cp': 1
-                };
-
-                let result = [];
-
-                for (let [currency, rate] of Object.entries(conversionRates)) {
-                if (cost >= rate) {
-                let count = Math.floor(cost / rate);
-                result.push(`${count} ${currency}`);
-                cost %= rate;
-                }
-                }
-
-                const denomPrice = result.join(', ')
+            if(key === "cost"){
                 
-                return `${denomPrice}`;
-                }
-
-
-            if(key === "cost"){value = ammendPrices(value)}
+                value = ammendPrices(value, inflation)
+                cellAttributes += `originalPrice="${value}"`
+            }
 
             let cellClass = "tableCell";
 
@@ -632,7 +609,7 @@ function generateTableFromJSON(sectionStr, subSectionStr, chance, inflation) {
               cellClass += " description-cell";
             }
             
-            tableHTML += `<td class="${cellClass}">${value}</td>`;
+            tableHTML += `<td ${cellAttributes} class="${cellClass}">${value}</td>`;
 
         });
         tableHTML += '</tr>';
@@ -677,6 +654,7 @@ function generateTable(rows, cols) {
     return tableHTML;
 }
 
+
 function formatTables() {
     const tableCells = document.querySelectorAll('.tableCell');
     
@@ -710,10 +688,48 @@ function formatTables() {
             }
         });
 
+        const newInflation = 1
+
+        function recalcPrices(cost, inflation) { //recieves `2 sp, 6 cp`, 0.9
+               
+                const costParts = cost.split(', ').map(part => {
+                const [value, currency] = part.split(' ');
+                return { value: parseFloat(value), currency };
+                });
+
+            //convert everything to Ora, which is same as cp is rulebook. 
+            const conversionRates = {
+            'pp': 336,
+            'gp': 168,
+            'ep': 28,
+            'sp': 7,
+            'cp': 1
+            };
+
+            let totalCp = costParts.reduce((total, part) => {
+            console.log(total, part, conversionRates[part.currency])
+            return total + part.value * conversionRates[part.currency];
+            }, 0);
+
+            let originalPrice = (totalCp / inflation) /100 //reset back to gold
+
+            return ammendPrices(originalPrice, newInflation)
+
+            }
+
 
         const tables = document.querySelectorAll('.table');
 
         tables.forEach(table => {
+
+            const costCells = getColumnCells(table, "Cost");
+            
+            costCells.forEach(cell => {
+
+            let originalPrice = cell.getAttribute('originalPrice');
+            cell.innerHTML = ammendPrices(parseFloat(originalPrice), newInflation);    
+
+            })
 
             table.style.width = "95%"
             table.borders = 1
@@ -722,8 +738,6 @@ function formatTables() {
     
     }
     
-
-
     
 function handleRollCommand(params) {
     // Assume params will contain something like '1d20'
@@ -946,6 +960,34 @@ function rollDice(numDice, diceSides) {
     }
     return total;
 }
+
+//Economics Logic
+function ammendPrices(cost, inflation) {
+    cost = parseInt(cost * 100); // Convert to oras (1 ora = 0.01)
+    cost = cost * inflation
+
+    const conversionRates = {
+    'pp': 336,
+    'gp': 168,
+    'ep': 28,
+    'sp': 7,
+    'cp': 1
+    };
+
+    let result = [];
+
+    for (let [currency, rate] of Object.entries(conversionRates)) {
+    if (cost >= rate) {
+    let count = Math.floor(cost / rate);
+    result.push(`${count} ${currency}`);
+    cost %= rate;
+    }
+    }
+
+    const denomPrice = result.join(', ')
+    
+    return `${denomPrice}`;
+    }
 
 
 

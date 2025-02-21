@@ -661,104 +661,104 @@ const items = {
 }
 ],
 "armor":[
-  {
-    "name": "No Armor",
-    "cost": 0,
-    "weight": 0,
-    "AC": 11,
-    "description": "Unarmored."
-  },
-  {
-    "name": "Padded or Quilted",
-    "cost": 15,
-    "weight": 10,
-    "AC": 12,
-    "description": "Created from layers of cloth. Often ceremonial, offers minimal protection. Good insulation for winter, but requires frequent laundering. Used as undergarment for metal armors."
-  },
-  {
-    "name": "Hide",
-    "cost": 10,
-    "weight": 30,
-    "AC": 13,
-    "description": "Made from cured beast hide sewn to clothing. Common in remote or barbaric areas. Hot and itchy, but offers protection similar to leather."
-  },
-  {
-    "name": "Leather",
-    "cost": 20,
-    "weight": 15,
-    "AC": 13,
-    "description": "Made of hardened and/or layered leather pieces sewn to a cloth undergarment. Offers flexibility and moderate protection."
-  },
-  {
-    "name": "Studded Leather",
-    "cost": 30,
-    "weight": 25,
-    "AC": 14,
-    "description": "Leather armor with metal studs or small plates riveted to it. Offers added protection at slight cost of mobility."
-  },
-  {
-    "name": "Ring Mail",
-    "cost": 25,
-    "weight": 30,
-    "AC": 14,
-    "description": "Steel rings sewn directly to a soft, supple leather undergarment. Offers great flexibility and decent protection."
-  },
-  {
-    "name": "Brigandine",
-    "cost": 80,
-    "weight": 30,
-    "AC": 15,
-    "description": "Cloth or leather garment lined with small steel plates, riveted to the fabric. Typically worn over padded undergarment. AC 14 and weight 20 lbs if worn without undergarment."
-  },
-  {
-    "name": "Chain Mail",
-    "cost": 60,
-    "weight": 40,
-    "AC": 15,
-    "description": "Interwoven metal rings worn over padded undergarment. Very flexible and durable. AC 14 and weight 30 lbs if worn without undergarment."
-  },
-  {
-    "name": "Scale Mail",
-    "cost": 80,
-    "weight": 55,
-    "AC": 16,
-    "description": "Metal scales woven to an undergarment. Offers flexibility and moderate protection. Includes Lamellar armor."
-  },
-  {
-    "name": "Splint Mail",
-    "cost": 100,
-    "weight": 45,
-    "AC": 16,
-    "description": "Chain mail with small strips of thick metal interwoven. Offers better protection than regular chain mail but heavier and less flexible."
-  },
-  {
-    "name": "Banded Mail",
-    "cost": 200,
-    "weight": 35,
-    "AC": 16,
-    "description": "Laminar armor with overlapping metal strips. Includes vambraces, greaves, and/or armored sleeves. Lighter than other armors in its category but may be more difficult to maintain."
-  },
-  {
-    "name": "Plate Mail",
-    "cost": 300,
-    "weight": 50,
-    "AC": 17,
-    "description": "Large metal plates covering torso, arms, and legs, attached to chain mail. Worn over padded undergarment. AC 16 and weight 40 lbs if worn without undergarment."
-  },
-  {
-    "name": "Field Plate Mail",
-    "cost": 500,
-    "weight": 70,
-    "AC": 18,
-    "description": "Solid plate armor pieces with sliding parts, hinges, and straps. Small chain mail pieces cover joints. Must be custom fitted. AC 17 and weight 60 lbs if worn without undergarment."
-  },
-  {
-    "name": "Full Plate Mail",
-    "cost": 1500,
-    "weight": 80,
-    "AC": 19,
-    "description": "Superior design of field plate armor. Covers wearer more fully, generally without chain mail. Deflects weapon strikes from vulnerable joints. -1 penalty to attack rolls due to limited mobility. Requires assistance to put on, takes at least 1 turn to don."
-  }
+{
+"name": "No Armor",
+"cost": 0,
+"weight": 0,
+"AC": 11,
+"description": "Unarmored."
+},
+{
+"name": "Padded or Quilted",
+"cost": 15,
+"weight": 10,
+"AC": 12,
+"description": "Created from layers of cloth. Often ceremonial, offers minimal protection. Good insulation for winter, but requires frequent laundering. Used as undergarment for metal armors."
+},
+{
+"name": "Hide",
+"cost": 10,
+"weight": 30,
+"AC": 13,
+"description": "Made from cured beast hide sewn to clothing. Common in remote or barbaric areas. Hot and itchy, but offers protection similar to leather."
+},
+{
+"name": "Leather",
+"cost": 20,
+"weight": 15,
+"AC": 13,
+"description": "Made of hardened and/or layered leather pieces sewn to a cloth undergarment. Offers flexibility and moderate protection."
+},
+{
+"name": "Studded Leather",
+"cost": 30,
+"weight": 25,
+"AC": 14,
+"description": "Leather armor with metal studs or small plates riveted to it. Offers added protection at slight cost of mobility."
+},
+{
+"name": "Ring Mail",
+"cost": 25,
+"weight": 30,
+"AC": 14,
+"description": "Steel rings sewn directly to a soft, supple leather undergarment. Offers great flexibility and decent protection."
+},
+{
+"name": "Brigandine",
+"cost": 80,
+"weight": 30,
+"AC": 15,
+"description": "Cloth or leather garment lined with small steel plates, riveted to the fabric. Typically worn over padded undergarment. AC 14 and weight 20 lbs if worn without undergarment."
+},
+{
+"name": "Chain Mail",
+"cost": 60,
+"weight": 40,
+"AC": 15,
+"description": "Interwoven metal rings worn over padded undergarment. Very flexible and durable. AC 14 and weight 30 lbs if worn without undergarment."
+},
+{
+"name": "Scale Mail",
+"cost": 80,
+"weight": 55,
+"AC": 16,
+"description": "Metal scales woven to an undergarment. Offers flexibility and moderate protection. Includes Lamellar armor."
+},
+{
+"name": "Splint Mail",
+"cost": 100,
+"weight": 45,
+"AC": 16,
+"description": "Chain mail with small strips of thick metal interwoven. Offers better protection than regular chain mail but heavier and less flexible."
+},
+{
+"name": "Banded Mail",
+"cost": 200,
+"weight": 35,
+"AC": 16,
+"description": "Laminar armor with overlapping metal strips. Includes vambraces, greaves, and/or armored sleeves. Lighter than other armors in its category but may be more difficult to maintain."
+},
+{
+"name": "Plate Mail",
+"cost": 300,
+"weight": 50,
+"AC": 17,
+"description": "Large metal plates covering torso, arms, and legs, attached to chain mail. Worn over padded undergarment. AC 16 and weight 40 lbs if worn without undergarment."
+},
+{
+"name": "Field Plate Mail",
+"cost": 500,
+"weight": 70,
+"AC": 18,
+"description": "Solid plate armor pieces with sliding parts, hinges, and straps. Small chain mail pieces cover joints. Must be custom fitted. AC 17 and weight 60 lbs if worn without undergarment."
+},
+{
+"name": "Full Plate Mail",
+"cost": 1500,
+"weight": 80,
+"AC": 19,
+"description": "Superior design of field plate armor. Covers wearer more fully, generally without chain mail. Deflects weapon strikes from vulnerable joints. -1 penalty to attack rolls due to limited mobility. Requires assistance to put on, takes at least 1 turn to don."
+}
 ],
 
 "clothing":[
@@ -1461,154 +1461,254 @@ const inn = {
 "description": "Includes multiple courses and a variety of offerings. The price includes personnel for service, but does not cover entertainment."
 }
 ],
-"booze":[
+"booze": [
 {
 "name": "Small Beer",
-"cost": {
-"pitcher": 0.05,
-"bottle": 0.4
+"cost": 0.05,
+"weight": "pint",
+"description": "Small Beer is a low-alcohol beer. This lightly-fermented brew is almost a liquid snack, and keeps clean better than water. Suitable for adventuring, though it may turn ‘dank’ if left in a wineskin for too long. Beers are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries."
 },
-"description": "A low-alcohol beer. This lightly-fermented brew is almost a liquid snack, and keeps clean better than water. Suitable for adventuring, though it may turn 'dank' if left in a wineskin for too long."
+{
+"name": "Small Beer",
+"cost": 0.4,
+"weight": "gallon pitcher",
+"description": "Beers are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Small Beer is a low-alcohol beer. This lightly-fermented brew is almost a liquid snack, and keeps clean better than water. Suitable for adventuring, though it may turn ‘dank’ if left in a wineskin for too long."
 },
 {
 "name": "Applejack",
-"cost": {
-"pitcher": 0.05,
-"bottle": 0.4
+"cost": 0.05,
+"weight": "pint",
+"description": "Applejack is a strong and cheap brandy produced from apples."
 },
-"description": "A low-alcohol beverage similar to small beer, often made from fermented apples."
+{
+"name": "Applejack",
+"cost": 0.4,
+"weight": "gallon pitcher",
+"description": "Applejack is a strong and cheap brandy produced from apples."
 },
 {
 "name": "Beer, common",
-"cost": {
-"pitcher": 0.05,
-"bottle": 0.4
+"cost": 0.05,
+"weight": "pint",
+"description": "Beers are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Common drinks are the cheapest, and are a passable- quality offering."
 },
-"description": "Common beer brewed from grains using yeast. Generally not as potent as spirits and usually produced at monasteries."
+{
+"name": "Beer, common",
+"cost": 0.4,
+"weight": "bottle",
+"description": "Beers are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Common drinks are the cheapest, and are a passable- quality offering."
 },
 {
 "name": "Beer, quality",
-"cost": {
-"pitcher": 0.2,
-"bottle": 1.6
+"cost": 0.2,
+"weight": "pitcher",
+"description": "Beers are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
-"description": "Quality beer, among the best local brews. Pleasing to more refined tastes."
+{
+"name": "Beer, quality",
+"cost": 1.6,
+"weight": "bottle",
+"description": "Beers are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
 {
 "name": "Ale, common",
-"cost": {
-"pitcher": 0.1,
-"bottle": 0.8
+"cost": 0.1,
+"weight": "pint",
+"description": "Ales are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Common drinks are the cheapest, and are a passable- quality offering."
 },
-"description": "Common ale made from fermented grains."
+{
+"name": "Ale, common",
+"cost": 0.8,
+"weight": "gallon pitcher",
+"description": "Ales are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Common drinks are the cheapest, and are a passable- quality offering."
 },
 {
 "name": "Ale, quality",
-"cost": {
-"pitcher": 0.4,
-"bottle": 3.0
+"cost": 0.4,
+"weight": "pint",
+"description": "Ales are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
-"description": "Quality ale, among the best local brews. Pleasing to more refined tastes."
+{
+"name": "Ale, quality",
+"cost": 3.0,
+"weight": "gallon pitcher",
+"description": "Ales are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
+},
+
+{
+"name": "Ale, exceptional",
+"cost": 1,
+"weight": "pint",
+"description": "Ales are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Exceptional drinks are the best available, including rare brews, good vintages, or imports such as Elvish Wines and Dwarven Spirits. The prices given are minimum."
+},
+
+{
+"name": "Ale, exceptional",
+"cost": 8,
+"weight": "gallon pitcher",
+"description": "Ales are brewed or fermented from grains that use yeast to make the alcohol content. These are generally not as potent as spirits and are usually produced at monasteries. Exceptional drinks are the best available, including rare brews, good vintages, or imports such as Elvish Wines and Dwarven Spirits. The prices given are minimum."
 },
 {
 "name": "Cider, common",
-"cost": {
-"pitcher": 0.1,
-"bottle": 0.8
+"cost": 0.1,
+"weight": "pint",
+"description": "Cider is generally made from non-citrus fermented fruit juices like apples, pears, peaches, and many different berries. Citruses like oranges, limes, and lemons have acids that kill the yeast used to ferment the juice."
 },
-"description": "Common cider made from non-citrus fermented fruit juices like apples."
+{
+"name": "Cider, common",
+"cost": 0.8,
+"weight": "bottle",
+"description": "Cider is generally made from non-citrus fermented fruit juices like apples, pears, peaches, and many different berries. Citruses like oranges, limes, and lemons have acids that kill the yeast used to ferment the juice."
 },
 {
 "name": "Cider, quality",
-"cost": {
-"pitcher": 0.4,
-"bottle": 3.0
+"cost": 0.4,
+"weight": "pint",
+"description": "Cider is generally made from non-citrus fermented fruit juices like apples, pears, peaches, and many different berries. Citruses like oranges, limes, and lemons have acids that kill the yeast used to ferment the juice. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
-"description": "Quality cider made from premium fruits."
+{
+"name": "Cider, quality",
+"cost": 3,
+"weight": "gallon pitcher",
+"description": "Cider is generally made from non-citrus fermented fruit juices like apples, pears, peaches, and many different berries. Citruses like oranges, limes, and lemons have acids that kill the yeast used to ferment the juice. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
 {
 "name": "Cider, exceptional",
-"cost": {
-"pitcher": 1.0,
-"bottle": 8.0
+"cost": 1,
+"weight": "pint",
+"description": "Cider is generally made from non-citrus fermented fruit juices like apples, pears, peaches, and many different berries. Citruses like oranges, limes, and lemons have acids that kill the yeast used to ferment the juice. Exceptional drinks are the best available, including rare brews, good vintages, or imports such as Elvish Wines and Dwarven Spirits. The prices given are minimum."
 },
-"description": "Exceptional cider, the best available, including rare brews or imports."
+{
+"name": "Cider, exceptional",
+"cost": 8,
+"weight": "gallon pitcher",
+"description": "Cider is generally made from non-citrus fermented fruit juices like apples, pears, peaches, and many different berries. Citruses like oranges, limes, and lemons have acids that kill the yeast used to ferment the juice. Exceptional drinks are the best available, including rare brews, good vintages, or imports such as Elvish Wines and Dwarven Spirits. The prices given are minimum."
 },
 {
 "name": "Wine, common",
-"cost": {
-"glass": 0.2,
-"bottle": 1.6,
-"pitcher": 1.0
+"cost": 0.2,
+"weight": "glass",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Common drinks are the cheapest, and are a passable- quality offering."
 },
-"description": "Common wine made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine."
+{
+"name": "Wine, common",
+"cost": 1.6,
+"weight": "bottle",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Common drinks are the cheapest, and are a passable- quality offering."
+},
+{
+"name": "Wine, common",
+"cost": 1,
+"weight": "gallon pitcher",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Common drinks are the cheapest, and are a passable- quality offering."
 },
 {
 "name": "Wine, quality",
-"cost": {
-"glass": 1.0,
-"bottle": 10.0,
-"pitcher": 5.0
+"cost": 1,
+"weight": "glass",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
-"description": "'Quality wine, among the best local vintages. Pleasing to more refined tastes.' Monasteries often produce the best wines."
+{
+"name": "Wine, quality",
+"cost": 5,
+"weight": "bottle",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
+},
+{
+"name": "Wine, quality",
+"cost": 10,
+"weight": "gallon pitcher",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
 {
 "name": "Wine, exceptional",
-"cost": {
-"glass": 6.0,
-"pitcher": 30.0
+"cost": 6,
+"weight": "glass",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Exceptional drinks are the best available, including rare brews, good vintages, or imports such as Elvish Wines and Dwarven Spirits. The prices given are minimum."
 },
-"description": "Exceptional wine, the best available, including good vintages or imports such as Elvish Wines."
+{
+"name": "Wine, exceptional",
+"cost": 30,
+"weight": "bottle",
+"description": "Wine is made from fermented grape juices (or sometimes other berries or fruits). The type of grapes determine the color and flavor of the wine. Monasteries often produce the best wines. Exceptional drinks are the best available, including rare brews, good vintages, or imports such as Elvish Wines and Dwarven Spirits. The prices given are minimum."
 },
 {
 "name": "Mead, common",
-"cost": {
-"pint": 0.1,
-"pitcher": 0.5
+"cost": 0.1,
+"weight": "pint",
+"description": "Mead is made with honey diluted with water or apple juice, and fermented with wine yeast. It is a potent drink popular in northern climates. Common drinks are the cheapest, and are a passable- quality offering."
 },
-"description": "Common mead made with honey diluted with water or apple juice."
+{
+"name": "Mead, common",
+"cost": 0.5,
+"weight": "bottle",
+"description": "Mead is made with honey diluted with water or apple juice, and fermented with wine yeast. It is a potent drink popular in northern climates. Common drinks are the cheapest, and are a passable- quality offering."
+},
+
+{
+"name": "Mead, quality",
+"cost": 0.1,
+"weight": "pint",
+"description": "Mead is made with honey diluted with water or apple juice, and fermented with wine yeast. It is a potent drink popular in northern climates. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
 {
 "name": "Mead, quality",
-"cost": {
-"pint": 0.4,
-"pitcher": 2.0
+"cost": 0.5,
+"weight": "bottle",
+"description": "Mead is made with honey diluted with water or apple juice, and fermented with wine yeast. It is a potent drink popular in northern climates. Quality drinks are among the best local brews or vintages. These will be pleasing to more refined tastes."
 },
-"description": "Quality mead among the best local brews."
+
+{
+"name": "Spirits, rotgut",
+"cost": 0.03,
+"weight": "shot",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Rotgut is a poorly-fermented drink mixed with more water than alcohol. "
 },
 {
 "name": "Spirits, rotgut",
-"cost": {
-"shot": 0.03,
-"bottle": 0.6
-},
-"description": "Poorly-fermented spirit mixed with more water than alcohol."
+"cost": 0.6,
+"weight": "bottle",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Rotgut is a poorly-fermented drink mixed with more water than alcohol. "
 },
 {
 "name": "Spirits, common",
-"cost": {
-"shot": 0.1,
-"bottle": 2.0
+"cost": 0.1,
+"weight": "shot",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Common spirits are half water and half alcohol and have an acceptable taste."
 },
-"description": "Common spirits are half water and half alcohol."
+{
+"name": "Spirits, common",
+"cost": 2,
+"weight": "bottle",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Common spirits are half water and half alcohol and have an acceptable taste."
 },
 {
 "name": "Spirits, quality",
-"cost": {
-"shot": 1.0,
-"bottle": 20.0
+"cost": 1,
+"weight": "shot",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Quality spirits are cut with 25% water and have a very good taste. "
 },
-"description": "Quality spirits are cut with water and have a very good taste."
+{
+"name": "Spirits, quality",
+"cost": 20,
+"weight": "bottle",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Quality spirits are cut with 25% water and have a very good taste. "
 },
 {
 "name": "Spirits, exceptional",
-"cost": {
-"shot": 5.0,
-"bottle": 100.0
+"cost": 5,
+"weight": "shot",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Exceptional spirits are not cut and usually are not mixed with any other liquids. The prices given are minimum."
 },
-"description": "Exceptional spirits are not cut and usually not mixed with any other liquids."
+{
+"name": "Spirits, exceptional",
+"cost": 100,
+"weight": "bottle",
+"description": "Spirits are fermented alcohols that are boiled again to remove the water and increase the alcohol content. The type of spirit is dependent on the grain, grape, fruit, or berry used as a base. These are generally made by a local farmer. Quality depends on the experience of the person making the spirit and the quality of the crop. Spirits are generally mixed or ‘cut’ with water to make the bottle last longer. Exceptional spirits are not cut and usually are not mixed with any other liquids. The prices given are minimum."
 }
+
 ],
+
 "services":[
 {
 "name": "Grain and stabling for horse (daily)",

@@ -163,6 +163,8 @@ function createEntryLink(item) {
       journalId.textContent = item.id;
       scaleSelector.value = item.scale;
       styleTables();
+      formatTables();
+      
   });
 
   linkWrapper.appendChild(link);
@@ -181,10 +183,6 @@ function styleTables() {
         header.style = ''
 
     });
-
-    // // Select all <tr> elements
-    // const rows = document.querySelectorAll('tr');
-    // rows.forEach(row => console.log(row));
 
     // Select all <td> elements
     const cells = document.querySelectorAll('td');

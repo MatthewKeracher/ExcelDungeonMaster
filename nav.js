@@ -266,6 +266,7 @@ const loadedData = JSON.parse(e.target.result);
 data = loadedData.data;
 journalData = loadedData.journalData;
 zones = loadedData.zones;
+regionObj = data[0]
 
 collectGarbage();
 

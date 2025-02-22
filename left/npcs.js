@@ -665,7 +665,7 @@ return;
 
 // Filter spells based on class, current spell level, and ensure they haven't been used
 const availableSpells = spells.filter(entry => 
-entry.Class === classProper && parseInt(entry.Level) === spellLevel && !usedSpells.has(entry.name));
+entry.class === classProper && parseInt(entry.level) === spellLevel && !usedSpells.has(entry.name));
 
 // Randomly select spells based on the number of slots available at this level
 for (let i = 0; i < numberOfSpellsAtLevel; i++) {

@@ -1,11 +1,29 @@
 function handleSpellCommands(params) {
-    const [searchTerms, number] = params.trim().split(',');
+    const [searchTerms, number] = params.trim().split(/\s+(?=\d+$)/);
 
-    if (searchTerms) {
+    if (searchTerms && number) {
+        // Filter spells by class and level
+        let results = spells
+            .filter(entry => 
+                entry.class.toLowerCase() === searchTerms.toLowerCase() && 
+                entry.level.toString() === number.trim()
+            )
+            .map(spell => spell.name);  // Extract only the names
+
+        return results.length > 0 ? results.join(', ') : "No spells found matching the criteria.";
+    } else if (searchTerms) {
+        // Search for a specific spell by name
         let spell = searchFor(searchTerms, spells);          
-            return makeSpellEntry(spell);
-        
+        return spell ? makeSpellEntry(spell) : "Spell not found.";
+    } else {
+        return "Invalid input. Please provide a spell name or class and level.";
     }
+}
+
+function searchFor(searchTerms, spells) {
+    return spells.find(spell => 
+        spell.name.toLowerCase().includes(searchTerms.toLowerCase())
+    );
 }
 
 function makeSpellEntry(spell) {

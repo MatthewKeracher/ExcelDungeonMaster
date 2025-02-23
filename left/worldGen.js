@@ -55,7 +55,7 @@ function worldGen() {
 
 // Store results for each year
 let results = [];
-results[year] = {}
+results.push({Year : year})
 
 let elves = genData.elves;
 let humans = genData.humans;
@@ -95,6 +95,8 @@ const index = Math.floor(Math.random() * elflings.length);
 elflings[index].cuibri += amount;
 elflings[index].lanwa += amount;
 }}};
+
+
 
 if(elves){
 let livingElves = [];
@@ -189,7 +191,7 @@ const elvesData = {
     };
 
     
-results[year].Elves = elvesData;
+results.push({Elves: elvesData});
 
 elves = livingElves;
 let eBirthRate = Math.random() * (15 - 5) + 5;
@@ -374,7 +376,7 @@ const humansData = {
     },
     };
 
-results[year].Humans = humansData;
+results.push({Humans: humansData});
 
 // Birth new humans        
 humans = livingHumans;
@@ -529,7 +531,7 @@ const halflingsData = {
     },
     };
 
-results[year].Halflings = halflingsData;
+results.push({Halflings: halflingsData});
 
 halflings = livingHalflings;
 }
@@ -659,7 +661,7 @@ const dwarvesData = {
     },
     };
 
-results[year].Dwarves = dwarvesData;
+results.push({Dwarves: dwarvesData});
 
 // Birth new Dwarves        
 dwarves = livingDwarves;
@@ -686,12 +688,11 @@ genData.elves = elves;
 genData.humans = humans;
 genData.halflings = halflings;
 genData.dwarves = dwarves;
-  
 
 if (year % 100 === 0 && year !== 0) {
-    recordsArray.push(results);
-}
-
+    recordsArray.push(results)
+    }
+  
 year++
 return JSON.stringify(results, null, 2); 
 

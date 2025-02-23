@@ -93,7 +93,7 @@ if (inZone !== null && inZone) {
             div.setAttribute('sym', placeSymbol.value);
         }
 
-    console.log(exists)
+    //console.log(exists)
 
     } else {
         makeNewEntry();

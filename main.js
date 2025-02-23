@@ -91,12 +91,15 @@ journalDiv.style.display = 'none';
 
 const welcomeMessage = `Press ">" to Enter Your World.`;
 
+
 //Opening Sequence
 for (let i = 0; i < welcomeMessage.length; i++) {
     setTimeout(() => {
       textDiv.innerHTML += welcomeMessage.charAt(i);
     }, i * 25); 
   }
+
+
   
 idBox.textContent = data[0].id;
 

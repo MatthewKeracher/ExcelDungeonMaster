@@ -300,6 +300,15 @@ return html
 
 }
 
+function updateResults() {
+   
+    let results = worldGen();
+    textDiv.innerHTML = results
+    
+}
+
+let intervalId;
+
 function handleDoCommand(params){
 
 const [command, ...rest] = params.split(' ');
@@ -322,7 +331,19 @@ switch (command) {
          return ``
     case 'move':
          handleMove(rest[0]);
-         return ``        
+         return ``
+    case 'start':
+        if (!intervalId) { // Prevent multiple intervals from being set
+            textDiv.innetHTML = worldGen();
+            intervalId = setInterval(updateResults, 50);
+            }
+        return `` 
+    case 'stop':
+        if (intervalId) { // Check if the interval is running
+            clearInterval(intervalId); // Stop the existing interval
+            intervalId = null; // Reset the interval ID
+        }
+        return ``            
     default:
         return '{Command not recognized}';
 }

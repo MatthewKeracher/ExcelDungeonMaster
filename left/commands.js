@@ -342,6 +342,7 @@ switch (command) {
         if (intervalId) { // Check if the interval is running
             clearInterval(intervalId); // Stop the existing interval
             intervalId = null; // Reset the interval ID
+            console.log(recordsArray)
         }
         return ``            
     default:

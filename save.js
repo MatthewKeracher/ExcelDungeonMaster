@@ -104,7 +104,7 @@ if (inZone !== null && inZone) {
 
 
 
-if(journalShowing){
+if(journalShowing && scaleSelector.style.display !== "none"){
 saveJournalEntry();
 }
 

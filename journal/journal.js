@@ -144,7 +144,7 @@ console.log(obj)
 function getNewJournalId(){
 
     let entryId
-    let i = 0;
+    let i = 1;
     let alreadyExists;
 
     do {

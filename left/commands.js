@@ -300,10 +300,10 @@ return html
 
 }
 
-function updateResults() {
+function updateResults(source = textDiv) {
    
     let results = worldGen();
-    textDiv.innerHTML = results
+    source.innerHTML = results
     
 }
 

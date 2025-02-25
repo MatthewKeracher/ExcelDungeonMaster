@@ -312,3 +312,31 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
                 })
         }};
     });
+
+// Predefined YouTube video URL
+const videoUrl = 'https://youtu.be/d9YM_9CVmtc'; // Replace with your desired video URL
+
+// Function to extract video ID from YouTube URL
+function getYouTubeVideoId(url) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+Mousetrap.bind('1', function() {  
+
+   let url = "https://youtu.be/jBhrlz3G0Uo";
+   let embeddedUrl = url.replace("youtu.be/", "youtu.be/embed/");
+
+    let player = `<iframe width="0" height="0" src=${embeddedUrl}?autoplay=1&start=2307" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+
+    textDiv.innerHTML += player 
+ 
+});
+
+Mousetrap.bind('0', function() {  
+    
+    textDiv.innerHTML = `` 
+ 
+});
+

@@ -1,4 +1,5 @@
 let currentTrack = [];
+let trackObj = [];
 
 let soundBoardData = [
     { id: 1, url: "", startTime: "0", endTime: "" },
@@ -105,6 +106,51 @@ let soundBoardData = [
       
         return tableHTML;
       }
+
+      function editTrack(newTrackObj) {
+        const editTrack = document.getElementById('editTrack');
+        const trackUrl = document.getElementById('trackUrl');
+        const trackStart = document.getElementById('trackStart');
+        const trackEnd = document.getElementById('trackEnd');
+
+        trackObj = newTrackObj
+
+        if (newTrackObj) {
+        trackUrl.value = trackObj.url;
+        trackStart.value = trackObj.startTime;
+        trackEnd.value =trackObj.endTime;
+        }else{
+        trackUrl.value = "";
+        trackStart.value = "";
+        trackEnd.value = "";
+        }
+
+        editTrack.style.display = "block"
+        
+        }
+
+
+      function closeEditTrack() {
+        const editTrack = document.getElementById('editTrack');
+        editTrack.style.display = "none"
+      }
+
+      function saveTrack() {
+        const editTrack = document.getElementById('editTrack');
+        const trackUrl = document.getElementById('trackUrl').value;
+        const trackStart = document.getElementById('trackStart').value;
+        const trackEnd = document.getElementById('trackEnd').value;
+        
+        if (trackObj) {
+          trackObj.url = trackUrl;
+          trackObj.startTime = trackStart;
+          trackObj.endTime = trackEnd;
+        }
+
+        saveData();
+        editTrack.style.display = "none"
+        
+        }
 
       function updateSoundBoardData() {
        

@@ -39,6 +39,16 @@
     </div>
 </div>
 
+<div id="editTrack" class="modal"> 
+<div class="modal-content">
+    <span class="close" onclick="closeEditTrack()">&times;</span>
+    <input type="input" id="trackUrl" placeholder="URL">
+    <input type="input" id="trackStart" placeholder="0s">
+    <input type="input" id="trackEnd" placeholder="0s">
+    <button id="confirmButton" onclick="saveTrack()">Save</button>
+</div>
+</div>
+
     
     <div class="container">
         <div class="left-section">
@@ -103,7 +113,9 @@
                 <canvas id="imageCanvas"></canvas>
                
                 </div>
-        
+    
+
+
     <div id="spotifyContainer"><div id="embed-iframe"></div></div>
 
     <!-- Optional Footer -->

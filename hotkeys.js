@@ -113,145 +113,40 @@ Mousetrap.bind('f', function() {
         handleFill();
     });
 
-Mousetrap.bind('1', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 1);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color1');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('2', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 2);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color2');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('3', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 3);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color3');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('4', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 4);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color4');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('5', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 5);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color5');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('6', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 6);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color6');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('7', function() { 
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 7);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{ 
-        selectedColorElement = document.getElementById('color7');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('8', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 8);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-            playTrack(trackObj)
-           }
-
-    }else{
-        selectedColorElement = document.getElementById('color8');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('9', function() {  
-    if(!isPainting){
-        const trackObj = soundBoardData.find(entry => entry.id === 9);
-        
-        if (EmbedControllerInstance && trackObj.url) {
-         playTrack(trackObj)
-        }
-
-    }else{
-        selectedColorElement = document.getElementById('color9');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
-    }
-    });
-Mousetrap.bind('0', function() {  
-    if(!isPainting){
-        
-       if (EmbedControllerInstance && currentTrack) {
-          EmbedControllerInstance.seek(currentTrack.startTime) 
-      }
+    for (let i = 1; i <= 9; i++) {
+        Mousetrap.bind(`${i}`, function() {
+            if (!isPainting) {
+                const trackObj = soundBoardData.find(entry => entry.id === i);
+                if (EmbedControllerInstance && trackObj.url) {
+                    playTrack(trackObj);
+                }
+            } else {
+                selectedColorElement = document.getElementById(`color${i}`);
+                setCurrentColor(selectedColorElement);
+                paintCurrentCell();
+            }
+        });
     
-    }else{
-        selectedColorElement = document.getElementById('eraser');
-        setCurrentColor(selectedColorElement);
-        paintCurrentCell();
+        Mousetrap.bind(`shift+${i}`, function() {
+            const trackObj = soundBoardData.find(entry => entry.id === i);
+            editTrack(trackObj);
+        });
     }
-    });
+    
+
+Mousetrap.bind('0', function() {  
+if(!isPainting){
+
+if (EmbedControllerInstance && currentTrack) {
+EmbedControllerInstance.seek(currentTrack.startTime) 
+}
+
+}else{
+selectedColorElement = document.getElementById('eraser');
+setCurrentColor(selectedColorElement);
+paintCurrentCell();
+}
+});
 
 Mousetrap.bindGlobal('`', function(e) {  
     
@@ -307,7 +202,7 @@ Mousetrap.bindGlobal('escape', function(e) {
     });
 
     
-Mousetrap.bindGlobal('enter', function(e) { 
+Mousetrap.bindGlobal('enter', function(e) {  
     
         switch (currentMode){
     

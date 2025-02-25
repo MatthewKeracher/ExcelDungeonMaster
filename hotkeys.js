@@ -313,30 +313,39 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
         }};
     });
 
-// Predefined YouTube video URL
-const videoUrl = 'https://youtu.be/d9YM_9CVmtc'; // Replace with your desired video URL
+   
+    let EmbedControllerInstance; // Store the EmbedController
 
-// Function to extract video ID from YouTube URL
-function getYouTubeVideoId(url) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-}
+    window.onSpotifyIframeApiReady = (IFrameAPI, uri) => {
+      IFrameAPI.createController(document.getElementById('embed-iframe'), {
+        uri: uri
+      }, (EmbedController) => {
+        // IFrameAPI.style.display = "none"
+        EmbedControllerInstance = EmbedController; // Store the controller
+        EmbedControllerInstance.addListener('ready', () => {
+            EmbedControllerInstance.seek(100)
+            });
+      });
+    };
 
-Mousetrap.bind('1', function() {  
+    //https://open.spotify.com/track/05q7lfYerRkqqNDua3vJOL?si=9c22dd002735476c
 
-   let url = "https://youtu.be/jBhrlz3G0Uo";
-   let embeddedUrl = url.replace("youtu.be/", "youtu.be/embed/");
+    Mousetrap.bind('1', function() {
+      // Load a different track when '1' is pressed (example)
+      console.log('pressed 1')
+      if (EmbedControllerInstance) {
+        EmbedControllerInstance.loadUri('spotify:track:05q7lfYerRkqqNDua3vJOL'); // Load a different track
+        console.log(EmbedControllerInstance)
+        EmbedControllerInstance.play(); // Play the new track (subject to autoplay policies)
+      }
+    });
 
-    let player = `<iframe width="0" height="0" src=${embeddedUrl}?autoplay=1&start=2307" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+    Mousetrap.bind('enter', function() {
+      // Stop playback when '0' is pressed
+      if (EmbedControllerInstance) {
+        EmbedControllerInstance.seek(100)
+        //EmbedControllerInstance.destroy();
+      }
+    });
 
-    textDiv.innerHTML += player 
- 
-});
-
-Mousetrap.bind('0', function() {  
     
-    textDiv.innerHTML = `` 
- 
-});
-

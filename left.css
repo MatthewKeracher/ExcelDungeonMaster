@@ -24,6 +24,11 @@
     height: 10px;
 } */
 
+#spotifyContainer{
+    width:100%;
+    z-index: 1;
+}
+
 #placeContainer {
     display: flex;
     align-items: center;
@@ -168,6 +173,10 @@ border-color: #000;
 .column {
     flex: 1;
     margin-right: 10px;
+}
+
+#embed-frame{
+    display:none
 }
 
 

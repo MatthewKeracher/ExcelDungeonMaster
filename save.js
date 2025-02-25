@@ -5,6 +5,8 @@ localStorage.setItem('zones', JSON.stringify(zones));
 localStorage.setItem('journal', JSON.stringify(journalData));
 localStorage.setItem('scrollData', JSON.stringify(scrollData));
 localStorage.setItem('regionObj', JSON.stringify(regionObj));
+localStorage.setItem('soundBoard', JSON.stringify(soundBoardData));
+
 }
 
 
@@ -23,6 +25,7 @@ const savedZones = localStorage.getItem('zones');
 const savedJournal = localStorage.getItem('journal');
 const savedScrollData = localStorage.getItem('scrollData');
 const lastCellAt = localStorage.getItem('regionObj');
+const soundBoard = localStorage.getItem('soundBoard');
 
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
@@ -41,6 +44,9 @@ scrollData = JSON.parse(savedScrollData)
 if(lastCellAt){
  regionObj = JSON.parse(lastCellAt)
  idBox.textContent = regionObj.id;
+}
+if(soundBoard){
+soundBoardData = JSON.parse(soundBoard)
 }
 }
 
@@ -76,7 +82,7 @@ if (inZone !== null && inZone) {
 
 } else {
 
-    console.log('saving...')
+
 
     let exists = data.find(entry => entry.id === idBox.textContent);
 

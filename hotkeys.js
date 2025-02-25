@@ -113,57 +113,144 @@ Mousetrap.bind('f', function() {
         handleFill();
     });
 
-
-
 Mousetrap.bind('1', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 1);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color1');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('2', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 2);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color2');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('3', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 3);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color3');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('4', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 4);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color4');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('5', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 5);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color5');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('6', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 6);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color6');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
-Mousetrap.bind('7', function() {  
+Mousetrap.bind('7', function() { 
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 7);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{ 
         selectedColorElement = document.getElementById('color7');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('8', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 8);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+            playTrack(trackObj)
+           }
+
+    }else{
         selectedColorElement = document.getElementById('color8');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('9', function() {  
+    if(!isPainting){
+        const trackObj = soundBoardData.find(entry => entry.id === 9);
+        
+        if (EmbedControllerInstance && trackObj.url) {
+         playTrack(trackObj)
+        }
+
+    }else{
         selectedColorElement = document.getElementById('color9');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 Mousetrap.bind('0', function() {  
+    if(!isPainting){
+        
+       if (EmbedControllerInstance && currentTrack) {
+          EmbedControllerInstance.seek(currentTrack.startTime) 
+      }
+    
+    }else{
         selectedColorElement = document.getElementById('eraser');
         setCurrentColor(selectedColorElement);
         paintCurrentCell();
+    }
     });
 
 Mousetrap.bindGlobal('`', function(e) {  
@@ -314,38 +401,7 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
     });
 
    
-    let EmbedControllerInstance; // Store the EmbedController
 
-    window.onSpotifyIframeApiReady = (IFrameAPI, uri) => {
-      IFrameAPI.createController(document.getElementById('embed-iframe'), {
-        uri: uri
-      }, (EmbedController) => {
-        // IFrameAPI.style.display = "none"
-        EmbedControllerInstance = EmbedController; // Store the controller
-        EmbedControllerInstance.addListener('ready', () => {
-            EmbedControllerInstance.seek(100)
-            });
-      });
-    };
-
-    //https://open.spotify.com/track/05q7lfYerRkqqNDua3vJOL?si=9c22dd002735476c
-
-    Mousetrap.bind('1', function() {
-      // Load a different track when '1' is pressed (example)
-      console.log('pressed 1')
-      if (EmbedControllerInstance) {
-        EmbedControllerInstance.loadUri('spotify:track:05q7lfYerRkqqNDua3vJOL'); // Load a different track
-        console.log(EmbedControllerInstance)
-        EmbedControllerInstance.play(); // Play the new track (subject to autoplay policies)
-      }
-    });
-
-    Mousetrap.bind('enter', function() {
-      // Stop playback when '0' is pressed
-      if (EmbedControllerInstance) {
-        EmbedControllerInstance.seek(100)
-        //EmbedControllerInstance.destroy();
-      }
-    });
+    
 
     

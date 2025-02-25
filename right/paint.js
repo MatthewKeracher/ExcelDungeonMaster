@@ -10,7 +10,6 @@ currentColor = window.getComputedStyle(colInput).backgroundColor;
 };
 
 function paintCurrentCell(colInput){
-if(!isPainting){return}
 currentCell = getCurrentDiv();
 paintCell(currentCell);
 };

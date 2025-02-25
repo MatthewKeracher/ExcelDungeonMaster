@@ -128,7 +128,11 @@ const inf =  obj && obj.settings &&
              obj.settings.inflation ?
              obj.settings.inflation : 1;
 
-return `Inflation: <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}"></input> `
+const soundBoardHTML = generateSoundBoardTable();
+
+const inflationHTML = `Inflation: <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}"></input>`
+
+return `${inflationHTML}<br>${soundBoardHTML}`
 
 }
 
@@ -380,20 +384,20 @@ function fillScaleSelector() {
   // Clear existing options
   scaleSelector.innerHTML = '';
 
-  scaledObjs.push({
-  name: 'Player Characters',
-  id: 'PC'
-  })
+    scaledObjs.push({
+    name: 'Player Characters',
+    id: 'PC'
+    })
 
-  scaledObjs.push({
-  name: 'Rules',
-  id: 'BFRPG'
-  })
+    scaledObjs.push({
+    name: 'Rules',
+    id: 'BFRPG'
+    })
 
-scaledObjs.push({
-name: 'Session Log',
-id: 'SL'
-})
+    scaledObjs.push({
+    name: 'Session Log',
+    id: 'SL'
+    })
 
   // Add options based on scaledObjs in reverse order
   for (let i = scaledObjs.length - 1; i >= 0; i--) {

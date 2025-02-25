@@ -1,6 +1,3 @@
-
-
-
 function handleMove(moveToID){
 
 if(!isMoving && currentMode === 'map'){
@@ -207,12 +204,15 @@ function handleExport() {
 const regionName = document.getElementById('regionName');
 
 
-// Create an object that includes all three data sets
+// Create an object that includes all data sets
 const exportData = {
 data: data,
 journalData: journalData,
-zones: zones
+zones: zones,
+soundBoard: soundBoardData, 
 };
+
+console.log(exportData)
 
 // Convert the combined object to a JSON string
 const exportStr = JSON.stringify(exportData, null, 2); // Pretty print with 2 spaces
@@ -266,8 +266,9 @@ const loadedData = JSON.parse(e.target.result);
 data = loadedData.data;
 journalData = loadedData.journalData;
 zones = loadedData.zones;
-regionObj = data[0]
-
+regionObj = data[0];
+soundBoardData = loadedData.soundBoard;
+console.log(loadedData)
 collectGarbage();
 
 if(Array.isArray(zones) === false){zones = []}

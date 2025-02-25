@@ -25,8 +25,9 @@
 } */
 
 #spotifyContainer{
-    width:100%;
-    z-index: 1;
+    width: 0;
+    height: 0;
+    z-index: 0;
 }
 
 #placeContainer {

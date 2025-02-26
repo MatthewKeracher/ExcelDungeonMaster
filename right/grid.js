@@ -72,6 +72,7 @@ emptyStoryteller();
 
 
 function updateGrid(){
+
 if(isHexMap){
 updateHexGrid()
 }else{

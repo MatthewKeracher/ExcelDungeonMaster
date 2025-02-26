@@ -79,7 +79,7 @@ handlePaint();
 
 
 if (currentMode === "edit") { //EDIT MODE
-modeBox.innerHTML = `<b>Edit Mode</b>`
+changeHelp("Edit Mode")
 
 placeName.disabled = false; //Change what displays
 placeSymbol.disabled = false;
@@ -128,7 +128,7 @@ hitPointInit();
 
 } else if(currentMode === "map"){ //MAP MODE
 //Change Mode
-modeBox.innerHTML = `<b>Map Mode</b>`
+changeHelp("Map Mode")
 
 //What is focused
 placeName.blur();
@@ -185,7 +185,7 @@ updateGrid();
 } else if(currentMode === "command"){ //COMMAND MODE
 
 source = activeDiv; //Change Mode
-modeBox.innerHTML = `<b>Command Mode</b>`
+changeHelp("Command Mode")
 
 //Change what displays
 textDiv.style.display = "block";

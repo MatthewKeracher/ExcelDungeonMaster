@@ -1,188 +1,146 @@
-let currentTrack = [];
+let soundBoardData 
+let EmbedControllerInstance; 
+let playbackUpdateListener;
+let currentTrack = null;
 let trackObj = [];
 
-let soundBoardData = [
-    { id: 1, url: "", startTime: "0", endTime: "" },
-    { id: 2, url: "", startTime: "0", endTime: "" },
-    { id: 3, url: "", startTime: "0", endTime: "" },
-    { id: 4, url: "", startTime: "0", endTime: "" },
-    { id: 5, url: "", startTime: "0", endTime: "" },
-    { id: 6, url: "", startTime: "0", endTime: "" },
-    { id: 7, url: "", startTime: "0", endTime: "" },
-    { id: 8, url: "", startTime: "0", endTime: "" },
-    { id: 9, url: "", startTime: "0", endTime: "" },
-  ];
+let lastCallTime = 0;
+const throttleDelay = 1000; // 1 second
 
-  let EmbedControllerInstance; 
+let emtpySoundBoard = [
+{ id: 1, url: "", startTime: "", endTime: "", note:"" },
+{ id: 2, url: "", startTime: "", endTime: "", note:"" },
+{ id: 3, url: "", startTime: "", endTime: "", note:"" },
+{ id: 4, url: "", startTime: "", endTime: "", note:"" },
+{ id: 5, url: "", startTime: "", endTime: "", note:"" },
+{ id: 6, url: "", startTime: "", endTime: "", note:"" },
+{ id: 7, url: "", startTime: "", endTime: "", note:"" },
+{ id: 8, url: "", startTime: "", endTime: "", note:"" },
+{ id: 9, url: "", startTime: "", endTime: "", note:"" },
+];
 
-    window.onSpotifyIframeApiReady = (IFrameAPI, uri) => {
-      IFrameAPI.createController(document.getElementById('embed-iframe'), {
-        uri: uri, 
-      }, (EmbedController) => {
-        EmbedControllerInstance = EmbedController; 
-      });
-      
-    };
 
-    
 
-    function playTrack(trackObj){
-        const uri = extractId(trackObj.url)
-        EmbedControllerInstance.loadUri(uri, false, trackObj.startTime);  
-        EmbedControllerInstance.play();
-        currentTrack = trackObj;
+function editTrack(newTrackObj) {
+const editTrack = document.getElementById('editTrack');
+const trackUrl = document.getElementById('trackUrl');
+const trackStart = document.getElementById('trackStart');
+const trackEnd = document.getElementById('trackEnd');
+const trackNote = document.getElementById('trackNote');
 
-        if(trackObj && trackObj.endTime !== ""){
-        EmbedControllerInstance.addListener('playback_update', e => {
-            const position = e.data.position / 1000; // Convert milliseconds to seconds
-            const stopAtSeconds = trackObj.endTime; // Example: stop playback after 30 seconds
-      
-            if (position >= stopAtSeconds) {
-                EmbedControllerInstance .pause(); // Pause playback when the desired time is reached
-            }
-          });
-        }
-        
+trackObj = newTrackObj
+
+if (newTrackObj) {
+trackUrl.value = trackObj.url;
+trackStart.value = trackObj.startTime;
+trackEnd.value =trackObj.endTime;
+trackNote.value = trackObj.note;
+}else{
+trackUrl.value = "";
+trackStart.value = "";
+trackEnd.value = "";
+trackNote.value = "";
+}
+
+editTrack.style.display = "block"
+}
+
+function closeEditTrack() {
+const editTrack = document.getElementById('editTrack');
+editTrack.style.display = "none"
+}
+
+function saveTrack() {
+const editTrack = document.getElementById('editTrack');
+const trackNote = document.getElementById('trackNote').value;
+const trackUrl = document.getElementById('trackUrl').value;
+const trackStart = document.getElementById('trackStart').value;
+const trackEnd = document.getElementById('trackEnd').value;
+
+if (trackObj) {
+trackObj.url = trackUrl;
+trackObj.note = trackNote;
+trackObj.startTime = trackStart;
+trackObj.endTime = trackEnd;
+}
+
+saveData();
+editTrack.style.display = "none"
+
+}
+
+window.onSpotifyIframeApiReady = (IFrameAPI, uri) => {
+IFrameAPI.createController(document.getElementById('spotify-iframe'), {
+uri: uri, 
+robustness: 'low' 
+}, (EmbedController) => {
+EmbedControllerInstance = EmbedController;
+
+});
+};
+
+
+function addPlaybackUpdateListener(trackObj) {
+    // Remove existing listener if it exists
+    if (playbackUpdateListener) {
+        EmbedControllerInstance.removeListener('playback_update', playbackUpdateListener);
     }
 
-    function extractId(url) {
-        const trackMatch = url.match(/track\/([^\?]+)/);
-        const playlistMatch = url.match(/playlist\/([^\?]+)/);
-      
-        if (trackMatch && trackMatch[1]) {
-          return `spotify:track:${trackMatch[1]}`;
-        } else if (playlistMatch && playlistMatch[1]) {
-          return `spotify:playlist:${playlistMatch[1]}`;
+    // Define the new listener
+    playbackUpdateListener = e => {
+        const position = e.data.position / 1000; // Convert milliseconds to seconds
+        let stopAtSeconds = trackObj.endTime; // Example: stop playback after 30 seconds
+
+
+        if (position >= stopAtSeconds) {
+               
+                EmbedControllerInstance.seek(trackObj.startTime * 1000); // Seek back to start time
+                EmbedControllerInstance.play(); // Resume playback 
+            
+                           
         }
-        return null;
-      }
-      
+    };
 
-    function generateSoundBoardTable(data = soundBoardData) {
-        let tableHTML = `
-          <table border="1" class="table" style="border-collapse: collapse; width: 100%;">
-            <tbody>
-              <tr>
-                <td  tabindex="0"  class="tableCell tableHeader" style="">Start</td>
-                <td  tabindex="0"  class="tableCell tableHeader" style="">End</td>    
-                <td  tabindex="0"  class="tableCell tableHeader" style="">URL</td>
-                <td  tabindex="0"  class="tableCell tableHeader" style="">#</td>
-         
-              </tr>
-        `;
-        
-        if(!data){
-            soundBoardData = [
-                { id: 1, url: "", startTime: "0", endTime: "" },
-                { id: 2, url: "", startTime: "0", endTime: "" },
-                { id: 3, url: "", startTime: "0", endTime: "" },
-                { id: 4, url: "", startTime: "0", endTime: "" },
-                { id: 5, url: "", startTime: "0", endTime: "" },
-                { id: 6, url: "", startTime: "0", endTime: "" },
-                { id: 7, url: "", startTime: "0", endTime: "" },
-                { id: 8, url: "", startTime: "0", endTime: "" },
-                { id: 9, url: "", startTime: "0", endTime: "" },
-              ];
-              data = soundBoardData
-        }
-      
-        data.forEach(item => {
-          tableHTML += `
-            <tr>
-              <td  tabindex="0"  class="tableCell" style="">${item.startTime}</td>
-              <td  tabindex="0"  class="tableCell" style="">${item.endTime}</td>
-              <td  tabindex="0"  class="tableCell" style="">${item.url}</td>
-              <td  tabindex="0"  class="tableCell" style="">${item.id}</td>
+    // Add the new listener
+    if(trackObj.endTime){
+    EmbedControllerInstance.addListener('playback_update', playbackUpdateListener);
+    }
+}
 
-            </tr>
-          `;
-        });
-      
-        tableHTML += `
-            </tbody>
-            </table>
-             <button class="button" onclick="updateSoundBoardData()">Save</button>
-        `;
-      
-        return tableHTML;
-      }
+function playTrack(trackObj){
+  const now = Date.now();
+    if (now - lastCallTime < throttleDelay) return;
+    lastCallTime = now;
 
-      function editTrack(newTrackObj) {
-        const editTrack = document.getElementById('editTrack');
-        const trackUrl = document.getElementById('trackUrl');
-        const trackStart = document.getElementById('trackStart');
-        const trackEnd = document.getElementById('trackEnd');
+const uri = extractId(trackObj.url)
+EmbedControllerInstance.loadUri(uri, false, trackObj.startTime);  
+currentTrack = trackObj.id;
 
-        trackObj = newTrackObj
+addPlaybackUpdateListener(trackObj);
+changeHelp(`Playing: ${trackObj.note}`)
+EmbedControllerInstance.play();
 
-        if (newTrackObj) {
-        trackUrl.value = trackObj.url;
-        trackStart.value = trackObj.startTime;
-        trackEnd.value =trackObj.endTime;
-        }else{
-        trackUrl.value = "";
-        trackStart.value = "";
-        trackEnd.value = "";
-        }
+}
 
-        editTrack.style.display = "block"
-        
-        }
+function extractId(url) {
+  const spotifyTrackMatch = url.match(/track\/([^\?]+)/);
+  const spotifyPlaylistMatch = url.match(/playlist\/([^\?]+)/);
+  const youtubeMatch = url.match(/youtube\.com\/watch\?v=([^\?]+)/) || url.match(/youtu\.be\/([^\?]+)/);
+
+  if (spotifyTrackMatch && spotifyTrackMatch[1]) {
+      return `spotify:track:${spotifyTrackMatch[1]}`;
+  } else if (spotifyPlaylistMatch && spotifyPlaylistMatch[1]) {
+      return `spotify:playlist:${spotifyPlaylistMatch[1]}`;
+  } else if (youtubeMatch && youtubeMatch[1]) {
+      return `youtube:${youtubeMatch[1]}`;
+  }
+  return null;
+}
 
 
-      function closeEditTrack() {
-        const editTrack = document.getElementById('editTrack');
-        editTrack.style.display = "none"
-      }
 
-      function saveTrack() {
-        const editTrack = document.getElementById('editTrack');
-        const trackUrl = document.getElementById('trackUrl').value;
-        const trackStart = document.getElementById('trackStart').value;
-        const trackEnd = document.getElementById('trackEnd').value;
-        
-        if (trackObj) {
-          trackObj.url = trackUrl;
-          trackObj.startTime = trackStart;
-          trackObj.endTime = trackEnd;
-        }
 
-        saveData();
-        editTrack.style.display = "none"
-        
-        }
 
-      function updateSoundBoardData() {
-       
-      
-        // Get all table rows (excluding the header row)
-        const rows = Array.from(document.querySelectorAll('.table tr')).slice(1);
-      
-        rows.forEach((row, rowIndex) => {
-          const cells = row.children;
-      
-          // Extract data from each cell
-          const startTime = cells[0].textContent;
-          const endTime = cells[1].textContent;
-          const url = cells[2].textContent;
-          const id = parseInt(cells[3].textContent);
 
-      
-          // Find and update the corresponding entry in soundBoardData
-          const entry = soundBoardData.find(item => item.id === id);
-          if (entry) {
-            entry.url = url;
-            entry.startTime = startTime;
-            entry.endTime = endTime;
-          }
-        });
-      
-        saveData();
-      }
-      
-      
 
-  
-      
- 
 

@@ -25,8 +25,8 @@ let defaultData = [{
 
 let data = defaultData;
 
-let coords = "0.0";
-let region = 'Excel_DM'
+let coords = data[0].id;
+let region = data[0].name;
 let regionObj = data[0];
 let scrollData = {X: 0, Y:0, Z:1}
 
@@ -62,7 +62,8 @@ const placeName = document.getElementById('placeName')
 const placeSymbol = document.getElementById('placeSymbol')
 const textDiv = document.getElementById('textDiv'); 
 const idBox = document.getElementById('idBox');
-const modeBox = document.getElementById('modeBox');
+const help = document.getElementById('messageBox');
+
 
 //journal Divs
 let journalData = [];
@@ -79,24 +80,24 @@ const scaleSelector = document.getElementById('scaleSelector');
 const promptBox = document.getElementById('promptBox');
 const promptMsg = document.getElementById('promptMsg');
 
-//Default
-placeName.value = "Excel_DM"
-placeSymbol.value = "⚅"
-textDiv.innerHTML = ``;
-modeBox.innerHTML = `<b>Map Mode</b>`
+// //Default
+// placeName.value = "Excel_DM"
+// placeSymbol.value = "⚅"
+// textDiv.innerHTML = ``;
+
 journalDiv.style.display = 'none';
 
-const welcomeMessage = `Press ">" to Enter Your World.`;
+function changeHelp(string){
+help.innerHTML = "";
 
-
-//Opening Sequence
-for (let i = 0; i < welcomeMessage.length; i++) {
+for (let i = 0; i < string.length; i++) {
     setTimeout(() => {
-      textDiv.innerHTML += welcomeMessage.charAt(i);
+      help.innerHTML += string.charAt(i);
     }, i * 25); 
   }
+}
 
-
+changeHelp("Press > to Enter")
   
 idBox.textContent = data[0].id;
 

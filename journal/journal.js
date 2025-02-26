@@ -128,11 +128,9 @@ const inf =  obj && obj.settings &&
              obj.settings.inflation ?
              obj.settings.inflation : 1;
 
-const soundBoardHTML = generateSoundBoardTable();
-
 const inflationHTML = `Inflation: <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}"></input>`
 
-return `${inflationHTML}<br>${soundBoardHTML}`
+return `${inflationHTML}`
 
 }
 

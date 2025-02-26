@@ -425,6 +425,8 @@ saveData();
 function updateHexGrid(){
 const hexagons = document.querySelectorAll(".hex");
 
+console.log(coords)
+
 hexagons.forEach(hex => {
 
 const col = hex.getAttribute('col');

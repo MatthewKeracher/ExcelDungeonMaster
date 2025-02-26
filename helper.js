@@ -93,6 +93,16 @@ return div;
 
 }
 
+function getCurrentEntry(){
+
+    let id = idBox.textContent;
+
+    const entry = data.find(entry => entry.id === id)
+    
+    return entry;
+    
+    }
+
 function goToEntry(id) {
 
 emptyStoryteller()

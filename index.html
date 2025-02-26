@@ -17,7 +17,7 @@
 <body>
 
 <div class="topContainer">
-    <div id="modeBox"></div>
+    <div id="messageBox"></div>
     <div id="regionName">Excel_DM</div>
     <div id="idBox"></div>
 </div>
@@ -42,9 +42,10 @@
 <div id="editTrack" class="modal"> 
 <div class="modal-content">
     <span class="close" onclick="closeEditTrack()">&times;</span>
-    <input type="input" id="trackUrl" placeholder="URL">
-    <input type="input" id="trackStart" placeholder="0s">
-    <input type="input" id="trackEnd" placeholder="0s">
+    <input type="input" id="trackUrl" placeholder="Spotify | YouTube">
+    <input type="input" id="trackStart" placeholder="Start Time in Seconds">
+    <input type="input" id="trackEnd" placeholder="End Time in Seconds">
+    <input type="input" id="trackNote" placeholder="Insert Note Here">
     <button id="confirmButton" onclick="saveTrack()">Save</button>
 </div>
 </div>
@@ -116,7 +117,11 @@
     
 
 
-    <div id="spotifyContainer"><div id="embed-iframe"></div></div>
+    <div id="spotifyContainer">
+    <div id="spotify-iframe">
+    </div></div>
+
+    <div id="youtube-container"></div>
 
     <!-- Optional Footer -->
     <footer>

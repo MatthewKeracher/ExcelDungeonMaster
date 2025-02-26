@@ -210,6 +210,9 @@ data: data,
 journalData: journalData,
 zones: zones,
 soundBoard: soundBoardData, 
+scrollData: scrollData,
+regionObj: regionObj,
+lastCell: getCurrentEntry(),
 };
 
 console.log(exportData)
@@ -256,25 +259,28 @@ const file = event.target.files[0]; // Get the selected file
 if (file) {
 const reader = new FileReader();
 
-// Empty
-idBox.textContent = '';
-
 // Set up the callback for when the file is loaded
 reader.onload = function(e) {
 try {
 const loadedData = JSON.parse(e.target.result);
+
 data = loadedData.data;
-journalData = loadedData.journalData;
 zones = loadedData.zones;
-regionObj = data[0];
+journalData = loadedData.journalData;
+regionObj = loadedData.regionObj;
 soundBoardData = loadedData.soundBoard;
+scrollData = loadedData.scrollData;
+lastCell = loadedData.lastCell;
 console.log(loadedData)
 collectGarbage();
 
 if(Array.isArray(zones) === false){zones = []}
 
+coords = regionObj.id;
+goToEntry(lastCell.id);
+regionName.textContent = regionObj.name;
+
 updateGrid();
-regionName.textContent = data[0].name
 
 } catch (error) {
 console.error("Error parsing JSON file:", error);

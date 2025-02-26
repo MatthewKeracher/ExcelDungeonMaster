@@ -16,6 +16,7 @@ function removeData() {
     localStorage.removeItem('journal');
     localStorage.removeItem('scrollData');
     localStorage.removeItem('regionObj');
+    localStorage.removeItem('soundBoard');
 }
 
 // Function to load data from localStorage

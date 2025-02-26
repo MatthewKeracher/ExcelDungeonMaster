@@ -21,12 +21,18 @@ let emtpySoundBoard = [
 
 
 
-function editTrack(newTrackObj) {
+function editTrack(inputNumber, newTrackObj) {
 const editTrack = document.getElementById('editTrack');
 const trackUrl = document.getElementById('trackUrl');
 const trackStart = document.getElementById('trackStart');
 const trackEnd = document.getElementById('trackEnd');
 const trackNote = document.getElementById('trackNote');
+
+if(newTrackObj.length === 0){
+soundBoardData.push({ id: parseInt(inputNumber), url: "", startTime: "", endTime: "", note:"" })
+}
+
+newTrackObj = soundBoardData.find(entry => entry.id === inputNumber)
 
 trackObj = newTrackObj
 

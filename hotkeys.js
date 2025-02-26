@@ -1,8 +1,10 @@
+let inputBuffer = '';
+
 Mousetrap.bind('>', function() {
 
     if(!journalShowing){
 
-    //console.log('handleEnter():')
+    
     const logo = document.getElementById("startLogo");
     logo.style.display = "none";
     
@@ -174,9 +176,23 @@ Mousetrap.bindGlobal('enter', function(e) {
         switch (currentMode){
     
             case 'map':
-    
+  
+            if(isFilling){
             let currentCell = getCurrentDiv();
-            if(isFilling){fillCells(currentCell)}
+            fillCells(currentCell)
+            }else{
+            let trackNumber = parseInt(inputBuffer);
+            if (!isNaN(trackNumber)) {
+            // Play the track corresponding to the input number
+            const trackObj = soundBoardData.find(entry => parseInt(entry.id) === parseInt(trackNumber));
+            if (trackObj) {
+            playTrack(trackObj);
+            }
+            }
+
+            inputBuffer = '';
+            
+            }
 
             break;
     
@@ -190,6 +206,10 @@ Mousetrap.bindGlobal('enter', function(e) {
             commandLine.style.height = '30px'
             toggleModes();
             break;
+
+         
+           
+        
     
     }
     
@@ -263,35 +283,33 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
     });
 
    
-    for (let i = 1; i <= 9; i++) {
-        Mousetrap.bind(`${i}`, function() {
 
-            if(soundBoardData === undefined){soundBoardData = emtpySoundBoard}
-            if (!isPainting && currentTrack !== i) {
-                const trackObj = soundBoardData.find(entry => entry.id === i);
-                console.log(trackObj.url)
-                if (EmbedControllerInstance && trackObj.url) {
-                    playTrack(soundBoardData[i-1]);
-                }
-            } if (!isPainting && currentTrack === i){
-                EmbedControllerInstance.seek(trackObj.startTime * 1000); // Seek back to start time
-                EmbedControllerInstance.play();
-            }else if(!isPainting){
-                EmbedControllerInstance.togglePlay();
-            }else{
-                selectedColorElement = document.getElementById(`color${i}`);
-                setCurrentColor(selectedColorElement);
-                paintCurrentCell();
-            }
-        });
-    
-        Mousetrap.bind(`shift+${i}`, function() {
-            if(soundBoardData === undefined){soundBoardData = emtpySoundBoard}
-            const trackObj = soundBoardData.find(entry => entry.id === i);
-            editTrack(trackObj);
-        });
+    for (let i = 0; i <= 9; i++) {
+    Mousetrap.bind(`${i}`, function() {
+    if (!isPainting){
+    inputBuffer += i.toString();
+    }else{
+    selectedColorElement = document.getElementById(`color${i}`);
+    setCurrentColor(selectedColorElement);
+    paintCurrentCell();    
     }
-    
+    });
+    }
+
+   
+
+    Mousetrap.bind('shift', function() {
+        const trackNumber = parseInt(inputBuffer);
+        if (!isNaN(trackNumber)) {
+            // Edit the track corresponding to the input number
+                console.log(trackObj)
+                editTrack(inputBuffer, trackObj);
+            
+        }
+        // Clear the input buffer
+        inputBuffer = '';
+    });
+   
 
 Mousetrap.bind('0', function() {  
 if(!isPainting){

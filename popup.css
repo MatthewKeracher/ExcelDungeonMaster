@@ -8,7 +8,7 @@
 .modal {
     display: none;  /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
+    z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -23,7 +23,7 @@
     padding: 10px;
     border: 1px solid var(--mode-color);
     width: 500px; /* Could be more or less, depending on screen size */
-    border-radius: 5px;
+    border-radius: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -50,12 +50,12 @@ input {
     width: 450px;
     padding: 8px;
     margin-bottom: 10px;
-    font-size: large;
+    font-size: 14px;
     font-family: 'Cascadia';
     border: 1px solid var(--mode-color);
     background-color: var(--background);
     color: var(--mode-color);
-    border-radius: 3px;
+    border-radius: 0;
 }
 
 input:focus {

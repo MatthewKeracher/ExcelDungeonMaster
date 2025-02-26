@@ -184,14 +184,14 @@ Mousetrap.bindGlobal('enter', function(e) {
             let trackNumber = parseInt(inputBuffer);
             if (!isNaN(trackNumber)) {
             // Play the track corresponding to the input number
-            const trackObj = soundBoardData.find(entry => parseInt(entry.id) === parseInt(trackNumber));
+            const trackObj = sounds.find(entry => parseInt(entry.id) === parseInt(trackNumber));
             if (trackObj) {
             playTrack(trackObj);
             }
             }
 
             inputBuffer = '';
-            
+
             }
 
             break;

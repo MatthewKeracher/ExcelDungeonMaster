@@ -5,7 +5,7 @@ localStorage.setItem('zones', JSON.stringify(zones));
 localStorage.setItem('journal', JSON.stringify(journalData));
 localStorage.setItem('scrollData', JSON.stringify(scrollData));
 localStorage.setItem('regionObj', JSON.stringify(regionObj));
-localStorage.setItem('soundBoard', JSON.stringify(soundBoardData));
+localStorage.setItem('soundBoard', JSON.stringify(sounds));
 
 }
 
@@ -47,7 +47,7 @@ if(lastCellAt){
  idBox.textContent = regionObj.id;
 }
 if(soundBoard){
-soundBoardData = JSON.parse(soundBoard)
+sounds = JSON.parse(soundBoard)
 }
 }
 

@@ -209,7 +209,7 @@ const exportData = {
 data: data,
 journalData: journalData,
 zones: zones,
-soundBoard: soundBoardData, 
+soundBoard: sounds, 
 scrollData: scrollData,
 regionObj: regionObj,
 lastCell: getCurrentEntry(),
@@ -268,7 +268,7 @@ data = loadedData.data;
 zones = loadedData.zones;
 journalData = loadedData.journalData;
 regionObj = loadedData.regionObj;
-soundBoardData = loadedData.soundBoard;
+sounds = loadedData.soundBoard;
 scrollData = loadedData.scrollData;
 lastCell = loadedData.lastCell;
 console.log(loadedData)

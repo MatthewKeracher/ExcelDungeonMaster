@@ -1,4 +1,4 @@
-let soundBoardData 
+let sounds 
 let EmbedControllerInstance; 
 let playbackUpdateListener;
 let currentTrack = null;
@@ -31,10 +31,10 @@ const trackNote = document.getElementById('trackNote');
 console.log(newTrackObj)
 
 if(newTrackObj.length === 0){
-soundBoardData.push({ id: parseInt(inputNumber), url: "", startTime: "", endTime: "", note:"" })
+sounds.push({ id: parseInt(inputNumber), url: "", startTime: "", endTime: "", note:"" })
 }
 
-newTrackObj = soundBoardData.find(entry => parseInt(entry.id) === parseInt(inputNumber))
+newTrackObj = sounds.find(entry => parseInt(entry.id) === parseInt(inputNumber))
 
 trackObj = newTrackObj
 
@@ -74,7 +74,7 @@ trackObj.endTime = trackEnd;
 
 console.log(trackObj)
 
-soundBoardData = soundBoardData.filter(entry => entry.url !== "")
+sounds = sounds.filter(entry => entry.url !== "")
 
 saveData();
 editTrack.style.display = "none"

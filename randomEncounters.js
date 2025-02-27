@@ -181,7 +181,7 @@ const weatherTable = {
     {
     "roll": 4,
     "name": "Meteor Shower",
-    "description": "Stars begin to fall from the sky as lumps of stone and metal. All creatures gain 1 luck point as per the Lucky feat, which lasts until used or the weather changes. All creatures gain 1 luck point as per the Lucky feat, which lasts until used or the weather changes. If you travel 4 or more hours outdoors through this weather, roll a d100. On a 1, a meteor strikes nearby, leaving 40d6 of devastation in it's wake. Potential consequences: 2d12 damage from the shock wave, difficult terrain, or heavily obscuring dust clouds."
+    "description": "Stars begin to fall from the sky as lumps of stone and metal. All creatures gain +1 LUK modifier, which lasts until used or the weather changes. If you travel 4 or more hours outdoors through this weather, roll a d100. On a 1, a meteor strikes nearby, leaving 40d6 of devastation in it's wake. Potential consequences: 2d12 damage from the shock wave, difficult terrain, or heavily obscuring dust clouds."
    
     },
     {

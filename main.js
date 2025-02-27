@@ -28,6 +28,8 @@ let data = defaultData;
 let coords = data[0].id;
 let region = data[0].name;
 let regionObj = data[0];
+let season = "Spring"
+let weather = null;
 let scrollData = {X: 0, Y:0, Z:1}
 
 let zones = [];
@@ -62,7 +64,8 @@ const placeName = document.getElementById('placeName')
 const placeSymbol = document.getElementById('placeSymbol')
 const textDiv = document.getElementById('textDiv'); 
 const idBox = document.getElementById('idBox');
-const help = document.getElementById('messageBox');
+const weatherVein = document.getElementById('weatherVein');
+const mapScale = document.getElementById('mapScale');
 
 
 //journal Divs
@@ -87,25 +90,37 @@ const promptMsg = document.getElementById('promptMsg');
 
 journalDiv.style.display = 'none';
 
-function changeHelp(string){
-help.innerHTML = "";
+function changeDJ(string){
+  nowPlaying.innerHTML = "";
+  
+  for (let i = 0; i < string.length; i++) {
+      setTimeout(() => {
+        nowPlaying.innerHTML += string.charAt(i);
+      }, i * 25); 
+    }
+  }
+
+function changeWeather(string){
+weatherVein.innerHTML = "";
 
 for (let i = 0; i < string.length; i++) {
     setTimeout(() => {
-      help.innerHTML += string.charAt(i);
+      weatherVein.innerHTML += string.charAt(i);
     }, i * 25); 
   }
 }
 
-changeHelp("Press > to Enter")
+function changeScale(string){
+  mapScale.innerHTML = "";
   
-// idBox.textContent = data[0].id;
-// const regionName = document.getElementById('regionName');
-// regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
-// coords = regionObj.id;
-
-// loadGrid();
-// goToEntry(regionObj.id);
+  for (let i = 0; i < string.length; i++) {
+      setTimeout(() => {
+        mapScale.innerHTML += string.charAt(i);
+      }, i * 25); 
+    }
+  }
+  
+//Define initial state before loading.
 
 function loadGrid(){
 

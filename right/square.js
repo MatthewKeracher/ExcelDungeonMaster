@@ -83,10 +83,7 @@ let row = parseInt(gridCell.getAttribute('row'));
 let col = parseInt(gridCell.getAttribute('col'));
 idBox.textContent = coords + '.' + row + '.' + col
 
-//Clear Old
-textDiv.innerHTML = ''
-placeName.value = ''
-placeSymbol.value = ''
+emptyStoryteller()
 
 //Get Entry
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
@@ -95,7 +92,7 @@ currentObj = loadEntry;
 if(loadEntry){
 placeName.value = loadEntry.name;
 placeSymbol.value = loadEntry.symbol? loadEntry.symbol : loadEntry.name !== ""? loadEntry.name.charAt(0): "";
-textDiv.innerHTML = loadEntry.desc;
+textDiv.innerHTML += loadEntry.desc;
 }
 
 if(gridCell.classList.contains('inZone')){
@@ -110,7 +107,9 @@ if(gridCell.classList.contains('inZone')){
 
     if(zone === undefined){console.warn('Cannot find Zone!')}
 
-    textDiv.innerHTML = zone.desc? zone.desc : "";
+    rollWeather(5) //Add Weather
+    textDiv.innerHTML = getRandomEncounters()
+    textDiv.innerHTML += zone.desc? zone.desc : "";
     placeName.value = zone.name;
    
     //Get Symbol from Point Entry

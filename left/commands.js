@@ -79,7 +79,7 @@ handlePaint();
 
 
 if (currentMode === "edit") { //EDIT MODE
-changeHelp("Edit Mode")
+textDiv.innerHTML = filterNoSave(textDiv);
 
 placeName.disabled = false; //Change what displays
 placeSymbol.disabled = false;
@@ -128,7 +128,7 @@ hitPointInit();
 
 } else if(currentMode === "map"){ //MAP MODE
 //Change Mode
-changeHelp("Map Mode")
+
 
 //What is focused
 placeName.blur();
@@ -163,12 +163,12 @@ source.innerHTML += handleCommands()
 textDiv.innerHTML += handleCommands()
 }
 
-if(journalShowing){
-autoSpacing(journalLeft);
-autoSpacing(journalRight);
-}else{
-autoSpacing(textDiv)
-}
+// if(journalShowing){
+// autoSpacing(journalLeft);
+// autoSpacing(journalRight);
+// }else{
+// autoSpacing(textDiv)
+// }
 
 formatTables();
 
@@ -185,7 +185,7 @@ updateGrid();
 } else if(currentMode === "command"){ //COMMAND MODE
 
 source = activeDiv; //Change Mode
-changeHelp("Command Mode")
+
 
 //Change what displays
 textDiv.style.display = "block";
@@ -942,15 +942,6 @@ function parseDice(diceNotation) {
     } else {
         throw new Error('Invalid dice notation');
     }
-}
-
-// Roll dice function
-function rollDice(numDice, diceSides) {
-    let total = 0;
-    for (let i = 0; i < numDice; i++) {
-        total += Math.floor(Math.random() * diceSides) + 1;
-    }
-    return total;
 }
 
 //Economics Logic

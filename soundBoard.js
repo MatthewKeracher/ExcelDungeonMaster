@@ -129,7 +129,7 @@ EmbedControllerInstance.loadUri(uri, false, trackObj.startTime);
 currentTrack = trackObj.id;
 
 addPlaybackUpdateListener(trackObj);
-changeHelp(`Playing: ${trackObj.note}`)
+changeDJ(`Playing: ${trackObj.note}`)
 EmbedControllerInstance.play();
 
 }

@@ -75,7 +75,7 @@ if (inZone !== null && inZone) {
     let zone = zones.find(entry => entry.id === zoneId);
 
     zone.name = placeName.value;
-    zone.desc = textDiv.innerHTML;
+    zone.desc = filterNoSave(textDiv);
 
     // Save Individual Symbols to points.
     let pointEntry = zone.points.find(point => point.row === row && point.col === col);
@@ -91,7 +91,7 @@ if (inZone !== null && inZone) {
     if (exists) {
         exists.name = placeName.value;
         exists.symbol = placeSymbol.value;
-        exists.desc = textDiv.innerHTML;
+        exists.desc = filterNoSave(textDiv);
         exists.scrollData = scrollData;
         // console.log(exists)
 

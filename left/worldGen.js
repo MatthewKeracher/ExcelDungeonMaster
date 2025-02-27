@@ -166,31 +166,31 @@ const eCuirbriMean = getMean(eCuirbri);
 const eLoaMean = getMean(eLoa);
 
 const elvesData = {
-    Extracted: Math.floor(cuibriExtracted / 12000) + ' millenia.',
-    Population: {
-    Total: elves.length === 0 ? "EXTINCT" : elves.length,
-    Men:{   
-    Adults: eMAdults,
-    Children: eMChildren,
-    Babies: eMBabies,
-    Total: eMen,
-    },
-    Women:{        
-    Adults: eWAdults,
-    Children: eWChildren,
-    Babies: eWBabies,
-    Total: eWomen,
-    }},
-    Births: totalEBirths,
-    Deaths: totalEDeaths,
-    Mean: {
-    Cuirbri: Math.floor(eCuirbriMean / 12) + ' years.',
-    Lanwa: Math.floor(eLanwaMean / 12) + ' years.',
-    Loa: Math.floor(eLoaMean) + ' years.',
-    },
-    };
+Extracted: Math.floor(cuibriExtracted / 12000) + ' millenia.',
+Population: {
+Total: elves.length === 0 ? "EXTINCT" : elves.length,
+Men:{   
+Adults: eMAdults,
+Children: eMChildren,
+Babies: eMBabies,
+Total: eMen,
+},
+Women:{        
+Adults: eWAdults,
+Children: eWChildren,
+Babies: eWBabies,
+Total: eWomen,
+}},
+Births: totalEBirths,
+Deaths: totalEDeaths,
+Mean: {
+Cuirbri: Math.floor(eCuirbriMean / 12) + ' years.',
+Lanwa: Math.floor(eLanwaMean / 12) + ' years.',
+Loa: Math.floor(eLoaMean) + ' years.',
+},
+};
 
-    
+
 results.push({Elves: elvesData});
 
 elves = livingElves;
@@ -352,29 +352,29 @@ const hCuirbriMean = getMean(hCuirbri);
 const hLoaMean = getMean(hLoa);
 
 const humansData = {
-    Population: {
-    Total: humans.length === 0 ? "EXTINCT" : humans.length,
-    Men:{   
-    Elders: hMElders,
-    Adults: hMAdults,
-    Children: hMChildren,
-    Babies: hMBabies,
-    Total: hMen,
-    },
-    Women:{        
-    Elders: hWElders,
-    Adults: hWAdults,
-    Children: hWChildren,
-    Babies: hWBabies,
-    Total: hWomen,
-    }},
-    Births: totalHBirths,
-    Deaths: totalHDeaths,
-    Mean: {
-    Cuirbri: Math.floor(hCuirbriMean / 12) + ' years.',
-    Loa: Math.floor(hLoaMean) + ' years.',
-    },
-    };
+Population: {
+Total: humans.length === 0 ? "EXTINCT" : humans.length,
+Men:{   
+Elders: hMElders,
+Adults: hMAdults,
+Children: hMChildren,
+Babies: hMBabies,
+Total: hMen,
+},
+Women:{        
+Elders: hWElders,
+Adults: hWAdults,
+Children: hWChildren,
+Babies: hWBabies,
+Total: hWomen,
+}},
+Births: totalHBirths,
+Deaths: totalHDeaths,
+Mean: {
+Cuirbri: Math.floor(hCuirbriMean / 12) + ' years.',
+Loa: Math.floor(hLoaMean) + ' years.',
+},
+};
 
 results.push({Humans: humansData});
 
@@ -507,29 +507,29 @@ const hfCuirbriMean = getMean(hfCuirbri);
 const hfLoaMean = getMean(hfLoa);
 
 const halflingsData = {
-    Population: {
-    Total: halflings.length === 0 ? "EXTINCT" : halflings.length,
-    Men:{   
-    Elders: hfMElders,
-    Adults: hfMAdults,
-    Children: hfMChildren,
-    Babies: hfMBabies,
-    Total: hfMen,
-    },
-    Women:{        
-    Elders: hfWElders,
-    Adults: hfWAdults,
-    Children: hfWChildren,
-    Babies: hfWBabies,
-    Total: hfWomen,
-    }},
-    Births: totalHfBirths,
-    Deaths: totalHfDeaths,
-    Mean: {
-    Cuirbri: Math.floor(hfCuirbriMean / 12) + ' years.',
-    Loa: Math.floor(hfLoaMean) + ' years.',
-    },
-    };
+Population: {
+Total: halflings.length === 0 ? "EXTINCT" : halflings.length,
+Men:{   
+Elders: hfMElders,
+Adults: hfMAdults,
+Children: hfMChildren,
+Babies: hfMBabies,
+Total: hfMen,
+},
+Women:{        
+Elders: hfWElders,
+Adults: hfWAdults,
+Children: hfWChildren,
+Babies: hfWBabies,
+Total: hfWomen,
+}},
+Births: totalHfBirths,
+Deaths: totalHfDeaths,
+Mean: {
+Cuirbri: Math.floor(hfCuirbriMean / 12) + ' years.',
+Loa: Math.floor(hfLoaMean) + ' years.',
+},
+};
 
 results.push({Halflings: halflingsData});
 
@@ -589,42 +589,42 @@ dwfMBabies++
 }else if(dwarf.loa < 16){
 dwfMChildren++
 } else if (dwarf.load === 16) { // Ithil Lifegiving Ceremony
-    
-    const familyMembers = [
-        { member: dwfMothers[Math.floor(Math.random() * dwfMothers.length)], name: "mother" },
-        { member: dwfWElders[Math.floor(Math.random() * dwfWElders.length)], name: "grandMother" },
-        { member: dwfMAdults[Math.floor(Math.random() * dwfMAdults.length)], name: "mothersBrother" },
-        { member: dwfMElders[Math.floor(Math.random() * dwfMElders.length)], name: "mothersFather" }
-    ];
 
-    let zotiCount = 1; 
+const familyMembers = [
+{ member: dwfMothers[Math.floor(Math.random() * dwfMothers.length)], name: "mother" },
+{ member: dwfWElders[Math.floor(Math.random() * dwfWElders.length)], name: "grandMother" },
+{ member: dwfMAdults[Math.floor(Math.random() * dwfMAdults.length)], name: "mothersBrother" },
+{ member: dwfMElders[Math.floor(Math.random() * dwfMElders.length)], name: "mothersFather" }
+];
 
-    familyMembers.forEach(familyMember => {
-        if (familyMember.member) {
-            zotiCount++;
-        }
-    });
+let zotiCount = 1; 
 
-    const zoti = Math.ceil(dwarf.cuibri / zotiCount);
+familyMembers.forEach(familyMember => {
+if (familyMember.member) {
+zotiCount++;
+}
+});
 
-    familyMembers.forEach(familyMember => {
-        if (familyMember.member) {
-            familyMember.member.cuibri += Math.ceil(zoti);
-        }
-    });
+const zoti = Math.ceil(dwarf.cuibri / zotiCount);
 
-    // Set the dwarf's cuibri
-    dwarf.cuibri = zoti;
+familyMembers.forEach(familyMember => {
+if (familyMember.member) {
+familyMember.member.cuibri += Math.ceil(zoti);
+}
+});
+
+// Set the dwarf's cuibri
+dwarf.cuibri = zoti;
 }else if (dwarf.loa < 45){
 dwfMAdults++
 dwfFathers.push(dwarf);
 
 if(War){    
-    let warRoll = rollDice(1,20);
-    if(warRoll > 10){
-    extractCuibri(dwarf.cuibri, "War")
-    dwarf.cuibri = 0}
-    }
+let warRoll = rollDice(1,20);
+if(warRoll > 10){
+extractCuibri(dwarf.cuibri, "War")
+dwarf.cuibri = 0}
+}
 
 }else{
 dwfMElders++
@@ -637,29 +637,29 @@ const dwfCuibriMean = getMean(dwfCuibri);
 const dwfLoaMean = getMean(dwfLoa);
 
 const dwarvesData = {
-    Population: {
-    Total: dwarves.length === 0 ? "EXTINCT" : dwarves.length,
-    Men:{   
-    Elders: dwfMElders,
-    Adults: dwfMAdults,
-    Children: dwfMChildren,
-    Babies: dwfMBabies,
-    Total: dwfMen,
-    },
-    Women:{        
-    Elders: dwfWElders,
-    Adults: dwfWAdults,
-    Children: dwfWChildren,
-    Babies: dwfWBabies,
-    Total: dwfWomen,
-    }},
-    Births: totaldwfBirths,
-    Deaths: totaldwfDeaths,
-    Mean: {
-    Cuirbri: Math.floor(dwfCuibriMean / 12) + ' years.',
-    Loa: Math.floor(dwfLoaMean) + ' years.',
-    },
-    };
+Population: {
+Total: dwarves.length === 0 ? "EXTINCT" : dwarves.length,
+Men:{   
+Elders: dwfMElders,
+Adults: dwfMAdults,
+Children: dwfMChildren,
+Babies: dwfMBabies,
+Total: dwfMen,
+},
+Women:{        
+Elders: dwfWElders,
+Adults: dwfWAdults,
+Children: dwfWChildren,
+Babies: dwfWBabies,
+Total: dwfWomen,
+}},
+Births: totaldwfBirths,
+Deaths: totaldwfDeaths,
+Mean: {
+Cuirbri: Math.floor(dwfCuibriMean / 12) + ' years.',
+Loa: Math.floor(dwfLoaMean) + ' years.',
+},
+};
 
 results.push({Dwarves: dwarvesData});
 
@@ -690,12 +690,14 @@ genData.halflings = halflings;
 genData.dwarves = dwarves;
 
 if (year % 100 === 0 && year !== 0) {
-    recordsArray.push(results)
-    }
-  
+recordsArray.push(results)
+}
+
 year++
 return JSON.stringify(results, null, 2); 
 
 }
+
+
 
 

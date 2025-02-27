@@ -23,6 +23,8 @@ Mousetrap.bind('>', function() {
     const regionName = document.getElementById('regionName');
     regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
     coords = regionObj.id;
+
+    changeMapScale();
     
     loadGrid();
     goToEntry(regionObj.id);
@@ -51,6 +53,8 @@ Mousetrap.bind('<', function() {
     //Set parent cell name as region name. 
     const regionName = document.getElementById('regionName');
     regionName.textContent = regionObj && regionObj.name !== ''? regionObj.name : "Excel_DM"
+    
+    changeMapScale();
     
     loadGrid();
     goToEntry(returnObj.id);

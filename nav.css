@@ -22,10 +22,14 @@
 }
 
 .topContainer > div:nth-child(2) {
-    left: 50%;
+    left: 15%;
 }
 
 .topContainer > div:nth-child(3) {
+    left: 50%;
+}
+
+.topContainer > div:nth-child(4) {
     right: 2%;
 }
 
@@ -115,5 +119,8 @@ nav.toolbar ul li > .dropdown:hover {
 
 #idBox{
     /* color: var(--background); */
-    color:var(--background)
+    color:var(--mode-color);
+    position: fixed;
+    bottom: 2px;
+    left: 5px;
 }

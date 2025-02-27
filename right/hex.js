@@ -393,17 +393,19 @@ let row = hexagon.getAttribute('row');
 let col = hexagon.getAttribute('col')
 idBox.textContent = coords + '.' + row + '.' + col
 
-textDiv.innerHTML = ''
-placeName.value = ''
-placeSymbol.value = ''
+emptyStoryteller()
 
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
+rollWeather(25) //Add Weather
+
+textDiv.innerHTML = getRandomEncounters()
+
 if(loadEntry){
 placeName.value = loadEntry.name;
 placeSymbol.value = loadEntry.symbol && loadEntry.symbol !== ""? loadEntry.symbol : loadEntry.name.charAt(0);
-textDiv.innerHTML = loadEntry.desc;
+textDiv.innerHTML += loadEntry.desc;
 }
 
 if(currentMode === "edit"){     

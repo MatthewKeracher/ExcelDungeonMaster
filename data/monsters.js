@@ -2591,3 +2591,33 @@ const monsters = [
     }
   
 ]
+
+const XP = [
+    {"hitDice": "< 1", "XP": 10, "AB": 3},
+    {"hitDice": 1, "XP": 25, "AB": 12},
+    {"hitDice": 2, "XP": 75, "AB": 25},
+    {"hitDice": 3, "XP": 145, "AB": 30},
+    {"hitDice": 4, "XP": 240, "AB": 40},
+    {"hitDice": 5, "XP": 360, "AB": 45},
+    {"hitDice": 6, "XP": 500, "AB": 55},
+    {"hitDice": 7, "XP": 670, "AB": 65},
+    {"hitDice": 8, "XP": 875, "AB": 70},
+    {"hitDice": 9, "XP": 1075, "AB": 75},
+    {"hitDice": 10, "XP": 1300, "AB": 90},
+    {"hitDice": 11, "XP": 1575, "AB": 95},
+    {"hitDice": 12, "XP": 1875, "AB": 100},
+    {"hitDice": 13, "XP": 2175, "AB": 110},
+    {"hitDice": 14, "XP": 2500, "AB": 115},
+    {"hitDice": 15, "XP": 2850, "AB": 125},
+    {"hitDice": 16, "XP": 3250, "AB": 135},
+    {"hitDice": 17, "XP": 3600, "AB": 145},
+    {"hitDice": 18, "XP": 4000, "AB": 160},
+    {"hitDice": 19, "XP": 4500, "AB": 175},
+    {"hitDice": 20, "XP": 5250, "AB": 200},
+    {"hitDice": 21, "XP": 6000, "AB": 225},
+    {"hitDice": 22, "XP": 6750, "AB": 250},
+    {"hitDice": 23, "XP": 7500, "AB": 275},
+    {"hitDice": 24, "XP": 8250, "AB": 300},
+    {"hitDice": 25, "XP": 9000, "AB": 325}
+  ]
+

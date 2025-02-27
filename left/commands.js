@@ -738,14 +738,14 @@ function handleRollCommand(params) {
 
     if(!params){
         const rolledValue = rollDice(1, 20);
-        return `<br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`; 
+        return `<div class="noSave"><br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br></div>`; 
     }
 
     if (match) {
         const numDice = parseInt(match[1]);
         const diceSides = parseInt(match[2]);
         const rolledValue = rollDice(numDice, diceSides);
-        return `<br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br>`;
+        return `<div class="noSave"><br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br></div>`;
     } else{
 
         const tableName = params.toLowerCase();

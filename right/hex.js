@@ -398,7 +398,7 @@ emptyStoryteller()
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
-rollWeather(25) //Add Weather
+rollWeather(17) //Add Weather
 
 textDiv.innerHTML = getRandomEncounters()
 

@@ -99,7 +99,13 @@ for (let i = 0; i < string.length; i++) {
 
 changeHelp("Press > to Enter")
   
-idBox.textContent = data[0].id;
+// idBox.textContent = data[0].id;
+// const regionName = document.getElementById('regionName');
+// regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";
+// coords = regionObj.id;
+
+// loadGrid();
+// goToEntry(regionObj.id);
 
 function loadGrid(){
 

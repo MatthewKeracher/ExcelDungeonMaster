@@ -4,7 +4,6 @@ Mousetrap.bind('>', function() {
 
     if(!journalShowing){
 
-    
     const logo = document.getElementById("startLogo");
     logo.style.display = "none";
     

@@ -538,11 +538,11 @@ HTML += rollEncounter()
 }
 
 HTML += rollEncounter()
-
-}
-}
-
 target.innerHTML = filterNoSave(target);
+}
+}
+
+
 target.innerHTML += HTML;
 }
 

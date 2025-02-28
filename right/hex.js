@@ -403,7 +403,7 @@ currentObj = loadEntry;
 rollWeather(17) //Add Weather
 
 textDiv.innerHTML = getWeather()
-//textDiv.innerHTML += getInitative()
+getRandomEncounters(textDiv);
 
 if(loadEntry){
 placeName.value = loadEntry.name;

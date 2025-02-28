@@ -257,6 +257,7 @@ fighter : [
 { level: 19, deathRay: 3, magicWands: 3, paralysisPetrify: 4, dragonBreath: 8, spells: 8 },
 { level: 20, deathRay: 2, magicWands: 2, paralysisPetrify: 3, dragonBreath: 7, spells: 7 },
 ],
+
 mage : [
 { level: 1, deathRay: 13, magicWands: 14, paralysisPetrify: 13, dragonBreath: 16, spells: 15 },
 { level: 2, deathRay: 13, magicWands: 14, paralysisPetrify: 13, dragonBreath: 15, spells: 14 },

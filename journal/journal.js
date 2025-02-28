@@ -76,18 +76,24 @@ function loadJournal() {
   scaledObjs.forEach(obj => {
       const scale = obj.id;
       const scaleData = entriesByScale[scale];
-
+    
       if (scaleData) { //&& scaleData.entries.length > 0
   
           const headerLink = document.createElement('a');
           headerLink.textContent = scaleData.name;
           headerLink.style.color = "gold";
+
+          if(obj.settings !== false && obj.id !== '0.0'){
+
+          headerLink.style.color = "hotpink";
           headerLink.href = '#';
           headerLink.style.cursor = 'pointer'; 
   
           
           headerLink.addEventListener('click', (e) => {
               e.preventDefault();
+
+             
               
               entryName.value = scaleData.name + ' Settings';
               
@@ -95,7 +101,9 @@ function loadJournal() {
               journalRight.innerHTML = ``;
               journalId.textContent = ``;
               scaleSelector.style.display = "none";
+              
           });
+        }
   
           journalSideBar.appendChild(headerLink);
  
@@ -128,9 +136,39 @@ const inf =  obj && obj.settings &&
              obj.settings.inflation ?
              obj.settings.inflation : 1;
 
-const inflationHTML = `Inflation: <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}"></input>`
+const inflationHTML = `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+            <span>Inflation:</span>
+            <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}">
+            </div>`
 
-return `${inflationHTML}`
+let optionsHTML = '';
+
+const hexType = obj && obj.settings && 
+obj.settings.hexType ?
+obj.settings.hexType : "Grassland";
+
+Object.keys(overlandEncounters).forEach(key => {
+    const selected = key === hexType ? 'selected' : '';
+    optionsHTML += `<option value="${key}" ${selected}>${key}</option>`;
+  });
+
+const wanderingMonsters = `
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+<span>Hex Type:</span>
+<select class="inputBox" id="wanderingDropdown" objId="${objId}" onchange="updateHexType(this.value, this.getAttribute('objId'))">
+${optionsHTML}
+</select>
+</div>
+`;
+
+return `${inflationHTML}${wanderingMonsters}`;
+
+}
+
+function updateHexType(value, objId){
+
+const obj = data.find(entry => entry.id === objId);
+obj.settings = {hexType: value}
 
 }
 
@@ -369,6 +407,13 @@ function fillScaleSelector() {
   const scaleSelector = document.getElementById('scaleSelector');
 
   scaledObjs = [];
+
+  scaledObjs.push({
+    name: 'Session Log',
+    id: 'SL',
+    settings: false,
+    })
+
   let currentObj = getObj(coords); // Initial object, e.g., '0.0.2.3'
 
   while (currentObj.id !== '0.0') {
@@ -384,18 +429,17 @@ function fillScaleSelector() {
 
     scaledObjs.push({
     name: 'Player Characters',
-    id: 'PC'
+    id: 'PC',
+    settings: false,
     })
 
     scaledObjs.push({
     name: 'Rules',
-    id: 'BFRPG'
+    id: 'BFRPG',
+    settings: false,
     })
 
-    scaledObjs.push({
-    name: 'Session Log',
-    id: 'SL'
-    })
+   
 
   // Add options based on scaledObjs in reverse order
   for (let i = scaledObjs.length - 1; i >= 0; i--) {

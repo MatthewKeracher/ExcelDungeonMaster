@@ -1,9 +1,94 @@
+function getRandomSpells(spellSlotsArray) {
+
+    console.log(spellSlotsArray)
+    
+    if(!spellSlotsArray){return}
+    
+    // Convert spellSlotsArray into an array of key-value pairs
+    const spellSlots = spellSlotsArray.map((count, index) => ({
+    level: index + 1, // Spell levels are typically 1-based
+    count: count
+    }));
+    
+    // Create a set to track used spells and an array to hold the selected spells
+    const usedSpells = new Set();
+    const selectedSpells = [];
+    
+    // Loop through each spell level in the spellSlots array
+    spellSlots.forEach(spellLevelData => {
+    const spellLevel = parseInt(spellLevelData.level); // Spell level
+    const numberOfSpellsAtLevel = spellLevelData.count; // Number of spells available at that level
+    
+    // If there are no spells available for this level, continue to the next
+    if (numberOfSpellsAtLevel === 0) {
+    return;
+    }
+    
+    // Randomly select spells based on the number of slots available at this level
+    for (let i = 0; i < numberOfSpellsAtLevel; i++) {
+    // If there are no more available spells, break out of the loop
+    if (spells.length === 0) {
+    break;
+    }
+    
+    // Randomly select a spell from the available spells
+    const randomIndex = Math.floor(Math.random() * spells.length);
+    const chosenSpell = spells[randomIndex];
+    
+    // Add the chosen spell to the selected spells array and mark it as used
+    selectedSpells.push(chosenSpell);
+    usedSpells.add(chosenSpell.name);
+    
+    // Remove the chosen spell from available spells to avoid duplicates
+    spells.splice(randomIndex, 1);
+    }
+    });
+    //console.log(selectedSpells)
+    return selectedSpells; // Return the array of selected spells
+    }
+    
+
 function makeMonsterEntry(monster, number = 1) {
     // Define the keys to exclude from the table
-    let excludedKeys = ['name', 'description', 'appearing', 'treasure'];
+    let excludedKeys = ['name', 'description', 'treasure'];
     let savingThrows = getMonsterSave(monster.savingThrows);
     let individualTreasure = rollTreasure(monster.treasure, 'each');
     let lairTreasure = rollTreasure(monster.treasure, 'in lair');
+
+    if(monster.name.includes("Dragon")){
+        
+        const parts = monster.name.split(', ');
+        const color = parts[1]; // Assuming the format is always "Dragon, Color"
+        const dragonTable = dragonTables[color];
+        const age = rollDice(1,7)
+
+        function mergeExcludingKeys(target, source, excludedKeys) {
+            const filteredSource = Object.fromEntries(
+              Object.entries(source).filter(([key]) => !excludedKeys.includes(key))
+            );
+            return { ...target, ...filteredSource };
+        }
+
+        
+          const excludedKeys = ['category']; // Keys to exclude from merging
+          const ageTable = dragonTable.find(entry => entry.category === age);
+          let newStats = {...ageTable}
+
+          if (newStats.spells) {
+            const dragonSpells = getRandomSpells(newStats.spells)
+
+            let HTML = ``;
+            dragonSpells.forEach(spell => {
+                HTML += `${spell.name}<br>`;
+            });
+            newStats.spells = HTML;
+        }
+          
+          monster = mergeExcludingKeys(monster, newStats, excludedKeys);
+          
+    }
+
+  
   
     // Generate hit point checkboxes based on the hit dice and number of monsters
     hp(monster.hit, number);
@@ -20,6 +105,8 @@ function makeMonsterEntry(monster, number = 1) {
 
     // Generate table header that spans both columns
     tableHTML += `<thead><tr><th class="tableCell tableHeader" colspan="2"><b>${monster.name}</b></th></tr></thead>`;
+
+   
 
     // Generate table body with each attribute as a row
     tableHTML += '<tbody>';
@@ -42,6 +129,8 @@ function makeMonsterEntry(monster, number = 1) {
 
     tableHTML += '</tbody></table>';
     tableHTML += `<br><br>`;
+
+    
     tableHTML += `${monster.description}`;
 
     return tableHTML;
@@ -144,9 +233,7 @@ function rollTreasure(treasure, locationFilter) {
     }
     
     return 'Treasure not found';
-    }
-
-
+}
 
 function hitPointInit() {
     // Select all checkbox divs

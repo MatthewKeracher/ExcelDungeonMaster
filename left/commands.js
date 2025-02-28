@@ -880,9 +880,9 @@ function handleMonsterCommand(params) {
 
     if (searchTerms) {
         let monster = searchFor(searchTerms, monsters);
-        //console.log(monster)
+        console.log(monster)
     
-        if (number && !isNaN(number)) {
+        if (monster && number && !isNaN(number)) {
             const num = parseInt(number);
             return makeMonsterEntry(monster, num);
         } else {

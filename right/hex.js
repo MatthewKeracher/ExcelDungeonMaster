@@ -162,7 +162,7 @@ return { North, South, East, West };
 }
 
 function moveHex(dir){
-
+    
 let str = idBox.textContent;
 let numbersArray = str.split('.');
 let rowcol = numbersArray.slice(-2);
@@ -226,7 +226,9 @@ col = col + 1
 }
 
 try{
+
 const div = document.querySelector(`[row="${row}"][col="${col}"]`);
+
 paintCell(div);
 changeHex(div);
 }catch{

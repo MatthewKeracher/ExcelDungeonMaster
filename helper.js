@@ -331,61 +331,7 @@ function getColumnCells(table, columnName) {
     return cells;
 }
 
-function trackTime(number = 1) {
-    let container = document.createElement('div');
-    container.style.width = "100%"; 
-   
-    container.innerHTML += 
-    `<span style="font-size: 18px; font-family: 'SoutaneBlack';">Symbol Key</span><br><b>W:</b> Wandering Monster Check<br><b>T:</b> Torch Expires<br><b>L:</b> Lantern Oil Expires<br><b>R:</b> Party Must Rest for 1 Turn<br><br>`
 
-    for (let j = 0; j < number; j++) {
-        let numGroups = 24;
-        let groupHeader = document.createElement('h4');
-        groupHeader.style.fontFamily = "SoutaneBlack";
-
-        for (let k = 0; k < numGroups; k++) {
-            let groupContainer = document.createElement('span');
-            groupContainer.style.display = "inline-block";
-            groupContainer.style.width = "auto"; 
-            groupContainer.style.marginRight = "10px";
-            container.appendChild(groupContainer);
-
-            for (let i = 0; i < 6; i++) {
-                let checkboxWrapper = document.createElement('div');
-                checkboxWrapper.style.display = "inline-block";
-                checkboxWrapper.style.width = "calc(100% / 6)";
-                checkboxWrapper.style.textAlign = "center";
-                checkboxWrapper.style.width = "20px"; // Adjust width as needed
-
-                // Add symbol above checkbox
-                let symbol = document.createElement('span');
-                symbol.textContent = getSymbol(i); // Function to determine the symbol based on index
-                symbol.style.fontSize = "14px"; // Adjust size as needed
-                checkboxWrapper.appendChild(symbol);
-
-                const checkbox = document.createElement('div');
-                checkbox.textContent = '☐'; // Set the initial state to unchecked
-                checkbox.classList.add('hp-checkbox'); // Add a class for styling
-                checkbox.style.fontSize = "26px";
-                checkbox.addEventListener('click', handleCheckboxClick); // Attach the click event listener
-                checkboxWrapper.appendChild(checkbox); // Add the checkbox to the wrapper
-                groupContainer.appendChild(checkboxWrapper); // Add the wrapper to the group container
-            }
-        }
-    }
-
-    container.innerHTML += `<br><br><span style="font-size: 18px; font-family:'SoutaneBlack';">Time</span><br><b>Rounds:</b>10 Seconds<br><b>Minutes:</b>6 Rounds<br><b>Turns:</b>10 Minutes<br><b>Hours:</b>6 Turns<br>`
-
-    container.innerHTML += `<br><span style="font-size: 18px; font-family:'SoutaneBlack';">Common Durations</span><br><b>Torch:</b> 6 Turns (1 Hour)<br><b>Lantern:</b> 24 Turns (4 Hours)<br><b><i>Light</i>(C):</b> 12 Turns (2 Hours)<br><b><i>Light</i>(MU):</b> 6 Turns + 1/Level<br><b>Potion:</b> 1d6 + 6 turns<br><b>Burning Oil Pool:</b> 1 turn`
-    
-    return container.outerHTML; // Return the container with the groups of checkboxes
-}
-
-// Example function to determine the symbol based on index
-function getSymbol(index) {
-    const symbols = ['W', '*', 'W', '*', 'W', 'R,T'];
-    return symbols[index];
-} 
 
 
 function delMap(){

@@ -81,8 +81,6 @@ Mousetrap.bind('shift', function() {
     clipZone(); 
     }}, 'keyup'); 
 
-
-    
 Mousetrap.bind(['w', 'i'], function() { 
         if (isImaging) {moveImage('up')}
         else if (isHexMap && !journalShowing) moveHex('up');
@@ -117,8 +115,6 @@ Mousetrap.bind('p', function() {
 Mousetrap.bind('f', function() {  
         handleFill();
     });
-
-    
 
 Mousetrap.bindGlobal('`', function(e) {  
     
@@ -173,7 +169,6 @@ Mousetrap.bindGlobal('escape', function(e) {
     
     });
 
-    
 Mousetrap.bindGlobal('enter', function(e) {  
     
         switch (currentMode){
@@ -285,8 +280,6 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
         }};
     });
 
-   
-
     for (let i = 0; i <= 9; i++) {
     Mousetrap.bind(`${i}`, function() {
     if (!isPainting){
@@ -298,8 +291,6 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
     }
     });
     }
-
-   
 
     Mousetrap.bind('shift', function() {
         const trackNumber = parseInt(inputBuffer);
@@ -314,19 +305,76 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
     });
    
 
-Mousetrap.bind('0', function() {  
-if(!isPainting){
+    Mousetrap.bind('0', function() {  
+    if(!isPainting){
 
-if (EmbedControllerInstance && currentTrack) {
-EmbedControllerInstance.togglePlay()
-}
+    if (EmbedControllerInstance && currentTrack) {
+    EmbedControllerInstance.togglePlay()
+    }
 
-}else{
-selectedColorElement = document.getElementById('eraser');
-setCurrentColor(selectedColorElement);
-paintCurrentCell();
-}
-});
+    }else{
+    selectedColorElement = document.getElementById('eraser');
+    setCurrentColor(selectedColorElement);
+    paintCurrentCell();
+    }
+    });
+
+    Mousetrap.bind('r', function() {  
+    if(!isPainting){
+
+    getRandomEncounters(textDiv, 1);
+
+    }
+    });
+
+
+    Mousetrap.bind('.', function() {
+        if (!isPainting) {
+            const checks = document.querySelectorAll('.timeBox');
+            
+            // Find the first unchecked checkbox and click it
+            for (let check of checks) {
+                if (check.textContent === '☐') {
+                    check.textContent = '☒'
+                    check.style.color = "gray"
+                    break; // Stop once the first unchecked is clicked
+                }
+            }
+            
+                    const turnNumberElement = document.getElementById("turnNumber");
+                    const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
+                    turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
+
+                    if (filledBoxes % 2 !== 0) {
+                    console.log('Wandering Monster')
+                    getRandomEncounters(journalRight);
+                    }
+
+            saveJournalEntry()
+            
+        }
+    });
     
+    Mousetrap.bind(',', function() {
+        if (!isPainting) {
+            const checks = Array.from(document.querySelectorAll('.timeBox')).reverse();
+            
+            // Iterate through checkboxes in reverse order
+            for (let check of checks) {
+                if (check.textContent === '☒') {
+                    check.textContent = '☐';
+                    check.style.color = ''
+                    break; // Stop once the last checked is unchecked
+                }
+            }
+
+            const turnNumberElement = document.getElementById("turnNumber");
+            const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
+            turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
+
+            saveJournalEntry()
+
+        }
+    });
 
     

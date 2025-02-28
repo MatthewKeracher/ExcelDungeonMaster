@@ -196,7 +196,38 @@ const strangePhenomena = [
 }
 ]
 
-const overlandEncounters = {
+const encounters = {
+
+    "Dungeon Level 1": [
+        "Bee, Giant",
+        "Goblin",
+        "Jelly, Green*",
+        "Kobold",
+        "NPC Party: Adventurer",
+        "NPC Party: Bandit",
+        "Orc",
+        "Stirge",
+        "Skeleton",
+        "Snake, Spitting Cobra",
+        "Spider, Giant Crab",
+        "Wolf"
+        ],
+    
+        "Dungeon Level 2": [
+        "Beetle, Giant Bombardier",
+        "Fly, Giant",
+        "Ghoul",
+        "Gnoll",
+        "Jelly, Gray",
+        "Hobgoblin",
+        "Lizard Man",
+        "NPC Party: Adventurer",
+        "Snake, Pit Viper",
+        "Spider, Giant Black Widow",
+        "Lizard Man",
+        "Zombie"
+         ],
+         
 "Desert or Barren": [
 "Dragon, Blue",
 "Hellhound",
@@ -406,11 +437,41 @@ changeWeather(weather.name)
 
 }
 
-function rollEncounter(roll = rollDice(2,8)){
-const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
-const encounter = overlandEncounters[hexType][roll-2];
+function rollEncounter(roll = rollDice(2,8)-2){
 
-let HTML = `<div><b>Random Encounter:</b><br><br>` //class="noSave"
+const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
+if(hexType.includes("Dungeon")){roll = rollDice(1,12)-1}
+console.log(hexType, roll)
+
+const encounter = encounters[hexType][roll];
+const distance = rollDice(2,6) 
+const surprise = rollDice(1,6)
+let surprised
+
+if(surprise < 3){
+surprised = "They will be surprised."
+}else{
+surprised = "They will not be surprised."
+}
+
+const reactRoll = rollDice(2,6)
+let reaction
+
+if(reactRoll < 3){
+    reaction = "They will attack."
+}else if(reactRoll < 6){
+    reaction = "They are hostile and may attack."
+}else if(reactRoll < 9){
+    reaction = "They are uncertain and confused."
+}else if(reactRoll < 12){
+    reaction = "They are indifferent and may negotiate."
+}else{
+    reaction = "They are friendly and eager."    
+}
+
+let HTML = ""
+
+HTML += `<div class="noSave"><h2 style='font-family:"SoutaneBlack"'>Random Encounter</h2><br>The party will encounter ${encounter} at the end of this turn. They are ${distance} tiles away.<br><br>${surprised} ${reaction}<br><br>` 
 
 try{
 
@@ -433,7 +494,7 @@ HTML += makeMonsterEntry(monster)
 }
 
 }catch{
-console.log('Could not return ' + encounter)
+console.log('Could not return ' + encounter, roll)
 }
 
 HTML += `<br><br><hr><br></div>`
@@ -442,13 +503,32 @@ return HTML;
 
 }
 
-function getRandomEncounters(){
+function getWeather(){
 
-let HTML = `<div class="noSave"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
+    let HTML = `<div class="noSave"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
+    return HTML
+
+}
+
+function getInitative(){
+
+    let HTML = `<div class="noSave">
+     
+    <br><br><hr><br></div>` 
+
+ 
+
+    return HTML
+
+}
+
+function getRandomEncounters(target, roll1 = rollDice(1,6)){
+
+let HTML = ``
+
 const encountersOn = regionObj.settings && regionObj.settings.randomEncounters ? regionObj.settings.randomEncounters : "on";
 
 if(encountersOn === "on"){
-const roll1 = rollDice(1,6)
 
 if(roll1 === 1){
 const roll2 = rollDice(1,6)
@@ -462,8 +542,13 @@ HTML += rollEncounter()
 }
 }
 
-return HTML
+target.innerHTML = filterNoSave(target);
+target.innerHTML += HTML;
 }
+
+
+
+
 
 function trackTime(number = 1) {
 let container = document.createElement('div');
@@ -471,6 +556,8 @@ container.style.width = "100%";
 
 container.innerHTML += 
 `<span style="font-size: 18px; font-family: 'SoutaneBlack';">Symbol Key</span><br><b>W:</b> Wandering Monster Check<br><b>T:</b> Torch Expires<br><b>L:</b> Lantern Oil Expires<br><b>R:</b> Party Must Rest for 1 Turn<br><br>`
+
+container.innerHTML += `<span style="font-size: 18px; font-family: 'SoutaneBlack'" id="turnNumber">Turn Number: ${turnNumber}</span><br><br>`;
 
 for (let j = 0; j < number; j++) {
 let numGroups = 24;
@@ -499,9 +586,8 @@ checkboxWrapper.appendChild(symbol);
 
 const checkbox = document.createElement('div');
 checkbox.textContent = '☐'; // Set the initial state to unchecked
-checkbox.classList.add('hp-checkbox'); // Add a class for styling
+checkbox.classList.add('timeBox'); // Add a class for styling
 checkbox.style.fontSize = "26px";
-checkbox.addEventListener('click', handleCheckboxClick); // Attach the click event listener
 checkboxWrapper.appendChild(checkbox); // Add the checkbox to the wrapper
 groupContainer.appendChild(checkboxWrapper); // Add the wrapper to the group container
 }

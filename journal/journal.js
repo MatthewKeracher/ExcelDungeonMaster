@@ -92,8 +92,6 @@ function loadJournal() {
           
           headerLink.addEventListener('click', (e) => {
               e.preventDefault();
-
-             
               
               entryName.value = scaleData.name + ' Settings';
               
@@ -147,7 +145,7 @@ const hexType = obj && obj.settings &&
 obj.settings.hexType ?
 obj.settings.hexType : "Grassland";
 
-Object.keys(overlandEncounters).forEach(key => {
+Object.keys(encounters).forEach(key => {
     const selected = key === hexType ? 'selected' : '';
     optionsHTML += `<option value="${key}" ${selected}>${key}</option>`;
   });
@@ -165,7 +163,7 @@ const randEnc = obj && obj.settings &&
 obj.settings.randomEncounters ?
 obj.settings.randomEncounters : "On";
 
-const encounters = `
+const encountersHTML = `
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
 <span>Random Encounters:</span>
 <select class="inputBox" id="wanderingDropdown" objId="${objId}" onchange="updateRandomEncounters(this.value, this.getAttribute('objId'))">
@@ -175,7 +173,7 @@ const encounters = `
 </div>
 `;
 
-return `${inflationHTML}${hexTypeSetting}${encounters}`;
+return `${inflationHTML}${hexTypeSetting}${encountersHTML}`;
 
 }
 
@@ -394,7 +392,7 @@ scale: scaleSelector.value,
 id: journalId.textContent,
 name: entryName.value,
 left: journalLeft.innerHTML,
-right: journalRight.innerHTML,
+right: filterNoSave(journalRight),
 
 }
 
@@ -418,6 +416,7 @@ journalData.push(saveEntry);
 }
 
 loadJournal();
+saveData();
 };
 
 }

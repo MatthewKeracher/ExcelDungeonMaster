@@ -68,7 +68,7 @@ button {
     padding: 10px 15px;
     font-size: large;
     font-family: 'Cascadia';
-    width: 450px;
+    width: 45%;
     border: 1px solid var(--mode-color);
     border-radius: 1px;
     cursor: pointer;

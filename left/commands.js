@@ -342,7 +342,7 @@ switch (command) {
         if (intervalId) { // Check if the interval is running
             clearInterval(intervalId); // Stop the existing interval
             intervalId = null; // Reset the interval ID
-            console.log(recordsArray)
+            //console.log(recordsArray)
         }
         return ``            
     default:
@@ -448,7 +448,7 @@ function handleTrimCommand(params) {
 
 function handleMakeCommand(params) {
     const [makeType, number,  ...rest] = params.split(' ');
-    console.log(params)
+    //console.log(params)
     switch (makeType) {
         case 'table':
             if(isFinite(number)){
@@ -473,15 +473,15 @@ function makeSortButton(order) {
 }
 
 function sortTables(order) {
-    console.log('sorting...')
+    //console.log('sorting...')
     const tables = document.querySelectorAll('table');
 
     tables.forEach(table => {
-        console.log(table)
+        //console.log(table)
         let headers = Array.from(table.querySelectorAll('.tableHeader'));
-        console.log(headers)
+        //console.log(headers)
         const sortIndex = headers.findIndex(header => header.innerText.trim() === 'Sort');
-        console.log(headers, sortIndex)
+        //console.log(headers, sortIndex)
 
         if (sortIndex !== -1) {
             const tbody = table.querySelector('tbody');
@@ -825,7 +825,7 @@ function rollonTable(table) {
 
 function searchFor(name, array) {
  
-    console.log(name, array)
+    //console.log(name, array)
     const searchWords = name.toLowerCase().replace(/,/g, ' ').split(' ');
         
     // Search for the closest match based on the number of matching words
@@ -880,7 +880,7 @@ function handleMonsterCommand(params) {
 
     if (searchTerms) {
         let monster = searchFor(searchTerms, monsters);
-        console.log(monster)
+        //console.log(monster)
     
         if (monster && number && !isNaN(number)) {
             const num = parseInt(number);

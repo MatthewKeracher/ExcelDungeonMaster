@@ -129,7 +129,7 @@ function goToEntry(id) {
 emptyStoryteller()
 
 let entry = getObj(id)
-console.log(entry)
+
 
 if(entry){
 placeName.value = entry.name;
@@ -436,7 +436,7 @@ function changeMapScale(){
     const scaleMeasure = coords.split(".")
     
     if(regionObj.grid === "square"){
-    changeScale("1 Square approx. 5 Feet.") 
+    changeScale("1 Square approx. 10 Feet.") 
     } else if(scaleMeasure.length === 2){
     changeScale("1 Hex approx. 24 Leagues.")
     }else if(scaleMeasure.length === 4){

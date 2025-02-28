@@ -2143,6 +2143,20 @@ const monsters = [
 "experience": "37"
 },
 {
+"name": "Jelly, Green*",
+"description": "Green jelly devours flesh and organic materials on contact and is even capable of dissolving metal given enough time. Bright green, wet, and sticky, it clings to walls, floors, and ceilings in patches, reproducing as it consumes organic matter. It drops from walls and ceilings when it detects movement (and possible food) below. Green jelly cannot grow in sunlight; even the indirect sunlight of a dense forest will stunt it and prevent it from spreading, and direct sunlight will kill it outright within a turn.",
+"armourClass": "12 (only hit by fire or cold)",
+"hit": "2**",
+"attacks": "1 touch",
+"damage": "Transform to green jelly",
+"move": "1'",
+"appearing": "1",
+"savingThrows": "Fighter: 2",
+"morale": "12",
+"treasure": "None",
+"experience": "125"
+},
+{
 "armourClass": "17 ‡",
 "damage": "Energy drain 2 levels/touch",
 "description": "A spectre looks much as it did in life and can be easily recognized by those who knew the individual or have seen the individual’s face in a painting or a drawing. In many cases, the evidence of a violent death is visible on its body. A spectre is roughly human-sized and is weightless.\n\nLike all undead, they may be Turned by Clerics and are immune to sleep, charm and hold magics. Due to their incorporeal nature, they cannot be harmed by non-magical weapons.",

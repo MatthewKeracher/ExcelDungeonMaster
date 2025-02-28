@@ -152,7 +152,7 @@ Object.keys(overlandEncounters).forEach(key => {
     optionsHTML += `<option value="${key}" ${selected}>${key}</option>`;
   });
 
-const wanderingMonsters = `
+const hexTypeSetting = `
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
 <span>Hex Type:</span>
 <select class="inputBox" id="wanderingDropdown" objId="${objId}" onchange="updateHexType(this.value, this.getAttribute('objId'))">
@@ -161,7 +161,28 @@ ${optionsHTML}
 </div>
 `;
 
-return `${inflationHTML}${wanderingMonsters}`;
+const randEnc = obj && obj.settings && 
+obj.settings.randomEncounters ?
+obj.settings.randomEncounters : "On";
+
+const encounters = `
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+<span>Random Encounters:</span>
+<select class="inputBox" id="wanderingDropdown" objId="${objId}" onchange="updateRandomEncounters(this.value, this.getAttribute('objId'))">
+<option value="on" ${randEnc === "on" ? 'selected' : ''}>On</option>
+<option value="off" ${randEnc === "off" ? 'selected' : ''}>Off</option>
+</select>
+</div>
+`;
+
+return `${inflationHTML}${hexTypeSetting}${encounters}`;
+
+}
+
+function updateRandomEncounters(value, objId){
+
+const obj = data.find(entry => entry.id === objId);
+obj.settings = {randomEncounters: value}
 
 }
 

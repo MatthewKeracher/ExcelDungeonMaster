@@ -318,11 +318,12 @@ const overlandEncounters = {
 "Lizard, Giant Draco",
 "Centipede, Giant",
 "Leech, Giant",
+"Lizard Man",
 "Crocodile",
 "Stirge",
 "Orc",
-"Toad, Giant (see Frog, Giant)",
-"Troglodyte",
+"Toad, Giant",
+"Lizard Man",
 "Blood Rose",
 "Hangman Tree",
 "Basilisk"
@@ -405,38 +406,61 @@ changeWeather(weather.name)
 
 }
 
+function rollEncounter(roll = rollDice(2,8)){
+const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
+const encounter = overlandEncounters[hexType][roll-2];
+
+let HTML = `<div><b>Random Encounter:</b><br><br>` //class="noSave"
+
+try{
+
+if(encounter.includes("NPC")){
+
+    for (let i = 0; i < 4; i++) {
+        let race = ["human", "elf", "dwarf", "halfling"][Math.floor(Math.random() * 4)];
+        let npcClass = ["fighter", "mage", "cleric", "thief"][Math.floor(Math.random() * 4)];
+        let level = Math.floor(Math.random() * 8) + 1;
+        let npcName = encounter;
+      
+        HTML += makeNPC(race, npcClass, level, npcName);
+        HTML += `<br><br>`
+      }
+
+}else{
+
+let monster = searchFor(encounter, monsters);
+HTML += makeMonsterEntry(monster)
+}
+
+}catch{
+console.log('Could not return ' + encounter)
+}
+
+HTML += `<br><br><hr><br></div>`
+
+return HTML;
+
+}
+
 function getRandomEncounters(){
 
 let HTML = `<div class="noSave"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
+const encountersOn = regionObj.settings && regionObj.settings.randomEncounters ? regionObj.settings.randomEncounters : "on";
 
-const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
+if(encountersOn === "on"){
+const roll1 = rollDice(1,6)
 
-if(hexType){
+if(roll1 === 1){
+const roll2 = rollDice(1,6)
 
-    let returnHTML = ``
+if(roll2 === 1){
+HTML += rollEncounter()
+}
 
-    const roll = rollDice(2,8)
-    const encounter = overlandEncounters[hexType][roll - 2];
+HTML += rollEncounter()
 
-    try{
-
-            if(encounter.includes("NPC")){
-
-            console.log('Making NPC Party')
-            }else{
-
-            let monster = searchFor(encounter, monsters);
-            returnHTML = makeMonsterEntry(monster)
-
-            }
-
-    }catch{
-    console.log('Could not return ' + encounter)
-    }
-
-    HTML += returnHTML;
-    
-    }
+}
+}
 
 return HTML
 }

@@ -415,7 +415,7 @@ function makeNPC(race, npcClass, level, npcName) {
     HTML += '</td>';
     HTML += '</tr>';
 
-    // Prepare the table body
+    // Column 1
     HTML += '<tr><td contenteditable="false" tabindex="0" class="tableCell">';
 
     // Hitpoints
@@ -432,18 +432,9 @@ function makeNPC(race, npcClass, level, npcName) {
     HTML += `Melee: +${melee}  Ranged: +${ranged}  <br><br>`;
 
     if (scores) {
-        HTML += '<br>';
         scores.forEach(score => {
             HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
         });
-    }
-
-    // Other Information
-    HTML += '<br>';
-    for (const [key, value] of Object.entries(stats)) {
-        if (key !== 'name' && key !== 'class' && key !== 'race') {
-            HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
-        }
     }
 
     const XP = readClassTables(npcClass + 1, level, 'attackBonus');
@@ -460,28 +451,45 @@ function makeNPC(race, npcClass, level, npcName) {
         });
     }
 
+
+    
+    HTML += '</td>'
+    
+    //Column 2
+    HTML += '<td contenteditable="false" tabindex="0" class="tableCell">'
+    
+    // // Other Information
+    // HTML += '<br>';
+    // for (const [key, value] of Object.entries(stats)) {
+    //     if (key !== 'name' && key !== 'class' && key !== 'race') {
+    //         HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
+    //     }
+    // }
+
     // Skills
     const skills = getSkills(npcClass, level);
     if (skills) {
-        HTML += '<br><br><u>Skills:</u><br>';
+        HTML += '<u>Skills:</u><br>';
         Object.keys(skills).forEach(key => {
             if (key !== 'level') {
                 const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
                 HTML += `${formattedKey}: ${skills[key]}<br>`;
             }
         });
+        HTML += `<br><br>`
     }
 
     // Spells
     const spells = getSpells(npcClass, level);
     if (spells) {
-        HTML += '<br><br><u>Spells:</u><br>';
+        HTML += '<u>Spells:</u><br>';
         spells.forEach(spell => {
             HTML += `${spell.name}<br>`;
         });
     }
 
-    HTML += '</td><td contenteditable="false" tabindex="0" class="tableCell"></td></tr>';
+    
+    HTML += '</td></tr>';
     HTML += '</table>';
 
     return HTML;

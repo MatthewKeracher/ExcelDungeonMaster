@@ -2844,7 +2844,7 @@ const dragonTables = {
 "spells": ["4", "4", "2"]
 }
 ],
-"Swamp": [
+"Black": [
 {
 "category": 1,
 "hit": 4,

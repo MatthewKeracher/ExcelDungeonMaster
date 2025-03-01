@@ -43,7 +43,7 @@ function getRandomSpells(spellSlotsArray) {
     spells.splice(randomIndex, 1);
     }
     });
-    //console.log(selectedSpells)
+    
     return selectedSpells; // Return the array of selected spells
 }
     
@@ -91,7 +91,7 @@ function makeMonsterEntry(monster, number = 1) {
   
   
     // Generate hit point checkboxes based on the hit dice and number of monsters
-    hp(monster.hit, number);
+    HP(monster.hit, number);
 
     // Determine headers based on the structure of the monster
     const headers = Object.keys(monster).flatMap(key => {
@@ -175,7 +175,7 @@ function rollTreasure(treasure, locationFilter) {
     types.forEach(type => {
     if (loot[type]) {
     const entries = loot[type];
-    //console.log(entries)
+    
     for (const [key, value] of Object.entries(entries)) {
     if (value.percentage !== 0) {
     // Roll a percentage to determine if the treasure is found
@@ -247,7 +247,7 @@ function hitPointInit() {
     });
 }
 
-function hp(hitDice, number = 1) {
+function HP(hitDice, number = 1) {
     let HTML = '';
 
     for (let j = 0; j < number; j++) {
@@ -393,7 +393,7 @@ function makeJewelry() {
     // Construct the jewelry description
     const jewelry = `${numberFound} ${jewelryValue.type} ${jewelryType}s with ${gemType} worth ${jewelryValue.baseValue * valueAdjustment} gp each`;
 
-    //console.log(jewelry)
+    
     return jewelry;
 }
 

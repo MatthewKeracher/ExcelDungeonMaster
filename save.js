@@ -101,7 +101,7 @@ if (inZone !== null && inZone) {
             div.setAttribute('sym', placeSymbol.value);
         }
 
-    //console.log(exists)
+    
 
     } else {
         makeNewEntry();
@@ -135,7 +135,7 @@ saveEntry.name = ""
 }
 
 data.push(saveEntry);
-//console.log(saveEntry)
+
 
 }
 

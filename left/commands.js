@@ -343,7 +343,7 @@ switch (command) {
         if (intervalId) { // Check if the interval is running
             clearInterval(intervalId); // Stop the existing interval
             intervalId = null; // Reset the interval ID
-            //console.log(recordsArray)
+            
         }
         return ``            
     default:
@@ -449,7 +449,7 @@ function handleTrimCommand(params) {
 
 function handleMakeCommand(params) {
     const [makeType, number,  ...rest] = params.split(' ');
-    //console.log(params)
+    
     switch (makeType) {
         case 'table':
             if(isFinite(number)){
@@ -474,15 +474,15 @@ function makeSortButton(order) {
 }
 
 function sortTables(order) {
-    //console.log('sorting...')
+    
     const tables = document.querySelectorAll('table');
 
     tables.forEach(table => {
-        //console.log(table)
+        
         let headers = Array.from(table.querySelectorAll('.tableHeader'));
-        //console.log(headers)
+        
         const sortIndex = headers.findIndex(header => header.innerText.trim() === 'Sort');
-        //console.log(headers, sortIndex)
+        
 
         if (sortIndex !== -1) {
             const tbody = table.querySelector('tbody');
@@ -512,7 +512,7 @@ function handleGetCommand(params) {
 
 
 function findObjectByName(objectName) {
-    //console.log('looking for ' + objectName)
+    
     if (window[objectName]) {
         return window[objectName];
     } else {
@@ -671,7 +671,7 @@ function generateTable(rows, cols) {
         tableHTML += '</tr>';
     }
     tableHTML += '</table>';
-    //console.log(tableHTML)
+    
     return tableHTML;
 }
 
@@ -760,17 +760,17 @@ function handleRollCommand(params) {
             // Find the table with class 'table'
             const table = tempContainer.querySelector('.table');
 
-            //console.log(table)
+            
         
             if (table && table.rows.length > 0) {
                 // Return the first row
                 return rollonTable(table)
             } else {
-                //console.log("Table or first row not found");
+                
                 return null;
             }
         } else {
-            //console.log("Journal entry not found");
+            
             return null;
         }
         
@@ -783,7 +783,7 @@ function rollonTable(table) {
         return "<table><tr><td>Table is empty</td></tr></table>";
     }
 
-    //console.log(table)
+    
 
     const firstRow = table.rows[0];
     const hasHeader = firstRow.cells[0].classList.contains('tableHeader');
@@ -828,7 +828,7 @@ function searchFor(name, array) {
 
     console.log(name)
  
-    //console.log(name, array)
+    
     const searchWords = name.toLowerCase().replace(/,/g, ' ').split(' ');
         
     // Search for the closest match based on the number of matching words
@@ -885,7 +885,7 @@ function handleMonsterCommand(params) {
 
     if (searchTerms) {
         let monster = searchFor(searchTerms, monsters);
-        //console.log(monster)
+        
     
         if (monster && number && !isNaN(number)) {
             const num = parseInt(number);
@@ -903,7 +903,7 @@ function handleNpcCommand(params) {
 
     if (match) {
         const race = match[1].toLowerCase();
-        //console.log(race)
+        
         const npcClass = match[2].toLowerCase();
         const level = parseInt(match[3]);
         const npcName = match[3] ? match[4].trim() : undefined; // Name is optional

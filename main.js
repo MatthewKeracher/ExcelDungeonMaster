@@ -143,7 +143,7 @@ updateGrid()
 loadPalette()
 
 setTimeout(() => {
-//console.log('loadGrid():')
+
 
 try {
   grid.scrollLeft = scrollConvert(scrollData.X, "pixels", "X");

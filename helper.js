@@ -37,8 +37,8 @@ textDiv.innerHTML = "";
 function collectGarbage() {
     const totalTrash = data.length;
     //data = data.filter(entry => entry.rows !== null || entry.cols !== null);
-    //console.log(data[0]);
-    //console.log('Deleted ' + (totalTrash - data.length) + ' entries');
+    
+    
 
     // let i = 0
 
@@ -62,13 +62,13 @@ function collectGarbage() {
     });
 
     const duplicateCount = Object.values(coordCount).filter(count => count > 1).length;
-    //console.log('Number of entries with duplicate coords: ' + duplicateCount);
+    
 }
 
 function scrollConvert(input, option, X) {
 
 //Give pixels to grid, and give percentages to scrollData.
-//console.log(input, option, X)
+
 const totalPixels = X === 'X'? grid.scrollWidth :  grid.scrollHeight;
     
     if(option === 'pixels') {
@@ -442,7 +442,7 @@ function changeMapScale(){
     }else if(scaleMeasure.length === 4){
     changeScale("1 Hex approx. 1 League.") 
     }else if(scaleMeasure.length === 6){
-    changeScale("1 Hex approx. 660 Feet.")  
+    changeScale("1 Hex approx. 220 Yards.")  
     }else{
     changeScale("1 Hex approx. 30 Feet.")    
     }

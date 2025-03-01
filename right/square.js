@@ -98,11 +98,11 @@ textDiv.innerHTML += loadEntry.desc;
 if(gridCell.classList.contains('inZone')){
 
     let cellDiv = getDiv(row, col);
-    //console.log(zoneDiv)
+    
     let zoneId = cellDiv.getAttribute('zone');
-    //console.log(zoneId)
+    
     let zone = zones.find(entry => entry.id === zoneId);
-    //console.log(zone)
+    
     getZone(gridCell);
 
     if(zone === undefined){console.warn('Cannot find Zone!')}
@@ -118,7 +118,7 @@ if(gridCell.classList.contains('inZone')){
     if(point.symbol){
         placeSymbol.value = point.symbol
         }
-        //console.log(cellDiv)
+        
 
     currentZone = []
 

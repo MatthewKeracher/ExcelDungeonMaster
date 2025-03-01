@@ -27,7 +27,7 @@ originalWidth = img.naturalWidth;
 originalHeight = img.naturalHeight;
 
 isImaging = true;
-//console.log(isImaging)
+
 
 setupCanvas();
 makeGridTransparent();
@@ -106,7 +106,7 @@ alert("Failed to load image. Please check the URL or CORS settings.");
 
 function calculateGridSize() {
     const { width: hexWidth, height: hexHeight } = getCellDimensions();
-    //console.log(canvas.width, canvas.height);
+    
 
     // For hexagonal grid
     const cols = Math.floor(canvas.width / (hexWidth * 0.75)) + 1;
@@ -119,7 +119,7 @@ function calculateGridSize() {
     regionObj.cols = cols;
     regionObj.rows = rows;
 
-    //console.log(rows, cols);
+    
     
     return { rows, cols };
 }
@@ -185,7 +185,7 @@ function redrawCanvas() {
     // Draw the image to fill the entire canvas
     ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-    //console.log(`Canvas resized to: ${newWidth}x${newHeight}`);
+    
 
 }
 
@@ -196,7 +196,7 @@ function moveImage(dir) {
     const currentLeft = parseInt(canvas.style.left) || 0;
     const currentTop = parseInt(canvas.style.top) || 0;
 
-    //console.log('moving image');
+    
 
     if (dir === 'up') {
         canvas.style.top = `${currentTop - MOVE_STEP}px`;

@@ -133,10 +133,10 @@ const inf =  obj && obj.settings &&
              obj.settings.inflation ?
              obj.settings.inflation : 1;
 
-const inflationHTML = `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+const inflationHTML = `<hr><br><div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
             <span>Inflation:</span>
             <input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateInflation(this.value, this.getAttribute('objId'))" value="${inf}">
-            </div>`
+            </div><hr><br>`
 
 let optionsHTML = '';
 
@@ -170,8 +170,7 @@ const encountersHTML = `
 <select class="inputBox" id="wanderingDropdown" objId="${objId}" onchange="updateRandomEncounters(this.value, this.getAttribute('objId'))">
 <option value="on" ${randEnc === "on" ? 'selected' : ''}>On</option>
 <option value="off" ${randEnc === "off" ? 'selected' : ''}>Off</option>
-</select>
-</div>
+</select></div><br><hr><br>
 `;
 
 journalLeft.innerHTML = `${inflationHTML}${hexTypeSetting}${encountersHTML}`
@@ -184,7 +183,7 @@ function createEncountersTable(hexType) {
     let length = encounters[hexType].length;
 
     // Add table headers
-    tableContent += `<tr><td contenteditable="false" tabindex="0" class="tableCell tableHeader">Roll 1d12</td><td contenteditable="false" tabindex="0" class="tableCell tableHeader">Monster</td></tr>`;
+    tableContent += `<tr><td contenteditable="false" tabindex="0" class="tableCell tableHeader">${hexType}</td><td contenteditable="false" tabindex="0" class="tableCell tableHeader">Monster</td></tr>`;
 
     // Loop to add table rows
     for (let i = 0; i <= length; i++) {
@@ -243,7 +242,7 @@ function getNewJournalId(){
         i++;
     } while (alreadyExists);
 
-    //console.log(entryId)
+    
     return entryId
 
 
@@ -394,12 +393,12 @@ function deleteJournalEntry(entryId){
 
 let exists = journalData.findIndex(entry => entry.id === entryId);
 
-//console.log('entry index: ', exists)
-//console.log('journalShowing ', journalShowing)
+
+
 
 if(exists > -1 && journalShowing === true){
 
-//console.log('deleting...')
+
 journalData.splice(exists, 1)
 entryName.value = '';
 journalLeft.innerHTML = ``;
@@ -432,17 +431,17 @@ journalData.forEach(entry => {
 if (!entry.scale){entry.scale = "0.0"}
 })
 
-//console.log(journalData)
+
 
 if(journal.name !== ''){
 
 let exists = journalData.findIndex(entry => entry.id === saveEntry.id)
-//console.log(saveEntry.id)
+
 
 if(exists > -1){
 journalData[exists] = saveEntry;
 }else{
-//console.log(exists)
+
 journalData.push(saveEntry);
 }
 

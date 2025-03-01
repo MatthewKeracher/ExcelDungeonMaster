@@ -12,7 +12,7 @@ parentToMove = data.find(entry => entry.id === id);
 childrenToMove = data.filter(entry => entry.id.startsWith(id + '.'));
 zonesToMove = zones.filter(zone => zone.coords.startsWith(id + '.')|| zone.coords === id);  
 journalToMove = journalData.filter(entry => entry.scale.startsWith(id + '.') || entry.scale.startsWith(id));   
-//console.log(journalToMove)
+
 
 const moveToCell = data.find(entry => entry.id === moveToID);
 
@@ -81,7 +81,7 @@ childrenToMove = null;
 zonesToMove = null;
 journalToMove = null;
 
-//console.log('isMoving', isMoving);
+
 
 // Remove event listeners
 const cells = document.querySelectorAll('[row][col]');
@@ -168,7 +168,7 @@ showPrompt('Clear Current Map: Are you sure you want to erase all visible data?'
 if (shouldDelete) {
 
 let allCells = document.querySelectorAll('[row][col]')
-//console.log(allCells.length + ' cells to clear.')
+
 
 const dataLengthOld = data.length
 
@@ -184,12 +184,12 @@ if(index !== -1){data.splice(index, 1)};
 
 })
 
-//console.log(dataLengthOld - data.length + ' entries deleted')
-//console.log(data.length + ' entries remaining.')
+
+
 
 //Erase Zones
 //zones = []
-//console.log(zones)
+
 zones = zones.filter(zone => zone.coords !== coords);
 
 saveData();
@@ -315,7 +315,7 @@ const newRegionRow = parseInt(oldRegionRow, 10) + parseInt(regionRowAdd, 10)
 coords = returnCoords + '.' + newRegionRow + '.' + newRegionCol
 
 const destination = coords + '.' + destRow + '.' + destCol;
-//console.log(destination)
+
 //Move
 regionObj = getObj(coords);
 const regionName = document.getElementById('regionName');

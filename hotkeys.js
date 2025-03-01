@@ -17,8 +17,8 @@ Mousetrap.bind('>', function() {
     Y: scrollConvert(grid.scrollTop, "percentage", "Y"), 
     Z: gridContainer.style.zoom}
     
-    //console.log(scrollData)
-    //console.log('X: ' + grid.scrollLeft, 'Y: ' + grid.scrollTop)
+    
+    
     
     const regionName = document.getElementById('regionName');
     regionName.textContent = regionObj?.name? regionObj.name : "Excel_DM";

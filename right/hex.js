@@ -157,7 +157,7 @@ East = maxCol;
 }
 });
 
-//console.log(North, South, East, West)
+
 return { North, South, East, West };
 }
 
@@ -240,8 +240,8 @@ let destRow
 let destCol
 
 const regionCol = returnCol(regionObj.id);
-//console.log('regionObj:', regionObj)
-//console.log('regionCol:' + regionCol)
+
+
 
 //Working
 if(row < North && col < upperBound && col > lowerBound){ 

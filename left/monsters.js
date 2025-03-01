@@ -45,7 +45,7 @@ function getRandomSpells(spellSlotsArray) {
     });
     //console.log(selectedSpells)
     return selectedSpells; // Return the array of selected spells
-    }
+}
     
 
 function makeMonsterEntry(monster, number = 1) {
@@ -453,9 +453,8 @@ function magicWeapon(){
    const bonus = bonusTable.find(bonus => bonus.range[0] <= bonusRoll && bonus.range[1] >= bonusRoll).bonus;
    const weapon = `${weaponType} ${bonus}`;
    return weapon
- }
+}
  
-
 function magicArmour(){
    const armourTypeRoll = rollDice(1, 100);
    const armourType = magicArmourTable.find(armour => armour.range[0] <= armourTypeRoll && armour.range[1] >= armourTypeRoll).armour;

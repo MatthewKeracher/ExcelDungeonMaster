@@ -107,7 +107,7 @@ if(gridCell.classList.contains('inZone')){
 
     if(zone === undefined){console.warn('Cannot find Zone!')}
 
-    rollWeather(5) //Add Weather
+    // rollWeather(5) //Add Weather
     textDiv.innerHTML = getWeather()
     textDiv.innerHTML += zone.desc? zone.desc : "";
     placeName.value = zone.name;

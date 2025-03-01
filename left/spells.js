@@ -20,13 +20,6 @@ function handleSpellCommands(params) {
     }
 }
 
-function searchFor(searchTerms, spells) {
-
-    return spells.find(spell => 
-        spell.name.toLowerCase().includes(searchTerms.toLowerCase())
-    );
-
-}
 
 function makeSpellEntry(spell) {
     // Define the keys to exclude from the table

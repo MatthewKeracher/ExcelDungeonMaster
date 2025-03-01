@@ -198,36 +198,34 @@ const strangePhenomena = [
 
 const encounters = {
 
-    "Dungeon Level 1": [
-        "Bee, Giant",
-        "Goblin",
-        "Jelly, Green*",
-        "Kobold",
-        "NPC Party: Adventurer",
-        "NPC Party: Bandit",
-        "Orc",
-        "Stirge",
-        "Skeleton",
-        "Snake, Spitting Cobra",
-        "Spider, Giant Crab",
-        "Wolf"
-        ],
-    
-        "Dungeon Level 2": [
-        "Beetle, Giant Bombardier",
-        "Fly, Giant",
-        "Ghoul",
-        "Gnoll",
-        "Jelly, Gray",
-        "Hobgoblin",
-        "Lizard Man",
-        "NPC Party: Adventurer",
-        "Snake, Pit Viper",
-        "Spider, Giant Black Widow",
-        "Lizard Man",
-        "Zombie"
-         ],
-         
+"Dungeon Level 1": [
+"Bee, Giant",
+"Goblin",
+"Jelly, Green*",
+"Kobold",
+"NPC Party: Adventurer",
+"NPC Party: Bandit",
+"Orc",
+"Stirge",
+"Skeleton",
+"Snake, Spitting Cobra",
+"Spider, Giant Crab",
+],
+
+"Dungeon Level 2": [
+"Beetle, Giant Bombardier",
+"Fly, Giant",
+"Ghoul",
+"Gnoll",
+"Jelly, Gray",
+"Hobgoblin",
+"Lizard Man",
+"NPC Party: Adventurer",
+"Snake, Pit Viper",
+"Spider, Giant Black Widow",
+"Zombie"
+],
+
 "Desert or Barren": [
 "Dragon, Blue",
 "Hellhound",
@@ -237,7 +235,6 @@ const encounters = {
 "Scorpion, Giant",
 "Camel",
 "Spider, Giant Tarantula",
-"Hawk",
 "Ogre",
 "Griffon",
 "Gnoll",
@@ -458,15 +455,15 @@ const reactRoll = rollDice(2,6)
 let reaction
 
 if(reactRoll < 3){
-    reaction = "They will attack."
+reaction = "They will attack."
 }else if(reactRoll < 6){
-    reaction = "They are hostile and may attack."
+reaction = "They are hostile and may attack."
 }else if(reactRoll < 9){
-    reaction = "They are uncertain and confused."
+reaction = "They are uncertain and confused."
 }else if(reactRoll < 12){
-    reaction = "They are indifferent and may negotiate."
+reaction = "They are indifferent and may negotiate."
 }else{
-    reaction = "They are friendly and eager."    
+reaction = "They are friendly and eager."    
 }
 
 let HTML = ""
@@ -477,20 +474,22 @@ try{
 
 if(encounter.includes("NPC")){
 
-    for (let i = 0; i < 4; i++) {
-        let race = ["human", "elf", "dwarf", "halfling"][Math.floor(Math.random() * 4)];
-        let npcClass = ["fighter", "mage", "cleric", "thief"][Math.floor(Math.random() * 4)];
-        let level = Math.floor(Math.random() * 8) + 1;
-        let npcName = encounter;
-      
-        HTML += makeNPC(race, npcClass, level, npcName);
-        HTML += `<br><br>`
-      }
+for (let i = 0; i < 4; i++) {
+let race = ["human", "elf", "dwarf", "halfling"][Math.floor(Math.random() * 4)];
+let npcClass = ["fighter", "mage", "cleric", "thief"][Math.floor(Math.random() * 4)];
+let level = Math.floor(Math.random() * 8) + 1;
+let npcName = encounter;
+
+HTML += makeNPC(race, npcClass, level, npcName);
+HTML += `<br><br>`
+}
 
 }else{
 
+console.log('calling searchFor...', encounter)
 let monster = searchFor(encounter, monsters);
 HTML += makeMonsterEntry(monster)
+
 }
 
 }catch{
@@ -505,20 +504,20 @@ return HTML;
 
 function getWeather(){
 
-    let HTML = `<div class="noSave"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
-    return HTML
+let HTML = `<div class="noSave"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
+return HTML
 
 }
 
 function getInitative(){
 
-    let HTML = `<div class="noSave">
-     
-    <br><br><hr><br></div>` 
+let HTML = `<div class="noSave">
 
- 
+<br><br><hr><br></div>` 
 
-    return HTML
+
+
+return HTML
 
 }
 
@@ -545,9 +544,6 @@ target.innerHTML = filterNoSave(target);
 
 target.innerHTML += HTML;
 }
-
-
-
 
 
 function trackTime(number = 1) {

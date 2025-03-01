@@ -296,7 +296,6 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
         const trackNumber = parseInt(inputBuffer);
         if (!isNaN(trackNumber)) {
             // Edit the track corresponding to the input number
-                console.log(trackObj)
                 editTrack(inputBuffer, trackObj);
             
         }

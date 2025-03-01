@@ -304,6 +304,7 @@ function updateResults(source = textDiv) {
    
     let results = worldGen();
     source.innerHTML = results
+    console.log('running...')
     
 }
 
@@ -824,6 +825,8 @@ function rollonTable(table) {
 }
 
 function searchFor(name, array) {
+
+    console.log(name)
  
     //console.log(name, array)
     const searchWords = name.toLowerCase().replace(/,/g, ' ').split(' ');
@@ -841,6 +844,8 @@ function searchFor(name, array) {
             matches.push(entry);
         }
     });
+
+    console.log(name, matches)
 
     return matches[0];
 }

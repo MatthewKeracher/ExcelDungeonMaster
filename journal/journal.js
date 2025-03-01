@@ -21,7 +21,7 @@ loadJournal()
 
 }
 
-function loadJournal() {
+function loadJournal() { 
   // Clear
   journalSideBar.innerHTML = '';
   
@@ -95,8 +95,7 @@ function loadJournal() {
               
               entryName.value = scaleData.name + ' Settings';
               
-              journalLeft.innerHTML = makeSettingsMenu(scale);
-              journalRight.innerHTML = ``;
+              makeSettingsMenu(scale)
               journalId.textContent = ``;
               scaleSelector.style.display = "none";
               
@@ -145,6 +144,8 @@ const hexType = obj && obj.settings &&
 obj.settings.hexType ?
 obj.settings.hexType : "Grassland";
 
+createEncountersTable(hexType);
+
 Object.keys(encounters).forEach(key => {
     const selected = key === hexType ? 'selected' : '';
     optionsHTML += `<option value="${key}" ${selected}>${key}</option>`;
@@ -173,12 +174,41 @@ const encountersHTML = `
 </div>
 `;
 
-return `${inflationHTML}${hexTypeSetting}${encountersHTML}`;
+journalLeft.innerHTML = `${inflationHTML}${hexTypeSetting}${encountersHTML}`
 
 }
 
-function updateRandomEncounters(value, objId){
+function createEncountersTable(hexType) {
+  
+    let tableContent = `<table border="1" class="table" style="border-collapse: collapse; width: 95%;"><tbody>`;
+    let length = encounters[hexType].length;
 
+    // Add table headers
+    tableContent += `<tr><td contenteditable="false" tabindex="0" class="tableCell tableHeader">Roll 1d12</td><td contenteditable="false" tabindex="0" class="tableCell tableHeader">Monster</td></tr>`;
+
+    // Loop to add table rows
+    for (let i = 0; i <= length; i++) {
+    tableContent += `<tr><td contenteditable="false" tabindex="0" class="tableCell">${i + 1}</td><td contenteditable="false" tabindex="0" class="tableCell">`;
+    
+    if (i === length) {
+        tableContent += `Roll Twice`;
+    } else if (i <= length) {
+        tableContent += `${encounters[hexType][i]}`;
+    } else {
+        tableContent += ``; 
+    }
+
+    tableContent += `</td></tr>`;
+    } 
+
+    tableContent += `</tbody></table>`;
+
+    journalRight.innerHTML = tableContent;
+
+    }
+
+
+function updateRandomEncounters(value, objId){
 const obj = data.find(entry => entry.id === objId);
 obj.settings = {randomEncounters: value}
 
@@ -188,6 +218,7 @@ function updateHexType(value, objId){
 
 const obj = data.find(entry => entry.id === objId);
 obj.settings = {hexType: value}
+createEncountersTable(value);
 
 }
 

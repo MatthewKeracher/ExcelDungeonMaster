@@ -2,6 +2,8 @@ let classicBlue = "rgb(40, 100, 165)"
 
 function addCellToZone(dir){
 
+    if(journalShowing){return}
+
 let currentCell = getCurrentDiv()
 console.log(currentCell)
 
@@ -305,6 +307,9 @@ function getZone(cell) {
 
 
 function clipZone(currentCell) {
+
+    if(journalShowing){return}
+
     if(currentZone){
      // Convert points to a Set to remove duplicates
     const uniquePoints = new Set(currentZone.points.map(point => JSON.stringify(point)));

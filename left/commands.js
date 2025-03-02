@@ -79,7 +79,8 @@ handlePaint();
 
 
 if (currentMode === "edit") { //EDIT MODE
-textDiv.innerHTML = filterDiv(textDiv);
+textDiv.innerHTML = filterDiv(textDiv, "weatherEffects")
+textDiv.innerHTML = filterDiv(textDiv, "randomEncounter")
 
 placeName.disabled = false; //Change what displays
 placeSymbol.disabled = false;
@@ -128,7 +129,10 @@ hitPointInit();
 
 } else if(currentMode === "map"){ //MAP MODE
 //Change Mode
-
+let holdHTML = textDiv.innerHTML
+textDiv.innerHTML = getWeather();
+textDiv.innerHTML += getNextEncounter();
+textDiv.innerHTML += holdHTML;
 
 //What is focused
 placeName.blur();

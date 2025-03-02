@@ -29,7 +29,9 @@ let coords = data[0].id;
 let region = data[0].name;
 let regionObj = data[0];
 let season = "Spring"
+let turnNumber = 0;
 let weather = null;
+let nextEncounter = `<div class="noSave randomEncounter"><i>Press space bar at the start of each turn to roll for random encounters, etc. Random encounter settings can be changed in the Journal (Esc) entry for the region you are currently in.</i><br><br><hr><br></div>`;
 let scrollData = {X: 0, Y:0, Z:1}
 
 let zones = [];

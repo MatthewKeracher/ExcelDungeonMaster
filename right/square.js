@@ -75,6 +75,7 @@ changeCell(div);
 function changeCell(gridCell){
 
 if(currentMode !== "map"){return};
+if(journalShowing){return};
 
 selectedCellStyle(gridCell);
 
@@ -108,6 +109,7 @@ if(gridCell.classList.contains('inZone')){
     if(zone === undefined){console.warn('Cannot find Zone!')}
 
     textDiv.innerHTML = getWeather()
+    textDiv.innerHTML += getNextEncounter()
     textDiv.innerHTML += zone.desc? zone.desc : "";
     placeName.value = zone.name;
    
@@ -122,6 +124,7 @@ if(gridCell.classList.contains('inZone')){
     currentZone = []
 
 }
+
 
 formatTables();
 saveData();

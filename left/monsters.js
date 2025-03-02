@@ -50,6 +50,7 @@ function getRandomSpells(spellSlotsArray) {
 
 function makeMonsterEntry(monster, number = 1) {
     // Define the keys to exclude from the table
+    if(!monster){return `<div class="noSave">Could not generate Monster entry.</div>`}
     let excludedKeys = ['name', 'description', 'treasure'];
     let savingThrows = getMonsterSave(monster.savingThrows);
     let individualTreasure = rollTreasure(monster.treasure, 'each');
@@ -130,8 +131,9 @@ function makeMonsterEntry(monster, number = 1) {
     tableHTML += '</tbody></table>';
     tableHTML += `<br><br>`;
 
+    const monsterDescription = autoSpacing(monster.description)
     
-    tableHTML += `${monster.description}`;
+    tableHTML += `${monsterDescription}`;
 
     return tableHTML;
 }

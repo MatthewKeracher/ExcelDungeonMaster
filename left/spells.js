@@ -33,7 +33,7 @@ function makeSpellEntry(spell) {
         return key;
     }).filter(key => !excludedKeys.includes(key)); 
 
-    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
+    let tableHTML = '<div class="noSave"><table border="1" class="table" style="border-collapse: collapse;">';
 
     // Generate table header that spans both columns
     tableHTML += `<thead><tr><th class="tableCell tableHeader" colspan="2"><b>${spell.name}</b></th></tr></thead>`;
@@ -53,7 +53,7 @@ function makeSpellEntry(spell) {
 
     tableHTML += '</tbody></table>';
     tableHTML += `<br><br>`;
-    tableHTML += `${spell.description}`;
+    tableHTML += `${spell.description}</div>`;
 
     return tableHTML;
 }

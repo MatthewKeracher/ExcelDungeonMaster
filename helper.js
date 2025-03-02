@@ -7,6 +7,29 @@ function rollDice(numDice, diceSides) {
   return total;
 }
 
+function extractTableEntries(divName) {
+    // Get the table content
+    const div = document.getElementById(divName);
+    let tableRows = div.querySelectorAll('tr');
+  
+    // Initialize an empty array to store the entries
+    let entries = [];
+
+    // Loop through each row (excluding the header)
+    for (let i = 1; i < tableRows.length; i++) {
+        let row = tableRows[i];
+        let cells = row.querySelectorAll('td');
+
+        let entry = cells[1].textContent;
+        entries.push(entry);
+    }
+
+    regionObj.settings.encounters = entries;
+    currentMode = "map";
+    toggleModes();
+  
+}
+
 
 function filterDiv(div = textDiv, className = "noSave"){
 // Clone the textDiv to avoid modifying the original content
@@ -276,9 +299,7 @@ function colorDistance(color1, color2) {
     );
 }
 
-function autoSpacing(div){
-
-    let text = div.innerHTML;
+function autoSpacing(text){
 
     text = text.replace(/\.\s/g, '.<br><br>');
     
@@ -286,7 +307,7 @@ function autoSpacing(div){
     text = text.replace(/\.$/g, '.<br><br>');
     
     // Update the innerHTML of the textDiv
-    div.innerHTML = text;
+   return text
 
 
 }

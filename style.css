@@ -18,6 +18,11 @@
 }
 
 @font-face {
+    font-family: "Soutane";
+    src: url("Soutane.ttf") format('truetype');
+}
+
+@font-face {
     font-family: "Cascadia";
     src: url("Cascadia.ttf") format('truetype');
 }

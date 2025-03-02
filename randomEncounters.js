@@ -198,33 +198,96 @@ const strangePhenomena = [
 
 const encounters = {
 
-"Dungeon Level 1": [
-"Bee, Giant",
-"Goblin",
-"Jelly, Green*",
-"Kobold",
-"NPC Party: Adventurer",
-"NPC Party: Bandit",
-"Orc",
-"Stirge",
-"Skeleton",
-"Snake, Spitting Cobra",
-"Spider, Giant Crab",
-],
+    "Dungeon Level 1":  [
+        "Bee, Giant",
+        "Goblin",
+        "Jelly, Green*",
+        "Kobold",
+        "NPC Party: Adventurer",
+        "NPC Party: Bandit",
+        "Orc",
+        "Stirge",
+        "Skeleton",
+        "Snake, Cobra",
+        "Spider, Giant Crab",
+        "Wolf"
+    ],
+    
+    "Dungeon Level 2":  [
+        "Beetle, Giant Bombardier",
+        "Fly, Giant",
+        "Ghoul",
+        "Gnoll",
+        "Jelly, Gray",
+        "Hobgoblin",
+        "Lizard Man",
+        "NPC Party: Adventurer",
+        "Snake, Pit Viper",
+        "Spider, Giant Black Widow",
+        "Lizard Man, Subterranean",
+        "Zombie"
+    ],
+    
+    "Dungeon Level 3":  [
+        "Ant, Giant",
+        "Ape, Carnivorous",
+        "Beetle, Giant Tiger",
+        "Bugbear",
+        "Doppleganger",
+        "Gargoyle*",
+        "Jelly, Glass",
+        "Lycanthrope, Wererat*",
+        "Ogre",
+        "Shadow*",
+        "Tentacle Worm",
+        "Wight*"
+    ],
 
-"Dungeon Level 2": [
-"Beetle, Giant Bombardier",
-"Fly, Giant",
-"Ghoul",
-"Gnoll",
-"Jelly, Gray",
-"Hobgoblin",
-"Lizard Man",
-"NPC Party: Adventurer",
-"Snake, Pit Viper",
-"Spider, Giant Black Widow",
-"Zombie"
-],
+    "Dungeon Level 4":[
+        "Bear, Cave",
+        "Caecilia, Giant",
+        "Cockatrice",
+        "Doppleganger",
+        "Jelly, Gray",
+        "Hellhound",
+        "Rust Monster*",
+        "Lycanthrope, Werewolf*",
+        "Minotaur",
+        "Jelly, Ruddy*",
+        "Owlbear",
+        "Wraith*"
+    ],
+    
+    "Dungeon Level 5": [
+        "Basilisk",
+        "Jelly, Black",
+        "Caecilia, Giant",
+        "Deceiver",
+        "Hydra",
+        "Rust Monster*",
+        "Lycanthrope, Weretiger*",
+        "Mummy*",
+        "Owlbear",
+        "Scorpion, Giant",
+        "Spectre*",
+        "Troll"
+    ],
+    
+    "Dungeon Level 6": [
+        "Basilisk, Greater*",
+        "Chimera",
+        "Deceiver, Greater",
+        "Giant, Hill",
+        "Giant, Stone",
+        "Hydra",
+        "Jelly, Black",
+        "Lycanthrope, Wereboar*",
+        "Purple Worm",
+        "Salamander, Flame*",
+        "Salamander, Frost*",
+        "Vampire*"
+    ],
+    
 
 "Desert or Barren": [
 "Dragon, Blue",
@@ -434,21 +497,109 @@ changeWeather(weather.name)
 
 }
 
-function rollEncounter(roll = rollDice(2,8)-2){
 
-const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
-if(hexType.includes("Dungeon")){roll = rollDice(1,12)-1}
 
-const encounter = encounters[hexType][roll];
-const distance = rollDice(2,6) 
-const surprise = rollDice(1,6)
-let surprised
+function getNextEncounter(){
 
-if(surprise < 3){
-surprised = "They will be surprised."
-}else{
-surprised = "They will not be surprised."
+let HTML = `${nextEncounter}` 
+return HTML
+    
 }
+
+function getWeather(){
+
+let HTML = `<div class="noSave weatherEffects"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
+return HTML
+
+}
+
+function getInitative(){
+
+let HTML = `<div class="initiative">
+
+<br><br><hr><br></div>` 
+
+
+
+return HTML
+
+}
+
+function getRandomEncounters(target, roll1 = rollDice(1,6)){
+
+let HTML = ``
+
+const encChance = regionObj && regionObj.settings && 
+regionObj.settings.encounterChance ?
+regionObj.settings.encounterChance : 1;
+
+const encountersOn = regionObj.settings && regionObj.settings.randomEncounters ? regionObj.settings.randomEncounters : "on";
+
+if(encountersOn === "on"){
+
+if(roll1 <= encChance){
+const roll2 = rollDice(1,6)
+
+if(roll2 === 1){ //Roll Twice
+HTML += rollEncounter()
+}
+
+HTML += rollEncounter()
+target.innerHTML = filterDiv(target, "randomEncounter");
+}
+}
+
+
+target.innerHTML += HTML;
+}
+
+function rollEncounter(){
+
+    const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
+    console.log(hexType)
+    
+    const randomEncounters = regionObj && regionObj.settings && 
+    regionObj.settings.randomEncounters ?
+    regionObj.settings.randomEncounters : encounters[hexType];
+
+let roll
+
+if(hexType.includes("Dungeon")){
+    roll = rollDice(1, randomEncounters.length)
+}else{
+    roll = rollDice(2, Math.floor(randomEncounters.length/2));
+};
+
+console.log("rolled " + roll + " on d" +randomEncounters.length)
+
+const encounter = randomEncounters[roll];
+
+const distance = isHexMap? rollDice(4,6) : rollDice(2,6); 
+const monsterSurprise = rollDice(1,6)
+const partySurprise = rollDice(1,6)
+const lair = rollDice(1,8)
+let isMonsterSurprised
+let isPartySurprised
+let checkLair
+
+if(monsterSurprise < 3){
+isMonsterSurprised = `The ${encounter} will be surprised.`
+}else{
+isMonsterSurprised = `The ${encounter} will not be surprised.`
+}
+
+if(partySurprise < 3){
+isPartySurprised = "The company will be surprised."
+}else{
+isPartySurprised = "The company will not be surprised."
+}
+
+if(lair === 1){
+checkLair = "They are in their lair."
+}else{
+checkLair = "They are not in their lair."
+}
+    
 
 const reactRoll = rollDice(2,6)
 let reaction
@@ -467,7 +618,7 @@ reaction = "They are friendly and eager."
 
 let HTML = ""
 
-HTML += `<div class="noSave randomEncounter"><h2 style='font-family:"SoutaneBlack"'>Random Encounter</h2><br>The party will encounter ${encounter} at the end of this turn. They are ${distance} tiles away.<br><br>${surprised} ${reaction}<br><br>` 
+HTML += `<div class="noSave randomEncounter"><h3 style='font-family:"SoutaneBlack"'><br>Random Encounter</h3><br>The company will encounter ${encounter} at the end of this turn. The ${encounter} will be ${distance * 10} ${isHexMap?"yards":"feet"} away.<br><br>${isMonsterSurprised} ${isPartySurprised}<br><br>${reaction} ${checkLair}<br><br>` 
 
 try{
 
@@ -496,53 +647,11 @@ console.log('Could not return ' + encounter, roll)
 
 HTML += `<br><br><hr><br></div>`
 
+nextEncounter = HTML;
+
 return HTML;
 
 }
-
-function getWeather(){
-
-let HTML = `<div class="noSave weatherEffects"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
-return HTML
-
-}
-
-function getInitative(){
-
-let HTML = `<div class="initiative">
-
-<br><br><hr><br></div>` 
-
-
-
-return HTML
-
-}
-
-function getRandomEncounters(target, roll1 = rollDice(1,6)){
-
-let HTML = ``
-
-const encountersOn = regionObj.settings && regionObj.settings.randomEncounters ? regionObj.settings.randomEncounters : "on";
-
-if(encountersOn === "on"){
-
-if(roll1 === 1){
-const roll2 = rollDice(1,6)
-
-if(roll2 === 1){
-HTML += rollEncounter()
-}
-
-HTML += rollEncounter()
-target.innerHTML = filterDiv(target, "randomEncounter");
-}
-}
-
-
-target.innerHTML += HTML;
-}
-
 
 function trackTime(number = 1) {
 let container = document.createElement('div');
@@ -551,7 +660,7 @@ container.style.width = "100%";
 container.innerHTML += 
 `<span style="font-size: 18px; font-family: 'SoutaneBlack';">Symbol Key</span><br><b>W:</b> Wandering Monster Check<br><b>T:</b> Torch Expires<br><b>L:</b> Lantern Oil Expires<br><b>R:</b> Party Must Rest for 1 Turn<br><br>`
 
-container.innerHTML += `<span style="font-size: 18px; font-family: 'SoutaneBlack'" id="turnNumber">Turn Number: ${turnNumber}</span><br><br>`;
+// container.innerHTML += `<span style="font-size: 18px; font-family: 'SoutaneBlack'" id="turnNumber">Turn Number: ${turnNumber}</span><br><br>`;
 
 for (let j = 0; j < number; j++) {
 let numGroups = 24;

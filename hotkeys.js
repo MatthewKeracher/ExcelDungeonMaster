@@ -348,13 +348,13 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
                 }
             }
             
-                    const turnNumberElement = document.getElementById("turnNumber");
-                    const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
-                    turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
+                    // const turnNumberElement = document.getElementById("turnNumber");
+                    // const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
+                    // turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
 
-                    if (filledBoxes % 2 !== 0) {
-                    getRandomEncounters(journalRight);
-                    }
+                    // if (filledBoxes % 2 !== 0) {
+                    // getRandomEncounters(journalRight);
+                    // }
 
             saveJournalEntry()
             
@@ -374,9 +374,9 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
                 }
             }
 
-            const turnNumberElement = document.getElementById("turnNumber");
-            const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
-            turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
+            // const turnNumberElement = document.getElementById("turnNumber");
+            // const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
+            // turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
 
             saveJournalEntry()
 

@@ -401,12 +401,15 @@ let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
 textDiv.innerHTML = getWeather()
+textDiv.innerHTML += getNextEncounter()
 
 if(loadEntry){
 placeName.value = loadEntry.name;
 placeSymbol.value = loadEntry.symbol && loadEntry.symbol !== ""? loadEntry.symbol : loadEntry.name.charAt(0);
 textDiv.innerHTML += loadEntry.desc;
 }
+
+
 
 if(currentMode === "edit"){     
 textDiv.focus();

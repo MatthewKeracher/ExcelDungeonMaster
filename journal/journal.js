@@ -83,6 +83,7 @@ function loadJournal() {
           headerLink.textContent = scaleData.name;
           headerLink.style.color = "gold";
 
+
           if(obj.settings !== false && obj.id !== '0.0'){
 
           headerLink.style.color = "hotpink";
@@ -164,35 +165,45 @@ const randEnc = obj && obj.settings &&
 obj.settings.randomEncounters ?
 obj.settings.randomEncounters : "On";
 
+const encChance = obj && obj.settings && 
+obj.settings.encounterChance ?
+obj.settings.encounterChance : 1;
+
 const encountersHTML = `
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
 <span>Random Encounters:</span>
 <select class="inputBox" id="wanderingDropdown" objId="${objId}" onchange="updateRandomEncounters(this.value, this.getAttribute('objId'))">
 <option value="on" ${randEnc === "on" ? 'selected' : ''}>On</option>
 <option value="off" ${randEnc === "off" ? 'selected' : ''}>Off</option>
-</select></div><br><hr><br>
+</select></div>
 `;
 
-journalLeft.innerHTML = `${inflationHTML}${hexTypeSetting}${encountersHTML}`
+const encounterChance = `
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+<span>Chance of Encounter (1d6):</span>
+<input id="inflationSetter" objId="${objId}" class="inputBox" onchange="updateEncChance(this.value, this.getAttribute('objId'))" value="${encChance}"></div><hr><br>`
+
+journalLeft.innerHTML = `${inflationHTML}${hexTypeSetting}${encountersHTML}${encounterChance}`
 
 }
 
 function createEncountersTable(hexType) {
   
-    let tableContent = `<table border="1" class="table" style="border-collapse: collapse; width: 95%;"><tbody>`;
-    let length = encounters[hexType].length;
+    let tableContent = `<table id="settingsEncountersTable" border="1" class="table" style="border-collapse: collapse; width: 95%;"><tbody>`;
+    let saveEntry = regionObj.settings.encounters;
+    let tableData = saveEntry? saveEntry: encounters[hexType];
+    
+    let length = tableData.length;
 
     // Add table headers
     tableContent += `<tr><td contenteditable="false" tabindex="0" class="tableCell tableHeader">${hexType}</td><td contenteditable="false" tabindex="0" class="tableCell tableHeader">Monster</td></tr>`;
 
     // Loop to add table rows
-    for (let i = 0; i <= length; i++) {
+    for (let i = 0; i < length; i++) {
     tableContent += `<tr><td contenteditable="false" tabindex="0" class="tableCell">${i + 1}</td><td contenteditable="false" tabindex="0" class="tableCell">`;
     
-    if (i === length) {
-        tableContent += `Roll Twice`;
-    } else if (i <= length) {
-        tableContent += `${encounters[hexType][i]}`;
+    if (i < length) {
+        tableContent += `${tableData[i]}`;
     } else {
         tableContent += ``; 
     }
@@ -202,32 +213,38 @@ function createEncountersTable(hexType) {
 
     tableContent += `</tbody></table>`;
 
+    tableContent += `<br><button id="confirmButton" onclick="extractTableEntries('settingsEncountersTable')">Confirm</button>`
+
     journalRight.innerHTML = tableContent;
 
     }
 
+function updateEncChance(value, objId){
+console.log("Updating encounterChance")
+const obj = data.find(entry => entry.id === objId);
+obj.settings.encounterChance = value
+saveData()
+}
 
 function updateRandomEncounters(value, objId){
 const obj = data.find(entry => entry.id === objId);
-obj.settings = {randomEncounters: value}
-
+obj.settings.randomEncounters = value
+saveData()
 }
 
 function updateHexType(value, objId){
-
+console.log("Updating hexType")
 const obj = data.find(entry => entry.id === objId);
-obj.settings = {hexType: value}
-createEncountersTable(value);
-
+obj.settings.hexType = value
+createEncountersTable(obj.settings.hexType);
+saveData()
 }
 
 function updateInflation(value, objId){
 
 const obj = data.find(entry => entry.id === objId);
-obj.settings = {inflation: value}
-
-console.log(obj)
-
+obj.settings.inflation = value
+saveData()
 }
 
 function getNewJournalId(){
@@ -457,6 +474,12 @@ function fillScaleSelector() {
   const scaleSelector = document.getElementById('scaleSelector');
 
   scaledObjs = [];
+
+  scaledObjs.push({
+    name: 'Favourites',
+    id: 'F',
+    settings: false,
+    })
 
   scaledObjs.push({
     name: 'Session Log',

@@ -75,7 +75,7 @@ if (inZone !== null && inZone) {
     let zone = zones.find(entry => entry.id === zoneId);
 
     zone.name = placeName.value;
-    zone.desc = filterNoSave(textDiv);
+    zone.desc = filterDiv(textDiv, "randomEncounter");
 
     // Save Individual Symbols to points.
     let pointEntry = zone.points.find(point => point.row === row && point.col === col);
@@ -84,16 +84,12 @@ if (inZone !== null && inZone) {
 
 } else {
 
-
-
     let exists = data.find(entry => entry.id === idBox.textContent);
-
     if (exists) {
         exists.name = placeName.value;
         exists.symbol = placeSymbol.value;
-        exists.desc = filterNoSave(textDiv);
+        exists.desc = filterDiv(textDiv);
         exists.scrollData = scrollData;
-        // console.log(exists)
 
         const cellLabel = div? div.querySelector('.cellLabel'): null;
         if (cellLabel !== null) {

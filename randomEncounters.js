@@ -438,7 +438,6 @@ function rollEncounter(roll = rollDice(2,8)-2){
 
 const hexType = regionObj.settings && regionObj.settings.hexType ? regionObj.settings.hexType : "Grassland";
 if(hexType.includes("Dungeon")){roll = rollDice(1,12)-1}
-console.log(hexType, roll)
 
 const encounter = encounters[hexType][roll];
 const distance = rollDice(2,6) 
@@ -468,7 +467,7 @@ reaction = "They are friendly and eager."
 
 let HTML = ""
 
-HTML += `<div class="noSave"><h2 style='font-family:"SoutaneBlack"'>Random Encounter</h2><br>The party will encounter ${encounter} at the end of this turn. They are ${distance} tiles away.<br><br>${surprised} ${reaction}<br><br>` 
+HTML += `<div class="noSave randomEncounter"><h2 style='font-family:"SoutaneBlack"'>Random Encounter</h2><br>The party will encounter ${encounter} at the end of this turn. They are ${distance} tiles away.<br><br>${surprised} ${reaction}<br><br>` 
 
 try{
 
@@ -486,7 +485,6 @@ HTML += `<br><br>`
 
 }else{
 
-console.log('calling searchFor...', encounter)
 let monster = searchFor(encounter, monsters);
 HTML += makeMonsterEntry(monster)
 
@@ -504,14 +502,14 @@ return HTML;
 
 function getWeather(){
 
-let HTML = `<div class="noSave"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
+let HTML = `<div class="noSave weatherEffects"><b>Weather Effects:</b> ${weather.description}<br><br><hr><br></div>` 
 return HTML
 
 }
 
 function getInitative(){
 
-let HTML = `<div class="noSave">
+let HTML = `<div class="initiative">
 
 <br><br><hr><br></div>` 
 
@@ -537,7 +535,7 @@ HTML += rollEncounter()
 }
 
 HTML += rollEncounter()
-target.innerHTML = filterNoSave(target);
+target.innerHTML = filterDiv(target, "randomEncounter");
 }
 }
 

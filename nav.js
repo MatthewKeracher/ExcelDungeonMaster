@@ -129,8 +129,6 @@ loadGrid()
 }
 
 function handleNew(){
-console.log('handleNew()')
-
 showPrompt('Make New Project: Are you sure you want to erase all data?').then(shouldDelete => {
 
 if (shouldDelete) {

@@ -422,7 +422,7 @@ scale: scaleSelector.value,
 id: journalId.textContent,
 name: entryName.value,
 left: journalLeft.innerHTML,
-right: filterNoSave(journalRight),
+right: filterDiv(journalRight, "randomEncounter"),
 
 }
 

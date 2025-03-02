@@ -400,10 +400,7 @@ emptyStoryteller()
 let loadEntry = data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
-rollWeather(17) //Add Weather
-
 textDiv.innerHTML = getWeather()
-getRandomEncounters(textDiv);
 
 if(loadEntry){
 placeName.value = loadEntry.name;

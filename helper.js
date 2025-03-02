@@ -8,14 +8,14 @@ function rollDice(numDice, diceSides) {
 }
 
 
-function filterNoSave(div = textDiv){
+function filterDiv(div = textDiv, className = "noSave"){
 // Clone the textDiv to avoid modifying the original content
 let divClone = div.cloneNode(true);
 
-// Remove elements with the class 'noSave'
-divClone.querySelectorAll('.noSave').forEach(element => element.remove());
+// Remove elements with the class.
+divClone.querySelectorAll(`.${className}`).forEach(element => element.remove());
 
-// Now, extract the HTML content without elements with the class 'noSave'
+// Now, extract the HTML content without elements with the class.
 return divClone.innerHTML;
 }
 
@@ -50,7 +50,7 @@ function collectGarbage() {
     //     }
     // });
 
-    // console.log('Deleted ' + i+ ' palettes.')
+
 
     const coordCount = {};
     data.forEach(entry => {
@@ -339,7 +339,6 @@ function delMap(){
     const hexes = document.querySelectorAll('.hex')
    
     hexes.forEach(hex => {
-    console.log(hex)
     const row = hex.getAttribute('row');
     const col = hex.getAttribute('col');
     const id = coords + '.' + row + '.' + col;

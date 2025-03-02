@@ -28,7 +28,6 @@ const trackStart = document.getElementById('trackStart');
 const trackEnd = document.getElementById('trackEnd');
 const trackNote = document.getElementById('trackNote');
 
-console.log(newTrackObj)
 
 if(newTrackObj.length === 0){
 sounds.push({ id: parseInt(inputNumber), url: "", startTime: "", endTime: "", note:"" })

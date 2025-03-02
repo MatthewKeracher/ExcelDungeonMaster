@@ -79,7 +79,7 @@ handlePaint();
 
 
 if (currentMode === "edit") { //EDIT MODE
-textDiv.innerHTML = filterNoSave(textDiv);
+textDiv.innerHTML = filterDiv(textDiv);
 
 placeName.disabled = false; //Change what displays
 placeSymbol.disabled = false;

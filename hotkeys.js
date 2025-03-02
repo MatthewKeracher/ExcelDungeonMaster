@@ -116,6 +116,14 @@ Mousetrap.bind('f', function() {
         handleFill();
     });
 
+Mousetrap.bind('space', function(e) {  
+    //Move Time Forward
+    e.preventDefault(); 
+    rollWeather(17);
+    getRandomEncounters(textDiv);
+});
+        
+
 Mousetrap.bindGlobal('`', function(e) {  
     
         switch (currentMode){
@@ -326,7 +334,7 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
     }
     });
 
-
+  
     Mousetrap.bind('.', function() {
         if (!isPainting) {
             const checks = document.querySelectorAll('.timeBox');
@@ -345,7 +353,6 @@ Mousetrap.bind(['ctrl+v', 'command+v'], function() {
                     turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
 
                     if (filledBoxes % 2 !== 0) {
-                    console.log('Wandering Monster')
                     getRandomEncounters(journalRight);
                     }
 

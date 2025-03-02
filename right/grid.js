@@ -10,7 +10,7 @@ const div = getCurrentDiv();
 
 clipboard.name = placeName.value;
 clipboard.symbol = placeSymbol.value;
-clipboard.desc = filterNoSave(textDiv);
+clipboard.desc = filterDiv(filterDiv(textDiv, "randomEncounter"), "weatherEffects")
 clipboard.color = isHexMap? div.querySelector('.middle').style.backgroundColor : div.style.backgroundColor;
 
 }

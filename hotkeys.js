@@ -121,6 +121,8 @@ Mousetrap.bind('space', function(e) {
     e.preventDefault(); 
     rollWeather(17);
     getRandomEncounters(textDiv);
+    textDiv.innerHTML = filterDiv(textDiv, "randomEncounter");
+    textDiv.innerHTML += getNextEncounter();
 });
         
 

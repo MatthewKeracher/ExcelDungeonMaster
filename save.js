@@ -75,7 +75,7 @@ if (inZone !== null && inZone) {
     let zone = zones.find(entry => entry.id === zoneId);
 
     zone.name = placeName.value;
-    zone.desc = filterDiv(textDiv, "randomEncounter");
+    zone.desc = filterDiv(textDiv);
 
     // Save Individual Symbols to points.
     let pointEntry = zone.points.find(point => point.row === row && point.col === col);

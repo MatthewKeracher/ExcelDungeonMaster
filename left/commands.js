@@ -130,6 +130,7 @@ hitPointInit();
 } else if(currentMode === "map"){ //MAP MODE
 //Change Mode
 let holdHTML = textDiv.innerHTML
+textDiv.innerHTML = filterDiv(textDiv, "noSave"); 
 textDiv.innerHTML = getWeather();
 textDiv.innerHTML += getNextEncounter();
 textDiv.innerHTML += holdHTML;

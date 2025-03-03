@@ -519,15 +519,13 @@ let HTML = `<div class="initiative">
 
 <br><br><hr><br></div>` 
 
-
-
 return HTML
 
 }
 
 function getRandomEncounters(target, roll1 = rollDice(1,6)){
 
-let HTML = ``
+let HTML = `<div class="randomEncounter noSave"><i>The company encounter no random monsters this turn.</i><br><br><hr><br></div>`
 
 const encChance = regionObj && regionObj.settings && 
 regionObj.settings.encounterChance ?
@@ -540,17 +538,17 @@ if(encountersOn === "on"){
 if(roll1 <= encChance){
 const roll2 = rollDice(1,6)
 
+HTML += rollEncounter()
+target.innerHTML = filterDiv(target, "randomEncounter");
+
 if(roll2 === 1){ //Roll Twice
 HTML += rollEncounter()
 }
 
-HTML += rollEncounter()
-target.innerHTML = filterDiv(target, "randomEncounter");
 }
 }
 
-
-target.innerHTML += HTML;
+nextEncounter = HTML;
 }
 
 function rollEncounter(){
@@ -624,6 +622,8 @@ try{
 
 if(encounter.includes("NPC")){
 
+console.log("Making NPC Party")
+
 for (let i = 0; i < 4; i++) {
 let race = ["human", "elf", "dwarf", "halfling"][Math.floor(Math.random() * 4)];
 let npcClass = ["fighter", "mage", "cleric", "thief"][Math.floor(Math.random() * 4)];
@@ -646,8 +646,6 @@ console.log('Could not return ' + encounter, roll)
 }
 
 HTML += `<br><br><hr><br></div>`
-
-nextEncounter = HTML;
 
 return HTML;
 

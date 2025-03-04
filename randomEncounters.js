@@ -525,11 +525,11 @@ return HTML
 
 function getRandomEncounters(target, roll1 = rollDice(1,6)){
 
-let HTML = `<div class="randomEncounter noSave"><i>The company encounter no random monsters this turn.</i><br><br><hr><br></div>`
+let HTML = `<div class="randomEncounter noSave"><i>The company encounter no random monsters this turn. Press space bar to check again.</i><br><br><hr><br></div>`
 
 const encChance = regionObj && regionObj.settings && 
 regionObj.settings.encounterChance ?
-regionObj.settings.encounterChance : 1;
+regionObj.settings.encounterChance : 1; 
 
 const encountersOn = regionObj.settings && regionObj.settings.randomEncounters ? regionObj.settings.randomEncounters : "on";
 

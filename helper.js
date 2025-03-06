@@ -1,34 +1,4 @@
-// Roll dice function
-function rollDice(numDice, diceSides) {
-  let total = 0;
-  for (let i = 0; i < numDice; i++) {
-      total += Math.floor(Math.random() * diceSides) + 1;
-  }
-  return total;
-}
 
-function extractTableEntries(divName) {
-    // Get the table content
-    const div = document.getElementById(divName);
-    let tableRows = div.querySelectorAll('tr');
-  
-    // Initialize an empty array to store the entries
-    let entries = [];
-
-    // Loop through each row (excluding the header)
-    for (let i = 1; i < tableRows.length; i++) {
-        let row = tableRows[i];
-        let cells = row.querySelectorAll('td');
-
-        let entry = cells[1].textContent;
-        entries.push(entry);
-    }
-
-    regionObj.settings.encounters = entries;
-    currentMode = "map";
-    toggleModes();
-  
-}
 
 
 function filterDiv(div = textDiv, className = "noSave"){
@@ -324,35 +294,6 @@ function addCollapsibleEventListeners() {
         });
     });
 }
-
-function getColumnCells(table, columnName) {
-    const rows = table.rows;
-    const cells = [];
-    let columnIndex = -1;
-
-    // Find the index of the specified column
-    const headerRow = rows[0];
-    for (let i = 0; i < headerRow.cells.length; i++) {
-        if (headerRow.cells[i].textContent.trim() === columnName) {
-            columnIndex = i;
-            break;
-        }
-    }
-
-    // If the column is found, collect its cells
-    if (columnIndex !== -1) {
-        for (let i = 1; i < rows.length; i++) {
-            const cell = rows[i].cells[columnIndex];
-            if (cell) {
-                cells.push(cell);
-            }
-        }
-    }
-
-    return cells;
-}
-
-
 
 
 function delMap(){

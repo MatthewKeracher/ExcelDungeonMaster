@@ -3,7 +3,7 @@ function getScrollSpells(npcClass, level) {
 const possibleSpells = spells.filter(spell => parseInt(spell.level) === parseInt(level) && spell.class === npcClass);
 const randomSpell = possibleSpells[Math.floor(Math.random() * possibleSpells.length)];    
 return randomSpell.name;
-    
+
 }
 
 const loot = {
@@ -407,27 +407,27 @@ const potionsTable = [
 ];
 
 const scrollsTable = [
-    { range: [1, 3], type: `Scroll of ${getScrollSpells('Cleric', 1)}`},
-    { range: [4, 6], type: `Scroll of ${getScrollSpells('Cleric', 2)}`},
-    { range: [7, 8], type: `Scroll of ${getScrollSpells('Cleric', 3)}`},
-    { range: [9, 9], type: `Scroll of ${getScrollSpells('Cleric', 4)}`},
-    { range: [10, 15], type: `Scroll of ${getScrollSpells('Mage', 1)}`},
-    { range: [16, 20], type: `Scroll of ${getScrollSpells('Mage', 2)}`},
-    { range: [21, 25], type: `Scroll of ${getScrollSpells('Mage', 3)}`},
-    { range: [26, 29], type: `Scroll of ${getScrollSpells('Mage', 4)}`},
-    { range: [30, 32], type: `Scroll of ${getScrollSpells('Mage', 5)}`},
-    { range: [33, 34], type: `Scroll of ${getScrollSpells('Mage', 6)}`},
-    { range: [35, 35], type: `Scroll of ${getScrollSpells('Mage', 6)}`},
-    { range: [36, 40], type: 'Cursed Scroll' },
-    { range: [41, 46], type: 'Scroll of Protection from Elementals' },
-    { range: [47, 56], type: 'Scroll of Protection from Lycanthropes' },
-    { range: [57, 61], type: 'Scroll of Protection from Magic' },
-    { range: [62, 75], type: 'Scroll of Protection from Undead' },
-    { range: [76, 85], type: 'Map to Treasure Type A' },
-    { range: [86, 89], type: 'Map to Treasure Type E' },
-    { range: [90, 92], type: 'Map to Treasure Type G' },
-    { range: [93, 100], type: 'Map to 1d4 Magic Items' },
-    ];
+{ range: [1, 3], type: `Scroll of ${getScrollSpells('Cleric', 1)}`},
+{ range: [4, 6], type: `Scroll of ${getScrollSpells('Cleric', 2)}`},
+{ range: [7, 8], type: `Scroll of ${getScrollSpells('Cleric', 3)}`},
+{ range: [9, 9], type: `Scroll of ${getScrollSpells('Cleric', 4)}`},
+{ range: [10, 15], type: `Scroll of ${getScrollSpells('Mage', 1)}`},
+{ range: [16, 20], type: `Scroll of ${getScrollSpells('Mage', 2)}`},
+{ range: [21, 25], type: `Scroll of ${getScrollSpells('Mage', 3)}`},
+{ range: [26, 29], type: `Scroll of ${getScrollSpells('Mage', 4)}`},
+{ range: [30, 32], type: `Scroll of ${getScrollSpells('Mage', 5)}`},
+{ range: [33, 34], type: `Scroll of ${getScrollSpells('Mage', 6)}`},
+{ range: [35, 35], type: `Scroll of ${getScrollSpells('Mage', 6)}`},
+{ range: [36, 40], type: 'Cursed Scroll' },
+{ range: [41, 46], type: 'Scroll of Protection from Elementals' },
+{ range: [47, 56], type: 'Scroll of Protection from Lycanthropes' },
+{ range: [57, 61], type: 'Scroll of Protection from Magic' },
+{ range: [62, 75], type: 'Scroll of Protection from Undead' },
+{ range: [76, 85], type: 'Map to Treasure Type A' },
+{ range: [86, 89], type: 'Map to Treasure Type E' },
+{ range: [90, 92], type: 'Map to Treasure Type G' },
+{ range: [93, 100], type: 'Map to 1d4 Magic Items' },
+];
 
 const wandsStavesRodsTable = [
 { range: [1, 8], type: 'Rod of Cancellation' },
@@ -561,37 +561,273 @@ H : [
 }
 
 const rareItems = [
-    { range: [1, 5], 
-      type: 'Bag of Devouring',  
-      desc: "This device appears, to all tests, to be a normal Bag of Holding, and in fact it performs exactly like one at first. However, all items placed within disappear forever 1d6+6 turns later. The bag continues to weigh whatever it did after the items were placed within it (that is, one-tenth the total weight of the items), until it is opened and discovered to be empty."},
-    { range: [6, 20],
-      type: 'Bag of Holding',
-      desc: "This device is a bag which appears to be about 2 feet wide and 4 feet deep. It opens into an extradimensional space, and is able to hold more than should be possible: up to 500 pounds of weight, and up to 70 cubic feet of volume. The bag weighs one-tenth as much as the total of the objects held within. Any object to be stored in the bag must fit through the opening, which has a circumference of 4 feet. Puncturing or tearing the bag will destroy its magic and cause all contents to be lost forever. If this item is turned inside out all contents are dumped. The bag is unharmed, but it will no longer work until it is turned right side out again. If living creatures are placed inside they will suffocate within a turn (with exceptions for creatures resistant to suffocation as determined by the GM). The bag's volume cannot be overfilled (as excess items simply cannot be put inside), but if overloaded above 500 pounds and then lifted it will be torn. Getting any particular item from the bag requires the bearer to spend a round searching during which no movement may be made." },
-    { range: [21, 32], 
-      type: 'Boots of Traveling and Leaping',
-      desc: "These boots allow the wearer to make great leaps, jumping up to 10' high and/or 30' across. They improve the wearer's movement so greatly that they also increase their movement rate on land by an additional 10' per round."},
-    { range: [33, 47], 
-      type: 'Broom of Flying',
-      desc: "This broom is able to fly through the air for up to 9 hours per day (split up as its owner desires). The broom can carry 200 pounds and fly at a speed of 40 feet, or up to 400 pounds at a speed at 30 feet. In addition, the broom can travel alone to any destination named by the owner as long as they have a good idea of the location and layout of that destination. It comes to its owner from as far away as 300 yards when the command word is spoken."},
-    { range: [48, 57], 
-      type: 'Device of Summoning Elementals', 
-      desc: "These devices all grant the power to summon and control an elemental. As noted, the GM is likely to choose to allow only certain types of Elementals, so not all of these devices may be available in your campaign. When one of these devices is activated in accordance with the summoning rules described for the Elemental monster entry on page 88, an appropriate elemental appears and follows the summoner's commands."},
-    { range: [58, 59], 
-      type: 'Efreeti Bottle', 
-      desc: "This item may appear as an ornate bottle, or sometimes as a magic lamp. It can be activated once per day, by opening it if it takes the form of a bottle or by rubbing it if it takes the form of a lamp. When activated, smoke pours out and forms into an efreeti. The efreeti released was trapped in the bottle and forced to serve whoever activates it. However, an efreeti who has spent too long in a bottle may have lost its mind, and if this happens the efreeti will begin a frenzied attack upon whoever activated the bottle, disappearing when either the user of the bottle or the efreeti is dead. There is, fortunately, only a 1 in 10 chance this will happen. On the other hand, there is also a 1 in 10 chance that the efreeti of the bottle is able to grant three wishes to the user. If this is the case, the efreeti will perform no other service, and cannot return to the bottle after it is activated until the user makes a wish. Subsequent wishes require additional activations, and upon the final wish being granted the efreeti disappears for good. Roll 1d10 when the bottle is first activated; on a roll of 1, the efreeti is insane, while on a roll of 0 the efreeti has three wishes to grant. If neither of these results is rolled, the efreeti will serve the user for up to one hour per day for 101 days, after which time it is freed and will disappear."},
-    { range: [60, 64], 
-      type: 'Flying Carpet', 
-      desc: "This item appears to be a fancy rug of the sort found in the castle of a king. It has the power to fly, carrying those upon it as if they stand upon a solid surface. A flying carpet is typically 5' x 8' in size and can carry up to 500 pounds at a movement rate of 100' per round, or up to 1,000 pounds (its maximum capacity) at a rate of 50' per round. A flying carpet can fly at any speed up to its maximum, and can hover on command."},
-    { range: [65, 81], 
-      type: 'Gauntlets of Ogre Power',
-      desc: "These thick leather gloves grant the wearer a Strength bonus of +4 (instead of their own Strength bonus). Both gauntlets must be worn for the magic to be effective."},
-    { range: [82, 86], 
-      type: 'Girdle of Giant Strength',
-      desc: "This broad leather belt grants the wearer the strength of a giant. For so long as it is worn, the wearer gains a Strength bonus of +5 (instead of their own Strength bonus), and can throw large stones just as a stone giant does."},
-    { range: [87, 88], 
-      type: 'Mirror of Imprisonment',
-      desc: "This item can appear as any style of full-length or larger mirror. It is a form of magical trap which can be set or deactivated by speaking a command word followed by 'activate' or 'deactivate.' When in its active state, any character or creature who stands within 30 feet of the mirror and sees its reflection must save vs. Spells or be drawn bodily into the mirror, including all items worn or carried. The victim is placed within one of 20 metaphysical cells inside the mirror. Those trapped in the mirror are mere reflections and are unable to take any action. The last character who spoke the command word to the mirror is immune to its power, as are undead, constructs, and any creature that lacks eyes. A character who speaks the command word and then calls the number of a cell will cause the reflection of the occupant of that cell to appear in the mirror. The trapped creature can move and speak but cannot cast spells or take any other real action. The controlling character may interrogate the trapped victim if desired; though, the mirror does not compel the victim to respond or to be truthful. The controller may at any time speak the command word again and say 'return' and the victim will be returned to its cell; or, they can say 'come out' to free them."},
-    { range: [89, 100], 
-      type: 'Rope of Climbing',
-      desc: "This 50 foot long rope is about ½ inch in diameter, but is capable of supporting up to 3,000 pounds if tied to a secure anchor point. When the user holds one end of the rope and speaks the command word, the rope animates, moving like a snake at a rate of 10' per round in whatever direction the user commands. The rope is even able to move into a completely vertical position if so ordered. It can be commanded to tie itself to any anchor point within reach (since the user must continue holding one end of the rope, it can reach no more than 50 feet from that point). The rope has no real strength and thus cannot lift or support any weight if not tied to an anchor point."},
+{ range: [1, 5], 
+type: 'Bag of Devouring',  
+desc: "This device appears, to all tests, to be a normal Bag of Holding, and in fact it performs exactly like one at first. However, all items placed within disappear forever 1d6+6 turns later. The bag continues to weigh whatever it did after the items were placed within it (that is, one-tenth the total weight of the items), until it is opened and discovered to be empty."},
+{ range: [6, 20],
+type: 'Bag of Holding',
+desc: "This device is a bag which appears to be about 2 feet wide and 4 feet deep. It opens into an extradimensional space, and is able to hold more than should be possible: up to 500 pounds of weight, and up to 70 cubic feet of volume. The bag weighs one-tenth as much as the total of the objects held within. Any object to be stored in the bag must fit through the opening, which has a circumference of 4 feet. Puncturing or tearing the bag will destroy its magic and cause all contents to be lost forever. If this item is turned inside out all contents are dumped. The bag is unharmed, but it will no longer work until it is turned right side out again. If living creatures are placed inside they will suffocate within a turn (with exceptions for creatures resistant to suffocation as determined by the GM). The bag's volume cannot be overfilled (as excess items simply cannot be put inside), but if overloaded above 500 pounds and then lifted it will be torn. Getting any particular item from the bag requires the bearer to spend a round searching during which no movement may be made." },
+{ range: [21, 32], 
+type: 'Boots of Traveling and Leaping',
+desc: "These boots allow the wearer to make great leaps, jumping up to 10' high and/or 30' across. They improve the wearer's movement so greatly that they also increase their movement rate on land by an additional 10' per round."},
+{ range: [33, 47], 
+type: 'Broom of Flying',
+desc: "This broom is able to fly through the air for up to 9 hours per day (split up as its owner desires). The broom can carry 200 pounds and fly at a speed of 40 feet, or up to 400 pounds at a speed at 30 feet. In addition, the broom can travel alone to any destination named by the owner as long as they have a good idea of the location and layout of that destination. It comes to its owner from as far away as 300 yards when the command word is spoken."},
+{ range: [48, 57], 
+type: 'Device of Summoning Elementals', 
+desc: "These devices all grant the power to summon and control an elemental. As noted, the GM is likely to choose to allow only certain types of Elementals, so not all of these devices may be available in your campaign. When one of these devices is activated in accordance with the summoning rules described for the Elemental monster entry on page 88, an appropriate elemental appears and follows the summoner's commands."},
+{ range: [58, 59], 
+type: 'Efreeti Bottle', 
+desc: "This item may appear as an ornate bottle, or sometimes as a magic lamp. It can be activated once per day, by opening it if it takes the form of a bottle or by rubbing it if it takes the form of a lamp. When activated, smoke pours out and forms into an efreeti. The efreeti released was trapped in the bottle and forced to serve whoever activates it. However, an efreeti who has spent too long in a bottle may have lost its mind, and if this happens the efreeti will begin a frenzied attack upon whoever activated the bottle, disappearing when either the user of the bottle or the efreeti is dead. There is, fortunately, only a 1 in 10 chance this will happen. On the other hand, there is also a 1 in 10 chance that the efreeti of the bottle is able to grant three wishes to the user. If this is the case, the efreeti will perform no other service, and cannot return to the bottle after it is activated until the user makes a wish. Subsequent wishes require additional activations, and upon the final wish being granted the efreeti disappears for good. Roll 1d10 when the bottle is first activated; on a roll of 1, the efreeti is insane, while on a roll of 0 the efreeti has three wishes to grant. If neither of these results is rolled, the efreeti will serve the user for up to one hour per day for 101 days, after which time it is freed and will disappear."},
+{ range: [60, 64], 
+type: 'Flying Carpet', 
+desc: "This item appears to be a fancy rug of the sort found in the castle of a king. It has the power to fly, carrying those upon it as if they stand upon a solid surface. A flying carpet is typically 5' x 8' in size and can carry up to 500 pounds at a movement rate of 100' per round, or up to 1,000 pounds (its maximum capacity) at a rate of 50' per round. A flying carpet can fly at any speed up to its maximum, and can hover on command."},
+{ range: [65, 81], 
+type: 'Gauntlets of Ogre Power',
+desc: "These thick leather gloves grant the wearer a Strength bonus of +4 (instead of their own Strength bonus). Both gauntlets must be worn for the magic to be effective."},
+{ range: [82, 86], 
+type: 'Girdle of Giant Strength',
+desc: "This broad leather belt grants the wearer the strength of a giant. For so long as it is worn, the wearer gains a Strength bonus of +5 (instead of their own Strength bonus), and can throw large stones just as a stone giant does."},
+{ range: [87, 88], 
+type: 'Mirror of Imprisonment',
+desc: "This item can appear as any style of full-length or larger mirror. It is a form of magical trap which can be set or deactivated by speaking a command word followed by 'activate' or 'deactivate.' When in its active state, any character or creature who stands within 30 feet of the mirror and sees its reflection must save vs. Spells or be drawn bodily into the mirror, including all items worn or carried. The victim is placed within one of 20 metaphysical cells inside the mirror. Those trapped in the mirror are mere reflections and are unable to take any action. The last character who spoke the command word to the mirror is immune to its power, as are undead, constructs, and any creature that lacks eyes. A character who speaks the command word and then calls the number of a cell will cause the reflection of the occupant of that cell to appear in the mirror. The trapped creature can move and speak but cannot cast spells or take any other real action. The controlling character may interrogate the trapped victim if desired; though, the mirror does not compel the victim to respond or to be truthful. The controller may at any time speak the command word again and say 'return' and the victim will be returned to its cell; or, they can say 'come out' to free them."},
+{ range: [89, 100], 
+type: 'Rope of Climbing',
+desc: "This 50 foot long rope is about ½ inch in diameter, but is capable of supporting up to 3,000 pounds if tied to a secure anchor point. When the user holds one end of the rope and speaks the command word, the rope animates, moving like a snake at a rate of 10' per round in whatever direction the user commands. The rope is even able to move into a completely vertical position if so ordered. It can be commanded to tie itself to any anchor point within reach (since the user must continue holding one end of the rope, it can reach no more than 50 feet from that point). The rope has no real strength and thus cannot lift or support any weight if not tied to an anchor point."},
 ];
+
+
+function makeGem() {
+    
+  const rollType = rollDice(1, 100);
+  const type = gemTypeTable.find(gem => gem.range[0] <= rollType && gem.range[1] >= rollType).type; 
+  
+  const rollValue = rollDice(1, 6);
+  const value = gemsValueTable[rollValue - 1];
+
+  const rollValueAdjust = rollDice(2, 6);
+  const valueAdjust = valueAdjustmentTable.find(adjustment => adjustment.roll === rollValueAdjust).adjustment;
+  const priceZoti = ammendPrices(value.baseValue * valueAdjust);
+  
+  const foundRoll = parseDice(value.numberFound);
+  const found = rollDice(foundRoll.numDice, foundRoll.diceSides);
+
+  return {
+    found: found,
+    stone: type,
+    desc: value.type,
+    value: valueAdjust,
+    price: priceZoti
+  }
+}
+
+function getGem(){
+
+  const gem = makeGem();
+
+  const HTML = `${gem.found}x ${gem.desc} ${gem.stone}s <br><i>(${gem.price})</i><br>`;
+  
+  return HTML;
+
+
+}
+
+function makeJewelry() {
+
+  const gem = makeGem()
+
+  const preciousMetals = [
+    "Gold",
+    "Silver",
+    "Platinum",
+    "Palladium",
+    "Rhodium",
+    "Iridium",
+    "Osmium",
+    "Ruthenium"
+  ];
+
+  const itemRoll = rollDice(1, 100);
+  const item = jewelryTable.find(jewelry => jewelry.range[0] <= itemRoll && jewelry.range[1] >= itemRoll).type;
+  const material = preciousMetals[Math.floor(Math.random() * preciousMetals.length)];
+
+  const rollValue = rollDice(2,8) * 100;
+  const rollValueAdjust = rollDice(2, 6);
+  const valueAdjust = valueAdjustmentTable.find(adjustment => adjustment.roll === rollValueAdjust).adjustment;
+
+  const totalPrice = ammendPrices((gem.value * gem.found) + (rollValue * valueAdjust));
+
+  const HTML = `${material} ${item} inset with ${gem.found}x ${gem.desc} ${gem.stone}s<br><i>(${totalPrice})</i><br>`;
+  
+  return HTML; 
+  
+}
+
+function makeMagicItem() {
+  // Helper function to parse dice notation
+  function parseDice(dice) {
+      const diceMatch = dice.match(/^(\d*)d(\d+)$/);
+      if (diceMatch) {
+          const numDice = diceMatch[1] ? parseInt(diceMatch[1]) : 1; // Default to 1 if not specified
+          const sides = parseInt(diceMatch[2]);
+          return { numDice, sides };
+      } else if (!isNaN(dice)) {
+          // Handle the case where dice is a fixed number (e.g., '1')
+          return { numDice: parseInt(dice), sides: 1 };
+      }
+      throw new Error('Invalid dice notation');
+  }
+
+  // Helper function to roll dice
+  function rollDice(numDice, diceSides) {
+      let total = 0;
+      for (let i = 0; i < numDice; i++) {
+          total += Math.floor(Math.random() * diceSides) + 1;
+      }
+      return total;
+  }
+
+  // Roll on the itemTypeTable to determine the type of magic item
+  const itemTypeRoll = rollDice(1, 100);
+  const itemType = itemTypeTable.find(item => item.range[0] <= itemTypeRoll && item.range[1] >= itemTypeRoll).item;
+
+  let magicItem = '';
+
+  if (itemType === 'Weapon') {
+      magicItem = magicWeapon();
+  } else if (itemType === 'Armour') {
+      magicItem = magicArmour();
+  } else if (itemType === 'Potion') {
+      magicItem = magicPotion();
+  } else if (itemType === 'Scroll') {
+      magicItem = magicScroll();
+  } else if (itemType === 'Wand, Staff or Rod') {
+      magicItem = magicWand();
+  } else if (itemType === 'Miscellaneous Item') {
+      magicItem = magicItem();
+  } else if (itemType === 'Rare Items') {
+      magicItem = rareItem();
+  }
+  return magicItem;
+}
+
+function rollTreasure(treasure, locationFilter) {
+  // Extract the treasure types from the treasure parameter
+  const treasureRegex = /([A-Z](?:,[A-Z])*)\s*(each|in lair)|None|Special|([A-Z])/gi;
+  const matches = [...treasure.matchAll(treasureRegex)];
+  
+  
+  if (matches.length > 0) {
+  let treasureEntries = '';
+  
+  matches.forEach(match => {
+  const types = match[1] ? match[1].split(',').map(type => type.trim()) : (match[3] ? [match[3]] : []);
+  const location = match[2] ? match[2].toLowerCase() : (match[3] ? 'each' : match[0].toLowerCase());
+  
+  if (locationFilter && location !== locationFilter) {
+  return;
+  }
+  
+  types.forEach(type => {
+  if (loot[type]) {
+  const entries = loot[type];
+  
+  for (const [key, value] of Object.entries(entries)) {
+  if (value.percentage !== 0) {
+  // Roll a percentage to determine if the treasure is found
+  const percentageRoll = Math.random() * 100;
+  if (percentageRoll <= value.percentage) {
+  // Format the key to be more readable, except for specific keys
+  const formattedKey = ['Copper', 'Silver', 'Electrum', 'Gold', 'Platinum', 'Gems', 'Jewelry'].includes(key)
+  ? key
+  : key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+              
+  let dice = value.dice;  
+  let diceParse = parseDice(dice);
+  let roll = rollDice(diceParse.numDice, diceParse.diceSides);
+  
+  if(key === 'Gems'){
+  for (let i = 0; i < roll; i++) {
+  treasureEntries += `${makeGem()} <br>`;
+  }
+  } else if(key === 'Jewelry'){
+  for (let i = 0; i < roll; i++) {
+  treasureEntries += `${makeJewelry()} <br>`;
+  }
+  }else if(key === 'magicItems'){
+  for (let i = 0; i < roll; i++) {
+  treasureEntries += `${makeMagicItem()} <br>`;
+  }
+  } else {
+  treasureEntries += `${roll} ${formattedKey} <br>`;
+  }}}}
+  treasureEntries += ``;
+  }
+  });
+  
+  if (location === 'none') {treasureEntries = `None`}
+  if (location === 'special') {treasureEntries += `<b>Treasure ${location}</b>`}
+  });
+  
+  return treasureEntries || 'None';
+  }
+  
+  return 'Treasure not found';
+}
+
+function magicWeapon(){
+ const weaponTypeRoll = rollDice(1, 100);
+ const weaponType = magicWeaponTable.find(weapon => weapon.range[0] <= weaponTypeRoll && weapon.range[1] >= weaponTypeRoll).weapon;
+ const bonusTable = weaponType === 'Sling Bullet' || weaponType.includes('Arrow') || weaponType.includes('Bow') ? rangedWeaponBonusTable : meleeWeaponBonusTable;
+ const bonusRoll = rollDice(1, 100);
+ const bonus = bonusTable.find(bonus => bonus.range[0] <= bonusRoll && bonus.range[1] >= bonusRoll).bonus;
+ const weapon = `${weaponType} ${bonus}`;
+ return weapon
+}
+
+function magicArmour(){
+ const armourTypeRoll = rollDice(1, 100);
+ const armourType = magicArmourTable.find(armour => armour.range[0] <= armourTypeRoll && armour.range[1] >= armourTypeRoll).armour;
+ const armourBonusRoll = rollDice(1, 100);
+ const armourBonus = magicArmourAbilityTable.find(bonus => bonus.range[0] <= armourBonusRoll && bonus.range[1] >= armourBonusRoll).armour;
+ const armour =  `${armourType} ${armourBonus}`;
+ return armour
+}
+
+function magicScroll(){
+  const scrollTypeRoll = rollDice(1, 100);
+  const scrollType = scrollsTable.find(scroll => scroll.range[0] <= scrollTypeRoll && scroll.range[1] >= scrollTypeRoll).type;
+  const scroll = `<u>${scrollType}</u>`
+  return scroll
+}
+
+function magicPotion(){
+  const potionTypeRoll = rollDice(1, 100);
+  const potionType = potionsTable.find(potion => potion.range[0] <= potionTypeRoll && potion.range[1] >= potionTypeRoll).type;
+  const potion = `<u>Potion of ${potionType}</u>`;
+  return potion
+}
+
+function magicWand(){
+  const wandTypeRoll = rollDice(1, 100);
+  const wandType = wandsStavesRodsTable.find(wand => wand.range[0] <= wandTypeRoll && wand.range[1] >= wandTypeRoll).type;
+  const wand = `${wandType}`;
+  return wand
+}
+
+function magicItem() {
+  const miscRoll = rollDice(1, 100);
+  const subtable = miscellaneousItemsTable.find(m => m.range[0] <= miscRoll && m.range[1] >= miscRoll).subtable;
+  const effectRoll = rollDice(1, 100);
+  const effect = subtable === 'Effect Subtable 1' ? effectSubtable1.find(e => e.range[0] <= effectRoll && e.range[1] >= effectRoll) : effectSubtable2.find(e => e.range[0] <= effectRoll && e.range[1] >= effectRoll);
+  const formRoll = rollDice(1, 100);
+  const form = formTable[effect.form].find(f => f.chance[0] <= formRoll && f.chance[1] >= formRoll).item;
+  return `${form} of ${effect.effect}`;
+}
+
+function rareItem() {
+  const rareItemRoll = rollDice(1, 100);
+  const rareItemObj = rareItems.find(item => item.range[0] <= rareItemRoll && item.range[1] >= rareItemRoll);
+  const rareItem = `${rareItemObj.type}`;
+  return rareItem
+}

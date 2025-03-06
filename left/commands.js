@@ -941,18 +941,7 @@ function evaluateInnerCommand(command) {
     return `{Evaluated: ${command}}`;
 }
 
-function parseDice(diceNotation) {
-    const diceRegex = /^(\d+)d(\d+)$/i;
-    const match = diceNotation.match(diceRegex);
 
-    if (match) {
-        const numDice = parseInt(match[1]);
-        const diceSides = parseInt(match[2]);
-        return { numDice, diceSides };
-    } else {
-        throw new Error('Invalid dice notation');
-    }
-}
 
 //Economics Logic
 function ammendPrices(cost) {

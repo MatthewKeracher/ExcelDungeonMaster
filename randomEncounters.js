@@ -616,7 +616,7 @@ reaction = "They are friendly and eager."
 
 let HTML = ""
 
-HTML += `<div class="noSave randomEncounter"><h3 style='font-family:"SoutaneBlack"'><br>Random Encounter</h3><br>The company will encounter ${encounter} at the end of this turn. The ${encounter} will be ${distance * 10} ${isHexMap?"yards":"feet"} away.<br><br>${isMonsterSurprised} ${isPartySurprised}<br><br>${reaction} ${checkLair}<br><br>` 
+HTML += `<div class="noSave randomEncounter">The company will encounter ${encounter} at the end of this turn. The ${encounter} will be ${distance * 10} ${isHexMap?"yards":"feet"} away.<br><br>${isMonsterSurprised} ${isPartySurprised}<br><br>${reaction} ${checkLair}<br><br>` 
 
 try{
 

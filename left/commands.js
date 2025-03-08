@@ -5,6 +5,15 @@ function expandConsole(){
 }
 
 function toggleModeColor() {
+
+    const modeColors = [
+        {mode: "edit", color:"255,105,180"},
+        {mode: "map", color:"0, 255, 0"},
+        {mode: "command", color: "265,165,0"}
+    ]
+    
+    const modeColor = modeColors.find(entry => entry.mode === currentMode).color;
+
     const root = document.documentElement;
     root.style.setProperty('--mode-color', `rgb(${modeColor})`);
     
@@ -77,147 +86,112 @@ function toggleModes(activeDiv) {
 isPainting = true
 handlePaint();
 
+if(currentMode){ //Default State
 
-if (currentMode === "edit") { //EDIT MODE
-textDiv.innerHTML = filterDiv(textDiv, "weatherEffects")
-textDiv.innerHTML = filterDiv(textDiv, "randomEncounter")
-
-placeName.disabled = false; //Change what displays
-placeSymbol.disabled = false;
-textDiv.disabled = false;
-textDiv.contentEditable = true;
 commandLine.style.display = "none";
 
-entryName.disabled = false; //Journal
-journalLeft.disabled = false;
-journalRight.disabled = false;
-journalLeft.contentEditable = true;
-journalRight.contentEditable = true;
-
-//scaleSelector.style.display = "block";
-
-modeColor = "255,105,180";  //Change colour
-toggleModeColor();
-
-if(source){
-source.innerHTML += handleCommands();
-}else{
-textDiv.innerHTML += handleCommands();  
-}
-
-formatTables();
-
-if(!journalShowing){
-
-trapFocus([placeSymbol, placeName, textDiv])
-textDiv.scrollTop = textDiv.scrollHeight;
-textDiv.focus();
-placeCaretAtEnd(textDiv)
-
-}else{
-trapFocus([journalLeft, journalRight]);
-
-    if(entryName.value !== ""){
-    journalLeft.focus()
-    }else{
-    entryName.focus();
-    }
-}
-
-//Change Content    
-hitPointInit();
-
-} else if(currentMode === "map"){ //MAP MODE
-//Change Mode
-let holdHTML = textDiv.innerHTML
-textDiv.innerHTML = filterDiv(textDiv, "noSave"); 
-textDiv.innerHTML = getWeather();
-textDiv.innerHTML += getNextEncounter();
-textDiv.innerHTML += holdHTML;
-
-//What is focused
-placeName.blur();
-placeSymbol.blur();
-textDiv.focus();
-
-//Change what displays
-placeName.disabled = true;
-placeSymbol.disabled = true;
-textDiv.disabled = true;
-textDiv.contentEditable = false;
-commandLine.style.display = "none";
-
-//Journal
-entryName.disabled = true;
+entryName.disabled = true;   //Journal
 journalLeft.disabled = true;
 journalRight.disabled = true;
 journalLeft.contentEditable = false;
 journalRight.contentEditable = false;
 
-//Change colour
-modeColor = "0, 255, 0";
-toggleModeColor();
-
-if(journalShowing){
-journalSideBar.focus();
-}
-
-if(source){
-source.innerHTML += handleCommands()
-}else{
-textDiv.innerHTML += handleCommands()
-}
-
-// if(journalShowing){
-// autoSpacing(journalLeft);
-// autoSpacing(journalRight);
-// }else{
-// autoSpacing(textDiv)
-// }
-
-formatTables();
-
-//Change Content
-hitPointInit();
-
-//Save Content
-let div = getCurrentDiv();
-saveEntry(div);
-saveData();
-updateGrid();
-
-
-} else if(currentMode === "command"){ //COMMAND MODE
-
-source = activeDiv; //Change Mode
-
-
-//Change what displays
-textDiv.style.display = "block";
-placeName.disabled = true;
+placeName.disabled = true; //leftPanel
 placeSymbol.disabled = true;
 textDiv.disabled = true;
 textDiv.contentEditable = false;
-commandLine.style.display = "block";
-
-//Journal
-entryName.disabled = true;
-journalLeft.disabled = true;
-journalRight.disabled = true;
-journalLeft.contentEditable = false;
-journalRight.contentEditable = false;
-
-//Change colour
-modeColor = "265,165,0";
-toggleModeColor();
-
-//What is focused
-commandLine.focus();
-
-//Change Content
-hitPointInit();
 
 }
+
+if (currentMode === "edit") { 
+
+        textDiv.innerHTML = filterDiv(textDiv, "noSave")
+
+        placeName.disabled = false; //leftPanel
+        placeSymbol.disabled = false;
+        textDiv.disabled = false;
+        textDiv.contentEditable = true;
+        
+        entryName.disabled = false; //Journal
+        journalLeft.disabled = false;
+        journalRight.disabled = false;
+        journalLeft.contentEditable = true;
+        journalRight.contentEditable = true;
+
+        formatTables();
+
+                if(journalShowing){
+
+                trapFocus([journalLeft, journalRight]);
+
+                if(entryName.value !== ""){
+                journalLeft.focus()
+                }else{
+                entryName.focus();
+                }
+
+                }else{
+
+                textDiv.scrollTop = textDiv.scrollHeight;
+                textDiv.focus();
+                placeCaretAtEnd(textDiv)
+
+                }
+
+
+} else if(currentMode === "map"){ 
+
+        //Change Mode
+        let holdHTML = textDiv.innerHTML
+        textDiv.innerHTML = filterDiv(textDiv, "noSave"); 
+
+
+        textDiv.innerHTML = getWeather();
+        textDiv.innerHTML += getNextEncounter();
+
+        
+        if(source){
+        source.innerHTML += handleCommands()
+        }else{
+        textDiv.innerHTML += handleCommands()
+        }
+
+        
+        textDiv.innerHTML += holdHTML;
+
+        //What is focused
+        placeName.blur();
+        placeSymbol.blur();
+
+            if(journalShowing){
+             journalSideBar.focus();
+            }else{
+             textDiv.focus();
+            }
+
+        formatTables();
+
+        //Save Content
+        let div = getCurrentDiv();
+        saveEntry(div);
+        saveData();
+        updateGrid();
+
+
+} else if(currentMode === "command"){ 
+    
+    source = activeDiv; 
+
+    textDiv.innerHTML = filterDiv(textDiv, "noSave")
+
+        commandLine.style.display = "block";
+        textDiv.style.display = "block";
+        commandLine.focus();
+
+}
+        //Common Functions
+          //hitPointInit();
+          toggleModeColor();
 }
 
 function handleCommands() {
@@ -739,19 +713,11 @@ function formatTables() {
     
 function handleRollCommand(params) {
     // Assume params will contain something like '1d20'
-    const diceRegex = /^(\d+)d(\d+)$/i;
-    const match = params.match(diceRegex);
+    const dice = parseDice(params)
 
-    if(!params){
-        const rolledValue = rollDice(1, 20);
-        return `<div class="noSave"><br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br></div>`; 
-    }
-
-    if (match) {
-        const numDice = parseInt(match[1]);
-        const diceSides = parseInt(match[2]);
-        const rolledValue = rollDice(numDice, diceSides);
-        return `<div class="noSave"><br><br> > You have rolled ${rolledValue} on ${numDice}d${diceSides}.<br></div>`;
+    if (dice) {  
+        const rolledValue = rollDice(dice.numDice, dice.diceSides, dice.multiplier);
+        return `<div class="noSave"> > You have rolled a <b>${rolledValue}</b> on ${params}.<br><br><hr><br></div>`; 
     } else{
 
         const tableName = params.toLowerCase();
@@ -766,7 +732,6 @@ function handleRollCommand(params) {
             const table = tempContainer.querySelector('.table');
 
             
-        
             if (table && table.rows.length > 0) {
                 // Return the first row
                 return rollonTable(table)
@@ -944,41 +909,60 @@ function evaluateInnerCommand(command) {
 
 
 //Economics Logic
-function ammendPrices(cost) {
-   
+function ammendPrices(cost, randomDistribution = false) {
     let inflation = regionObj && regionObj.settings && 
     regionObj.settings.inflation ?
     regionObj.settings.inflation : 1;
 
-    cost = parseFloat(cost)
-      
+    cost = parseFloat(cost);
     cost = cost * 10; // Convert to oras (0.05 -> 5)  
-    
-    cost = Math.ceil(cost * inflation)
+    cost = Math.ceil(cost * inflation);
 
     const conversionRates = {
-    'p': 336,
-    'g': 168,
-    'e': 28,
-    's': 7,
-    'c': 1
+        'p': 336,
+        'g': 168,
+        'e': 28,
+        's': 7,
+        'c': 1
     };
 
-    let result = [];
+    let coinCounts = {
+        'p': 0,
+        'g': 0,
+        'e': 0,
+        's': 0,
+        'c': 0
+    };
 
-    for (let [currency, rate] of Object.entries(conversionRates)) {
-    if (cost >= rate) {
-    let count = Math.floor(cost / rate);
-    result.push(`${count}${currency}`);
-    cost %= rate;
-    }
-    }
-  
+    if (randomDistribution) {
+        while (cost > 0) {
+            let availableCurrencies = Object.entries(conversionRates).filter(([_, rate]) => rate <= cost);
+            if (availableCurrencies.length === 0) break;
 
-    const denomPrice = result.join(', ')
-    
-    return `${denomPrice}`;
+            let [currency, rate] = availableCurrencies[Math.floor(Math.random() * availableCurrencies.length)];
+            let count = Math.floor(Math.random() * Math.floor(cost / rate)) + 1;
+            
+            coinCounts[currency] += count;
+            cost -= count * rate;
+        }
+    } else {
+        for (let [currency, rate] of Object.entries(conversionRates)) {
+            if (cost >= rate) {
+                let count = Math.floor(cost / rate);
+                coinCounts[currency] += count;
+                cost %= rate;
+            }
+        }
     }
+
+    let result = Object.entries(coinCounts)
+        .filter(([_, count]) => count > 0)
+        .map(([currency, count]) => `${count}${currency}`);
+
+    const denomPrice = result.join(', ');
+    return denomPrice;
+}
+
 
 
 

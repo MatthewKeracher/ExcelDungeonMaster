@@ -486,11 +486,15 @@ function makeNPC(race, npcClass, level, npcName) {
         spells.forEach(spell => {
             HTML += `${spell.name}<br>`;
         });
+        HTML += `<br><br>`
     }
 
+
+    HTML += '<u>Loot:</u><br>';
+    HTML += rollTreasure(["npc", level], "each");
     
     HTML += '</td></tr>';
-    HTML += '</table>';
+    HTML += '</table><br>';
 
     return HTML;
 }

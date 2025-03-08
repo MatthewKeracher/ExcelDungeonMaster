@@ -8,29 +8,29 @@ return randomSpell.name;
 
 const loot = {
 A: {
-Copper: { percentage: 50, dice: '5d6' },
-Silver: { percentage: 60, dice: '5d6' },
-Electrum: { percentage: 40, dice: '5d4' },
-Gold: { percentage: 70, dice: '10d6' },
-Platinum: { percentage: 50, dice: '1d10' },
+Copper: { percentage: 50, dice: '5d6x100' },
+Silver: { percentage: 60, dice: '5d6x100' },
+Electrum: { percentage: 40, dice: '5d4x100' },
+Gold: { percentage: 70, dice: '10d6x100' },
+Platinum: { percentage: 50, dice: '1d10x100' },
 Gems: { percentage: 50, dice: '6d6' },
 Jewelry: { percentage: 50, dice: '6d6' },
 magicItems: { percentage: 100, dice: '6d6' }
 },
 B: {
-Copper: { percentage: 75, dice: '5d10' },
-Silver: { percentage: 50, dice: '5d6' },
-Electrum: { percentage: 50, dice: '5d4' },
-Gold: { percentage: 50, dice: '3d6' },
+Copper: { percentage: 75, dice: '5d10x100' },
+Silver: { percentage: 50, dice: '5d6x100' },
+Electrum: { percentage: 50, dice: '5d4x100' },
+Gold: { percentage: 50, dice: '3d6x100' },
 Platinum: { percentage: 0, dice: null },
 Gems: { percentage: 25, dice: '1d6' },
 Jewelry: { percentage: 50, dice: '6d6' },
 magicItems: { percentage: 25, dice: '1d6' }
 },
 C: {
-Copper: { percentage: 60, dice: '6d6' },
-Silver: { percentage: 60, dice: '5d4' },
-Electrum: { percentage: 30, dice: '2d6' },
+Copper: { percentage: 60, dice: '6d6x100' },
+Silver: { percentage: 60, dice: '5d4x100' },
+Electrum: { percentage: 30, dice: '2d6x100' },
 Gold: { percentage: 0, dice: null },
 Platinum: { percentage: 0, dice: null },
 Gems: { percentage: 25, dice: '1d4' },
@@ -38,20 +38,20 @@ Jewelry: { percentage: 50, dice: '1d4' },
 magicItems: { percentage: 15, dice: '1d2' },
 },
 D: {
-Copper: { percentage: 30, dice: '4d6' },
-Silver: { percentage: 45, dice: '6d6' },
+Copper: { percentage: 30, dice: '4d6x100' },
+Silver: { percentage: 45, dice: '6d6x100' },
 Electrum: { percentage: 0, dice: null },
-Gold: { percentage: 90, dice: '5d8' },
+Gold: { percentage: 90, dice: '5d8x100' },
 Platinum: { percentage: 0, dice: null },
 Gems: { percentage: 30, dice: '1d8' },
 Jewelry: { percentage: 30, dice: '1d8' },
 magicItems: { percentage: 20, dice: '1d2' }, //plus potion
 },
 E: {
-Copper: { percentage: 30, dice: '2d8' },
-Silver: { percentage: 60, dice: '6d10' },
-Electrum: { percentage: 50, dice: '3d8' },
-Gold: { percentage: 50, dice: '4d10' },
+Copper: { percentage: 30, dice: '2d8x100' },
+Silver: { percentage: 60, dice: '6d10x100' },
+Electrum: { percentage: 50, dice: '3d8x100' },
+Gold: { percentage: 50, dice: '4d10x100' },
 Platinum: { percentage: 0, dice: null },
 Gems: { percentage: 10, dice: '1d10' },
 Jewelry: { percentage: 10, dice: '1d10' },
@@ -59,10 +59,10 @@ magicItems: { percentage: 30, dice: '1d4' }, //plus scroll
 },
 F: {
 Copper: { percentage: 0, dice: null },
-Silver: { percentage: 40, dice: '3d8' },
-Electrum: { percentage: 50, dice: '4d8' },
-Gold: { percentage: 85, dice: '6d10' },
-Platinum: { percentage: 70, dice: '2d8' },
+Silver: { percentage: 40, dice: '3d8x100' },
+Electrum: { percentage: 50, dice: '4d8x100' },
+Gold: { percentage: 85, dice: '6d10x100' },
+Platinum: { percentage: 70, dice: '2d8x100' },
 Gems: { percentage: 20, dice: '2d12' },
 Jewelry: { percentage: 10, dice: '1d12' },
 magicItems: { percentage: 35, dice: '1d4' },
@@ -72,18 +72,18 @@ G: {
 Copper: { percentage: 0, dice: null },
 Silver: { percentage: 0, dice: null },
 Electrum: { percentage: 0, dice: null },
-Gold: { percentage: 90, dice: '4d6x10' },
-Platinum: { percentage: 75, dice: '5d8' },
+Gold: { percentage: 90, dice: '4d6x1000' },
+Platinum: { percentage: 75, dice: '5d8x100' },
 Gems: { percentage: 25, dice: '3d6' },
 Jewelry: { percentage: 25, dice: '1d10' },
 magicItems: { percentage: 50, dice: '1d4' }, //plus scroll
 },
 H: {
-Copper: { percentage: '*', dice: '8d10' },
-Silver: { percentage: '*', dice: '6d10x10' },
-Electrum: { percentage: '*', dice: '3d10x10' },
-Gold: { percentage: '*', dice: '5d8x10' },
-Platinum: { percentage: '*', dice: '9d8' },
+Copper: { percentage: '*', dice: '8d10x100' },
+Silver: { percentage: '*', dice: '6d10x1000' },
+Electrum: { percentage: '*', dice: '3d10x1000' },
+Gold: { percentage: '*', dice: '5d8x1000' },
+Platinum: { percentage: '*', dice: '9d8x100' },
 Gems: { percentage: 25, dice: '3d6' },
 Jewelry: { percentage: 25, dice: '1d10' },
 magicItems: { percentage: 25, dice: '1d10' },
@@ -94,14 +94,14 @@ Copper: { percentage: 0, dice: null },
 Silver: { percentage: 0, dice: null },
 Electrum: { percentage: 0, dice: null },
 Gold: { percentage: 0, dice: null },
-Platinum: { percentage: 80, dice: '3d10' },
+Platinum: { percentage: 80, dice: '3d10x100' },
 Gems: { percentage: 50, dice: '2d6' },
 Jewelry: { percentage: 50, dice: '6d6' },
 magicItems: { percentage: 15, dice: '1d1' },
 },
 J: {
-Copper: { percentage: 45, dice: '3d8' },
-Silver: { percentage: 45, dice: '1d8' },
+Copper: { percentage: 45, dice: '3d8x100' },
+Silver: { percentage: 45, dice: '1d8x100' },
 Electrum: { percentage: 0, dice: null },
 Gold: { percentage: 0, dice: null },
 Platinum: { percentage: 0, dice: null },
@@ -111,8 +111,8 @@ magicItems: { percentage: 0, dice: null }
 },
 K: {
 Copper: { percentage: 0, dice: null },
-Silver: { percentage: 90, dice: '2d10' },
-Electrum: { percentage: 35, dice: '1d8' },
+Silver: { percentage: 90, dice: '2d10x100' },
+Electrum: { percentage: 35, dice: '1d8x100' },
 Gold: { percentage: 0, dice: null },
 Platinum: { percentage: 0, dice: null },
 Gems: { percentage: 0, dice: null },
@@ -133,8 +133,8 @@ M: {
 Copper: { percentage: 0, dice: null },
 Silver: { percentage: 0, dice: null },
 Electrum: { percentage: 0, dice: null },
-Gold: { percentage: 90, dice: '4d10' },
-Platinum: { percentage: 90, dice: '2d8' }, //x10
+Gold: { percentage: 90, dice: '4d10x100' },
+Platinum: { percentage: 90, dice: '2d8x1000' }, //x10
 Gems: { percentage: 55, dice: '5d4' },
 Jewelry: { percentage: 45, dice: '2d6' },
 magicItems: { percentage: 0, dice: null }
@@ -228,7 +228,89 @@ Platinum: { percentage: 25, dice: '1d20' },
 Gems: { percentage: 10, dice: '1d4' },
 Jewelry: { percentage: 10, dice: '1d4' },
 magicItems: { percentage: 5, dice: '1d1' },
+},
+"1": {
+Copper: { percentage: 75, dice: '1d8x100' },
+Silver: { percentage: 50, dice: '1d6x100' },
+Electrum: { percentage: 25, dice: '1d4x100' },
+Gold: { percentage: 7, dice: '1d4x100' },
+Platinum: { percentage: 1, dice: '1d4x100' },
+Gems: { percentage: 7, dice: '1d4' },
+Jewelry: { percentage: 3, dice: '1d4' },
+magicItems: { percentage: 2, dice: '1d1' }
+},
+"2": {
+Copper: { percentage: 50, dice: '1d10x100' },
+Silver: { percentage: 50, dice: '1d8x100' },
+Electrum: { percentage: 25, dice: '1d6x100' },
+Gold: { percentage: 20, dice: '1d6x100' },
+Platinum: { percentage: 2, dice: '1d4x100' },
+Gems: { percentage: 10, dice: '1d6' },
+Jewelry: { percentage: 7, dice: '1d4' },
+magicItems: { percentage: 5, dice: '1d1' }
+},
+"3": {
+Copper: { percentage: 30, dice: '2d6x100' },
+Silver: { percentage: 50, dice: '1d10x100' },
+Electrum: { percentage: 25, dice: '1d8x100' },
+Gold: { percentage: 50, dice: '1d6x100' },
+Platinum: { percentage: 4, dice: '1d4x100' },
+Gems: { percentage: 15, dice: '1d6' },
+Jewelry: { percentage: 7, dice: '1d6' },
+magicItems: { percentage: 8, dice: '1d1' }
+},
+"4": {
+Copper: { percentage: 20, dice: '3d6x100' },
+Silver: { percentage: 50, dice: '2d6x100' },
+Electrum: { percentage: 25, dice: '1d10x100' },
+Gold: { percentage: 50, dice: '2d6x100' },
+Platinum: { percentage: 8, dice: '1d4x100' },
+Gems: { percentage: 20, dice: '1d8' },
+Jewelry: { percentage: 10, dice: '1d6' },
+magicItems: { percentage: 12, dice: '1d1' }
+},
+"5": {
+Copper: { percentage: 20, dice: '3d6x100' },
+Silver: { percentage: 50, dice: '2d6x100' },
+Electrum: { percentage: 25, dice: '1d10x100' },
+Gold: { percentage: 50, dice: '2d6x100' },
+Platinum: { percentage: 8, dice: '1d4x100' },
+Gems: { percentage: 20, dice: '1d8' },
+Jewelry: { percentage: 10, dice: '1d6' },
+magicItems: { percentage: 12, dice: '1d1' }
+},
+"6": {
+Copper: { percentage: 15, dice: '4d6x100' },
+Silver: { percentage: 50, dice: '3d6x100' },
+Electrum: { percentage: 25, dice: '1d12x100' },
+Gold: { percentage: 70, dice: '2d8x100' },
+Platinum: { percentage: 15, dice: '1d4x100' },
+Gems: { percentage: 30, dice: '1d8' },
+Jewelry: { percentage: 15, dice: '1d6' },
+magicItems: { percentage: 16, dice: '1d1' }
+},
+"7": {
+Copper: { percentage: 15, dice: '4d6x100' },
+Silver: { percentage: 50, dice: '3d6x100' },
+Electrum: { percentage: 25, dice: '1d12x100' },
+Gold: { percentage: 70, dice: '2d8x100' },
+Platinum: { percentage: 15, dice: '1d4x100' },
+Gems: { percentage: 30, dice: '1d8' },
+Jewelry: { percentage: 15, dice: '1d6' },
+magicItems: { percentage: 16, dice: '1d1' }
+},
+"8": {
+Copper: { percentage: 10, dice: '5d6x100' },
+Silver: { percentage: 50, dice: '5d6x100' },
+Electrum: { percentage: 25, dice: '2d8x100' },
+Gold: { percentage: 75, dice: '4d6x100' },
+Platinum: { percentage: 30, dice: '1d4x100' },
+Gems: { percentage: 40, dice: '1d8' },
+Jewelry: { percentage: 30, dice: '1d8' },
+magicItems: { percentage: 20, dice: '1d1' }
 }
+
+
 };
 
 const gemsValueTable = [
@@ -672,7 +754,7 @@ function makeMagicItem() {
           const sides = parseInt(diceMatch[2]);
           return { numDice, sides };
       } else if (!isNaN(dice)) {
-          // Handle the case where dice is a fixed number (e.g., '1')
+          // Handle the case where dice is a fixed number (e.g., '1d1')
           return { numDice: parseInt(dice), sides: 1 };
       }
       throw new Error('Invalid dice notation');
@@ -711,14 +793,51 @@ function makeMagicItem() {
   return magicItem;
 }
 
+function randomTreasureType(level) {
+  const lootTypes = [
+    {type: "P", range: [0, 10]},
+    {type: "Q, P", range: [11, 20]},
+    {type: "R, Q, P", range: [21, 50]},
+    {type: "S, R, Q, P", range: [51, 70]},
+    {type: "T, S, R, Q, P", range: [71, 80]},
+    {type: "U", range: [81, 95]},
+    {type: "V", range: [96, 1000]}
+  ];
+
+  let roll = level * 5
+
+  for (const loot of lootTypes) {
+    if (roll >= loot.range[0] && roll <= loot.range[1]) {
+      return loot.type;
+    }
+  }
+
+  // If no match is found (shouldn't happen with proper ranges)
+  return "P"; // Default to "P" if no match is found
+}
+
 function rollTreasure(treasure, locationFilter) {
+
+  
+  let noTreasure = `<i>No treasure is at this location. It may have already been plundered, or rumour of it was false.</i><br>`
+
+  if (treasure[0] === "npc") {
+    const level = treasure[1]; // Extract level from the `treasure` array
+    treasure = randomTreasureType(level)};
+
   // Extract the treasure types from the treasure parameter
   const treasureRegex = /([A-Z](?:,[A-Z])*)\s*(each|in lair)|None|Special|([A-Z])/gi;
   const matches = [...treasure.matchAll(treasureRegex)];
-  
-  
+
+  if (/^\d$/.test(treasure)) { //For unguraded treasures
+    matches.push([treasure, treasure, undefined, undefined]);
+  }
+
+  console.log(matches)
+
   if (matches.length > 0) {
   let treasureEntries = '';
+  let returnHTML = ``;
   
   matches.forEach(match => {
   const types = match[1] ? match[1].split(',').map(type => type.trim()) : (match[3] ? [match[3]] : []);
@@ -727,28 +846,46 @@ function rollTreasure(treasure, locationFilter) {
   if (locationFilter && location !== locationFilter) {
   return;
   }
+
+  let totalCoinValue = 0;
+
+  const conversionRates = {
+    Copper: 0.01,   // 100 copper = 1 gold
+    Silver: 0.1,    // 10 silver = 1 gold
+    Electrum: 0.5,  // 2 electrum = 1 gold
+    Gold: 1,        // 1 gold = 1 gold
+    Platinum: 10    // 1 platinum = 10 gold
+  };
   
-  types.forEach(type => {
+  types.forEach(type => { //ROLL LOOT
   if (loot[type]) {
   const entries = loot[type];
-  
+
   for (const [key, value] of Object.entries(entries)) {
   if (value.percentage !== 0) {
   // Roll a percentage to determine if the treasure is found
   const percentageRoll = Math.random() * 100;
   if (percentageRoll <= value.percentage) {
+
   // Format the key to be more readable, except for specific keys
   const formattedKey = ['Copper', 'Silver', 'Electrum', 'Gold', 'Platinum', 'Gems', 'Jewelry'].includes(key)
   ? key
   : key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-              
+         
   let dice = value.dice;  
   let diceParse = parseDice(dice);
-  let roll = rollDice(diceParse.numDice, diceParse.diceSides);
+  let roll = rollDice(diceParse.numDice, diceParse.diceSides, diceParse.multiplier);
+
+  const isCoin = ['Copper', 'Silver', 'Electrum', 'Gold', 'Platinum'].includes(key);
+
+  if (isCoin) {
+    // Convert to gold value and add to total
+    totalCoinValue += roll * conversionRates[key];
+  }
   
   if(key === 'Gems'){
   for (let i = 0; i < roll; i++) {
-  treasureEntries += `${makeGem()} <br>`;
+  treasureEntries += `${getGem()} <br>`;
   }
   } else if(key === 'Jewelry'){
   for (let i = 0; i < roll; i++) {
@@ -757,19 +894,29 @@ function rollTreasure(treasure, locationFilter) {
   }else if(key === 'magicItems'){
   for (let i = 0; i < roll; i++) {
   treasureEntries += `${makeMagicItem()} <br>`;
-  }
-  } else {
-  treasureEntries += `${roll} ${formattedKey} <br>`;
+  } 
   }}}}
+
   treasureEntries += ``;
+ 
   }
   });
   
-  if (location === 'none') {treasureEntries = `None`}
-  if (location === 'special') {treasureEntries += `<b>Treasure ${location}</b>`}
-  });
+  if(totalCoinValue > 0){
+
+  const coins = ammendPrices(totalCoinValue, true)
   
-  return treasureEntries || 'None';
+  
+  returnHTML = `<b>Coins: </b><i>(${coins})</i><br><br>`;
+  returnHTML += treasureEntries;
+
+  }
+
+  if (location === 'none') {returnHTML = noTreasure}
+  if (location === 'special') {returnHTML += `<b>Treasure ${location}</b>`}
+  });
+
+  return returnHTML || noTreasure;
   }
   
   return 'Treasure not found';
@@ -797,14 +944,14 @@ function magicArmour(){
 function magicScroll(){
   const scrollTypeRoll = rollDice(1, 100);
   const scrollType = scrollsTable.find(scroll => scroll.range[0] <= scrollTypeRoll && scroll.range[1] >= scrollTypeRoll).type;
-  const scroll = `<u>${scrollType}</u>`
+  const scroll = `${scrollType}`
   return scroll
 }
 
 function magicPotion(){
   const potionTypeRoll = rollDice(1, 100);
   const potionType = potionsTable.find(potion => potion.range[0] <= potionTypeRoll && potion.range[1] >= potionTypeRoll).type;
-  const potion = `<u>Potion of ${potionType}</u>`;
+  const potion = `Potion of ${potionType}`;
   return potion
 }
 

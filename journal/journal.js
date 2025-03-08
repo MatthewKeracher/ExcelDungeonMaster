@@ -190,7 +190,7 @@ journalLeft.innerHTML = `${inflationHTML}${hexTypeSetting}${encountersHTML}${enc
 function createEncountersTable(hexType) {
   
     let tableContent = `<table id="settingsEncountersTable" border="1" class="table" style="border-collapse: collapse; width: 95%;"><tbody>`;
-    let saveEntry = regionObj.settings.encounters;
+    let saveEntry = regionObj.settings && regionObj.settings.encounters ? regionObj.settings.encounters : undefined;
     let tableData = saveEntry? saveEntry: encounters[hexType];
     
     let length = tableData.length;
@@ -222,12 +222,18 @@ function createEncountersTable(hexType) {
 function updateEncChance(value, objId){
 console.log("Updating encounterChance")
 const obj = data.find(entry => entry.id === objId);
+if (!obj.settings) {
+    obj.settings = {};
+}
 obj.settings.encounterChance = value
 saveData()
 }
 
 function updateRandomEncounters(value, objId){
 const obj = data.find(entry => entry.id === objId);
+if (!obj.settings) {
+    obj.settings = {};
+}
 obj.settings.randomEncounters = value
 saveData()
 }
@@ -235,6 +241,9 @@ saveData()
 function updateHexType(value, objId){
 console.log("Updating hexType")
 const obj = data.find(entry => entry.id === objId);
+if (!obj.settings) {
+    obj.settings = {};
+}
 obj.settings.hexType = value
 createEncountersTable(obj.settings.hexType);
 saveData()
@@ -243,6 +252,9 @@ saveData()
 function updateInflation(value, objId){
 
 const obj = data.find(entry => entry.id === objId);
+if (!obj.settings) {
+    obj.settings = {};
+}
 obj.settings.inflation = value
 saveData()
 }

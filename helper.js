@@ -309,7 +309,7 @@ function delMap(){
     
     })
 
-    updateGrid()
+    loadGrid()
 
     return ``;
     
@@ -323,16 +323,26 @@ let content = {name: "", entry: ""}
 
 const roll = rollDice(1,100);
 
-const contentTable =  [
-    { range: { min: 1, max: 3 }, bonus: -3 },
-    { range: { min: 4, max: 5 }, bonus: -2 },
-    { range: { min: 6, max: 8 }, bonus: -1 },
-    { range: { min: 9, max: 12 }, bonus: 0 },
-    { range: { min: 13, max: 15 }, bonus: 1 },
-    { range: { min: 16, max: 17 }, bonus: 2 },
-    { range: { min: 18, max: 18 }, bonus: 3 },
-    ];
+const treasureRoll = rollDice(1,8).toString()
 
+const contentTable = [
+    { min: 1, max: 16,   symbol: "E", name: "Empty", content:""},
+    { min: 17, max: 20,  symbol: "£", name: "Unguarded Treasure", content: rollTreasure(treasureRoll)},
+    { min: 21, max: 60,  symbol: "M", name: "Monster", content: rollEncounter()},
+    { min: 61, max: 84,  symbol: "L", name: "Monster with Treasure", content: `${rollTreasure(treasureRoll)}<br><hr><br>${rollEncounter()}`},
+    { min: 85, max: 88,  symbol: "?", name: "Special", content:""},
+    { min: 89, max: 96,  symbol: "^", name: "Trap", content:""},
+    { min: 97, max: 100, symbol: "*", name: "Trap with Treasure", content:rollTreasure(treasureRoll)}
+  ];
+
+  for (const entry of contentTable) {
+    if (roll >= entry.min && roll <= entry.max) {
+      content.name = entry.name
+      content.entry = `<h3 style='font-family:"Soutane"'>${entry.name}:</h3><br>${entry.content}<br>`;
+      content.symbol = entry.symbol;
+      break;
+    }
+  }
 
 return content
 
@@ -359,10 +369,11 @@ const rand = rollContent();
 
 if(exists){
 
-exists.symbol = '?'
+exists.symbol = rand.symbol;
+exists.entry += rand.entry;
 
-if(exists.name === ""){
-exists.name === rand.name;
+if(exists.name = ""){
+exists.name = rand.name;
 }
 
 }else{
@@ -370,10 +381,10 @@ exists.name === rand.name;
 const saveEntry = {
     id: id,
     name: rand.name,
-    symbol: "?",
+    symbol: rand.symbol,
     desc: rand.entry,
     grid: isHexMap? "hex" : "square",
-    color: currentColor,
+    color: "rgb(15, 62, 97)",
     scrollData: scrollData,
     }
       
@@ -387,7 +398,7 @@ const saveEntry = {
 })
 
 updateGrid();
-return JSON.stringify(gened, null, 2); 
+return '' //JSON.stringify(gened, null, 2); 
 ;
 
 }

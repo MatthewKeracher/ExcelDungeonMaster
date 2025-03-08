@@ -44,10 +44,8 @@ let currentCols = defaultCols;
 
 const div = document.getElementById('gridContainer');
 
-
 let isHexMap = true; //load grid map by default
 let currentMode = "map";
-let modeColor = "whitesmoke";
 let isPainting = false;
 let isFilling = false;
 let isImaging = false;

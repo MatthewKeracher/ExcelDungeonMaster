@@ -47,7 +47,7 @@ function getRandomSpells(spellSlotsArray) {
     return selectedSpells; // Return the array of selected spells
 }
 
-function makeMonsterEntry(monster, number = 1) {
+function makeMonsterEntry(monster, returnInfo) {
     // Define the keys to exclude from the table
     if(!monster){return `<div class="noSave">Could not generate Monster entry.</div>`}
     monster = {...monster}; //make copy of Obj
@@ -90,13 +90,14 @@ function makeMonsterEntry(monster, number = 1) {
 
     //monster.hitPoints = HP(monster.hit, number)
   
-   let tableHTML = makeTableFromObj(monster, ['name', 'description'])
+   let tableHTML = tableFromObj(monster, ['name', 'description'])
+
+   const objDesc = autoSpacing(monster.description)
+   tableHTML += `${objDesc}`;
 
    return tableHTML;
 }
     
-
-
 function getMonsterSave(saveAs) {
     // Extract the class and level from the savingThrows parameter
     const saveRegex = /^(fighter|thief|mage|cleric):\s*(\d+)$/i;
@@ -113,10 +114,8 @@ function getMonsterSave(saveAs) {
         }
     }
 
-    return 'Saving throws not found';
+    return saveAs;
 }
-
-
 
 function hitPointInit() {
     // Select all checkbox divs
@@ -189,6 +188,7 @@ function handleCheckboxClick(event) {
         });
     }
 }
+
 
 
 

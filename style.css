@@ -14,27 +14,27 @@
 
 @font-face {
     font-family: "SoutaneBlack";
-    src: url("SoutaneBlack.ttf") format('truetype');
+    src: url("fonts/SoutaneBlack.ttf") format('truetype');
 }
 
 @font-face {
     font-family: "Soutane";
-    src: url("Soutane.ttf") format('truetype');
+    src: url("fonts/Cascadia.ttf") format('truetype');
 }
 
 @font-face {
     font-family: "Cascadia";
-    src: url("Cascadia.ttf") format('truetype');
+    src: url("fonts/Cascadia.ttf") format('truetype');
 }
 
 @font-face {
     font-family: "elvish";
-    src: url("elvish.ttf") format('truetype');
+    src: url("fonts/elvish.ttf") format('truetype');
 }
 
 @font-face {
     font-family: "dwarvish";
-    src: url("dwarf.ttf") format('truetype');
+    src: url("fonts/dwarf.ttf") format('truetype');
 }
 
 

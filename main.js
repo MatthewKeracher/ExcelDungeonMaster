@@ -207,4 +207,3 @@ document.addEventListener('keydown', hideInactivityImage);
 
 
 
-

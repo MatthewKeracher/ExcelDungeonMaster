@@ -21,6 +21,91 @@ loadJournal()
 
 }
 
+function fillScaleSelector() {
+    
+    // Get the select element
+    const scaleSelector = document.getElementById('scaleSelector');
+  
+    scaledObjs = [];
+  
+    scaledObjs.push({
+      name: 'Favourites',
+      id: 'F',
+      settings: false,
+      })
+  
+    scaledObjs.push({
+      name: 'Session Log',
+      id: 'SL',
+      settings: false,
+      })
+  
+    let currentObj = getObj(coords); // Initial object, e.g., '0.0.2.3'
+  
+    while (currentObj.id !== '0.0') {
+        scaledObjs.push(currentObj);
+        currentObj = getObj(parseParent(currentObj.id));
+    }
+  
+    // Add the final '0.0' object
+    scaledObjs.push(currentObj);
+  
+    // Clear existing options
+    scaleSelector.innerHTML = '';
+  
+      scaledObjs.push({
+      name: 'Player Characters',
+      id: 'PC',
+      settings: false,
+      })
+  
+      scaledObjs.push({
+      name: 'Rules',
+      id: 'BFRPG',
+      settings: false,
+      })
+  
+      scaledObjs.push({
+      name: 'Cleric Spells',
+      id: 'CS',
+      settings: false,
+      })
+  
+      scaledObjs.push({
+      name: 'Mage Spells',
+      id: 'MS',
+      settings: false,
+      })
+  
+      scaledObjs.push({
+      name: 'Monsters',
+      id: 'M',
+      settings: false,
+      })
+  
+     
+  
+    // Add options based on scaledObjs in reverse order
+    for (let i = scaledObjs.length - 1; i >= 0; i--) {
+        const obj = scaledObjs[i];
+        const newOption = document.createElement('option');
+        newOption.value = obj.id;
+        newOption.text = obj.name;
+        
+        scaleSelector.appendChild(newOption);
+        //scaleSelector.style.display = "none";
+    }
+  
+    try{
+     const searchId = journalId.textContent;
+     const foundEntry = journalData.find(entry => parseInt(entry.id) === parseInt(searchId));
+     scaleSelector.value = foundEntry.scale;
+    }catch{
+     scaleSelector.value = coords;
+    }
+  
+  }
+
 function loadJournal() { 
   // Clear
   journalSideBar.innerHTML = '';
@@ -72,48 +157,120 @@ function loadJournal() {
       }
   });
 
-  // Populate left column with organized links
-  scaledObjs.forEach(obj => {
-      const scale = obj.id;
-      const scaleData = entriesByScale[scale];
+  // Add Spells
+  if(spells && spells.length > 0){  
     
-      if (scaleData) { //&& scaleData.entries.length > 0
+    spells.forEach((spell,i) => {
+
+    if(!spell.id){spell.id = i.toString()}
+
+    let spellJournalEntry
+
+    if(spell.class === "Cleric"){
+
+        spellJournalEntry = {
+            id : spell.id,
+            name: spell.name,
+            scale: 'CS',
+            entry: spell,
+        };
+
+        entriesByScale.CS.entries.push(spellJournalEntry);
+
+    }else if (spell.class === "Mage"){
+
+        spellJournalEntry = {
+            id : spell.id,
+            name: spell.name,
+            scale: 'MS',
+            entry: spell,
+        };
+
+        entriesByScale.MS.entries.push(spellJournalEntry);
+
+    }
+
+    })
+  }
+
+  // Add Monsters
+  if(monsters && monsters.length > 0){  
+    
+    monsters.forEach((monster,i) => {
+
+    if(!monster.id){monster.id = i.toString()}
+
+    let monsterJournalEntry
+
+        monsterJournalEntry = {
+            id : monster.id,
+            name: monster.name,
+            scale: 'M',
+            entry: monster,
+        };
+
+        //monsterJournalEntry.entry.savingThrows = getMonsterSave(monster.savingThrows);
+        entriesByScale.M.entries.push(monsterJournalEntry);
+
+    })
+  }
   
-          const headerLink = document.createElement('a');
-          headerLink.textContent = scaleData.name;
-          headerLink.style.color = "gold";
-
-
-          if(obj.settings !== false && obj.id !== '0.0'){
-
-          headerLink.style.color = "hotpink";
-          headerLink.href = '#';
-          headerLink.style.cursor = 'pointer'; 
   
-          
-          headerLink.addEventListener('click', (e) => {
-              e.preventDefault();
-              
-              entryName.value = scaleData.name + ' Settings';
-              
-              makeSettingsMenu(scale)
-              journalId.textContent = ``;
-              scaleSelector.style.display = "none";
-              
-          });
-        }
-  
-          journalSideBar.appendChild(headerLink);
- 
-          scaleData.entries.sort((a, b) => a.name.localeCompare(b.name));
+scaledObjs.forEach(obj => { // Populate navColum with Header Links, Entry Links, and Settings Links
+const scale = obj.id;
+const scaleData = entriesByScale[scale];
+let hasSettings = false;
 
-          // Now create and append the sorted links
-          scaleData.entries.forEach(item => {
-              const linkWrapper = createEntryLink(item);
-              journalSideBar.appendChild(linkWrapper);
-          });
-      }
-  });
+if (scaleData) { // Header Links
+
+const headerLink = document.createElement('a');
+headerLink.textContent = scaleData.name;
+headerLink.setAttribute("scale", scale);
+headerLink.style.color = "gold";
+
+
+if(obj.settings !== false && obj.id !== '0.0'){ //Override Header Links with Settings Functionality
+
+headerLink.style.color = "hotpink";
+headerLink.href = '#';
+headerLink.style.cursor = 'pointer'; 
+hasSettings = true;
+
+}
+
+headerLink.addEventListener('click', (e) => {
+e.preventDefault();
+
+const scale = headerLink.getAttribute("scale");
+
+if(hasSettings){
+entryName.value = scaleData.name + ' Settings';
+
+makeSettingsMenu(scale)
+journalId.textContent = ``;
+scaleSelector.style.display = "none";
+}
+
+
+const children = document.querySelectorAll(`a.entryLink[scale="${scale}"]`);
+children.forEach(entryLink => {
+entryLink.style.display = entryLink.style.display === 'none' ? 'block' : 'none';
+});
+
+
+});
+
+journalSideBar.appendChild(headerLink);
+
+scaleData.entries.sort((a, b) => a.name.localeCompare(b.name));
+
+scaleData.entries.forEach(item => { //Add Entry Links
+const linkWrapper = createEntryLink(item);
+journalSideBar.appendChild(linkWrapper);
+
+});
+}
+});
 
   focusOnTargetEntry();
   addKeyboardNavigation();
@@ -125,6 +282,45 @@ function loadJournal() {
   journalRight.contentEditable = false;
 
 }
+
+function createEntryLink(item) {
+    const linkWrapper = document.createElement('div');
+    const link = document.createElement('a');
+    link.classList.add('entryLink');
+    link.setAttribute("scale", item.scale);
+    link.setAttribute('tabindex', '0');
+    link.href = '#';
+    link.textContent = item.name;
+    link.id = item.id;
+
+    if(item.scale !== "F"){ //Hide Children except Favourites
+    link.style.display = 'none';
+    }
+  
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+  
+        entryName.value = item.name;
+        journalLeft.innerHTML = item.left;
+        journalRight.innerHTML = item.right;
+        journalId.textContent = item.id;
+        scaleSelector.style.display = "block";
+        scaleSelector.value = item.scale;
+
+        if(item.entry){
+            journalLeft.innerHTML = tableFromObj(item.entry, ['name', 'description', 'id'])
+            journalRight.innerHTML = autoSpacing(item.entry.description);
+        }
+
+        styleTables();
+        formatTables();
+
+        
+    });
+  
+    linkWrapper.appendChild(link);
+    return linkWrapper;
+  }
 
 function makeSettingsMenu(objId){
 
@@ -213,11 +409,11 @@ function createEncountersTable(hexType) {
 
     tableContent += `</tbody></table>`;
 
-    tableContent += `<br><button id="confirmButton" onclick="extractTableEntries('settingsEncountersTable')">Confirm</button>`
+    tableContent += `<br><button id="confirmButton" onclick="saveEncountersTable('settingsEncountersTable')">Confirm</button>`
 
     journalRight.innerHTML = tableContent;
 
-    }
+}
 
 function updateEncChance(value, objId){
 console.log("Updating encounterChance")
@@ -227,6 +423,15 @@ if (!obj.settings) {
 }
 obj.settings.encounterChance = value
 saveData()
+}
+
+function saveEncountersTable(tableName){
+
+const entries = extractTableValues(tableName);
+
+regionObj.settings.encounters = entries;
+currentMode = "map";
+toggleModes();
 }
 
 function updateRandomEncounters(value, objId){
@@ -300,33 +505,6 @@ function createAddNewButton() {
   return linkWrapper;
 }
 
-function createEntryLink(item) {
-  const linkWrapper = document.createElement('div');
-  const link = document.createElement('a');
-  link.classList.add('entryLink');
-  link.setAttribute('tabindex', '0');
-  link.href = '#';
-  link.textContent = item.name;
-  link.id = item.id;
-
-  link.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      entryName.value = item.name;
-      journalLeft.innerHTML = item.left;
-      journalRight.innerHTML = item.right;
-      journalId.textContent = item.id;
-      scaleSelector.style.display = "block";
-      scaleSelector.value = item.scale;
-      styleTables();
-      formatTables();
-      
-  });
-
-  linkWrapper.appendChild(link);
-  return linkWrapper;
-}
-
 function styleTables() {
     // Select all <th> elements
     const headers = document.querySelectorAll('th');
@@ -392,13 +570,26 @@ function addKeyboardNavigation() {
     });
 }
 
-
 function handleDeleteEntry(entryLinks, currentIndex) {
-  showPrompt('Are you sure you want to delete this journal entry?').then(shouldDelete => {
-      if (shouldDelete && entryLinks[currentIndex].id) {
-          deleteJournalEntry(entryLinks[currentIndex].id);
-      }
-  });
+    showPrompt('Are you sure you want to delete this journal entry?').then(shouldDelete => {
+    if (shouldDelete && entryLinks[currentIndex].id) {
+
+    let entryId = entryLinks[currentIndex].id;
+    let scale = scaleSelector.value;
+
+    if(scale === "M"){
+    delObjFromArray({id: entryId}, monsters);
+    }
+
+    else if(scale === "CS" || scale === "MS"){
+    delObjFromArray({id: entryId}, spells); 
+    }
+
+    else {
+    delObjFromArray({id: entryId}, journalData);
+    }
+    }
+    });
 }
 
 function navigateEntries(entryLinks, currentIndex, key) {
@@ -417,33 +608,64 @@ function navigateEntries(entryLinks, currentIndex, key) {
   }
 }
 
+function delObjFromArray(obj, array){
 
-function deleteJournalEntry(entryId){
+    console.log(obj, array)
 
-let exists = journalData.findIndex(entry => entry.id === entryId);
+    let exists = array.findIndex(entry => entry.id === obj.id)
+    
+    if(exists > -1 && journalShowing === true){
+        array.splice(exists, 1)
+        entryName.value = '';
+        journalLeft.innerHTML = ``;
+        journalRight.innerHTML = ``;
+        journalId.textContent = '';
+        
+        loadJournal();
+        saveData();
+    }else{
+       
+    }
+    
+    }
 
+function saveObjToArray(obj, array){
 
+    console.log(obj, array)
 
+    let exists = array.findIndex(entry => entry.id === obj.id)
 
-if(exists > -1 && journalShowing === true){
-
-
-journalData.splice(exists, 1)
-entryName.value = '';
-journalLeft.innerHTML = ``;
-journalRight.innerHTML = ``;
-journalId.textContent = '';
-
-loadJournal();
-saveData();
-
-}
-
-}
+    console.log(exists)
+    
+    if(exists > -1){
+        array[exists] = obj;
+    }else{
+        array.push(obj);
+    }
+    
+    }
 
 function saveJournalEntry(){
 
-let scaleSelector = document.getElementById('scaleSelector')
+const tables = document.querySelectorAll('.table');
+let scaleSelector = document.getElementById('scaleSelector');
+let scale = scaleSelector.value;
+
+if(scale === "M" || scale === "MS" || scale === "CS"){
+
+tables.forEach(table => {  
+let obj = tableToObj(table) 
+
+if(scale === "M"){
+saveObjToArray(obj, monsters);
+}
+
+if(scale === "CS" || scale === "MS"){
+saveObjToArray(obj, spells); 
+}
+})
+
+}else{
 
 let saveEntry = {
 
@@ -460,90 +682,19 @@ journalData.forEach(entry => {
 if (!entry.scale){entry.scale = "0.0"}
 })
 
-
-
 if(journal.name !== ''){
+saveObjToArray(saveEntry, journalData);
+}
 
-let exists = journalData.findIndex(entry => entry.id === saveEntry.id)
-
-
-if(exists > -1){
-journalData[exists] = saveEntry;
-}else{
-
-journalData.push(saveEntry);
 }
 
 loadJournal();
 saveData();
 };
 
-}
 
-function fillScaleSelector() {
-    
-  // Get the select element
-  const scaleSelector = document.getElementById('scaleSelector');
 
-  scaledObjs = [];
 
-  scaledObjs.push({
-    name: 'Favourites',
-    id: 'F',
-    settings: false,
-    })
 
-  scaledObjs.push({
-    name: 'Session Log',
-    id: 'SL',
-    settings: false,
-    })
 
-  let currentObj = getObj(coords); // Initial object, e.g., '0.0.2.3'
-
-  while (currentObj.id !== '0.0') {
-      scaledObjs.push(currentObj);
-      currentObj = getObj(parseParent(currentObj.id));
-  }
-
-  // Add the final '0.0' object
-  scaledObjs.push(currentObj);
-
-  // Clear existing options
-  scaleSelector.innerHTML = '';
-
-    scaledObjs.push({
-    name: 'Player Characters',
-    id: 'PC',
-    settings: false,
-    })
-
-    scaledObjs.push({
-    name: 'Rules',
-    id: 'BFRPG',
-    settings: false,
-    })
-
-   
-
-  // Add options based on scaledObjs in reverse order
-  for (let i = scaledObjs.length - 1; i >= 0; i--) {
-      const obj = scaledObjs[i];
-      const newOption = document.createElement('option');
-      newOption.value = obj.id;
-      newOption.text = obj.name;
-      
-      scaleSelector.appendChild(newOption);
-      //scaleSelector.style.display = "none";
-  }
-
-  try{
-   const searchId = journalId.textContent;
-   const foundEntry = journalData.find(entry => parseInt(entry.id) === parseInt(searchId));
-   scaleSelector.value = foundEntry.scale;
-  }catch{
-   scaleSelector.value = coords;
-  }
-
-}
 

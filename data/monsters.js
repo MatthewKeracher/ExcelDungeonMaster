@@ -1,4 +1,4 @@
-const monsters = [
+let monsters = [
 {
 "armourClass": "17",
 "damage": "2d6",
@@ -79,7 +79,7 @@ const monsters = [
 "name": "Bat (and Bat, Giant)",
 "appearing": "1d100,\n\t\t\tWild 1d100,\n\t\t\tLair 1d100",
 "attacks": "1 special",
-"savingThrows": "Normal Man",
+"savingThrows": "Fighter: 1",
 "treasure": "None",
 "experience": "10"
 },
@@ -317,7 +317,7 @@ const monsters = [
 "name": "Centipede, Giant",
 "appearing": "2d4, Wild 2d4, Lair 2d4",
 "attacks": "1 bite",
-"savingThrows": "Normal Man",
+"savingThrows": "Fighter: 1",
 "treasure": "None",
 "experience": "13"
 },
@@ -1382,7 +1382,7 @@ const monsters = [
 "name": "Kobold",
 "appearing": "4d4, Wild 6d10, Lair 6d10",
 "attacks": "1 weapon",
-"savingThrows": "Normal Man",
+"savingThrows": "Fighter: 1",
 "treasure": "P, Q each; C in lair",
 "experience": "10"
 },
@@ -1830,7 +1830,7 @@ const monsters = [
 "name": "Rat",
 "appearing": "5d10,\n\t\t\tWild 5d10,\n\t\t\tLair 5d10",
 "attacks": "1 bite per pack",
-"savingThrows": "Normal Man",
+"savingThrows": "Fighter: 1",
 "treasure": "None",
 "experience": "360*"
 },
@@ -2530,7 +2530,7 @@ const monsters = [
 "name": "Yellow Mold",
 "appearing": "1d8",
 "attacks": "Special",
-"savingThrows": "Normal Man",
+"savingThrows": "Fighter: 1",
 "treasure": "None",
 "experience": "100"
 },
@@ -2646,7 +2646,6 @@ const monsters = [
 "treasure": "None",
 "experience": "25"
 }
-
 ]
 
 const XP = [
@@ -3506,4 +3505,4 @@ const dragonTables = {
 }
 
 
-
+console.log('loaded Monsters')

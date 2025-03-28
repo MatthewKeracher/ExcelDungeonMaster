@@ -1,38 +1,39 @@
+
 // Function to save data to localStorage
 function saveData() {
-localStorage.setItem('data', JSON.stringify(data));
-localStorage.setItem('zones', JSON.stringify(zones));
-localStorage.setItem('journal', JSON.stringify(journalData));
-localStorage.setItem('scrollData', JSON.stringify(scrollData));
-localStorage.setItem('regionObj', JSON.stringify(regionObj));
-localStorage.setItem('soundBoard', JSON.stringify(sounds));
+    localStorage.setItem('data', JSON.stringify(data));
+    localStorage.setItem('zones', JSON.stringify(zones));
+    localStorage.setItem('journal', JSON.stringify(journalData));
+    localStorage.setItem('scrollData', JSON.stringify(scrollData));
+    localStorage.setItem('regionObj', JSON.stringify(regionObj));
+    localStorage.setItem('soundBoard', JSON.stringify(sounds));
+
+    if(monsters.length > 0){
+        localStorage.setItem('monsters', JSON.stringify(monsters));
+    }
+
+    if(spells.length > 0){
+        localStorage.setItem('spells', JSON.stringify(spells));
+    }
 
 }
 
-
-function removeData() {
-    localStorage.removeItem('data');
-    localStorage.removeItem('zones');
-    localStorage.removeItem('journal');
-    localStorage.removeItem('scrollData');
-    localStorage.removeItem('regionObj');
-    localStorage.removeItem('soundBoard');
-}
 
 // Function to load data from localStorage
 function  loadData() {
-const savedData = localStorage.getItem('data');
-const savedZones = localStorage.getItem('zones');
-const savedJournal = localStorage.getItem('journal');
-const savedScrollData = localStorage.getItem('scrollData');
-const lastCellAt = localStorage.getItem('regionObj');
-const soundBoard = localStorage.getItem('soundBoard');
+    const savedData = localStorage.getItem('data');
+    const savedZones = localStorage.getItem('zones');
+    const savedJournal = localStorage.getItem('journal');
+    const savedScrollData = localStorage.getItem('scrollData');
+    const lastCellAt = localStorage.getItem('regionObj');
+    const soundBoard = localStorage.getItem('soundBoard');
+    const savedMonsters = localStorage.getItem('monsters');
+    const savedSpells = localStorage.getItem('spells');
 
 if (savedData) {
 data = JSON.parse(savedData);  // Convert back from JSON string to array
-collectGarbage();
+//collectGarbage();
 }
-
 if(savedZones){
 zones = JSON.parse(savedZones);  
 }
@@ -43,11 +44,17 @@ if(savedScrollData){
 scrollData = JSON.parse(savedScrollData)
 }
 if(lastCellAt){
- regionObj = JSON.parse(lastCellAt)
- idBox.textContent = regionObj.id;
+regionObj = JSON.parse(lastCellAt)
+idBox.textContent = regionObj.id;
 }
 if(soundBoard){
 sounds = JSON.parse(soundBoard)
+}
+if(savedMonsters){
+monsters = JSON.parse(savedMonsters)
+}
+if(savedSpells){
+spells = JSON.parse(savedSpells)
 }
 
 }

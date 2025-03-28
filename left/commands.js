@@ -150,11 +150,14 @@ if (currentMode === "edit") {
         textDiv.innerHTML += getNextEncounter();
 
         
-        if(source){
-        source.innerHTML += handleCommands()
-        }else{
-        textDiv.innerHTML += handleCommands()
-        }
+        (async () => { //This should fix my big bug by waiting for handleCommands before disabling textDiv.
+            const result = await handleCommands();
+            if (source) {
+              source.innerHTML += result;
+            } else {
+              textDiv.innerHTML += result;
+            }
+          })();
 
         
         textDiv.innerHTML += holdHTML;
@@ -796,9 +799,6 @@ function rollonTable(table) {
 
 function searchFor(name, array) {
 
-    console.log(name)
- 
-    
     const searchWords = name.toLowerCase().replace(/,/g, ' ').split(' ');
         
     // Search for the closest match based on the number of matching words

@@ -816,9 +816,9 @@ function randomTreasureType(level) {
   return "P"; // Default to "P" if no match is found
 }
 
+
 function rollTreasure(treasure, locationFilter) {
 
-  
   let noTreasure = `<i>No treasure is at this location. It may have already been plundered, or rumour of it was false.</i><br>`
 
   if (treasure[0] === "npc") {
@@ -918,6 +918,8 @@ function rollTreasure(treasure, locationFilter) {
 
   return returnHTML || noTreasure;
   }
+
+
   
   return 'Treasure not found';
 }

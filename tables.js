@@ -1,4 +1,38 @@
-function extractTableEntries(divName) {
+
+function tableToObj(table) {
+    // Check if the table exists
+    if (!table) {
+        console.error(`No table found.`);
+        return null;
+    }
+
+    // Get all table rows
+    const rows = table.querySelectorAll('tr');
+    const result = {};
+
+    // Iterate through each row starting from the second row (index 1)
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const cells = row.querySelectorAll('td, th');
+        
+        // Check if the row has exactly two cells
+        if (cells.length === 2 && !cells[0].classList.contains('tableHeader')) {
+            const key = cells[0].textContent.trim().toLowerCase();
+            const value = cells[1].textContent.trim();
+            result[key] = value;
+        }
+    }
+
+    result.name = entryName.value;
+    result.description = journalRight.innerHTML;
+    result.id = journalId.textContent
+
+    return result;
+}
+
+
+
+function extractTableValues(divName) {
 // Get the table content
 const div = document.getElementById(divName);
 let tableRows = div.querySelectorAll('tr');
@@ -15,13 +49,11 @@ let entry = cells[1].textContent;
 entries.push(entry);
 }
 
-regionObj.settings.encounters = entries;
-currentMode = "map";
-toggleModes();
+return entries
 
 }
 
-function makeTableFromObj(obj, excludedKeys){
+function tableFromObj(obj, excludedKeys){
 
 let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
 
@@ -50,8 +82,6 @@ tableHTML += '</tr>';
 tableHTML += '</tbody></table>';
 tableHTML += `<br><br>`;
 
-const objDesc = autoSpacing(obj.description)
-tableHTML += `${objDesc}`;
 
 return tableHTML
 

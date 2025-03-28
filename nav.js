@@ -141,7 +141,7 @@ emptyStoryteller();
 zones = []; 
 journalData = [];
 coords = '0.0';
-removeData();
+localStorage.clear();
 
 currentRows = defaultRows;
 currentCols = defaultCols;
@@ -198,6 +198,48 @@ loadGrid();
 
 };
 
+function exportJournal() {
+    const regionName = document.getElementById('regionName');
+
+    // Create a string to hold the journal content
+    let journalContent = '';
+
+    // Iterate through journalData and add content to the string
+    journalData.forEach(item => {
+        journalContent += `Name: ${item.name}\n\n`;
+        journalContent += `Left Content:\n${item.left}\n\n`;
+        journalContent += `Right Content:\n${item.right}\n\n`;
+        journalContent += '----------------------------------------\n\n';
+    });
+
+    // Create a Blob object with the data
+    const blob = new Blob([journalContent], { type: 'text/plain;charset=utf-8' });
+
+    // Create a temporary anchor element
+    const a = document.createElement('a');
+
+    // Create an object URL for the Blob
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+
+    // Set the download attribute to specify the filename
+    a.download = regionName ? `${regionName.textContent}_journal.txt` : 'journal.txt';
+
+    // Append the anchor to the body (required for Firefox)
+    document.body.appendChild(a);
+
+    // Programmatically click the anchor to trigger the download
+    a.click();
+
+    // Remove the anchor from the DOM
+    document.body.removeChild(a);
+
+    // Release the object URL
+    URL.revokeObjectURL(url);
+}
+
+  
+
 function handleExport() {
 const regionName = document.getElementById('regionName');
 
@@ -205,6 +247,8 @@ const regionName = document.getElementById('regionName');
 // Create an object that includes all data sets
 const exportData = {
 data: data,
+monsters: monsters,
+spells: spells,
 journalData: journalData,
 zones: zones,
 soundBoard: sounds, 
@@ -263,6 +307,8 @@ try {
 const loadedData = JSON.parse(e.target.result);
 
 data = loadedData.data;
+monsters = loadedData.monsters? loadedData.monsters : monsters;
+spells = loadedData.spells? loadedData.spells : spells;
 zones = loadedData.zones;
 journalData = loadedData.journalData;
 regionObj = loadedData.regionObj;

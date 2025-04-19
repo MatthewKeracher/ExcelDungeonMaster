@@ -22,24 +22,26 @@ journalShowing = true;
 
 }
 
-function getNewJournalId(data) {
+function getNewJournalId(data, obj) {
     const ids = [];
+
+    if(obj && obj.id){return obj.id}
   
     // Function to recursively extract IDs from the data structure
-    function extractIds(obj) {
-      for (const key in obj) {
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
-          if (Array.isArray(obj[key])) {
-            obj[key].forEach(item => {
+    function extractIds(data) {
+      for (const key in data) {
+        if (typeof data[key] === 'object' && data[key] !== null) {
+          if (Array.isArray(data[key])) {
+            data[key].forEach(item => {
               if (item && typeof item === 'object' && item.id) {
                 ids.push(parseInt(item.id));
               }
             });
           } else {
-            if (obj[key].id) {
-              ids.push(parseInt(obj[key].id));
+            if (data[key].id) {
+              ids.push(parseInt(data[key].id));
             }
-            extractIds(obj[key]); // Recursive call for nested objects
+            extractIds(data[key]); // Recursive call for nested objects
           }
         }
       }
@@ -66,11 +68,11 @@ const locationObj = getObj(entry.scale);
 if(!locationObj.journal){locationObj.journal = []}
 
 locationObj.journal.push(entry);
-console.log(locationObj.name, locationObj.journal.length)
+//console.log(locationObj.name, locationObj.journal.length)
 
 })
 
-console.log(locations)
+//console.log(locations)
 }
 
 function loadJournal() { 
@@ -135,7 +137,7 @@ for (const subKey in data[key]) {
 if (typeof data[key][subKey] === 'object' && !Array.isArray(data[key][subKey])) { 
 
 const obj = data[key][subKey];
-obj.id = getNewJournalId(EXCEL_DM.journal);
+obj.id = getNewJournalId(EXCEL_DM.journal, obj);
 
 
 if(key === "Locations"){continue} //Skip Locations
@@ -153,7 +155,7 @@ journalSideBar.appendChild(subHeadLink);
 for (const index in data[key][subKey]) {
 
 const obj = data[key][subKey][index];
-obj.id = getNewJournalId(EXCEL_DM.journal);
+obj.id = getNewJournalId(EXCEL_DM.journal, obj);
 
 const linkWrapper = createEntryLink(obj, subKey, [key, subKey].join('.'));
 journalSideBar.appendChild(linkWrapper);
@@ -177,6 +179,8 @@ journalRight.disabled = true;
 journalLeft.contentEditable = false;
 journalRight.contentEditable = false;
 
+try{
+
 if(journal.style.display === "none"){
 
 let currentLocation = document.getElementById(idBox.textContent);
@@ -196,7 +200,7 @@ let lastSubSection
 if(lastDropdownValue.parent === "parent"){
 lastSection = document.querySelector(`[select = "${lastDropdownValue.child}"]`)
 lastSection.click();
-console.log(lastDropdownValue)
+//console.log(lastDropdownValue)
 scaleSelector.value = "parent" + "." + lastDropdownValue.child;
 }else{
   lastSection = document.querySelector(`[select = "${lastDropdownValue.parent}"]`)
@@ -207,9 +211,10 @@ scaleSelector.value = "parent" + "." + lastDropdownValue.child;
  
 }
 
-console.log(scaleSelector.value)
 
-}
+//console.log(scaleSelector.value)
+
+}}catch{}
 
 }
 
@@ -385,7 +390,7 @@ function makeNewJournalEntry(selectValue){
   scaleSelector.value = selectValue;
 
   lastDropdownValue = getDropdownValue();
-  journalId.textContent = getNewJournalId();
+  journalId.textContent = getNewJournalId(EXCEL_DM.journal);
 
   const address = parseAddress(selectValue);
 
@@ -396,7 +401,7 @@ function makeNewJournalEntry(selectValue){
   const NPCTable = tableFromObj(obj, ["id", "description", "name"], "objTable")
   journalRight.innerHTML = NPCTable;
 
-  console.log(obj)
+  //console.log(obj)
         
   }
 
@@ -462,11 +467,11 @@ console.error('Navigation error:', error);
 
 function delObjFromArray(obj, array){
 
-console.log(obj, array)
+//console.log(obj, array)
 
 let exists = array.findIndex(entry => parseInt(entry.id) === parseInt(obj.id))
 
-console.log(array[exists])
+//console.log(array[exists])
 
 if(exists > -1 && journalShowing === true){
 array.splice(exists, 1)
@@ -485,7 +490,7 @@ saveData();
 
 function delEntry(delObj, address){
 
-console.log('Deleting:', delObj, address)
+//console.log('Deleting:', delObj, address)
 
 if(address.parent && address.child){  
 
@@ -532,18 +537,20 @@ function saveJournalKnot(){
 //Start of method to save journal entries. Routes based on entry type.
 
 function saveObjToArray(obj, array){
-console.log(obj, array)
+
 if(!array){return}
 
-console.log(obj, array)
+console.log(obj, array, obj.id);
 
 let exists = array.findIndex(entry => parseInt(entry.id) === parseInt(obj.id))
 
 if(obj.name === ''){obj.name = "Untitled Entry"}
 
 if(exists > -1){
+console.warn('Found saveEntry for ' + array[exists].name) 
 array[exists] = obj;
 }else{
+console.error('Could not find saveEntry for ' + obj.name) 
 array.push(obj);
 }
 

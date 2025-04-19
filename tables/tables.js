@@ -65,8 +65,6 @@ function assembleTables(){
     }
   
     })
-
-    console.log(objTable)
   
     return objTable
     

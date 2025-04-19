@@ -132,7 +132,6 @@ function handleNew(){
 showPrompt('Make New Project: Are you sure you want to erase all data?').then(shouldDelete => {
 
 if (shouldDelete) {
-console.log('Deleting...')
 data = defaultData;
 regionObj = data[0];
 regionName.textContent = data[0].name;
@@ -247,17 +246,16 @@ const regionName = document.getElementById('regionName');
 // Create an object that includes all data sets
 const exportData = {
 data: data,
-monsters: monsters,
-spells: spells,
-journalData: journalData,
+// monsters: monsters,
+// spells: spells,
+// items: items,
+EXCEL_DM: EXCEL_DM,
 zones: zones,
 soundBoard: sounds, 
 scrollData: scrollData,
 regionObj: regionObj,
 lastCell: getCurrentEntry(),
 };
-
-console.log(exportData)
 
 // Convert the combined object to a JSON string
 const exportStr = JSON.stringify(exportData, null, 2); // Pretty print with 2 spaces
@@ -307,15 +305,31 @@ try {
 const loadedData = JSON.parse(e.target.result);
 
 data = loadedData.data;
-monsters = loadedData.monsters? loadedData.monsters : monsters;
-spells = loadedData.spells? loadedData.spells : spells;
+// monsters = loadedData.monsters? loadedData.monsters : monsters;
+// spells = loadedData.spells? loadedData.spells : spells;
 zones = loadedData.zones;
-journalData = loadedData.journalData;
 regionObj = loadedData.regionObj;
 sounds = loadedData.soundBoard;
 scrollData = loadedData.scrollData;
 lastCell = loadedData.lastCell;
-console.log(loadedData)
+EXCEL_DM = loadedData.EXCEL_DM? loadedData.EXCEL_DM : EXCEL_DM;
+
+// for (const key in EXCEL_DM.journal){
+// EXCEL_DM.journal[key] = []
+// }
+
+// loadedData.journalData.forEach(entry => {
+
+// let key = entry.scale
+
+// if(EXCEL_DM.journal[key]){
+//     EXCEL_DM.journal[key].push(entry)}
+
+// else{EXCEL_DM.journal.Locations.push(entry)}
+
+// })
+
+// console.log(EXCEL_DM.journal)
 collectGarbage();
 
 if(Array.isArray(zones) === false){zones = []}

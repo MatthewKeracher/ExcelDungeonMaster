@@ -1,0 +1,57 @@
+.table{
+    width: 95%;
+    border:1px solid var(--mode-color);
+    border-collapse:collapse;
+    margin-top: 10px;
+}
+
+.tableCell {
+    height: 25px;
+    vertical-align: top;
+    padding: 5px;
+    color: var(--mode-color);
+    border:1px solid var(--mode-color);
+}
+
+.tableCell:focus {
+    outline: none;
+}
+
+.description-cell {
+    display: block;
+    overflow: hidden;
+    border: none;
+    border-top:1px solid var(--mode-color);
+}
+  
+  /* Use JavaScript to set max-height dynamically */
+.description-cell.collapsed {
+    max-height: var(--row-height);
+    color: var(--mode-color-trans)
+}
+
+/* Optional: Add hover effect to expand description */
+.description-cell:hover,
+.description-cell:focus {
+    max-height: none;
+    color: var(--mode-color)
+}
+
+.tableHeader{
+    height: 25px;
+    background-color: var(--mode-color);
+    color:var(--background);
+    font-weight: bold;
+    width: auto;
+    border-bottom: 2px solid var(--background);
+}
+
+.tableKey{
+    height: 25px;
+    background-color: var(--mode-color);
+    color:var(--background);
+    font-weight: bold;
+    width: 125px;
+    text-align: center;
+    border-bottom: 2px solid var(--background);
+}

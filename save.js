@@ -7,14 +7,7 @@ function saveData() {
     localStorage.setItem('scrollData', JSON.stringify(scrollData));
     localStorage.setItem('regionObj', JSON.stringify(regionObj));
     localStorage.setItem('soundBoard', JSON.stringify(sounds));
-
-    if(monsters.length > 0){
-        localStorage.setItem('monsters', JSON.stringify(monsters));
-    }
-
-    if(spells.length > 0){
-        localStorage.setItem('spells', JSON.stringify(spells));
-    }
+    localStorage.setItem('Excel_DM', JSON.stringify(EXCEL_DM));
 
 }
 
@@ -27,7 +20,7 @@ function  loadData() {
     const savedScrollData = localStorage.getItem('scrollData');
     const lastCellAt = localStorage.getItem('regionObj');
     const soundBoard = localStorage.getItem('soundBoard');
-    const savedMonsters = localStorage.getItem('monsters');
+    const savedEXCEL_DM = localStorage.getItem('Excel_DM');
     const savedSpells = localStorage.getItem('spells');
 
 if (savedData) {
@@ -50,12 +43,10 @@ idBox.textContent = regionObj.id;
 if(soundBoard){
 sounds = JSON.parse(soundBoard)
 }
-if(savedMonsters){
-monsters = JSON.parse(savedMonsters)
+if(savedEXCEL_DM){
+EXCEL_DM = JSON.parse(savedEXCEL_DM)
 }
-if(savedSpells){
-spells = JSON.parse(savedSpells)
-}
+
 
 }
 
@@ -116,7 +107,7 @@ if (inZone !== null && inZone) {
 
 
 if(journalShowing && scaleSelector.style.display !== "none"){
-saveJournalEntry();
+saveJournalKnot();
 }
 
 }

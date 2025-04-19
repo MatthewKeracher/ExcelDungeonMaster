@@ -1,6 +1,5 @@
 function getScrollSpells(npcClass, level) {
-
-const possibleSpells = spells.filter(spell => parseInt(spell.level) === parseInt(level) && spell.class === npcClass);
+const possibleSpells = spells[npcClass].filter(spell => parseInt(spell.level) === parseInt(level));
 const randomSpell = possibleSpells[Math.floor(Math.random() * possibleSpells.length)];    
 return randomSpell.name;
 
@@ -804,7 +803,7 @@ function randomTreasureType(level) {
     {type: "V", range: [96, 1000]}
   ];
 
-  let roll = level * 5
+  let roll = rollDice(1,100) + (level * 5)
 
   for (const loot of lootTypes) {
     if (roll >= loot.range[0] && roll <= loot.range[1]) {
@@ -817,7 +816,7 @@ function randomTreasureType(level) {
 }
 
 
-function rollTreasure(treasure, locationFilter) {
+function rollTreasure(treasure = [type, level], locationFilter) {
 
   let noTreasure = `<i>No treasure is at this location. It may have already been plundered, or rumour of it was false.</i><br>`
 
@@ -832,8 +831,6 @@ function rollTreasure(treasure, locationFilter) {
   if (/^\d$/.test(treasure)) { //For unguraded treasures
     matches.push([treasure, treasure, undefined, undefined]);
   }
-
-  console.log(matches)
 
   if (matches.length > 0) {
   let treasureEntries = '';
@@ -904,10 +901,10 @@ function rollTreasure(treasure, locationFilter) {
   
   if(totalCoinValue > 0){
 
-  const coins = ammendPrices(totalCoinValue, true)
+  const coins = ammendPrices(totalCoinValue, 0,  true)
   
   
-  returnHTML = `<b>Coins: </b><i>(${coins})</i><br><br>`;
+  returnHTML = `<br><b>Coins: </b><i>${coins}</i><br><br>`;
   returnHTML += treasureEntries;
 
   }
@@ -919,8 +916,6 @@ function rollTreasure(treasure, locationFilter) {
   return returnHTML || noTreasure;
   }
 
-
-  
   return 'Treasure not found';
 }
 

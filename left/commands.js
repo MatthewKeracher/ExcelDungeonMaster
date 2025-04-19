@@ -86,6 +86,13 @@ function toggleModes(activeDiv) {
 isPainting = true
 handlePaint();
 
+if(activeDiv){
+const activeDivId = activeDiv.getAttribute("id");
+
+if(activeDivId === "body"){activeDiv = ""};
+}
+
+
 if(currentMode){ //Default State
 
 commandLine.style.display = "none";
@@ -118,7 +125,7 @@ if (currentMode === "edit") {
         journalLeft.contentEditable = true;
         journalRight.contentEditable = true;
 
-        formatTables();
+        updateTables();
 
                 if(journalShowing){
 
@@ -172,7 +179,7 @@ if (currentMode === "edit") {
              textDiv.focus();
             }
 
-        formatTables();
+        updateTables();
 
         //Save Content
         let div = getCurrentDiv();
@@ -208,10 +215,10 @@ function handleCommands() {
         // If it's valid JSON, generate a table and return it
         if (Array.isArray(parsedJSON)) {
             let table = parsedJSON
-            return generateTableFromJSON(table)
+            return tableFromJSON(table)
         } else if (typeof parsedJSON === 'object') {
             let table = [parsedJSON]
-            return generateTableFromJSON(table)
+            return tableFromJSON(table)
         }
     } catch (e) {
         // If it's not valid JSON, continue with command handling
@@ -286,7 +293,6 @@ function updateResults(source = textDiv) {
    
     let results = worldGen();
     source.innerHTML = results
-    console.log('running...')
     
 }
 
@@ -311,6 +317,8 @@ switch (command) {
         return ``  
     case 'grid':
          handleGrid();
+    case 'print':
+        handlePrint(rest[0]);
          return ``
     case 'move':
          handleMove(rest[0]);
@@ -332,6 +340,12 @@ switch (command) {
         return '{Command not recognized}';
 }
 
+
+}
+
+function handlePrint(params){
+
+console.log(EXCEL_DM.journal[params])
 
 }
 
@@ -455,32 +469,7 @@ function makeSortButton(order) {
     return button;
 }
 
-function sortTables(order) {
-    
-    const tables = document.querySelectorAll('table');
 
-    tables.forEach(table => {
-        
-        let headers = Array.from(table.querySelectorAll('.tableHeader'));
-        
-        const sortIndex = headers.findIndex(header => header.innerText.trim() === 'Sort');
-        
-
-        if (sortIndex !== -1) {
-            const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.rows);
-
-            rows.sort((a, b) => {
-                const valueA = parseInt(a.cells[sortIndex].innerText);
-                const valueB = parseInt(b.cells[sortIndex].innerText);
-                return (order === 1 ? valueA - valueB : valueB - valueA); // Ascending or Descending
-            });
-
-            tbody.innerHTML = '';
-            rows.forEach(row => tbody.appendChild(row));
-        }
-    });
-}
 
 function handleGetCommand(params) {
     const [section, subSection, chance = 100, ...rest] = params.split(' ');
@@ -489,7 +478,7 @@ function handleGetCommand(params) {
 
     const parsedChance = isFinite(chance) ? Number(chance) : 100;
     
-    return generateTableFromJSON(section, subSection, parsedChance);
+    return tableFromJSON(section, subSection, parsedChance);
 }
 
 
@@ -530,188 +519,8 @@ function flattenObject(obj) {
     recurse(obj, '');
     return result;
 }
- 
-function generateTableFromJSON(sectionStr, subSectionStr, chance = 100) {
-  
-    let section;
-    let subSection;
-    let dataToUse;
-
-    if (sectionStr) {
-        section = eval(sectionStr);
-    }
-
-    if (subSectionStr) {
-        subSection = section[subSectionStr];
-    }
-
-    if (!section) {
-        return `<p>No table found for name: ${sectionStr}.</p>`;
-    }
-
-    if (subSection) {
-        dataToUse = Object.entries(subSection).flatMap(([key, value]) => {
-            if (typeof value === 'object' && !Array.isArray(value)) {
-                return { name: key, ...value };
-            }
-            return { name: key, value };
-        });
-    } else {
-        dataToUse = Object.values(section).flat();
-    }
-
-    if (!Array.isArray(dataToUse) || dataToUse.length === 0) {
-        return `No data found in ${sectionStr} table for entry: ${subSectionStr}.`;
-    }
-
-    // Determine headers based on the structure of the first item
-    const headers = Object.keys(dataToUse[0]).flatMap(key => {
-        if (typeof dataToUse[0][key] === 'object') {
-            return Object.keys(dataToUse[0][key]).map(subKey => `${key}.${subKey}`);
-        }
-        return key;
-    });
-
-    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
-
-    
-    // Generate table headers
-    tableHTML += '<thead><tr>';
-    headers.forEach(header => {
-
-        const formattedHeader = header
-        .replace(/([A-Z])/g, ' $1') // Add space before capital letters
-        .replace(/^./, str => str.toUpperCase()); // Uppercase the first letter
-        tableHTML += `<th class="tableCell tableHeader">${formattedHeader}</th>`;
-
-        //tableHTML += `<th class="tableCell">${header.split('.').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</th>`;
-    });
-    tableHTML += '</tr></thead>';
-
-    // Generate table body
-    tableHTML += '<tbody>';
-    dataToUse.forEach(item => {
-
-        if(chance && rollDice(1, 100) > chance) {return} // Roll for Chance of Occuring
-
-        tableHTML += '<tr>';
-        headers.forEach(header => {
-            const [key, subKey] = header.split('.');
-            let value = subKey ? item[key][subKey] : item[key];
-           
-             let cellAttributes = ``;
-
-            if(key === "cost"){
-                cellAttributes += `originalPrice="${value}"`
-                value = ammendPrices(value)
-            }
-
-            let cellClass = "tableCell";
-
-            if (key === "description") {
-              cellClass += " description-cell";
-            }
-            
-            tableHTML += `<td ${cellAttributes} class="${cellClass}">${value}</td>`;
-
-        });
-        tableHTML += '</tr>';
-    });
-    tableHTML += '</tbody></table>';
-
-    return tableHTML;
-}
-
-function handleTableCommand(params) {
-    let [rows, cols] = params.split(' ').map(Number);
-
-    // Handle cases where only one number is provided
-    if (!isNaN(rows) && isNaN(cols)) {
-        cols = 1; // Default cols to 1 if not provided
-    }
-
-    // Validate input
-    if (isNaN(rows) || isNaN(cols)) {
-        return '\n{Invalid table format. Use "add table rows cols"}';
-    }
-
-    return generateTable(rows + 1, cols);
-}
-
-function generateTable(rows, cols) {
-    let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
-    for (let i = 0; i < rows; i++) {
-        tableHTML += '<tr>';
-        for (let j = 0; j < cols; j++) {
-            if (i === 0) {
-                // Add tableHeader class for the first row
-                tableHTML += `<td contenteditable="false" tabindex="0" class="tableCell tableHeader"></td>`;
-            } else {
-                tableHTML += `<td contenteditable="false" tabindex="0" class="tableCell"></td>`;
-            }
-        }
-        tableHTML += '</tr>';
-    }
-    tableHTML += '</table>';
-    
-    return tableHTML;
-}
 
 
-function formatTables() {
-    const tableCells = document.querySelectorAll('.tableCell');
-    
-    if (currentMode === 'edit') {
-        tableCells.forEach(cell => {
-            cell.contentEditable = "true";
-            cell.setAttribute('tabindex', '0');
-
-            cell.addEventListener('focus', function() {
-                const range = document.createRange();
-                //range.selectNodeContents(cell);
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-            });
-        });
-    } else {
-        tableCells.forEach(cell => cell.contentEditable = "false");
-    }
-
-        const rows = document.querySelectorAll('tr');
-        rows.forEach(row => {
-            const maxHeight = Array.from(row.cells)
-                .filter(cell => !cell.classList.contains('description-cell'))
-                .reduce((max, cell) => Math.max(max, cell.offsetHeight), 0);
-                      
-            const descCell = row.querySelector('.description-cell');
-            if (descCell) {
-                descCell.style.setProperty('--row-height', '100px');
-                descCell.classList.add('collapsed');
-            }
-        });
-
-
-        const tables = document.querySelectorAll('.table');
-
-        tables.forEach(table => {
-
-            const costCells = getColumnCells(table, "Cost");
-            
-            costCells.forEach(cell => {
-
-            let originalPrice = cell.getAttribute('originalPrice');
-               
-            cell.innerHTML = ammendPrices(originalPrice);    
-
-            })
-
-            table.style.width = "95%"
-            table.borders = 1
-
-        });
-    
-    }
     
     
 function handleRollCommand(params) {
@@ -721,81 +530,11 @@ function handleRollCommand(params) {
     if (dice) {  
         const rolledValue = rollDice(dice.numDice, dice.diceSides, dice.multiplier);
         return `<div class="noSave"> > You have rolled a <b>${rolledValue}</b> on ${params}.<br><br><hr><br></div>`; 
-    } else{
+    } 
 
-        const tableName = params.toLowerCase();
-        const journalEntry = journalData.find(entry => entry.name.toLowerCase() === params);
-        
-        if (journalEntry) {
-            // Create a temporary container
-            const tempContainer = document.createElement('div');
-            tempContainer.innerHTML = journalEntry.left + journalEntry.right;
-        
-            // Find the table with class 'table'
-            const table = tempContainer.querySelector('.table');
-
-            
-            if (table && table.rows.length > 0) {
-                // Return the first row
-                return rollonTable(table)
-            } else {
-                
-                return null;
-            }
-        } else {
-            
-            return null;
-        }
-        
     }
 
-}
 
-function rollonTable(table) {
-    if (!table || table.rows.length < 1) {
-        return "<table><tr><td>Table is empty</td></tr></table>";
-    }
-
-    
-
-    const firstRow = table.rows[0];
-    const hasHeader = firstRow.cells[0].classList.contains('tableHeader');
-
-    let headers = [];
-    let startIndex = 0;
-
-    if (hasHeader) {
-        headers = Array.from(firstRow.cells).map(cell => cell.innerHTML.trim());
-        startIndex = 1;
-    }
-
-    if (table.rows.length === startIndex) {
-        return "<table><tr><td>Table has only headers</td></tr></table>";
-    }
-
-    // Get a random row (excluding the header row if it exists)
-    const randomIndex = Math.floor(Math.random() * (table.rows.length - startIndex)) + startIndex;
-    const selectedRow = table.rows[randomIndex];
-
-    // Get the values of each cell in the selected row
-    const cellValues = Array.from(selectedRow.cells).map(cell => cell.innerHTML.trim());
-
-    let result = '<table class="table">';
-    
-    if (hasHeader) {
-        // Add header row
-        result += '<tr class="tableHeader tableCell">' + headers.map(header => `<th>${header}</th>`).join(' ') + '</tr>';
-        // Add data row
-        result += '<tr class="tableCell">' + cellValues.map(value => `<td>${value}</td>`).join('') + '</tr>';
-    } else {
-        // Just add the data row
-        result += '<tr class="tableCell">' + cellValues.map(value => `<td>${value}</td>`).join('') + '</tr>';
-    }
-
-    result += '</table>';
-
-    return result;
-}
 
 function searchFor(name, array) {
 
@@ -822,31 +561,31 @@ function searchFor(name, array) {
 
 function find(name, array) {
     const found = searchFor(name.toString(), eval(array));
-
+    
     if (!found) {
-        return `<p>No entry found for name: ${name}.</p>`;
+    return `<p>No entry found for name: ${name}.</p>`;
     }
-
+    
     let tableHTML = '<table border="1" class="table" style="border-collapse: collapse;">';
-
+    
     // Generate table headers
     tableHTML += '<thead><tr>';
     tableHTML += '<th class="tableCell tableHeader">Key</th>';
     tableHTML += '<th class="tableCell tableHeader">Value</th>';
     tableHTML += '</tr></thead>';
-
+    
     // Generate table body
     tableHTML += '<tbody>';
     for (const key in found) {
-        tableHTML += '<tr>';
-        tableHTML += `<td class="tableCell">${key}</td>`;
-        tableHTML += `<td class="tableCell">${found[key]}</td>`;
-        tableHTML += '</tr>';
+    tableHTML += '<tr>';
+    tableHTML += `<td class="tableCell">${key}</td>`;
+    tableHTML += `<td class="tableCell">${found[key]}</td>`;
+    tableHTML += '</tr>';
     }
     tableHTML += '</tbody></table>';
-
+    
     return tableHTML;
-}
+    }
 
 
 
@@ -909,29 +648,30 @@ function evaluateInnerCommand(command) {
 
 
 //Economics Logic
-function ammendPrices(cost, randomDistribution = false) {
-    let inflation = regionObj && regionObj.settings && 
-    regionObj.settings.inflation ?
-    regionObj.settings.inflation : 1;
+function ammendPrices(cost,  inflation, randomDistribution = false) {
+    // let inflation = regionObj && regionObj.settings && 
+    // regionObj.settings.inflation ?
+    // regionObj.settings.inflation : 1;
 
     cost = parseFloat(cost);
     cost = cost * 10; // Convert to oras (0.05 -> 5)  
-    cost = Math.ceil(cost * inflation);
+    cost = Math.ceil(cost * (1 + inflation / 100));
+    const oraCost = cost
 
     const conversionRates = {
-        'p': 336,
-        'g': 168,
-        'e': 28,
-        's': 7,
-        'c': 1
+        'Etos': 336,
+        'Examino': 168,
+        'Zoti': 28,
+        'Evdo': 7,
+        'Ora': 1
     };
 
     let coinCounts = {
-        'p': 0,
-        'g': 0,
-        'e': 0,
-        's': 0,
-        'c': 0
+        'Etos': 0,
+        'Examino': 0,
+        'Zoti': 0,
+        'Evdo': 0,
+        'Ora': 0
     };
 
     if (randomDistribution) {
@@ -957,10 +697,12 @@ function ammendPrices(cost, randomDistribution = false) {
 
     let result = Object.entries(coinCounts)
         .filter(([_, count]) => count > 0)
-        .map(([currency, count]) => `${count}${currency}`);
+        .map(([currency, count]) => `${count} ${currency}`);
 
     const denomPrice = result.join(', ');
-    return denomPrice;
+    const returnValue = randomDistribution === true? denomPrice : oraCost;
+
+    return returnValue
 }
 
 

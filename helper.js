@@ -1,5 +1,32 @@
 
+function toTitleCase(str) {
 
+    const swaps = {
+        str: "strength",
+        dex: "dexterity",
+        wis: "wisdom",
+        con: "constitution",
+        cha: "charisma",
+        int: "intelligence",
+        luk: "luck",
+        soc: "society",
+        psy: "psyche"
+    }
+
+for (const score in swaps){
+    if(score === str){
+        str = swaps[score]
+    }
+}
+
+  // Insert spaces before capital letters (not at the start)
+  const spaced = str.replace(/([a-z])([A-Z])/g, '$1 $2');
+  // Capitalize each word
+  return spaced.replace(
+      /\w\S*/g,
+      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
+}
 
 function filterDiv(div = textDiv, className = "noSave"){
 // Clone the textDiv to avoid modifying the original content
@@ -271,13 +298,18 @@ function colorDistance(color1, color2) {
 
 function autoSpacing(text){
 
+    try{
     text = text.replace(/\.\s/g, '.<br><br>');
+    }catch{}
     
     // Replace periods at the end of the text with a period and two line breaks
+    try{
     text = text.replace(/\.$/g, '.<br><br>');
+    }catch{}
     
     // Update the innerHTML of the textDiv
-   return text
+    return text
+   
 
 
 }

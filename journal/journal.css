@@ -28,6 +28,7 @@
     border-top: 1px dashed var(--mode-color); /* Set a dotted top border with the dynamic color */
     height: 0; /* Since the border-top is used, we set height to 0 */
     margin-bottom: 0;
+    width: 95%;
 }
 
 #journal-sidebar{
@@ -84,12 +85,12 @@
     #journal-entry-name{
         position: absolute;
         width: 70%;
-        background-color:black;
+        background-color:transparent;
         color: var(--mode-color);
         font-family: 'SoutaneBlack';
         font-size: 22px;
         letter-spacing: 2px;
-        text-align: left; 
+        text-align: center; 
         resize: none;
         border: none;
         
@@ -97,14 +98,17 @@
 
     #scaleSelector{
         position:absolute;
-        right: 1%; 
+        width: 300px;
+        right: 2%; 
     }
 
     .inputBox{
+        margin-right: 5px;
         width: 250px;
         padding: 5px;
-        font-size: 18px;
-        font-family: 'SoutaneBlack';
+        font-size: 16px;
+        text-align: center;
+        font-family: 'Cascadia';
         border: 1px solid var(--mode-color);
         border-radius: 0px;
         background-color: var(--background);

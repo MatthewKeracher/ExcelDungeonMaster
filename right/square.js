@@ -126,7 +126,7 @@ if(gridCell.classList.contains('inZone')){
 }
 
 
-formatTables();
+updateTables();
 saveData();
 }
 

@@ -232,7 +232,6 @@ e.preventDefault();
 currentMode = 'edit';
 toggleModes(); 
 textDiv.focus();
-console.log('focus')
 
 
 break;
@@ -361,7 +360,7 @@ break; // Stop once the first unchecked is clicked
 // getRandomEncounters(journalRight);
 // }
 
-saveJournalEntry()
+saveJournalKnot()
 
 }
 });
@@ -383,7 +382,7 @@ break; // Stop once the last checked is unchecked
 // const filledBoxes = Array.from(document.querySelectorAll('.timeBox')).filter(check => check.textContent === '☒').length;
 // turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
 
-saveJournalEntry()
+saveJournalKnot()
 
 }
 });

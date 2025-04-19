@@ -184,50 +184,7 @@ border-color: #000;
     color: var(--mode-color);
 }
 
-.table{
-    width: 95%;
-    border:1px solid var(--mode-color);
-    border-collapse:collapse;
-}
 
-.tableCell {
-    height: 100%;
-    vertical-align: top;
-    padding: 5px;
-    color: var(--mode-color);
-    border:1px solid var(--mode-color);
-}
-
-.tableCell:focus {
-    outline: none;
-}
-
-.description-cell {
-    display: block;
-    overflow: hidden;
-    border: none;
-    border-top:1px solid var(--mode-color);
-}
-  
-  /* Use JavaScript to set max-height dynamically */
-.description-cell.collapsed {
-    max-height: var(--row-height);
-    color: var(--mode-color-trans)
-}
-
-/* Optional: Add hover effect to expand description */
-.description-cell:hover,
-.description-cell:focus {
-    max-height: none;
-    color: var(--mode-color)
-}
-
-.tableHeader{
-    background-color: var(--mode-color);
-    color:var(--background);
-    font-weight: bold;
-    min-width: 20px;
-}
 
 
 

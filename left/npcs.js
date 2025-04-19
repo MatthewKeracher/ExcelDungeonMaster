@@ -1,3 +1,27 @@
+class NPC {
+  constructor(race, npcClass, level, npcName = "John Smith", id) {
+  
+  this.id = id;
+  this.name = npcName;
+  this.class = npcClass.charAt(0).toUpperCase() + npcClass.slice(1);
+  this.race = race.charAt(0).toUpperCase() + race.slice(1);
+  this.level = level;
+  this.ability = makeScores(this.class);
+  this.description = "This is a description of the NPC."
+
+  // Loot
+  this.loot = {
+  "Etos": rollDice(1,4).toString(),
+  "Examino": rollDice(1,7).toString(),
+  "Zoti": rollDice(1,28).toString(),
+  "Evdo": rollDice(1,168).toString(),
+  "Ora": rollDice(1,336).toString(),
+  }
+
+  updateNPC(this)
+  
+  }}
+
 const classTables = {
 fighter : [
 { level: 1, XP: "0", hitDice: '1d8' , attackBonus: 1},
@@ -328,12 +352,12 @@ thief: [
 
 }
 
-const races = [
-    { race: 'halfling', deathRay: 4, magicWands: 4, paralysisPetrify: 4, dragonBreath: 3, spells: 4 },
-    { race: 'human', deathRay: 0, magicWands: 0, paralysisPetrify: 0, dragonBreath: 0, spells: 0 },
-    { race: 'elf', deathRay: 0, magicWands: 2, paralysisPetrify: 1, dragonBreath: 0, spells: 2  },
-    { race: 'dwarf', deathRay: 4, magicWands: 4, paralysisPetrify: 4, dragonBreath: 3, spells: 4 },
-]
+const races = {
+"Halfling" : { race: 'halfling', deathRay: 4, magicWands: 4, paralysisPetrify: 4, dragonBreath: 3, spells: 4 },
+"Human" : { race: 'human', deathRay: 0, magicWands: 0, paralysisPetrify: 0, dragonBreath: 0, spells: 0 },
+"Elf" : { race: 'elf', deathRay: 0, magicWands: 2, paralysisPetrify: 1, dragonBreath: 0, spells: 2  },
+"Dwarf" : { race: 'dwarf', deathRay: 4, magicWands: 4, paralysisPetrify: 4, dragonBreath: 3, spells: 4 },
+}
 
 function makeHitBoxes(hitPoints, hit){
 
@@ -366,224 +390,220 @@ return HTML
 
 function parseHitPoints(hit) {
 
-    // Check if the hit value is a fixed number
-    if (!hit.includes('d') && !hit.includes('-')) {
-    const fixedValue = parseInt(hit);
-    return rollDice(fixedValue, 8); // Treat as Xd8
-    }
-    
-    // Check for dice notation (e.g., "1d6", "1d6+1")
-    const diceMatch = hit.match(/^(\d*)d(\d+)([+-]\d+)?$/);
-    if (diceMatch) {
-    const numDice = diceMatch[1] ? parseInt(diceMatch[1]) : 1; // Default to 1 if not specified
-    // For dice notation, treat as d8
-    const sides = 8;
-    const modifier = diceMatch[3] ? parseInt(diceMatch[3]) : 0; // Default to 0 if not specified
-    
-    return rollDice(numDice, sides) + modifier; // Roll dice and apply modifier
-    }
-    
-    // Check for ranges (e.g., "3-3")
-    const rangeMatch = hit.match(/^(\d+)-(\d+)$/);
-    if (rangeMatch) {
-    const min = parseInt(rangeMatch[1]);
-    const max = parseInt(rangeMatch[2]);
-    const numDice = max; // Use the max as the number of d8s
-    return rollDice(numDice, 8) - min; // Roll numDice d8 and subtract min
-    }
-    
-    // If none of the above matches, return 0 as a fallback
-    return 0;
-    }
-
-function makeNPC(race, npcClass, level, npcName) {
-    const stats = {
-        name: npcName ? npcName : "John Smith",
-        class: npcClass.charAt(0).toUpperCase() + npcClass.slice(1),
-        race: race.charAt(0).toUpperCase() + race.slice(1),
-    };
-
-    let HTML = '<table border="none" class="table">';
-
-    // Create the table header
-    HTML += '<tr>';
-    HTML += '<td contenteditable="false" tabindex="0" class="tableCell tableHeader">';
-    HTML += `<b>${stats.name}</b>`;
-    HTML += '</td>';
-    HTML += '<td contenteditable="false" tabindex="0" class="tableCell tableHeader">';
-    HTML += `<b>Level ${level} ${stats.race} ${stats.class}</b>`;
-    HTML += '</td>';
-    HTML += '</tr>';
-
-    // Column 1
-    HTML += '<tr><td contenteditable="false" tabindex="0" class="tableCell">';
-
-    // Hitpoints
-    const hitDice = readClassTables(npcClass, level, 'hitDice');
-    const hitPoints = parseHitPoints(hitDice); // Assume this function calculates HP based on HD
-    const scores = makeScores(stats.class);
-
-    // Attack Bonus
-    const attackBonus = readClassTables(npcClass, level, 'attackBonus');
-    const melee = attackBonus + scores.find(score => score.name === 'str').bonus;
-    const ranged = attackBonus + scores.find(score => score.name === 'dex').bonus;
-
-    HTML += `HP: (${hitDice}) ${hitPoints} <br>` //makeHitBoxes(hitPoints, hitDice);
-    HTML += `Melee: +${melee}  Ranged: +${ranged}  <br><br>`;
-
-    if (scores) {
-        scores.forEach(score => {
-            HTML += `${score.name.toUpperCase()}: ${score.score} (${score.bonus})<br>`;
-        });
-    }
-
-    const XP = readClassTables(npcClass + 1, level, 'attackBonus');
-
-    // Saving Throws
-    const savingThrows = getSaveThrows(npcClass, level, race);
-    if (savingThrows) {
-        HTML += '<br><u>Saving Throws:</u><br>';
-        Object.keys(savingThrows).forEach(key => {
-            if (key !== 'level') {
-                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                HTML += `${formattedKey}: ${savingThrows[key]}<br>`;
-            }
-        });
-    }
-
-
-    
-    HTML += '</td>'
-    
-    //Column 2
-    HTML += '<td contenteditable="false" tabindex="0" class="tableCell">'
-    
-    // // Other Information
-    // HTML += '<br>';
-    // for (const [key, value] of Object.entries(stats)) {
-    //     if (key !== 'name' && key !== 'class' && key !== 'race') {
-    //         HTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value} `;
-    //     }
-    // }
-
-    // Skills
-    const skills = getSkills(npcClass, level);
-    if (skills) {
-        HTML += '<u>Skills:</u><br>';
-        Object.keys(skills).forEach(key => {
-            if (key !== 'level') {
-                const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                HTML += `${formattedKey}: ${skills[key]}<br>`;
-            }
-        });
-        HTML += `<br><br>`
-    }
-
-    // Spells
-    const spells = getSpells(npcClass, level);
-    if (spells) {
-        HTML += '<u>Spells:</u><br>';
-        spells.forEach(spell => {
-            HTML += `${spell.name}<br>`;
-        });
-        HTML += `<br><br>`
-    }
-
-
-    HTML += '<u>Loot:</u><br>';
-    HTML += rollTreasure(["npc", level], "each");
-    
-    HTML += '</td></tr>';
-    HTML += '</table><br>';
-
-    return HTML;
+// Check if the hit value is a fixed number
+if (!hit.includes('d') && !hit.includes('-')) {
+const fixedValue = parseInt(hit);
+return rollDice(fixedValue, 8); // Treat as Xd8
 }
 
-function generateRandomItemsTable(categories) {
-let tableHTML = '<table border="1" style="border-collapse: collapse;">';
+// Check for dice notation (e.g., "1d6", "1d6+1")
+const diceMatch = hit.match(/^(\d*)d(\d+)([+-]\d+)?$/);
+if (diceMatch) {
+const numDice = diceMatch[1] ? parseInt(diceMatch[1]) : 1; // Default to 1 if not specified
+// For dice notation, treat as d8
+const sides = 8;
+const modifier = diceMatch[3] ? parseInt(diceMatch[3]) : 0; // Default to 0 if not specified
 
-// Generate body with random items
-tableHTML += '<tbody>';
-categories.forEach(category => {
-if (items[category] && items[category].length > 0) {
-const randomItem = items[category][Math.floor(Math.random() * items[category].length)];
-tableHTML += `<tr>
-<td contenteditable="true" style="min-width: 100px; padding: 5px;">${randomItem.name}</td>
-<td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.damage? randomItem.damage: randomItem.AC? "AC " + randomItem.AC: ""}</td>
-<td contenteditable="true" style="min-width: 50px; padding: 5px;">${randomItem.weight + ' lbs'} </td>
-</tr>
-`;
-} else {
-tableHTML += '<td contenteditable="true" style="min-width: 100px; padding: 5px;">No item available</td>';
-}
-});
-tableHTML += '</tbody></table>';
-
-return tableHTML;
+return rollDice(numDice, sides) + modifier; // Roll dice and apply modifier
 }
 
-function makeScores(npcClass){
+// Check for ranges (e.g., "3-3")
+const rangeMatch = hit.match(/^(\d+)-(\d+)$/);
+if (rangeMatch) {
+const min = parseInt(rangeMatch[1]);
+const max = parseInt(rangeMatch[2]);
+const numDice = max; // Use the max as the number of d8s
+return rollDice(numDice, 8) - min; // Roll numDice d8 and subtract min
+}
 
+// If none of the above matches, return 0 as a fallback
+return 0;
+}
+
+function updateNPC(obj){
+
+// Update Ability Score Modifiers
+for (const score in obj.ability){
+obj.ability[score].modifier = getModifiers(obj.ability[score].score)
+}
+
+// Attack Bonuses
+console.log(obj.class, obj.level)
+let attackBonus =  readClassTables(obj.class, obj.level, 'attackBonus');
+let meleeBonus = attackBonus + obj.ability.str.modifier;
+let rangedBonus = attackBonus + obj.ability.dex.modifier;
+
+let hitDice = readClassTables(obj.class, obj.level, 'hitDice');
+let hitPoints = parseHitPoints(hitDice);
+
+obj.combat = {
+"Hit Points": hitPoints,
+"Attack Bonus": attackBonus,
+"Melee Bonus": meleeBonus,
+"Ranged Bonus": rangedBonus,
+}
+
+// XP (example, you can adjust or remove)
+obj.xp = readClassTables(obj.class + 1, obj.level, 'attackBonus');
+
+// Saving Throws
+obj.savingThrows = getSaveThrows(obj.class, parseInt(obj.level), obj.race);
+
+// // Spells
+obj.spells = getSpells(obj.class, obj.level);
+
+// Skills
+obj.skills = getSkills(obj.class, parseInt(obj.level));
+
+
+
+
+
+console.log(obj)
+
+}
+
+function makeScores(npcClass) {
 const scoreNames = ["str", "dex", "int", "wis", "con", "cha", "soc", "psy", "luk"];
-let scores = [];
+const scores = {};
 
-scoreNames.forEach(scoreName => {
-
-let prime
-
-switch (npcClass) {
-
-case 'Fighter':
-prime = 'str'
-break;
-
-case 'Thief':
-prime = 'dex'
-break;
-
-case 'Cleric':
-prime = 'wis'
-break;
-
-case 'Mage':
-prime = 'int'
-break;
-
+// Determine the prime stat for the class (case-insensitive)
+let prime;
+switch (npcClass.toLowerCase()) {
+case 'fighter':
+prime = 'str'; break;
+case 'thief':
+prime = 'dex'; break;
+case 'cleric':
+prime = 'wis'; break;
+case 'mage':
+prime = 'int'; break;
 default:
+prime = null;
 }
 
-let score = 0;
-let bonus = 0;
-
+scoreNames.forEach((scoreName,i) => {
+let score;
 if (prime === scoreName) {
-// Generate scores from 13 to 18
-score = Math.floor(Math.random() * (6)) + 13; // This gives scores 13-18
+score = Math.floor(Math.random() * 6) + 13; // 13-18
 } else {
-score = Math.floor(Math.random() * (12)) + 7;
+score = Math.floor(Math.random() * 12) + 7; // 7-18
 }
 
+// Find bonus from modifiers array
+let bonus = getModifiers(score)
 
 
+scores[scoreName] = { ability: scoreName, score: score, modifier: bonus };
+});
+
+return scores;
+}
+
+function getModifiers(score){
+
+let bonus = 0
 
 for (const entry of modifiers) {
 if (score >= entry.range.min && score <= entry.range.max) {
 bonus = entry.bonus;
+break;
 }
 }
 
+return bonus
 
-scores.push({name: scoreName, score: score, bonus: bonus})
+}
 
-})
+function getAbilityBonus(abilityShortName) {
+  const scoreObj = this.scores[abilityShortName];
+  return scoreObj ? scoreObj.bonus : 0;
+  }
 
-return scores;
+function renderNPC(npc) {
+let HTML = '<table border="none" class="table">';
 
+// Header row
+HTML += `<tr>
+<td contenteditable="false" tabindex="0" class="tableCell tableHeader"><b>${npc.name}</b></td>
+<td contenteditable="false" tabindex="0" class="tableCell tableHeader"><b>Level ${npc.level} ${npc.race} ${npc.class}</b></td>
+</tr>`;
+
+// Stats column
+HTML += '<tr><td contenteditable="false" tabindex="0" class="tableCell">';
+HTML += `HP: (${npc.hitDice}) ${npc.hitPoints} <br>`;
+HTML += `Melee: +${npc.melee}  Ranged: +${npc.ranged}  <br><br>`;
+
+for(const score in npc.scores){
+
+let scoreNumber = npc.scores[score].score
+let scoreBonus = npc.scores[score].bonus
+
+HTML += `${score.toUpperCase()}: ${scoreNumber} (${scoreBonus})<br>`;
+
+}
+
+
+// Saving Throws
+if (npc.savingThrows) {
+console.log(npc.savingThrows)
+HTML += '<br><u>Saving Throws:</u><br>';
+
+for(const saveThrow in npc.savingThrows){
+
+const name = toTitleCase(saveThrow)
+const score = npc.savingThrows[saveThrow].score
+const bonus = npc.savingThrows[saveThrow].bonus
+
+console.log(name, score, bonus)
+
+HTML += `${name}: ${score} (${bonus})<br>`;
+
+}
+
+}
+
+HTML += '</td>';
+
+// Skills, Spells, Loot column
+HTML += '<td contenteditable="false" tabindex="0" class="tableCell">';
+
+if (npc.skills) {
+HTML += '<u>Skills:</u><br>';
+Object.entries(npc.skills).forEach(([key, val]) => {
+if (key !== 'level') {
+const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+HTML += `${formattedKey}: ${val}<br>`;
+}
+});
+HTML += '<br><br>';
+}
+
+if (npc.spells) {
+HTML += '<u>Spells:</u><br>';
+npc.spells.forEach(spell => {
+HTML += `${spell.name}<br>`;
+});
+HTML += '<br><br>';
+}
+
+HTML += '<u>Loot:</u><br>';
+HTML += npc.loot;
+
+HTML += '</td></tr></table><br>';
+
+return HTML;
+}
+
+function makeNPC(race, npcClass, level, npcName) {
+
+const npc = new NPC(race, npcClass, level, npcName)
+const HTML = renderNPC(npc)
+
+return HTML;
 }
 
 function readClassTables(npcClass, level, lookUp){
-
-
-
 
 let classKey = npcClass.toLowerCase();
 
@@ -594,7 +614,9 @@ const classTable = classTables[classKey];
 
 if (classTable) {
 
-const entry = classTable.find(row => row.level === level);
+  console.log(classTable)
+
+const entry = classTable.find(row => row.level === parseInt(level));
 
 return entry[lookUp] || null; // Return the found entry or null if not found
 } else {
@@ -604,32 +626,32 @@ return null; // Handle invalid class
 }
 
 function getSaveThrows(npcClass, level, race) {
-    let classKey = npcClass.toLowerCase();
-    if (classKey === 'ranger') { classKey = 'fighter'; }
-    if (classKey === 'assassin') { classKey = 'thief'; }
+let classKey = npcClass.toLowerCase();
+if (classKey === 'ranger') { classKey = 'fighter'; }
+if (classKey === 'assassin') { classKey = 'thief'; }
 
-    let raceKey = !race ? 'human' : race.toLowerCase();
+const classTable = savingThrows[classKey];
+let classEntry = classTable.find(row => parseInt(row.level) === parseInt(level));
+const raceEntry = races[toTitleCase(race)];
 
-    const classTable = savingThrows[classKey];
-    const raceTable = races.find(r => r.race === raceKey);
+if (classEntry && raceEntry) {
 
-    if (classTable && raceTable) {
-        let entry = classTable.find(row => row.level === level);
+let savingThrows = {};
 
-        // Add Race Bonuses to Saving Throws
-        for (const key in entry) {
-            if (entry.hasOwnProperty(key) && key !== 'level') {
-                let bonus = raceTable[key];
-                if (bonus) {
-                    entry[key] += ` (+${bonus})`;
-                }
-            }
-        }
+// Add Race Bonuses to Saving Throws
+for (const key in classEntry) {
+if (key !== 'level') {                            
+savingThrows[key] = {savingThrows: key, score: classEntry[key], bonus: raceEntry[key]}
 
-        return entry || null; // Return the found entry or null if not found
-    } else {
-        return null; // Handle invalid class or race
-    }
+}
+}
+
+console.log(savingThrows)
+
+return savingThrows || null; // Return the found entry or null if not found
+} else {
+return null; // Handle invalid class or race
+}
 }
 
 function getSkills(npcClass, level){
@@ -661,7 +683,7 @@ count: count
 
 // Create a set to track used spells and an array to hold the selected spells
 const usedSpells = new Set();
-const selectedSpells = [];
+const selectedSpells = {};
 
 // Loop through each spell level in the spellSlots array
 spellSlots.forEach(spellLevelData => {
@@ -675,8 +697,8 @@ return;
 
 
 // Filter spells based on class, current spell level, and ensure they haven't been used
-const availableSpells = spells.filter(entry => 
-entry.class === classProper && parseInt(entry.level) === spellLevel && !usedSpells.has(entry.name));
+const availableSpells = spells[classProper].filter(entry => 
+parseInt(entry.level) === spellLevel && !usedSpells.has(entry.name));
 
 // Randomly select spells based on the number of slots available at this level
 for (let i = 0; i < numberOfSpellsAtLevel; i++) {
@@ -690,7 +712,7 @@ const randomIndex = Math.floor(Math.random() * availableSpells.length);
 const chosenSpell = availableSpells[randomIndex];
 
 // Add the chosen spell to the selected spells array and mark it as used
-selectedSpells.push(chosenSpell);
+selectedSpells[chosenSpell.name] = {spell: chosenSpell.name, level: chosenSpell.level};
 usedSpells.add(chosenSpell.name);
 
 // Remove the chosen spell from available spells to avoid duplicates
@@ -698,13 +720,15 @@ availableSpells.splice(randomIndex, 1);
 }
 });
 
+console.log(selectedSpells)
+
 return selectedSpells; // Return the array of selected spells
 }
 
 
 
 
- 
+
 
 
 

@@ -416,7 +416,7 @@ textDiv.focus();
 placeCaretAtEnd(textDiv)
 };
 
-formatTables();
+updateTables();
 saveData();
 
 }

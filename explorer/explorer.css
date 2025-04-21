@@ -1,4 +1,4 @@
-#journal {
+#explorer {
     width: 100%;
     height: 100%;
     background-color: none;  
@@ -7,22 +7,22 @@
     color: var(--mode-color);
 }
 
-#journal-id{
+#explorer-id{
     position: fixed;
     bottom: 0;
     right: 0;
 }
 
 
-#journal-entry-name:read-only {
+#explorer-entry-name:read-only {
     background-color: black
 }
 
-#journal h4{
+#explorer h4{
     padding-bottom: 10px;
 }
 
-#journal hr {
+#explorer hr {
     color: var(--mode-color); /* Optional, but not necessary for <hr> */
     border: none; /* Remove the default border */
     border-top: 1px dashed var(--mode-color); /* Set a dotted top border with the dynamic color */
@@ -31,7 +31,7 @@
     width: 95%;
 }
 
-#journal-sidebar{
+#explorer-sidebar{
     float: left;
     margin-right: 1%;
     border-right: 1px solid var(--mode-color);
@@ -41,48 +41,48 @@
     overflow-y: scroll
 }
 
-#journal-sidebar::-webkit-scrollbar {
+#explorer-sidebar::-webkit-scrollbar {
     width: 5px;
 }
 
 
-#journal-sidebar::-webkit-scrollbar:horizontal {
+#explorer-sidebar::-webkit-scrollbar:horizontal {
     height: 10px;
 }
 
-#journal-sidebar::-webkit-scrollbar-corner {
+#explorer-sidebar::-webkit-scrollbar-corner {
     background: black;
 }
 
-#journal-sidebar::-webkit-scrollbar-track {
+#explorer-sidebar::-webkit-scrollbar-track {
     background: rgb(65, 77, 65);
 }
 
-#journal-sidebar::-webkit-scrollbar-thumb {
+#explorer-sidebar::-webkit-scrollbar-thumb {
     background: var(--mode-color-trans);
     border-radius: 2px;
 }
 
-#journal-sidebar::-webkit-scrollbar-thumb:hover {
+#explorer-sidebar::-webkit-scrollbar-thumb:hover {
     background: var(--mode-color);
 }
 
-#journal-sidebar a {
+#explorer-sidebar a {
     display: block;
     text-decoration: none;
     margin-bottom: 10px;
 }
 
-#journal-sidebar a:hover {
+#explorer-sidebar a:hover {
     text-decoration: underline;
 }
 
-#journal-top{
+#explorer-top{
     width: 64%;
     height: 5%;
 }
 
-    #journal-entry-name{
+    #explorer-entry-name{
         position: absolute;
         width: 70%;
         background-color:transparent;
@@ -117,7 +117,7 @@
 
     }
 
-#journal-bottom{
+#explorer-bottom{
 display: flex;
 width:84%;
 height:93%;
@@ -125,7 +125,7 @@ overflow-y: auto;
 overflow-x: auto;
 }
 
-#journal-left{
+#explorer-left{
     width: 55%;
     height: 100%;
     background-color: transparent;
@@ -134,7 +134,7 @@ overflow-x: auto;
     margin-right: 1%;
 }
 
-#journal-right{
+#explorer-right{
     right: 1%;
     width: 48%;
     height: 100%;
@@ -144,52 +144,52 @@ overflow-x: auto;
     
 }
 
-#journal-left[contenteditable="false"],
-#journal-right[contenteditable="false"] {
+#explorer-left[contenteditable="false"],
+#explorer-right[contenteditable="false"] {
     cursor: default;
     }
 
 
-#journal-right,
-#journal-left,
-#journal-entry-name,
+#explorer-right,
+#explorer-left,
+#explorer-entry-name,
 #scaleSelector:focus,
 .inputBox:focus {
 outline: none;
 }
 
-#journal h2{
+#explorer h2{
     font-family: 'SoutaneBlack';
 }
 
-#journal-entry-name:read-only {
+#explorer-entry-name:read-only {
 background-color: black; 
 }
 
 
-#journal-bottom::-webkit-scrollbar {
+#explorer-bottom::-webkit-scrollbar {
     width: 10px;
 }
 
 
-#journal-bottom::-webkit-scrollbar:horizontal {
+#explorer-bottom::-webkit-scrollbar:horizontal {
     height: 10px;
 }
 
-#journal-bottom::-webkit-scrollbar-corner {
+#explorer-bottom::-webkit-scrollbar-corner {
     background: black;
 }
 
-#journal-bottom::-webkit-scrollbar-track {
+#explorer-bottom::-webkit-scrollbar-track {
     background: rgb(65, 77, 65);
 }
 
-#journal-bottom::-webkit-scrollbar-thumb {
+#explorer-bottom::-webkit-scrollbar-thumb {
     background: var(--mode-color-trans);
     border-radius: 2px;
 }
 
-#journal-bottom::-webkit-scrollbar-thumb:hover {
+#explorer-bottom::-webkit-scrollbar-thumb:hover {
     background: var(--mode-color);
 }
 
@@ -203,7 +203,7 @@ background-color: black;
     outline: none;
 }
 
-.journal-entry-container {
+.explorer-entry-container {
     display: flex;
     align-items: center;
 }

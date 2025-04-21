@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="left.css">
     <link rel="stylesheet" href="nav.css">
     <link rel="stylesheet" href="popup.css">
-    <link rel="stylesheet" href="journal/journal.css">
+    <link rel="stylesheet" href="explorer/explorer.css">
 </head>
 <body id="body">
 
@@ -93,21 +93,21 @@
             
             <img id="startLogo" src="img/logo.gif"/>
             
-            <div id="journal">
+            <div id="explorer">
 
-                <div id="journal-sidebar">
+                <div id="explorer-sidebar">
                 </div>
                 
-                <div id="journal-id"></div>
+                <div id="explorer-id"></div>
                 
-                <div id="journal-top">
-                    <input id="journal-entry-name" autocomplete="off" disabled="true" maxlength="28">
+                <div id="explorer-top">
+                    <input id="explorer-entry-name" autocomplete="off" disabled="true" maxlength="28">
                     <select id="scaleSelector" class="inputBox"></select> 
                 </div>
                                
-                <div id="journal-bottom">
-                    <div id="journal-left"></div>
-                    <div id="journal-right"></div>
+                <div id="explorer-bottom">
+                    <div id="explorer-left"></div>
+                    <div id="explorer-right"></div>
                 </div>
             </div>
                 
@@ -133,6 +133,7 @@
     </footer>
 
     <!-- Link to external JavaScript file -->
+    <script src="data/EXCEL_DM.js"></script>
     <script src="mousetrap.min.js"></script>
     <script src="dice.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -141,7 +142,6 @@
     <script src="soundBoard.js"></script>
     <script src="left/worldGen.js"></script>
     <script src="main.js"></script>
-    <script src="data/items.js"></script>
     <script src="data/monsters.js"></script>
     <script src="data/spells.js"></script>
     <script src="tables/tables.js"></script>
@@ -161,9 +161,9 @@
     <script src="left/monsters.js"></script>
     <script src="left/spells.js"></script>
     <script src="left/npcs.js"></script>
-    <script src="journal/dropdown.js"></script>
-    <script src="journal/settingsMenu.js"></script>
-    <script src="journal/journal.js"></script>
+    <script src="explorer/dropdown.js"></script>
+    <script src="explorer/settingsMenu.js"></script>
+    <script src="explorer/explorer.js"></script>
    
   
 </body>

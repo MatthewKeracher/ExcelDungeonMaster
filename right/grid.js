@@ -59,9 +59,9 @@ updateGrid();
 function deleteTile(){
            
 const idBox = document.getElementById('idBox');
-const index = data.findIndex(entry => entry.id === idBox.textContent);
+const index = EXCEL_DM.map.data.findIndex(entry => entry.id === idBox.textContent);
 
-data.splice(index, 1)
+EXCEL_DM.map.data.splice(index, 1)
 loadGrid();
 saveData();
 

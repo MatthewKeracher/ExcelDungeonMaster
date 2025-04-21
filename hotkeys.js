@@ -2,7 +2,7 @@ let inputBuffer = '';
 
 Mousetrap.bind('>', function() {
 
-if(!journalShowing){
+if(!explorerShowing){
 
 const logo = document.getElementById("startLogo");
 logo.style.display = "none";
@@ -35,7 +35,7 @@ goToEntry(regionObj.id);
 
 Mousetrap.bind('<', function() {
 
-if(!journalShowing){
+if(!explorerShowing){
 
 //Move scrollbar to be over regionObj
 scrollData = regionObj.scrollData
@@ -83,31 +83,31 @@ clipZone();
 
 Mousetrap.bind(['w', 'i'], function() { 
 if (isImaging) {moveImage('up')}
-else if (isHexMap && !journalShowing) moveHex('up');
-else if (!isHexMap && !journalShowing) moveFocus('up');
+else if (isHexMap && !explorerShowing) moveHex('up');
+else if (!isHexMap && !explorerShowing) moveFocus('up');
 });   
 Mousetrap.bind(['a', 'j'], function() { 
 if (isImaging) {moveImage('left')}
-else if (isHexMap && !journalShowing) moveHex('down-left');
-else if (!isHexMap && !journalShowing) moveFocus('left');
+else if (isHexMap && !explorerShowing) moveHex('down-left');
+else if (!isHexMap && !explorerShowing) moveFocus('left');
 });  
 Mousetrap.bind(['s', 'k'], function() { 
 if (isImaging) {moveImage('down')}
-else if (isHexMap && !journalShowing) moveHex('down');
-else if (!isHexMap && !journalShowing) moveFocus('down');
+else if (isHexMap && !explorerShowing) moveHex('down');
+else if (!isHexMap && !explorerShowing) moveFocus('down');
 });   
 Mousetrap.bind(['d', 'l'], function() { 
 if (isImaging) {moveImage('right')}
-else if (isHexMap && !journalShowing) moveHex('down-right');
-else if (!isHexMap && !journalShowing) moveFocus('right');
+else if (isHexMap && !explorerShowing) moveHex('down-right');
+else if (!isHexMap && !explorerShowing) moveFocus('right');
 });   
 Mousetrap.bind(['q', 'u'], function() { 
 if (isImaging) {sizeImage('decrease')}    
-else if (isHexMap && !journalShowing) moveHex('up-left');  
+else if (isHexMap && !explorerShowing) moveHex('up-left');  
 });   
 Mousetrap.bind(['e', 'o'], function() {  
 if (isImaging) {sizeImage('increase')}    
-else if (isHexMap && !journalShowing) moveHex('up-right');
+else if (isHexMap && !explorerShowing) moveHex('up-right');
 });     
 Mousetrap.bind('p', function() {  
 handlePaint();
@@ -133,20 +133,20 @@ switch (currentMode){
 case 'map':
 e.preventDefault(); 
 currentMode = 'command';
-toggleModes(journalShowing? e.target: '');  
+toggleModes(explorerShowing? e.target: '');  
 break;
 
 case 'edit':
 
 e.preventDefault(); 
 currentMode = 'command';
-toggleModes(journalShowing? e.target: '');  
+toggleModes(explorerShowing? e.target: '');  
 
 break;
 
 case 'command':
 e.preventDefault(); 
-expandConsole(journalShowing? e.target: '');
+expandConsole(explorerShowing? e.target: '');
 
 }
 });
@@ -252,7 +252,7 @@ Mousetrap.bind('n', function(e) {
 e.preventDefault();  
 currentMode = 'edit';
 toggleModes();
-if(!journalShowing){
+if(!explorerShowing){
 placeName.focus();
 placeName.select();}
 });
@@ -260,7 +260,7 @@ Mousetrap.bind('y', function(e) {
 e.preventDefault();  
 currentMode = 'edit';
 toggleModes();
-if(!journalShowing){
+if(!explorerShowing){
 placeSymbol.focus();
 placeSymbol.select();}
 });
@@ -281,7 +281,7 @@ changeZoom('in');
 
 Mousetrap.bind('del', function() { 
 let currentCell = getCurrentDiv()
-if(!journalShowing){
+if(!explorerShowing){
 if(currentCell.classList.contains('inZone')){
 removeCellFromZone(currentCell)
 }else{
@@ -357,7 +357,7 @@ break; // Stop once the first unchecked is clicked
 // turnNumberElement.textContent = `Turn Number: ${filledBoxes}`;
 
 // if (filledBoxes % 2 !== 0) {
-// getRandomEncounters(journalRight);
+// getRandomEncounters(explorerRight);
 // }
 
 saveJournalKnot()

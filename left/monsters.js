@@ -110,7 +110,7 @@ function getMonsterSave(saveAs) {
         // Look up the saving throw values in the save object
         if (savingThrows[monsterClass] && savingThrows[monsterClass][level]) {
             const save = savingThrows[monsterClass][level];
-            return `Death Ray: ${save.deathRay}<br>Magic Wands: ${save.magicWands}<br>Paralysis: ${save.paralysisPetrify}<br>Dragon Breath: ${save.dragonBreath}<br>Spells: ${save.spells}`;
+            return `Death Ray: ${save.DR}<br>Magic Wands: ${save.MW}<br>Paralysis: ${save.PP}<br>Dragon Breath: ${save.DB}<br>Spells: ${save.spells}`;
         }
     }
 

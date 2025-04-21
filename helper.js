@@ -55,34 +55,7 @@ textDiv.innerHTML = "";
 }
 
 function collectGarbage() {
-    const totalTrash = data.length;
-    //data = data.filter(entry => entry.rows !== null || entry.cols !== null);
-    
-    
 
-    // let i = 0
-
-    // data.forEach(entry => {
-    //     if (entry.palette === defaultData.palette) {
-            
-    //         delete entry.palette;
-    //         i++
-    //     }
-    // });
-
-
-
-    const coordCount = {};
-    data.forEach(entry => {
-        if (coordCount[entry.coords]) {
-            coordCount[entry.coords]++;
-        } else {
-            coordCount[entry.coords] = 1;
-        }
-    });
-
-    const duplicateCount = Object.values(coordCount).filter(count => count > 1).length;
-    
 }
 
 function scrollConvert(input, option, X) {
@@ -103,11 +76,11 @@ const totalPixels = X === 'X'? grid.scrollWidth :  grid.scrollHeight;
 
 function getObj(coords){
 
-let obj = data.find(entry => entry.id === coords)
+let obj = EXCEL_DM.map.data.find(entry => entry.id === coords)
 
 if(obj === undefined){
 makeNewEntry();
-obj = data.find(entry => entry.id === coords);
+obj = EXCEL_DM.map.data.find(entry => entry.id === coords);
 }
 
 currentObj = obj;
@@ -138,7 +111,7 @@ function getCurrentEntry(){
 
     let id = idBox.textContent;
 
-    const entry = data.find(entry => entry.id === id)
+    const entry = EXCEL_DM.map.data.find(entry => entry.id === id)
     
     return entry;
     
@@ -337,7 +310,7 @@ function delMap(){
     const col = hex.getAttribute('col');
     const id = coords + '.' + row + '.' + col;
     
-    data = data.filter(entry => entry.id !== id);
+    EXCEL_DM.map.data = EXCEL_DM.map.data.filter(entry => entry.id !== id);
     
     })
 
@@ -395,7 +368,7 @@ const row = hex.getAttribute('row');
 const col = hex.getAttribute('col');
 const id = coords + '.' + row + '.' + col;
 
-const exists = data.find(entry => entry.id === id);
+const exists = EXCEL_DM.map.data.find(entry => entry.id === id);
 
 const rand = rollContent();
 
@@ -421,7 +394,7 @@ const saveEntry = {
     }
       
     
-    data.push(saveEntry);
+    EXCEL_DM.map.data.push(saveEntry);
     gened.push(saveEntry)
 
 }

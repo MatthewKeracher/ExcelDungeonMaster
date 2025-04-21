@@ -12,12 +12,12 @@ break;
 case "Items":
 
     entryName.value = toTitleCase(obj.name);
-    journalLeft.innerHTML = "";
-    journalRight.innerHTML = "";
-    journalId.textContent = "X";
+    explorerLeft.innerHTML = "";
+    explorerRight.innerHTML = "";
+    explorerId.textContent = "X";
 
     let table = categoryTable(obj.name, 1.3, "itemsTable");
-    journalLeft.appendChild(table)
+    explorerLeft.appendChild(table)
    
 
 break;
@@ -47,10 +47,10 @@ function createSettingContainer(labelText) {
 
 function makeLocationSettings(obj){
     entryName.value = toTitleCase(obj.name);
-    journalLeft.innerHTML = "";
-    journalRight.innerHTML = "";
+    explorerLeft.innerHTML = "";
+    explorerRight.innerHTML = "";
     scaleSelector.value = obj.id;
-    journalId.textContent = "X";
+    explorerId.textContent = "X";
 
     if(!obj.settings) {obj.settings = { // Default settings
         inflation: 1, 
@@ -62,46 +62,46 @@ function makeLocationSettings(obj){
     }} 
     
     const contextSetting = makeDropdownSetting(obj, obj.settings, "context", contexts)
-    journalRight.appendChild(contextSetting)
+    explorerRight.appendChild(contextSetting)
     
     if(obj.settings.context === "Workshop"){
 
     const itemsTable = makeDropdownSetting(obj, obj.settings, "workshop", EXCEL_DM.journal.Items);
-    journalRight.appendChild(itemsTable);
+    explorerRight.appendChild(itemsTable);
 
     const inflationEntry = makeInputSetting(obj, obj.settings, "inflation", {type: "number"});
-    journalRight.appendChild(inflationEntry);
+    explorerRight.appendChild(inflationEntry);
 
     let shopStock = categoryTable(obj.settings.workshop, obj.settings.inflation, "workshopTable");
-    journalLeft.appendChild(shopStock);
+    explorerLeft.appendChild(shopStock);
 
     }else if(obj.settings.context === "Tavern"){
 
     makeInputSetting(obj, obj.settings, "inflation", {type: "number"});
 
     let servicesMenu = categoryTable("services", obj.settings.inflation, "servicesTable");
-    journalRight.appendChild(servicesMenu);
+    explorerRight.appendChild(servicesMenu);
 
     let drinksMenu = categoryTable("booze", obj.settings.inflation, "boozeTable");
-    journalLeft.appendChild(drinksMenu);
+    explorerLeft.appendChild(drinksMenu);
 
     let foodMenu = categoryTable("meals", obj.settings.inflation, "mealTable");
-    journalRight.appendChild(foodMenu);
+    explorerRight.appendChild(foodMenu);
 
     }else{
 
     const hexTypeEntry = makeDropdownSetting(obj, obj.settings, "hexType", encounters);
-    journalRight.appendChild(hexTypeEntry);
+    explorerRight.appendChild(hexTypeEntry);
 
     const encoutersOn = makeDropdownSetting(obj, obj.settings, "randomEncounters", {"On": [], "Off": []});
-    journalRight.appendChild(encoutersOn);
+    explorerRight.appendChild(encoutersOn);
 
     const encounterChance = makeInputSetting(obj, obj.settings, "encounterChance", {type: "number", min: 1, max: 6});
-    journalRight.appendChild(encounterChance);
+    explorerRight.appendChild(encounterChance);
 
     const encounterTable = document.createElement('div');
     encounterTable.innerHTML = tableFromObj(encounters[obj.settings.hexType])
-    journalLeft.appendChild(encounterTable);
+    explorerLeft.appendChild(encounterTable);
 
     }
 

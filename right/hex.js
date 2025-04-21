@@ -397,7 +397,7 @@ idBox.textContent = coords + '.' + row + '.' + col
 
 emptyStoryteller()
 
-let loadEntry = data.find(entry => entry.id === idBox.textContent)
+let loadEntry = EXCEL_DM.map.data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
 textDiv.innerHTML = getWeather()
@@ -429,7 +429,7 @@ hexagons.forEach(hex => {
 const col = hex.getAttribute('col');
 const row = hex.getAttribute('row');
 const id =  coords + '.' + row + '.' + col;
-const saveEntry = data.find(entry => entry.id === id);
+const saveEntry = EXCEL_DM.map.data.find(entry => entry.id === id);
 
 if(saveEntry){
 updateCellColors(hex, saveEntry);

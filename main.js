@@ -2,32 +2,16 @@
 let defaultRows = 30;
 let defaultCols = 42;
 
-let defaultData = [{
-  id: "0.0",
-  symbol: "🌎",
-  name: "Your World",
-  desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap. For a full list of hotkeys use the command [`] 'help'.",
-  rows: defaultRows,
-  scrollData: {X: 50, Y:50, Z:1},
-  cols: defaultCols, 
-  palette: [
-    { id: "color1", color: "rgb(57, 128, 60)" },
-    { id: "color2", color: "rgb(33, 113, 129)" },
-    { id: "color3", color: "rgb(16, 77, 23)" },
-    { id: "color4", color: "rgb(101, 69, 39)" },
-    { id: "color5", color: "rgb(124, 72, 144)" },
-    { id: "color6", color: "rgb(117, 122, 41)" },
-    { id: "color7", color: "rgb(12, 95, 83)" },
-    { id: "color8", color: "rgb(88, 83, 86)" },
-    { id: "color9", color: "rgb(185, 192, 162)" },
-  ]
-  }];
+let EXCEL_DM = createEXCEL_DM();
 
-let data = defaultData;
+let items = EXCEL_DM.journal.Items;
+let monsters = EXCEL_DM.system.monsters;
+let spells = EXCEL_DM.system.spells;
+let system = EXCEL_DM.system;
 
-let coords = data[0].id;
-let region = data[0].name;
-let regionObj = data[0];
+let coords = EXCEL_DM.map.data[0].id;
+let region = EXCEL_DM.map.data[0].name;
+let regionObj = EXCEL_DM.map.data[0];
 let season = "Spring"
 let turnNumber = 0;
 let weather = null;
@@ -54,7 +38,7 @@ let isMoving = false;
 let parentToMove = null;
 let childrenToMove = null;
 let zonesToMove = null;
-let journalToMove = null;
+let explorerToMove = null;
 
 let defaultColour = "rgb(6, 5, 5)"; //for Empty Grid Cells
 let eraser = document.getElementById('eraser')
@@ -68,16 +52,16 @@ const weatherVein = document.getElementById('weatherVein');
 const mapScale = document.getElementById('mapScale');
 
 
-//journal Divs
-let journalData = [];
-let journalShowing = false;
+//explorer Divs
+let explorerData = [];
+let explorerShowing = false;
 const grid = document.getElementById('gridImageContainer');
-const entryName = document.getElementById('journal-entry-name');
-const journalDiv = document.getElementById('journal');
-const journalSideBar = document.getElementById('journal-sidebar');
-const journalLeft = document.getElementById('journal-left');
-const journalRight = document.getElementById('journal-right');
-const journalId = document.getElementById('journal-id');
+const entryName = document.getElementById('explorer-entry-name');
+const explorerDiv = document.getElementById('explorer');
+const explorerSideBar = document.getElementById('explorer-sidebar');
+const explorerLeft = document.getElementById('explorer-left');
+const explorerRight = document.getElementById('explorer-right');
+const explorerId = document.getElementById('explorer-id');
 const scaleSelector = document.getElementById('scaleSelector');
 
 const promptBox = document.getElementById('promptBox');
@@ -88,7 +72,7 @@ const promptMsg = document.getElementById('promptMsg');
 // placeSymbol.value = "⚅"
 // textDiv.innerHTML = ``;
 
-journalDiv.style.display = 'none';
+explorerDiv.style.display = 'none';
 
 function changeDJ(string){
   nowPlaying.innerHTML = "";

@@ -98,10 +98,10 @@ if(currentMode){ //Default State
 commandLine.style.display = "none";
 
 entryName.disabled = true;   //Journal
-journalLeft.disabled = true;
-journalRight.disabled = true;
-journalLeft.contentEditable = false;
-journalRight.contentEditable = false;
+explorerLeft.disabled = true;
+explorerRight.disabled = true;
+explorerLeft.contentEditable = false;
+explorerRight.contentEditable = false;
 
 placeName.disabled = true; //leftPanel
 placeSymbol.disabled = true;
@@ -120,19 +120,19 @@ if (currentMode === "edit") {
         textDiv.contentEditable = true;
         
         entryName.disabled = false; //Journal
-        journalLeft.disabled = false;
-        journalRight.disabled = false;
-        journalLeft.contentEditable = true;
-        journalRight.contentEditable = true;
+        explorerLeft.disabled = false;
+        explorerRight.disabled = false;
+        explorerLeft.contentEditable = true;
+        explorerRight.contentEditable = true;
 
         updateTables();
 
-                if(journalShowing){
+                if(explorerShowing){
 
-                trapFocus([journalLeft, journalRight]);
+                trapFocus([explorerLeft, explorerRight]);
 
                 if(entryName.value !== ""){
-                journalLeft.focus()
+                explorerLeft.focus()
                 }else{
                 entryName.focus();
                 }
@@ -173,8 +173,8 @@ if (currentMode === "edit") {
         placeName.blur();
         placeSymbol.blur();
 
-            if(journalShowing){
-             journalSideBar.focus();
+            if(explorerShowing){
+             explorerSideBar.focus();
             }else{
              textDiv.focus();
             }

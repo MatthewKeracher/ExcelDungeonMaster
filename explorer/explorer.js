@@ -9,14 +9,14 @@ logo.style.display = "none";
 
 if(grid.style.display === 'none'){
 grid.style.display = 'block';
-journal.style.display = 'none';
-journalShowing = false;
+explorer.style.display = 'none';
+explorerShowing = false;
 
 }else{
 
 grid.style.display = 'none';
-journal.style.display = 'block';
-journalShowing = true;
+explorer.style.display = 'block';
+explorerShowing = true;
 
 }
 
@@ -77,7 +77,7 @@ locationObj.journal.push(entry);
 
 function loadJournal() { 
 // Clear
-journalSideBar.innerHTML = '';
+explorerSideBar.innerHTML = '';
 const scaleSelector = document.getElementById('scaleSelector');
 scaleSelector.innerHTML = '';
 
@@ -87,7 +87,7 @@ if(!obj.name && !obj.journal){return};
 if(!obj.journal){obj.journal = []}
 let subHeadLink = createSubHeaderLink("hotpink", obj, "Locations");
 addToDropdown(obj.name, obj.id, "hotpink", true)
-journalSideBar.appendChild(subHeadLink);
+explorerSideBar.appendChild(subHeadLink);
 
 // let entriesHere = EXCEL_DM.journal.Locations.filter(entry => entry.scale === obj.id)
 let entriesHere = obj.journal;
@@ -97,19 +97,19 @@ if(!entry.name){entry.name = "Untitled Entry"};
 
 
 const linkWrapper = createEntryLink(entry, obj.name, obj.id);
-journalSideBar.appendChild(linkWrapper);
+explorerSideBar.appendChild(linkWrapper);
 })
 }
 
 
-function addJournalEntries(data){ 
+function addJournalEntries(data, headerColor){ 
 
 for (const key in data) {
 
-let headerLink = createHeaderLink("gold", key);
-addToDropdown(key, "parent", "gold", false)
+let headerLink = createHeaderLink(headerColor, key);
+addToDropdown(key, "parent", headerColor, false)
 
-journalSideBar.appendChild(headerLink);
+explorerSideBar.appendChild(headerLink);
 
 
 if(key === "Locations"){
@@ -128,7 +128,7 @@ addRegionEntries(currentObj)
 }else if(key !== "Favourites"){
 
 const addNewButton = createAddNewButton(key, ["parent", key].join('.'));
-journalSideBar.appendChild(addNewButton);
+explorerSideBar.appendChild(addNewButton);
 
 }
 
@@ -143,14 +143,14 @@ obj.id = getNewJournalId(EXCEL_DM.journal, obj);
 if(key === "Locations"){continue} //Skip Locations
 
 const linkWrapper = createEntryLink(obj, key, ["parent", key].join('.'));
-journalSideBar.appendChild(linkWrapper);
+explorerSideBar.appendChild(linkWrapper);
 
 
 }else{ 
 
 let subHeadLink = createSubHeaderLink("cyan", {name: subKey}, key);
 addToDropdown(subKey, key, "cyan", false)
-journalSideBar.appendChild(subHeadLink);
+explorerSideBar.appendChild(subHeadLink);
 
 for (const index in data[key][subKey]) {
 
@@ -158,7 +158,7 @@ const obj = data[key][subKey][index];
 obj.id = getNewJournalId(EXCEL_DM.journal, obj);
 
 const linkWrapper = createEntryLink(obj, subKey, [key, subKey].join('.'));
-journalSideBar.appendChild(linkWrapper);
+explorerSideBar.appendChild(linkWrapper);
 
 }
 
@@ -167,21 +167,22 @@ journalSideBar.appendChild(linkWrapper);
 }
 }
 
-addJournalEntries(EXCEL_DM.journal); 
+addJournalEntries(EXCEL_DM.journal, "gold"); 
+addJournalEntries(EXCEL_DM.system, "orange"); 
 
 
 focusOnTargetEntry();
 addKeyboardNavigation();
 
 entryName.disabled = true;
-journalLeft.disabled = true;
-journalRight.disabled = true;
-journalLeft.contentEditable = false;
-journalRight.contentEditable = false;
+explorerLeft.disabled = true;
+explorerRight.disabled = true;
+explorerLeft.contentEditable = false;
+explorerRight.contentEditable = false;
 
 try{
 
-if(journal.style.display === "none"){
+if(explorer.style.display === "none"){
 
 let currentLocation = document.getElementById(idBox.textContent);
 
@@ -351,30 +352,31 @@ function createAddNewButton(parent, selectValue) {
 function loadJournalEntry(obj, selectValue){
 
 
-    journalLeft.innerHTML = ``;
-    journalRight.innerHTML = ``;
+    explorerLeft.innerHTML = ``;
+    explorerRight.innerHTML = ``;
     
     const address = parseAddress(selectValue);
+    console.log(address)
 
     scaleSelector.style.display = "block";
     scaleSelector.value = selectValue;
     lastDropdownValue = getDropdownValue();
     entryName.value = obj.name;
-    journalId.textContent = obj.id;
+    explorerId.textContent = obj.id;
     
-    if(address.parent === "Items" || address.parent === "Monsters" || address.parent === "Spells" || address.child === "People") {
+    if(address.parent === "Items" || address.child === "monsters" || address.parent === "spells" || address.child === "People" || address.child === "classes") {
 
     if(address.child === "People"){
       updateNPC(obj)
    }
 
-    journalRight.innerHTML = tableFromObj(obj, ['name', 'description', 'id'], "objTable")
-    journalLeft.innerHTML = autoSpacing(obj.description);
+    explorerRight.innerHTML = tableFromObj(obj, ['name', 'description', 'id'], "objTable")
+    explorerLeft.innerHTML = autoSpacing(obj.description);
     
     }else {
     
-    journalLeft.innerHTML = obj.left;
-    journalRight.innerHTML = obj.right;
+    explorerLeft.innerHTML = obj.left;
+    explorerRight.innerHTML = obj.right;
     
     }
     
@@ -385,21 +387,21 @@ function loadJournalEntry(obj, selectValue){
 function makeNewJournalEntry(selectValue){
 
   entryName.value = '';
-  journalLeft.innerHTML = ``;
-  journalRight.innerHTML = ``;
+  explorerLeft.innerHTML = ``;
+  explorerRight.innerHTML = ``;
   scaleSelector.value = selectValue;
 
   lastDropdownValue = getDropdownValue();
-  journalId.textContent = getNewJournalId(EXCEL_DM.journal);
+  explorerId.textContent = getNewJournalId(EXCEL_DM.journal);
 
   const address = parseAddress(selectValue);
 
   if(address.child === "People"){
 
   entryName.value = 'New Character';
-  const obj = new NPC("human", "fighter", 1, 'New Character', journalId.textContent);  
+  const obj = new NPC("human", "fighter", 1, 'New Character', explorerId.textContent);  
   const NPCTable = tableFromObj(obj, ["id", "description", "name"], "objTable")
-  journalRight.innerHTML = NPCTable;
+  explorerRight.innerHTML = NPCTable;
 
   //console.log(obj)
         
@@ -411,7 +413,7 @@ function makeNewJournalEntry(selectValue){
 }
 
 function focusOnTargetEntry() {
-let targetId = journalId.textContent;
+let targetId = explorerId.textContent;
 if (targetId) {
 const targetElement = document.getElementById(targetId);
 if (targetElement) {
@@ -425,7 +427,7 @@ const entryLinks = document.querySelectorAll('.entryLink');
 
 document.addEventListener('keydown', (e) => {
 // Check if the current mode is 'map' and journal is showing
-if (currentMode === 'map' && journalShowing) {
+if (currentMode === 'map' && explorerShowing) {
 const currentFocus = document.activeElement;
 
 // Check if the focused element is one of the entry links
@@ -437,7 +439,7 @@ e.preventDefault();
 const currentIndex = Array.from(entryLinks).indexOf(currentFocus);
 
 // Handle delete entry action
-if (e.key === 'Delete' && journalShowing) {
+if (e.key === 'Delete' && explorerShowing) {
 handleDeleteEntry(entryLinks, currentIndex);
 } else {
 // Navigate through entries based on key pressed
@@ -473,12 +475,12 @@ let exists = array.findIndex(entry => parseInt(entry.id) === parseInt(obj.id))
 
 //console.log(array[exists])
 
-if(exists > -1 && journalShowing === true){
+if(exists > -1 && explorerShowing === true){
 array.splice(exists, 1)
 entryName.value = '';
-journalLeft.innerHTML = ``;
-journalRight.innerHTML = ``;
-journalId.textContent = '';
+explorerLeft.innerHTML = ``;
+explorerRight.innerHTML = ``;
+explorerId.textContent = '';
 
 loadJournal();
 saveData();
@@ -496,7 +498,6 @@ if(address.parent && address.child){
 
 const parent = address.parent;
 const child = address.child;
-const journal = EXCEL_DM.journal;
 
 
 if(parent === "parent"){
@@ -521,11 +522,11 @@ function handleDeleteEntry(entryLinks, currentIndex) {
 showPrompt('Are you sure you want to delete this journal entry?').then(shouldDelete => {
 if (shouldDelete && entryLinks[currentIndex].id) {
 
-if(journalId.textContent === "X"){return} 
+if(explorerId.textContent === "X"){return} 
 
 const dropDownValue = getDropdownValue();
 
-let delObj = {id: journalId.textContent};
+let delObj = {id: explorerId.textContent};
 
 delEntry(delObj, dropDownValue);
 }
@@ -558,7 +559,7 @@ array.push(obj);
 
 }
 
-if(journalId.textContent === "X"){return} 
+if(explorerId.textContent === "X"){return} 
 
 const dropDownValue = getDropdownValue();
 
@@ -566,12 +567,12 @@ const areEqual = JSON.stringify(dropDownValue) === JSON.stringify(lastDropdownVa
 
 let saveEntry = {
 
-id: journalId.textContent,
+id: explorerId.textContent,
 name: entryName.value,
-left: journalLeft.innerHTML,
-right: journalRight.innerHTML,
+left: explorerLeft.innerHTML,
+right: explorerRight.innerHTML,
 
-//filterDiv(journalRight, "randomEncounter"),
+//filterDiv(explorerRight, "randomEncounter"),
 
 }
 
@@ -579,7 +580,6 @@ if(dropDownValue.parent && dropDownValue.child){
 
 const parent = dropDownValue.parent;
 const child = dropDownValue.child;
-const journal = EXCEL_DM.journal;
 
 //This is save in EXCEL_DM.journal[parentKey][key]
 
@@ -587,12 +587,12 @@ let rightTables = assembleTables()
 
 let saveObject = {
 
-id: journalId.textContent,
+id: explorerId.textContent,
 name: entryName.value,
-description: journalLeft.innerHTML,
+description: explorerLeft.innerHTML,
 ...rightTables,
 
-//filterDiv(journalRight, "randomEncounter"),
+//filterDiv(explorerRight, "randomEncounter"),
 
 }
 
@@ -600,11 +600,11 @@ let toSave = rightTables? saveObject: saveEntry;
 
 if(parent === "parent"){
 
-saveObjToArray(toSave, journal[child]);
+saveObjToArray(toSave, EXCEL_DM.journal[child]);
 
 }else{
 
-saveObjToArray(toSave, journal[parent][child]);
+saveObjToArray(toSave, EXCEL_DM.journal[parent][child]);
 
 }
 
@@ -618,7 +618,7 @@ saveObjToArray(saveEntry, dropDownValue.journal);
 
 }
 
-if(!areEqual){delEntry({id:journalId.textContent}, lastDropdownValue)}
+if(!areEqual){delEntry({id:explorerId.textContent}, lastDropdownValue)}
 loadJournal();
 saveData();
 

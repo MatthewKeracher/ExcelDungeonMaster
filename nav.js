@@ -1,5 +1,7 @@
 function handleMove(moveToID){
 
+let data = EXCEL_DM.map.data;
+
 if(!isMoving && currentMode === 'map'){
 
 isMoving = true
@@ -132,15 +134,18 @@ function handleNew(){
 showPrompt('Make New Project: Are you sure you want to erase all data?').then(shouldDelete => {
 
 if (shouldDelete) {
-data = defaultData;
-regionObj = data[0];
-regionName.textContent = data[0].name;
+
+localStorage.clear();
+
+EXCEL_DM = createEXCEL_DM(); 
+  
+regionObj = EXCEL_DM.map.data[0];
+regionName.textContent = EXCEL_DM.map.data[0].name;
 emptyStoryteller();
 
 zones = []; 
 journalData = [];
 coords = '0.0';
-localStorage.clear();
 
 currentRows = defaultRows;
 currentCols = defaultCols;
@@ -151,9 +156,11 @@ loadGrid();
 idBox.textContent = '';
 textDiv.innerHTML = '';
 
-placeName.value = data[0].name;
-placeSymbol.value = data[0].symbol;
-textDiv.innerHTML = data[0].desc;
+placeName.value = EXCEL_DM.map.data[0].name;
+placeSymbol.value = EXCEL_DM.map.data[0].symbol;
+textDiv.innerHTML = EXCEL_DM.map.data[0].desc;
+
+saveData();
 
 }});
 
@@ -166,18 +173,15 @@ if (shouldDelete) {
 
 let allCells = document.querySelectorAll('[row][col]')
 
-
-const dataLengthOld = data.length
-
 allCells.forEach(cell => {
 
 const row = cell.getAttribute('row');
 const col = cell.getAttribute('col');
 const id = coords + '.' + row + '.' + col;
 
-const index = data.findIndex(entry => entry.id === id)
+const index = EXCEL_DM.map.data.findIndex(entry => entry.id === id)
 
-if(index !== -1){data.splice(index, 1)};
+if(index !== -1){EXCEL_DM.map.data.splice(index, 1)};
 
 })
 
@@ -237,18 +241,12 @@ function exportJournal() {
     URL.revokeObjectURL(url);
 }
 
-  
-
 function handleExport() {
 const regionName = document.getElementById('regionName');
 
 
 // Create an object that includes all data sets
 const exportData = {
-data: data,
-// monsters: monsters,
-// spells: spells,
-// items: items,
 EXCEL_DM: EXCEL_DM,
 zones: zones,
 soundBoard: sounds, 
@@ -304,32 +302,23 @@ reader.onload = function(e) {
 try {
 const loadedData = JSON.parse(e.target.result);
 
-data = loadedData.data;
-// monsters = loadedData.monsters? loadedData.monsters : monsters;
-// spells = loadedData.spells? loadedData.spells : spells;
+EXCEL_DM.map.data = loadedData.EXCEL_DM.map.data;
+
 zones = loadedData.zones;
 regionObj = loadedData.regionObj;
 sounds = loadedData.soundBoard;
 scrollData = loadedData.scrollData;
 lastCell = loadedData.lastCell;
-EXCEL_DM = loadedData.EXCEL_DM? loadedData.EXCEL_DM : EXCEL_DM;
 
-// for (const key in EXCEL_DM.journal){
-// EXCEL_DM.journal[key] = []
-// }
+EXCEL_DM.journal["Favourites"] = loadedData.EXCEL_DM.journal["Favourites"];
+EXCEL_DM.journal["Session Log"] = loadedData.EXCEL_DM.journal["Session Log"];
+EXCEL_DM.journal["Locations"] = loadedData.EXCEL_DM.journal["Locations"]; //obsolete
+EXCEL_DM.journal["Rules"] = loadedData.EXCEL_DM.journal["Rules"];
+EXCEL_DM.journal["People"] = loadedData.EXCEL_DM.journal["People"];
 
-// loadedData.journalData.forEach(entry => {
+console.log("Loaded from saveFile:")
+console.log(EXCEL_DM)
 
-// let key = entry.scale
-
-// if(EXCEL_DM.journal[key]){
-//     EXCEL_DM.journal[key].push(entry)}
-
-// else{EXCEL_DM.journal.Locations.push(entry)}
-
-// })
-
-// console.log(EXCEL_DM.journal)
 collectGarbage();
 
 if(Array.isArray(zones) === false){zones = []}
@@ -350,11 +339,11 @@ reader.readAsText(file);
 }
 });
 
+saveData();
+
 // Trigger the file explorer by clicking the hidden input
 input.click();
 };
-
-
 
 function handleTravel(regionRowAdd, regionColAdd, destRow, destCol){
 
@@ -383,7 +372,6 @@ loadGrid();
 goToEntry(destination);
 
 }
-
 
 function setGridSize() {
 const modal = document.getElementById('customPrompt');
@@ -431,10 +419,9 @@ function makeNewOuterLevel(){
 
     // Trigger selection mode.
     
-    }
+}
 
-
-    function handlePaint() {
+function handlePaint() {
 
         const paletteDiv = document.getElementById('paletteDiv');
         
@@ -447,4 +434,4 @@ function makeNewOuterLevel(){
         paletteDiv.style.display = "none";
         }
 
-        }
+}

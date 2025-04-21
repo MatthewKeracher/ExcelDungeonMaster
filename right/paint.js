@@ -93,10 +93,10 @@ return directions
 }
 
 function updateColor(col, row, specColor){
-    console.log(specColor)
+
 const id =  coords + '.' + row + '.' + col;
 
-const saveEntry = data.find(entry => entry.id === id)
+const saveEntry = EXCEL_DM.map.data.find(entry => entry.id === id)
 
 if(saveEntry?.color){ 
 saveEntry.color = specColor? specColor : currentColor
@@ -112,7 +112,7 @@ color: currentColor,
 
 }
 
-data.push(newEntry)
+EXCEL_DM.map.data.push(newEntry)
 
 }};
 
@@ -140,7 +140,7 @@ desc: "",
 color: isPainting? currentColor : '',
 }
 
-data.push(saveEntry)
+EXCEL_DM.map.data.push(saveEntry)
 }
 
 saveData();
@@ -213,7 +213,7 @@ setColor(swatchElement)
 
 function loadPalette(){
 
-const palette = regionObj?.palette ?? defaultData.palette;
+const palette = regionObj?.palette ?? EXCEL_DM.map.data[0].palette;
 
 if(palette){
 

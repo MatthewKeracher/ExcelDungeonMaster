@@ -75,7 +75,7 @@ changeCell(div);
 function changeCell(gridCell){
 
 if(currentMode !== "map"){return};
-if(journalShowing){return};
+if(explorerShowing){return};
 
 selectedCellStyle(gridCell);
 
@@ -87,7 +87,7 @@ idBox.textContent = coords + '.' + row + '.' + col
 emptyStoryteller()
 
 //Get Entry
-let loadEntry = data.find(entry => entry.id === idBox.textContent)
+let loadEntry = EXCEL_DM.map.data.find(entry => entry.id === idBox.textContent)
 currentObj = loadEntry;
 
 if(loadEntry){
@@ -141,7 +141,7 @@ const col = cell.getAttribute('col');
 const row = cell.getAttribute('row');
 const id =  coords + '.' + row + '.' + col;
 
-const saveEntry = data.find(entry => entry.id === id);
+const saveEntry = EXCEL_DM.map.data.find(entry => entry.id === id);
 
 if(saveEntry){
 let label = cell.querySelector(".cellLabel");

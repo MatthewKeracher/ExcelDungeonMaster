@@ -1,50 +1,47 @@
 
 // Function to save data to localStorage
 function saveData() {
-    localStorage.setItem('data', JSON.stringify(data));
     localStorage.setItem('zones', JSON.stringify(zones));
-    localStorage.setItem('journal', JSON.stringify(journalData));
     localStorage.setItem('scrollData', JSON.stringify(scrollData));
     localStorage.setItem('regionObj', JSON.stringify(regionObj));
     localStorage.setItem('soundBoard', JSON.stringify(sounds));
     localStorage.setItem('Excel_DM', JSON.stringify(EXCEL_DM));
 
+    // console.log("Saved to Storage:")
+    // console.log(EXCEL_DM.map.data.length)
+    // console.log(localStorage)
 }
 
 
 // Function to load data from localStorage
 function  loadData() {
-    const savedData = localStorage.getItem('data');
     const savedZones = localStorage.getItem('zones');
-    const savedJournal = localStorage.getItem('journal');
     const savedScrollData = localStorage.getItem('scrollData');
     const lastCellAt = localStorage.getItem('regionObj');
     const soundBoard = localStorage.getItem('soundBoard');
     const savedEXCEL_DM = localStorage.getItem('Excel_DM');
-    const savedSpells = localStorage.getItem('spells');
 
-if (savedData) {
-data = JSON.parse(savedData);  // Convert back from JSON string to array
-//collectGarbage();
-}
 if(savedZones){
 zones = JSON.parse(savedZones);  
 }
-if(savedJournal){
-journalData = JSON.parse(savedJournal)
-}
+
 if(savedScrollData){
 scrollData = JSON.parse(savedScrollData)
 }
+
 if(lastCellAt){
 regionObj = JSON.parse(lastCellAt)
 idBox.textContent = regionObj.id;
 }
+
 if(soundBoard){
 sounds = JSON.parse(soundBoard)
 }
+
 if(savedEXCEL_DM){
 EXCEL_DM = JSON.parse(savedEXCEL_DM)
+console.log('Loaded from Browser Storage:')
+console.log(EXCEL_DM)
 }
 
 
@@ -82,7 +79,7 @@ if (inZone !== null && inZone) {
 
 } else {
 
-    let exists = data.find(entry => entry.id === idBox.textContent);
+    let exists = EXCEL_DM.map.data.find(entry => entry.id === idBox.textContent);
     if (exists) {
         exists.name = placeName.value;
         exists.symbol = placeSymbol.value;
@@ -106,7 +103,7 @@ if (inZone !== null && inZone) {
 
 
 
-if(journalShowing && scaleSelector.style.display !== "none"){
+if(explorerShowing && scaleSelector.style.display !== "none"){
 saveJournalKnot();
 }
 
@@ -128,7 +125,7 @@ if(saveEntry.name === ""){
 saveEntry.name = ""
 }
 
-data.push(saveEntry);
+EXCEL_DM.map.data.push(saveEntry);
 
 
 }

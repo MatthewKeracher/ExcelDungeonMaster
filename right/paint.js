@@ -1,15 +1,11 @@
 let lastCellPainted = {id: '', color: ''};
 let currentColor = document.getElementById('color1').style.backgroundColor;
 
-// function setColor(color) {
-// currentColor = color;
-// };
-
 function setCurrentColor(colInput){
 currentColor = window.getComputedStyle(colInput).backgroundColor;
 };
 
-function paintCurrentCell(colInput){
+function paintCurrentCell(){
 currentCell = getCurrentDiv();
 paintCell(currentCell);
 };
@@ -224,7 +220,7 @@ let color = entry.color;
 let swatchElement = document.getElementById(number)
 
 swatchElement.style.backgroundColor = color;
-setColor(swatchElement)
+//setColor(swatchElement)
 
 })
 }

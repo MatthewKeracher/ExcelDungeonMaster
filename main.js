@@ -67,10 +67,10 @@ const scaleSelector = document.getElementById('scaleSelector');
 const promptBox = document.getElementById('promptBox');
 const promptMsg = document.getElementById('promptMsg');
 
-// //Default
-// placeName.value = "Excel_DM"
-// placeSymbol.value = "⚅"
-// textDiv.innerHTML = ``;
+//Default
+placeName.value = "Welcome!"
+placeSymbol.value = "⚅"
+textDiv.innerHTML = autoSpacing(`This is Excel_DM, and all-in-one world creator and digital game master screen for use in TTRPGS. All of the data for your current world is stored in your browser memory, but can be saved and loaded as a .json to your local device. To get started, enter your world by using the ">" button on your keyboard.`);
 
 explorerDiv.style.display = 'none';
 

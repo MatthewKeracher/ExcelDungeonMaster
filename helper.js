@@ -283,8 +283,6 @@ function autoSpacing(text){
     // Update the innerHTML of the textDiv
     return text
    
-
-
 }
 
 function addCollapsibleEventListeners() {

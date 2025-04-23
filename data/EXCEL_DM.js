@@ -5920,7 +5920,7 @@ data: [{
 id: "0.0",
 symbol: "🌎",
 name: "Your World",
-desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap. For a full list of hotkeys use the command [`] 'help'.",
+desc: "Welcome to <i> your </i> world. Hit Tab to edit what it says here. Use QWE ASD to move around the Hexmap. For a full list of hotkeys use the command [`] '> help'.",
 rows: defaultRows,
 scrollData: {X: 50, Y:50, Z:1},
 cols: defaultCols, 

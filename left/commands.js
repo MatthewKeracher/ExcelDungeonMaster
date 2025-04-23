@@ -282,6 +282,27 @@ function handleCommands() {
     }
 }
 
+function help(){
+
+let HTML = `<br><br><h3>Hotkeys for Excel_DM</h3>`
+
+function addToHelp(obj){
+const table = tableFromObj(obj)
+HTML += `${table}`
+}
+
+let hotKeys = [
+    {"hotkey": "ESC", "mapMode": "Opens Explorer", "editMode": "Saves Entry and returns to Map Mode", "commandMode": "Runs Command and returns to Map Mode" },
+    {"hotkey": "TAB", "mapMode": "Opens Edit Mode", "editMode": "test", "commandMode": "test" },
+    {"hotkey": "~", "mapMode": "test", "editMode": "test", "commandMode": "test" }
+]
+
+addToHelp(hotKeys);
+
+return HTML
+
+}
+
 function handleElvish(params){
 
 const html = `<span style="font-family:'elvish'"> ${params} </span>`;
@@ -312,6 +333,8 @@ switch (command) {
     case 'clear':
         handleClear();
         return ``
+    case 'help':
+        return help();
     case 'new':
         handleNew();
         return ``  
@@ -345,7 +368,7 @@ switch (command) {
 
 function handlePrint(params){
 
-console.log(EXCEL_DM.journal[params])
+console.log(EXCEL_DM.journal['Session Log'])
 
 }
 

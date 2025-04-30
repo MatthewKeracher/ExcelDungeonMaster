@@ -242,6 +242,12 @@ function handleCommands() {
          }
      }
 
+     try{
+        return `<br> <br> ${eval(inputText)}`
+     }catch{
+
+     }
+
     // Resolve nested commands before replacing other commands
     //inputText = resolveNestedCommands(inputText);
 
@@ -492,8 +498,6 @@ function makeSortButton(order) {
     return button;
 }
 
-
-
 function handleGetCommand(params) {
     const [section, subSection, chance = 100, ...rest] = params.split(' ');
 
@@ -503,7 +507,6 @@ function handleGetCommand(params) {
     
     return tableFromJSON(section, subSection, parsedChance);
 }
-
 
 function findObjectByName(objectName) {
     
@@ -542,10 +545,7 @@ function flattenObject(obj) {
     recurse(obj, '');
     return result;
 }
-
-
-    
-    
+     
 function handleRollCommand(params) {
     // Assume params will contain something like '1d20'
     const dice = parseDice(params)
@@ -555,9 +555,7 @@ function handleRollCommand(params) {
         return `<div class="noSave"> > You have rolled a <b>${rolledValue}</b> on ${params}.<br><br><hr><br></div>`; 
     } 
 
-    }
-
-
+}
 
 function searchFor(name, array) {
 
@@ -608,9 +606,7 @@ function find(name, array) {
     tableHTML += '</tbody></table>';
     
     return tableHTML;
-    }
-
-
+}
 
 function handleMonsterCommand(params) {
     const [searchTerms, number] = params.trim().split(',');
@@ -711,7 +707,6 @@ function exchange(amount, to) {
     const targetCurrency = formatCurrency(to);
     return oraAmount / conversionRates[targetCurrency];
 }
-
 
 //Economics Logic
 function ammendPrices(cost,  inflation, randomDistribution = false) {

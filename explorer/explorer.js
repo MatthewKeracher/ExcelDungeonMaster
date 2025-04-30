@@ -22,41 +22,7 @@ explorerShowing = true;
 
 }
 
-function getNewJournalId(data, obj) {
-    const ids = [];
 
-    if(obj && obj.id){return obj.id}
-  
-    // Function to recursively extract IDs from the data structure
-    function extractIds(data) {
-      for (const key in data) {
-        if (typeof data[key] === 'object' && data[key] !== null) {
-          if (Array.isArray(data[key])) {
-            data[key].forEach(item => {
-              if (item && typeof item === 'object' && item.id) {
-                ids.push(parseInt(item.id));
-              }
-            });
-          } else {
-            if (data[key].id) {
-              ids.push(parseInt(data[key].id));
-            }
-            extractIds(data[key]); // Recursive call for nested objects
-          }
-        }
-      }
-    }
-  
-    extractIds(data); // Start extracting IDs from the root data
-  
-    // Find the next available ID starting from 1
-    let nextId = 1;
-    while (ids.includes(nextId)) {
-      nextId++;
-    }
-  
-    return nextId;
-  }
   
 function moveLocationJournals(){
 
@@ -139,6 +105,9 @@ addToDropdown(key, "parent", headerColor, false)
 
 explorerSideBar.appendChild(headerLink);
 
+const addNewButton = createAddNewButton(key, ["parent", key].join('.'));
+explorerSideBar.appendChild(addNewButton);
+
 if(key === "People"){
 addNPCs()
 }
@@ -156,11 +125,6 @@ currentObj = getObj(parseParent(currentObj.id));
 addRegionEntries(currentObj)
 
 }
-}else if(key !== "Favourites"){
-
-const addNewButton = createAddNewButton(key, ["parent", key].join('.'));
-explorerSideBar.appendChild(addNewButton);
-
 }
 
 for (const subKey in data[key]) {
@@ -168,7 +132,7 @@ for (const subKey in data[key]) {
 if (typeof data[key][subKey] === 'object' && !Array.isArray(data[key][subKey])) { 
 
 const obj = data[key][subKey];
-obj.id = getNewJournalId(EXCEL_DM.journal, obj);
+obj.id = getNewId(EXCEL_DM.journal, obj);
 
 
 if(key === "Locations"){continue} //Skip Locations
@@ -187,7 +151,7 @@ explorerSideBar.appendChild(subHeadLink);
 for (const index in data[key][subKey]) {
 
 const obj = data[key][subKey][index];
-obj.id = getNewJournalId(EXCEL_DM.journal, obj);
+obj.id = getNewId(EXCEL_DM.journal, obj);
 
 const linkWrapper = createEntryLink(obj, subKey, [key, subKey].join('.'));
 explorerSideBar.appendChild(linkWrapper);
@@ -364,7 +328,7 @@ function createAddNewButton(parent, selectValue) {
     const linkWrapper = document.createElement('div');
     const link = document.createElement('a');
     link.href = '#';
-    link.textContent = 'Add New to ' + parent;
+    link.textContent = 'Add New';
     link.id = "addNewEntry";
     link.classList.add('entryLink');
     link.style.color = "whitesmoke"
@@ -399,7 +363,8 @@ function loadJournalEntry(obj, selectValue){
     if(address.parent === "Items" || address.child === "monsters" || address.parent === "spells" || address.child === "People" || address.child === "classes") {
 
     if(obj.race){
-    updateNPC(obj)
+    obj = new NPC(obj)
+    obj.update();
     }
 
     explorerRight.innerHTML = tableFromObj(obj, ['name', 'description', 'id'], "objTable")
@@ -424,7 +389,7 @@ function makeNewJournalEntry(selectValue){
   scaleSelector.value = selectValue;
 
   lastDropdownValue = getDropdownValue();
-  explorerId.textContent = getNewJournalId(EXCEL_DM.journal);
+  explorerId.textContent = getNewId(EXCEL_DM.journal);
 
   const address = parseAddress(selectValue);
 

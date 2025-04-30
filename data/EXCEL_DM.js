@@ -2297,6 +2297,7 @@ const EXCEL_DM =  {
 { range: { min: 18, max: 18 }, bonus: 3 }
 ],
 
+
 "currency" : {
 'Etos': 8064, //Hours in a Year
 'Examino': 672, //Hours in a Month

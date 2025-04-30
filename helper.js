@@ -1,3 +1,39 @@
+function getNewId(data, obj) {
+    const ids = [];
+
+    if(obj && obj.id){return obj.id}
+  
+    // Function to recursively extract IDs from the data structure
+    function extractIds(data) {
+      for (const key in data) {
+        if (typeof data[key] === 'object' && data[key] !== null) {
+          if (Array.isArray(data[key])) {
+            data[key].forEach(item => {
+              if (item && typeof item === 'object' && item.id) {
+                ids.push(parseInt(item.id));
+              }
+            });
+          } else {
+            if (data[key].id) {
+              ids.push(parseInt(data[key].id));
+            }
+            extractIds(data[key]); // Recursive call for nested objects
+          }
+        }
+      }
+    }
+  
+    extractIds(data); // Start extracting IDs from the root data
+  
+    // Find the next available ID starting from 1
+    let nextId = 1;
+    while (ids.includes(nextId)) {
+      nextId++;
+    }
+  
+    return nextId;
+  }
+
 
 function toTitleCase(str) {
 

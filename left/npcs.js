@@ -1,74 +1,123 @@
 
 class NPC {
-constructor(race, npcClass, level, npcName = "John Smith", id) {
+constructor(char) {
 
-this.id = id;
-this.name = npcName;
-this.class = npcClass.charAt(0).toUpperCase() + npcClass.slice(1);
-this.race = race.charAt(0).toUpperCase() + race.slice(1);
-this.level = level;
-this.ability = makeAbilityScores(this.class);
-this.description = "This is a description of the NPC."
-this.location = "Party"
+  this.id = char?.id || getNewId(EXCEL_DM.journal.People),
+  //----
+  this.name = char?.name || "Matthew Keracher",
+  this.level = char?.level || 1,
+  this.race = char?.race || "Human",
+  this.class = char?.class || "Fighter",
+  //----
+  this.ability = char?.ability || makeAbilityScores(this.class),
+  this.description = char?.description || `This is ${this.name}. They are a Level ${this.level} ${this.race} ${this.class}.`,
+  this.location = char?.location || "Party",
+  this.loot = char?.loot || rollLoot(this.level)
+  //----
 
 
-// Assign loot
-const lootRollOut = [[1,4],[1,7],[1,28],[1,168],[1,336]]
+  }
 
-this.loot = {};
-let i = 0;
-for (const [name, value] of Object.entries(system.currency)) {
-  const [min, max] = lootRollOut[i];
-  this.loot[name] = rollDice(min, max).toString();
-  i++;
+
+update(){
+
+  for (const score in this.ability){
+    this.ability[score].modifier = getModifiers(this.ability[score].score)
+    }
+    
+    const classTable = system.classes.find(entry => entry.name === this.class);
+    
+    let attackBonus = classTable.levels[this.level].attackBonus;
+    let meleeBonus = attackBonus + this.ability.str.modifier;
+    let rangedBonus = attackBonus + this.ability.dex.modifier;
+    
+    let hitDice = classTable.levels[this.level].hitDice;
+    let hitPoints = parseHitPoints(hitDice);
+    
+    this.combat = {
+    hitPoints: hitPoints,
+    maxHitPoints: hitPoints,
+    attackBonus: attackBonus,
+    meleeBonus: meleeBonus,
+    rangedBonus: rangedBonus,
+    }
+    
+    this.xp = classTable.levels[this.level].XP;
+    this.savingThrows = getSaveThrows(this.class, parseInt(this.level), this.race);
+    
+    if(classTable.skills){
+    this.skills = classTable.skills[this.level];
+    }else{
+    this.skills === undefined && delete this.skills;
+    }
+    
+    if(classTable.levels[this.level].spells){
+    this.spells = getSpells(this.class, this.level);
+    }else{
+    this.spells === undefined && delete this.spells;
+    }
+    
+    this.location ||= "Party";
+
 }
 
-updateNPC(this)
-
-}}
-
-
-
-function updateNPC(npc){
-
-for (const score in npc.ability){
-npc.ability[score].modifier = getModifiers(npc.ability[score].score)
+check(score){
+  const roll = rollDice() + this.ability[score].modifier
+  return roll
 }
 
-const classTable = system.classes.find(entry => entry.name === npc.class);
-
-let attackBonus = classTable.levels[npc.level].attackBonus;
-let meleeBonus = attackBonus + npc.ability.str.modifier;
-let rangedBonus = attackBonus + npc.ability.dex.modifier;
-
-let hitDice = classTable.levels[npc.level].hitDice;
-let hitPoints = parseHitPoints(hitDice);
-
-npc.combat = {
-"Hit Points": hitPoints,
-"Attack Bonus": attackBonus,
-"Melee Bonus": meleeBonus,
-"Ranged Bonus": rangedBonus,
+melee(){
+  const versusAC = rollDice() + this.combat.meleeBonus
+  return versusAC
 }
 
-npc.xp = classTable.levels[npc.level].XP;
-npc.savingThrows = getSaveThrows(npc.class, parseInt(npc.level), npc.race);
-
-if(classTable.skills){
-npc.skills = classTable.skills[npc.level];
-}else{
-npc.skills === undefined && delete npc.skills;
+ranged(){
+  const versusAC = rollDice() + this.combat.rangedBonus
+  return versusAC
 }
 
-if(classTable.levels[npc.level].spells){
-npc.spells = getSpells(npc.class, npc.level);
-}else{
-npc.spells === undefined && delete npc.spells;
+levelUp(){
+
+  this.level ++
+  this.update();
+  return this
+
 }
 
-npc.location ||= "Party";
+damage(damage){
+  this.combat.hitPoints = this.combat.hitPoints - damage;
 
-console.log(npc)
+  if(this.combat.hitPoints <= 0){
+    return `${this.name} is dead.`
+  }else{
+    return `Hit Points: ${this.combat.hitPoints}/${this.combat.maxHitPoints}`
+  }
+}
+
+findNPC(name){
+  return EXCEL_DM.journal.People.filter(entry => entry.name === name);
+}
+
+
+}
+
+const matthew = new NPC
+matthew.update();
+
+function rollLoot(level){
+
+  // Assign loot
+  const lootRollOut = [[1,4],[1,7],[1,28],[1,168],[1,336]]
+  
+  let loot = {};
+  let i = 0;
+  for (const [name, value] of Object.entries(EXCEL_DM.system.currency)) {
+    const [min, max] = lootRollOut[i];
+    loot[name] = rollDice(min, max).toString();
+    i++;
+  }
+
+  return loot
 
 }
 
@@ -108,9 +157,11 @@ let bonus = getModifiers(score)
 
 
 scores[scoreName] = { ability: scoreName, score: score, modifier: bonus };
+
 });
 
 return scores;
+
 }
 
 function getModifiers(score) {

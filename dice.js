@@ -1,5 +1,5 @@
 // Roll dice function with multiplier
-function rollDice(numDice, diceSides, multiplier = 1) {
+function rollDice(numDice = 1, diceSides = 20, multiplier = 1) {
 
     let total = 0;
     for (let i = 0; i < numDice; i++) {

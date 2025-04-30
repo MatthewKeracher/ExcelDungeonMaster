@@ -2298,10 +2298,10 @@ const EXCEL_DM =  {
 ],
 
 "currency" : {
-'Etos': 336,
-'Examino': 168,
-'Zoti': 28,
-'Evdo': 7,
+'Etos': 8064, //Hours in a Year
+'Examino': 672, //Hours in a Month
+'Zoti': 168, //Hours in a Week
+'Evdo': 24, //Hours in a Day
 'Ora': 1
 },
 

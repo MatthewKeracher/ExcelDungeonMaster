@@ -668,6 +668,49 @@ function evaluateInnerCommand(command) {
     return `{Evaluated: ${command}}`;
 }
 
+function exchange(amount, to) {
+    const conversionRates = EXCEL_DM.system.currency;
+    
+    const oraAmount = Math.round(amount * conversionRates['Ora']);
+
+    // Handle mixed denomination breakdown
+    if (!to) {
+        let remaining = oraAmount;
+        const coinCounts = {
+            Etos: 0,
+            Examino: 0,
+            Zoti: 0,
+            Evdo: 0,
+            Ora: 0
+        };
+
+        // Greedy algorithm for denomination breakdown
+        Object.entries(conversionRates)
+            .sort((a, b) => b[1] - a[1]) // Sort descending
+            .forEach(([currency, rate]) => {
+                if (remaining >= rate) {
+                    coinCounts[currency] = Math.floor(remaining / rate);
+                    remaining %= rate;
+                }
+            });
+
+        // Handle remaining Oras
+        coinCounts.Ora += remaining;
+
+        // Format output
+        return Object.entries(coinCounts)
+            .filter(([_, count]) => count > 0)
+            .map(([currency, count]) => `${count} ${currency}`)
+            .join(', ');
+    }
+
+       // Format currency names consistently
+       const formatCurrency = (str) => 
+        str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+    const targetCurrency = formatCurrency(to);
+    return oraAmount / conversionRates[targetCurrency];
+}
 
 
 //Economics Logic
@@ -681,13 +724,7 @@ function ammendPrices(cost,  inflation, randomDistribution = false) {
     cost = Math.ceil(cost * (1 + inflation / 100));
     const oraCost = cost
 
-    const conversionRates = {
-        'Etos': 336,
-        'Examino': 168,
-        'Zoti': 28,
-        'Evdo': 7,
-        'Ora': 1
-    };
+    const conversionRates = EXCEL_DM.system.currency;
 
     let coinCounts = {
         'Etos': 0,

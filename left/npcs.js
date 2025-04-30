@@ -9,6 +9,7 @@ this.race = race.charAt(0).toUpperCase() + race.slice(1);
 this.level = level;
 this.ability = makeAbilityScores(this.class);
 this.description = "This is a description of the NPC."
+this.location = "Party"
 
 
 // Assign loot
@@ -64,6 +65,8 @@ npc.spells = getSpells(npc.class, npc.level);
 }else{
 npc.spells === undefined && delete npc.spells;
 }
+
+npc.location ||= "Party";
 
 console.log(npc)
 

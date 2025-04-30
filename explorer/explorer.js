@@ -89,6 +89,8 @@ let subHeadLink = createSubHeaderLink("hotpink", obj, "Locations");
 addToDropdown(obj.name, obj.id, "hotpink", true)
 explorerSideBar.appendChild(subHeadLink);
 
+const addNewButton = createAddNewButton(obj.name, obj.id);
+explorerSideBar.appendChild(addNewButton);
 // let entriesHere = EXCEL_DM.journal.Locations.filter(entry => entry.scale === obj.id)
 let entriesHere = obj.journal;
 
@@ -101,6 +103,32 @@ explorerSideBar.appendChild(linkWrapper);
 })
 }
 
+function addNPCs(){
+
+  let npcs = EXCEL_DM.journal.People;
+  let npcLocations = [...new Set(npcs.map(entry => entry.location))];
+
+  npcLocations.forEach(location => {
+
+    let subHeadLink = createSubHeaderLink("cyan", {name: location}, "People");
+    addToDropdown(location, "People", "cyan", false)
+    explorerSideBar.appendChild(subHeadLink);
+
+    let npcsHere = npcs.filter(entry => entry.location === location).sort((a, b) => a.name.localeCompare(b.name));
+
+    npcsHere.forEach(npc => {
+
+      const linkWrapper = createEntryLink(npc, location, ["parent", "People"].join('.'));
+      explorerSideBar.appendChild(linkWrapper);
+
+
+    })
+
+
+  })
+
+
+}
 
 function addJournalEntries(data, headerColor){ 
 
@@ -111,6 +139,9 @@ addToDropdown(key, "parent", headerColor, false)
 
 explorerSideBar.appendChild(headerLink);
 
+if(key === "People"){
+addNPCs()
+}
 
 if(key === "Locations"){
 let idBox = document.getElementById('idBox');
@@ -141,6 +172,7 @@ obj.id = getNewJournalId(EXCEL_DM.journal, obj);
 
 
 if(key === "Locations"){continue} //Skip Locations
+if(key === "People"){continue} //Skip People
 
 const linkWrapper = createEntryLink(obj, key, ["parent", key].join('.'));
 explorerSideBar.appendChild(linkWrapper);
@@ -332,7 +364,7 @@ function createAddNewButton(parent, selectValue) {
     const linkWrapper = document.createElement('div');
     const link = document.createElement('a');
     link.href = '#';
-    link.textContent = 'Add New Entry';
+    link.textContent = 'Add New to ' + parent;
     link.id = "addNewEntry";
     link.classList.add('entryLink');
     link.style.color = "whitesmoke"
@@ -366,9 +398,9 @@ function loadJournalEntry(obj, selectValue){
     
     if(address.parent === "Items" || address.child === "monsters" || address.parent === "spells" || address.child === "People" || address.child === "classes") {
 
-    if(address.child === "People"){
-      updateNPC(obj)
-   }
+    if(obj.race){
+    updateNPC(obj)
+    }
 
     explorerRight.innerHTML = tableFromObj(obj, ['name', 'description', 'id'], "objTable")
     explorerLeft.innerHTML = autoSpacing(obj.description);
@@ -498,6 +530,7 @@ if(address.parent && address.child){
 
 const parent = address.parent;
 const child = address.child;
+const journal = EXCEL_DM.journal;
 
 
 if(parent === "parent"){

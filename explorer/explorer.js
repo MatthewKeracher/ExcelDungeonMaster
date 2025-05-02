@@ -363,8 +363,7 @@ function loadJournalEntry(obj, selectValue){
     if(address.parent === "Items" || address.child === "monsters" || address.parent === "spells" || address.child === "People" || address.child === "classes") {
 
     if(obj.race){
-    obj = new NPC(obj)
-    obj.update();
+    updateNPC(obj)
     }
 
     explorerRight.innerHTML = tableFromObj(obj, ['name', 'description', 'id'], "objTable")

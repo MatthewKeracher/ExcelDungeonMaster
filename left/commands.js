@@ -242,11 +242,11 @@ function handleCommands() {
          }
      }
 
-     try{
-        return `<br> <br> ${eval(inputText)}`
-     }catch{
+    //  try{   
+    //     return `<br> <br> ${eval(inputText)}`
+    //  }catch{
 
-     }
+    //  }
 
     // Resolve nested commands before replacing other commands
     //inputText = resolveNestedCommands(inputText);

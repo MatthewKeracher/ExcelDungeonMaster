@@ -51,6 +51,7 @@ function assembleTables(){
       let tableType = table.getAttribute('type');
    
    if(tableType === "obj"){
+    console.log(objName)
     objTable[objName] = tableObj.reduce((acc, item) => {
         // Use the property that should be the key, e.g., item.ability
         acc[item.ability] = item;
